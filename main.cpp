@@ -5,7 +5,7 @@
 int main()
 {
 	//Declares and creates a new window
-	sf::RenderWindow window(sf::VideoMode(800, 600), "Test works!");
+	sf::RenderWindow window(sf::VideoMode(800, 600), "Crc Game");
 	
 	//Creates green circle
 	sf::CircleShape crc(100.f);
@@ -29,20 +29,41 @@ int main()
 			}
 		}
 
-		//Simple lateral and vertical movement
-		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+		//Simple lateral, vertical, and diagonal
+		bool up = sf::Keyboard::isKeyPressed(sf::Keyboard::Up);
+		bool down = sf::Keyboard::isKeyPressed(sf::Keyboard::Down);
+		bool left = sf::Keyboard::isKeyPressed(sf::Keyboard::Left);
+		bool right = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
+
+		if(left && up)
+		{
+			crc.setPosition(crc.getPosition().x - 1.4, crc.getPosition().y - 1.4);
+		}
+		else if(left && down)
+		{
+			crc.setPosition(crc.getPosition().x - 1.4, crc.getPosition().y + 1.4);
+		}
+		else if(right && up)
+		{
+			crc.setPosition(crc.getPosition().x + 1.4, crc.getPosition().y - 1.4);
+		}
+		else if(right && down)
+		{
+			crc.setPosition(crc.getPosition().x + 1.4, crc.getPosition().y + 1.4);
+		}
+		else if(left)
 		{
 			crc.setPosition(crc.getPosition().x - speed, crc.getPosition().y);
 		}
-		else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+		else if(right)
 		{
 			crc.setPosition(crc.getPosition().x + speed, crc.getPosition().y);
 		}
-		else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+		else if(up)
 		{
 			crc.setPosition(crc.getPosition().x, crc.getPosition().y - speed);
 		}
-		else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+		else if(down)
 		{
 			crc.setPosition(crc.getPosition().x, crc.getPosition().y + speed);
 		}
