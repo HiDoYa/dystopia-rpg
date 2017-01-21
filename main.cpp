@@ -1,3 +1,4 @@
+#include <math.h>
 #include <SFML/Graphics.hpp>
 
 //testing
@@ -10,7 +11,6 @@ int main()
 	//Creates green circle
 	sf::CircleShape crc(100.f);
 	crc.setFillColor(sf::Color::Green);
-	int speed = 5;
 
 	//Sets framerate to 60fps
 	window.setFramerateLimit(60);
@@ -34,38 +34,39 @@ int main()
 		bool down = sf::Keyboard::isKeyPressed(sf::Keyboard::Down);
 		bool left = sf::Keyboard::isKeyPressed(sf::Keyboard::Left);
 		bool right = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
+		double circleSpeed = 5;
 
 		if(left && up)
 		{
-			crc.setPosition(crc.getPosition().x - 1.4, crc.getPosition().y - 1.4);
+			crc.setPosition(crc.getPosition().x - circleSpeed, crc.getPosition().y - circleSpeed);
 		}
 		else if(left && down)
 		{
-			crc.setPosition(crc.getPosition().x - 1.4, crc.getPosition().y + 1.4);
+			crc.setPosition(crc.getPosition().x - circleSpeed, crc.getPosition().y + circleSpeed);
 		}
 		else if(right && up)
 		{
-			crc.setPosition(crc.getPosition().x + 1.4, crc.getPosition().y - 1.4);
+			crc.setPosition(crc.getPosition().x + circleSpeed, crc.getPosition().y - circleSpeed);
 		}
 		else if(right && down)
 		{
-			crc.setPosition(crc.getPosition().x + 1.4, crc.getPosition().y + 1.4);
+			crc.setPosition(crc.getPosition().x + circleSpeed, crc.getPosition().y + circleSpeed);
 		}
 		else if(left)
 		{
-			crc.setPosition(crc.getPosition().x - speed, crc.getPosition().y);
+			crc.setPosition(crc.getPosition().x - circleSpeed, crc.getPosition().y);
 		}
 		else if(right)
 		{
-			crc.setPosition(crc.getPosition().x + speed, crc.getPosition().y);
+			crc.setPosition(crc.getPosition().x + circleSpeed, crc.getPosition().y);
 		}
 		else if(up)
 		{
-			crc.setPosition(crc.getPosition().x, crc.getPosition().y - speed);
+			crc.setPosition(crc.getPosition().x, crc.getPosition().y - circleSpeed);
 		}
 		else if(down)
 		{
-			crc.setPosition(crc.getPosition().x, crc.getPosition().y + speed);
+			crc.setPosition(crc.getPosition().x, crc.getPosition().y + circleSpeed);
 		}
 		
 		//Activates window for OpenGL rendering
