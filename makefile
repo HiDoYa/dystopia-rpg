@@ -1,4 +1,6 @@
-main: main.cpp
-	g++ -c main.cpp
-	g++ main.o -o sfml-app -lsfml-graphics -lsfml-window -lsfml-system
+main: main.cpp Textbox.cpp
+	g++ -c main.cpp Textbox.cpp
+	g++ main.o Textbox.o -o sfml-app -lsfml-graphics -lsfml-window -lsfml-system
 	./sfml-app
+
+

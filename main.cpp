@@ -1,37 +1,15 @@
 #include <math.h>
 #include <SFML/Graphics.hpp>
+#include "Textbox.h"
 
 //testing
 
 int main()
 {
 	//Declares and creates a new window
-	sf::RenderWindow window(sf::VideoMode(800, 600), "Crc Game");
-	
-	//Creates green circle
-	sf::RectangleShape rec;
-	int recSize = 150;
-	rec.setFillColor(sf::Color::White);
-	rec.setSize(sf::Vector2f(window.getSize().x, window.getSize().y - (window.getSize().y - recSize)));
-	rec.setPosition(sf::Vector2f(0, window.getSize().y - recSize));
+	sf::RenderWindow window(sf::VideoMode(800, 600), "Game");
 
-	sf::Font font;
-	font.loadFromFile("Ubuntu.ttf");
-	sf::Text text;
-	text.setFont(font);
-	text.setCharacterSize(35);
-	text.setColor(sf::Color::Red);
-	text.setString("Main text goes here");
-	text.setPosition(sf::Vector2f(20, window.getSize().y - 100));
-
-	sf::Text name;
-	name.setFont(font);
-	name.setCharacterSize(20);
-	name.setColor(sf::Color::Red);
-	name.setString("Name");
-	name.setPosition(sf::Vector2f(5, window.getSize().y - 150));
-	
-
+	Textbox box;
 
 	//Sets framerate to 60fps
 	window.setFramerateLimit(60);
@@ -49,16 +27,15 @@ int main()
 				window.close();
 			}
 		}
-		//TODO Here
+
+		box.updateText("Hello");
 
 		//Activates window for OpenGL rendering
 		window.clear();
 
-		//TODO Drawing
-		//window.draw();
-		window.draw(rec);
-		window.draw(text);
-		window.draw(name);
+		//Draws
+		//window.draw(name);
+		window.draw(box.getBox());
 
 		//End current frame and display its contents on screen
 		window.display();

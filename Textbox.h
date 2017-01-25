@@ -1,21 +1,27 @@
-#include <string>
-
-#ifndef TEXTBOX
-#define TEXTBOX
+#include <SFML/Graphics.hpp>
+#ifndef TEXTBOX_H
+#define TEXTBOX_H
 
 class Textbox 
 {
 	private:
-		double boxWidth;
-		double boxHeight;
-		double fontSize;
-		double textSpeed;
-		std::string text;
+		int textSpeed;
+		sf::RectangleShape rec;
+		sf::Font font;
+		int recSize;
+		sf::Text text;
+		sf::Text name;
 	public:
+		Textbox();
+		void setFont(sf::String);
+		void setFontSize(int);
+		void setName(sf::String);
 		void openBox();
 		void closeBox();
-		void updateText(std::string);
+		void updateText(sf::String);
 		void nextText();
+		sf::RectangleShape getBox();
+		void getText();
 };
 
 #endif
