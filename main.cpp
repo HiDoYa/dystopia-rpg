@@ -1,6 +1,6 @@
 #include <math.h>
 #include <SFML/Graphics.hpp>
-#include "Textbox.h"
+#include "include/Textbox.h"
 
 //testing
 

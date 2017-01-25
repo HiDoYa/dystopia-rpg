@@ -3,7 +3,7 @@
 Textbox::Textbox()
 {
 	//Loads fonts
-	font.loadFromFile("Ubuntu.ttf");
+	font.loadFromFile("../font/Ubuntu.ttf");
 	text.setFont(font);
 	name.setFont(font);
 
