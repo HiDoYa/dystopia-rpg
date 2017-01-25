@@ -1,5 +1,6 @@
 #include <math.h>
 #include <SFML/Graphics.hpp>
+#include <string>
 #include "include/Textbox.h"
 
 //testing
@@ -9,10 +10,15 @@ int main()
 	//Declares and creates a new window
 	sf::RenderWindow window(sf::VideoMode(800, 600), "Game");
 
+	//Textbox instance 
 	Textbox box(window);
 
-	//Sets framerate to 60fps
-	window.setFramerateLimit(60);
+	//Time
+	sf::Clock clock;
+	sf::Time time;
+
+	//Sets framerate to 30fps
+	window.setFramerateLimit(30);
 
 	//Main loop - ends when window is closed
 	while(window.isOpen())
@@ -28,7 +34,8 @@ int main()
 			}
 		}
 
-		box.setText("Hello");
+		time = clock.getElapsedTime();
+		box.setText(std::to_string(time.asSeconds()));
 		box.setName("Name");
 
 		//Activates window for OpenGL rendering
