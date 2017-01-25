@@ -13,16 +13,17 @@ class Textbox
 		sf::Text text;
 		sf::Text name;
 	public:
-		Textbox();
+		Textbox(sf::RenderWindow&);
 		void setFont(sf::String);
-		void setFontSize(int);
+		void setText(sf::String);
 		void setName(sf::String);
+		sf::RectangleShape getBox();
+		sf::Text getText();
+		sf::Text getName();
+		void drawAll(sf::RenderWindow&);
 		void openBox();
 		void closeBox();
-		void updateText(sf::String);
 		void nextText();
-		sf::RectangleShape getBox();
-		void getText();
 };
 
 #endif

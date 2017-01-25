@@ -9,7 +9,7 @@ int main()
 	//Declares and creates a new window
 	sf::RenderWindow window(sf::VideoMode(800, 600), "Game");
 
-	Textbox box;
+	Textbox box(window);
 
 	//Sets framerate to 60fps
 	window.setFramerateLimit(60);
@@ -28,14 +28,15 @@ int main()
 			}
 		}
 
-		box.updateText("Hello");
+		box.setText("Hello");
+		box.setName("Name");
 
 		//Activates window for OpenGL rendering
 		window.clear();
 
 		//Draws
 		//window.draw(name);
-		window.draw(box.getBox());
+		box.drawAll(window);
 
 		//End current frame and display its contents on screen
 		window.display();
