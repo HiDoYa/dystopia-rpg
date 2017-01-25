@@ -9,8 +9,29 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(800, 600), "Crc Game");
 	
 	//Creates green circle
-	sf::CircleShape crc(100.f);
-	crc.setFillColor(sf::Color::Green);
+	sf::RectangleShape rec;
+	int recSize = 150;
+	rec.setFillColor(sf::Color::White);
+	rec.setSize(sf::Vector2f(window.getSize().x, window.getSize().y - (window.getSize().y - recSize)));
+	rec.setPosition(sf::Vector2f(0, window.getSize().y - recSize));
+
+	sf::Font font;
+	font.loadFromFile("Ubuntu.ttf");
+	sf::Text text;
+	text.setFont(font);
+	text.setCharacterSize(35);
+	text.setColor(sf::Color::Red);
+	text.setString("Main text goes here");
+	text.setPosition(sf::Vector2f(20, window.getSize().y - 100));
+
+	sf::Text name;
+	name.setFont(font);
+	name.setCharacterSize(20);
+	name.setColor(sf::Color::Red);
+	name.setString("Name");
+	name.setPosition(sf::Vector2f(5, window.getSize().y - 150));
+	
+
 
 	//Sets framerate to 60fps
 	window.setFramerateLimit(60);
@@ -28,52 +49,16 @@ int main()
 				window.close();
 			}
 		}
+		//TODO Here
 
-		//Simple lateral, vertical, and diagonal
-		bool up = sf::Keyboard::isKeyPressed(sf::Keyboard::Up);
-		bool down = sf::Keyboard::isKeyPressed(sf::Keyboard::Down);
-		bool left = sf::Keyboard::isKeyPressed(sf::Keyboard::Left);
-		bool right = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
-		double circleSpeed = 5;
-
-		if(left && up)
-		{
-			crc.setPosition(crc.getPosition().x - circleSpeed, crc.getPosition().y - circleSpeed);
-		}
-		else if(left && down)
-		{
-			crc.setPosition(crc.getPosition().x - circleSpeed, crc.getPosition().y + circleSpeed);
-		}
-		else if(right && up)
-		{
-			crc.setPosition(crc.getPosition().x + circleSpeed, crc.getPosition().y - circleSpeed);
-		}
-		else if(right && down)
-		{
-			crc.setPosition(crc.getPosition().x + circleSpeed, crc.getPosition().y + circleSpeed);
-		}
-		else if(left)
-		{
-			crc.setPosition(crc.getPosition().x - circleSpeed, crc.getPosition().y);
-		}
-		else if(right)
-		{
-			crc.setPosition(crc.getPosition().x + circleSpeed, crc.getPosition().y);
-		}
-		else if(up)
-		{
-			crc.setPosition(crc.getPosition().x, crc.getPosition().y - circleSpeed);
-		}
-		else if(down)
-		{
-			crc.setPosition(crc.getPosition().x, crc.getPosition().y + circleSpeed);
-		}
-		
 		//Activates window for OpenGL rendering
 		window.clear();
 
-		//Draws the circle shape
-		window.draw(crc);
+		//TODO Drawing
+		//window.draw();
+		window.draw(rec);
+		window.draw(text);
+		window.draw(name);
 
 		//End current frame and display its contents on screen
 		window.display();
