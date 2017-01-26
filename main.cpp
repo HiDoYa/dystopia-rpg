@@ -1,9 +1,12 @@
-#include <math.h>
+#include <cmath>
 #include <SFML/Graphics.hpp>
 #include <string>
-#include "include/Npc.h"
-#include "include/Textbox.h"
 #include <iostream>
+
+//Game classes
+#include "include/Npc.h"
+#include "include/Player.h"
+#include "include/Textbox.h"
 
 //testing
 
@@ -16,6 +19,8 @@ int main()
 	Textbox box(window);
 	Npc kitty(20, 20, "images/hello.jpeg");
 	kitty.setScale(0.3);
+	Player chr(300, 250, "images/penguin.png");
+	chr.setScale(0.07);
 
 	//Time
 	sf::Clock clock;
@@ -45,11 +50,14 @@ int main()
 		box.setText("Text");
 		box.setName("Name");
 
+		chr.movePos(10);
+
 		//Activates window for OpenGL rendering
-		window.clear();
+		window.clear(sf::Color::Blue);
 
 		//window.draw();
 		window.draw(kitty.getSprite());
+		window.draw(chr.getSprite());
 		box.drawAll(window);
 
 		//End current frame and display its contents on screen
