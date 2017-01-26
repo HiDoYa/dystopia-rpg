@@ -23,6 +23,7 @@ class Textbox
 		sf::Text getText();
 		sf::Text getName();
 		void drawAll(sf::RenderWindow&);
+		//TODO Unfinished 
 		void animateText();
 		void openBox();
 		void closeBox();
