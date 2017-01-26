@@ -1,7 +1,9 @@
 #include <math.h>
 #include <SFML/Graphics.hpp>
 #include <string>
+#include "include/Npc.h"
 #include "include/Textbox.h"
+#include <iostream>
 
 //testing
 
@@ -10,8 +12,10 @@ int main()
 	//Declares and creates a new window
 	sf::RenderWindow window(sf::VideoMode(800, 600), "Game");
 
-	//Textbox instance 
+	//Instance Tests 
 	Textbox box(window);
+	Npc kitty(20, 20, "images/hello.jpeg");
+	kitty.setScale(0.3);
 
 	//Time
 	sf::Clock clock;
@@ -19,13 +23,6 @@ int main()
 
 	//Sets framerate to 30fps
 	window.setFramerateLimit(30);
-
-	//Texture and Sprite TESTING
-	sf::Texture texture;
-	texture.loadFromFile("images/hello.jpeg");
-	sf::Sprite sprite;
-	sprite.setTexture(texture);
-	sprite.setScale(sf::Vector2f(0.5f, 0.5f));
 
 	//Main loop - ends when window is closed
 	while(window.isOpen())
@@ -42,15 +39,18 @@ int main()
 		}
 
 		time = clock.getElapsedTime();
-		box.setText(std::to_string(time.asSeconds()));
+		time.asSeconds();
+
+		//Setting the text
+		box.setText("Text");
 		box.setName("Name");
 
 		//Activates window for OpenGL rendering
 		window.clear();
 
 		//window.draw();
+		window.draw(kitty.getSprite());
 		box.drawAll(window);
-		window.draw(sprite);
 
 		//End current frame and display its contents on screen
 		window.display();
