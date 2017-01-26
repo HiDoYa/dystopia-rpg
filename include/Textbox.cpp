@@ -28,8 +28,6 @@ Textbox::Textbox(sf::RenderWindow& win)
 	rec.setFillColor(sf::Color::White);
 	rec.setSize(sf::Vector2f(width, height - recSize));
 	rec.setPosition(sf::Vector2f(0, height - recSize));
-	//rec.setSize(sf::Vector2f(window.getSize().x, window.getSize().y - (window.getSize().y - recSize)));
-	//rec.setPosition(sf::Vector2f(0, window.getSize().y - recSize));
 }
 
 void Textbox::setFont(sf::String str)
@@ -48,6 +46,17 @@ void Textbox::setName(sf::String str)
 {
 	name.setString(str);
 }
+
+void Textbox::setRecSize(int num)
+{
+	recSize = num;
+}
+
+void Textbox::setTextSpeed(double num)
+{
+	textSpeed = num;
+}
+
 sf::RectangleShape Textbox::getBox()
 {
 	return rec;
@@ -70,17 +79,23 @@ void Textbox::drawAll(sf::RenderWindow& win)
 	win.draw(name);
 }
 
+void Textbox::animateText()
+{
+	//Text doesnt appear instantly
+}
+
 void Textbox::openBox()
 {
+	//Animation for box popping open
 }
 
 void Textbox::closeBox()
 {
+	//Animation for box closing 
 }
 
 void Textbox::nextText()
 {
 	//Wait for button press to continue to next text
 }
-
 
