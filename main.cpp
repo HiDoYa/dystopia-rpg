@@ -41,8 +41,7 @@ int main()
 		//Activates window for OpenGL rendering
 		window.clear();
 
-		//Draws
-		//window.draw(name);
+		//window.draw();
 		box.drawAll(window);
 
 		//End current frame and display its contents on screen
