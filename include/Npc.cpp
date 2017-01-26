@@ -24,6 +24,11 @@ void Npc::setScale(double num)
 	sprite.setScale(sf::Vector2f(num, num));
 }
 
+void Npc::setPos(int x, int y)
+{
+	sprite.setPosition(x, y);
+}
+
 sf::Texture Npc::getTexture()
 {
 	return texture;
@@ -44,11 +49,6 @@ void Npc::moveAwayFromChar(int charPosX, int charPosY)
 
 void Npc::moveTowardChar(int charPosX, int charPosY)
 {
-}
-
-void Npc::setPos(int x, int y)
-{
-	sprite.setPosition(x, y);
 }
 
 void Npc::speak(sf::String)
