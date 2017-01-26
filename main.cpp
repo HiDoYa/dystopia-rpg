@@ -20,6 +20,13 @@ int main()
 	//Sets framerate to 30fps
 	window.setFramerateLimit(30);
 
+	//Texture and Sprite TESTING
+	sf::Texture texture;
+	texture.loadFromFile("images/hello.jpeg");
+	sf::Sprite sprite;
+	sprite.setTexture(texture);
+	sprite.setScale(sf::Vector2f(0.5f, 0.5f));
+
 	//Main loop - ends when window is closed
 	while(window.isOpen())
 	{
@@ -43,6 +50,7 @@ int main()
 
 		//window.draw();
 		box.drawAll(window);
+		window.draw(sprite);
 
 		//End current frame and display its contents on screen
 		window.display();

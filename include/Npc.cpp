@@ -1,11 +1,21 @@
 #include "Npc.h"
 
-Npc::Npc(int x, int y)
+Npc::Npc(int x, int y, sf::String nameTexture)
 {
-	//Load sprite?
+	texture.loadFromFile(nameTexture);
 
-	posX = x;
-	posY = y;
+	sprite.setTexture(texture);
+	sprite.setPosition(x, y);
+}
+
+void Npc::setTexture(sf::String nameTexture)
+{
+	texture.loadFromFile(nameTexture);
+}
+
+void Npc::setScale(float num)
+{
+	sprite.setScale(sf::Vector2f(num, num));
 }
 
 void Npc::autoMove()
@@ -20,14 +30,9 @@ void Npc::moveTowardChar(int charPosX, int charPosY)
 {
 }
 
-void Npc::setPosX(int x)
+void Npc::setPos(int x, int y)
 {
-	posX = x;
-}
-
-void Npc::setPosY(int y)
-{
-	posY = y;
+	sprite.setPosition(x, y);
 }
 
 void Npc:speak(sf::String)
