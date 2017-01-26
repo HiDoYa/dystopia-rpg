@@ -1,3 +1,4 @@
+#include <iostream>
 #include <SFML/Graphics.hpp>
 
 #ifndef NPC_H
@@ -9,12 +10,16 @@ class Npc
 		sf::Texture texture;
 		sf::Sprite sprite;
 	public:
-		Npc(int, int);
+		Npc(int, int, sf::String);
+		void setTexture(sf::String);
+		void setScale(double);
+		sf::Texture getTexture();
+		sf::Sprite getSprite();
 		void autoMove();
 		void moveAwayFromChar(int, int);
 		void moveTowardChar(int, int);
 		void setPos(int, int);
 		void speak(sf::String);
-}
+};
 
 #endif
