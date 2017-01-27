@@ -47,8 +47,7 @@ int main()
 		time.asSeconds();
 
 		//Setting the text
-		box.setText("Text");
-		box.setName("Name");
+		box.animateText("hello, this is a test for the text box");
 
 		chr.movePos(10);
 
