@@ -5,8 +5,8 @@
 Textbox::Textbox(sf::RenderWindow& win)
 {
 	//Gets width and height of window
-	int width = win.getSize().x;
-	int height = win.getSize().y;
+	width = win.getSize().x;
+	height = win.getSize().y;
 
 	//Loads fonts
 	font.loadFromFile("font/Ubuntu.ttf");
@@ -89,9 +89,29 @@ void Textbox::drawAll(sf::RenderWindow& win)
 	win.draw(name);
 }
 
+sf::String Textbox::convertText(sf::String str)
+{
+	if(str.getSize() > 40)
+	{
+		//Works backwards from character 40 until a space is found, and replaces it with new line
+		for(int i = 40; i > 0; i--)
+		{
+			if(str[i] == ' ')
+			{
+				str[i] = '\n';
+				break;
+			}
+		}
+	}
+	return str;
+}
+
 //Text doesnt appear instantly
 void Textbox::animateText(sf::String str)
 {
+	//Converts text (for double lines)
+	str = convertText(str);
+
 	//Gets current time
 	tme = clk.getElapsedTime();
 	currentTime = tme.asMilliseconds();

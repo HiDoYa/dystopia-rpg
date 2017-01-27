@@ -47,7 +47,7 @@ int main()
 		time.asSeconds();
 
 		//Setting the text
-		box.animateText("hello, this is a test for the text box");
+		box.animateText("hello, this is a test for the text box. asdf asdf filler filler.");
 
 		chr.movePos(10);
 
