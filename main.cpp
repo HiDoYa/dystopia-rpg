@@ -17,11 +17,12 @@ int main()
 
 	//Instance Tests 
 	Textbox box(window);
-	box.closeBox();
 	Npc kitty(20, 20, "images/hello.jpeg");
 	kitty.setScale(0.3);
 	Player chr(300, 250, "images/penguin.png");
 	chr.setScale(0.07);
+
+	int txt = 0;
 
 	//Time
 	sf::Clock clock;
@@ -48,10 +49,22 @@ int main()
 		time.asSeconds();
 
 		//Setting the text
-		box.openBox();
+		if(!box.getOpen() && txt == 0)
+		{
+			box.openBox();
+		}
 		if(box.getOpen())
 		{
-			box.animateText("This is a test, abc one two three.");
+			txt = 1;
+			if(box.getSuccess())
+			{
+				box.setText("");
+				box.closeBox();
+			}
+			else
+			{
+				box.animateText("This is a test, abc one two three.");
+			}
 		}
 		//box.animateText("hello, this is a test for the text box. asdf asdf filler filler.");
 

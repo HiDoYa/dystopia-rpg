@@ -68,6 +68,11 @@ void Textbox::setTextSpeed(int num)
 	textSpeed = num;
 }
 
+bool Textbox::setSuccess()
+{
+	success = false;
+}
+
 //Returns box (rectangle)
 sf::RectangleShape Textbox::getBox()
 {
@@ -89,6 +94,11 @@ sf::Text Textbox::getName()
 bool Textbox::getOpen()
 {
 	return open;
+}
+
+bool Textbox::getSuccess()
+{
+	return success;
 }
 
 //Draws rectangle (textbox), text, and name
@@ -146,6 +156,7 @@ void Textbox::animateText(sf::String str)
 		//Resets temp string, and index
 		animText = "";
 		textIndex = 0;
+		success = true;
 	}
 }
 
@@ -172,13 +183,26 @@ void Textbox::openBox()
 //Animation for box closing 
 void Textbox::closeBox()
 {
-	posX = width/2;
-	width = 0;
-	rec.setSize(sf::Vector2f(width, height - recSize));
+	tme = clk.getElapsedTime();
+	currentTime = tme.asMilliseconds();
+	if(currentTime > lastTime + 30 && width > 0)
+	{
+		width -= 40;
+		posX += 20;
+		rec.setPosition(sf::Vector2f(posX, posY));
+		rec.setSize(sf::Vector2f(width, height));
+		lastTime = currentTime;
+	}
+
+	if(width == 0)
+	{
+		open = false;
+	}
 }
 
 //Wait for button press to continue to next text
 void Textbox::nextText()
 {
 }
+
 

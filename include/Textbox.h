@@ -11,6 +11,7 @@ class Textbox
 		sf::Text text;
 		sf::Text name;
 		bool open;
+		bool success;
 		
 		//Box size and position
 		int width;
@@ -34,10 +35,12 @@ class Textbox
 		void setText(sf::String);
 		void setName(sf::String);
 		void setTextSpeed(int);
+		bool setSuccess();
 		sf::RectangleShape getBox();
 		sf::Text getText();
 		sf::Text getName();
 		bool getOpen();
+		bool getSuccess();
 		void drawAll(sf::RenderWindow&);
 		//TODO Unfinished 
 		sf::String convertText(sf::String);
