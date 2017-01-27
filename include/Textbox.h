@@ -10,11 +10,14 @@ class Textbox
 		sf::Font font;
 		sf::Text text;
 		sf::Text name;
-		int recSize;
+		bool open;
 		
-		//Window sizes
+		//Box size and position
 		int width;
 		int height;
+		int recSize;
+		int posX;
+		int posY;
 
 		//All for animating text
 		sf::Clock clk;
@@ -34,6 +37,7 @@ class Textbox
 		sf::RectangleShape getBox();
 		sf::Text getText();
 		sf::Text getName();
+		bool getOpen();
 		void drawAll(sf::RenderWindow&);
 		//TODO Unfinished 
 		sf::String convertText(sf::String);

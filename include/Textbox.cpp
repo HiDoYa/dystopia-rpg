@@ -4,9 +4,12 @@
 //Default constructor
 Textbox::Textbox(sf::RenderWindow& win)
 {
-	//Gets width and height of window
+	//Gets box parameters
+	recSize = 150;
 	width = win.getSize().x;
-	height = win.getSize().y;
+	height = recSize;
+	posX = 0;
+	posY = win.getSize().y - recSize; 
 
 	//Loads fonts
 	font.loadFromFile("font/Ubuntu.ttf");
@@ -22,14 +25,16 @@ Textbox::Textbox(sf::RenderWindow& win)
 	name.setColor(sf::Color::Black);
 
 	//Sets position of text
-	text.setPosition(sf::Vector2f(60, height - 100));
-	name.setPosition(sf::Vector2f(20, height - 140));
+	text.setPosition(sf::Vector2f(60, win.getSize().y - 100));
+	name.setPosition(sf::Vector2f(20, win.getSize().y - 140));
 
 	//Box attributes
-	recSize = 150;
 	rec.setFillColor(sf::Color::White);
-	rec.setSize(sf::Vector2f(width, height - recSize));
-	rec.setPosition(sf::Vector2f(0, height - recSize));
+	rec.setSize(sf::Vector2f(width, height));
+	rec.setPosition(sf::Vector2f(posX, posY));
+
+	//Not opened
+	open = false;
 
 	//Initialize for animation
 	textIndex = 0;
@@ -79,6 +84,11 @@ sf::Text Textbox::getText()
 sf::Text Textbox::getName()
 {
 	return name;
+}
+
+bool Textbox::getOpen()
+{
+	return open;
 }
 
 //Draws rectangle (textbox), text, and name
@@ -142,11 +152,29 @@ void Textbox::animateText(sf::String str)
 //Animation for box popping open
 void Textbox::openBox()
 {
+	tme = clk.getElapsedTime();
+	currentTime = tme.asMilliseconds();
+	if(currentTime > lastTime + 30 && width < 800)
+	{
+		width += 40;
+		posX -= 20;
+		rec.setPosition(sf::Vector2f(posX, posY));
+		rec.setSize(sf::Vector2f(width, height));
+		lastTime = currentTime;
+	}
+
+	if(width == 800)
+	{
+		open = true;
+	}
 }
 
 //Animation for box closing 
 void Textbox::closeBox()
 {
+	posX = width/2;
+	width = 0;
+	rec.setSize(sf::Vector2f(width, height - recSize));
 }
 
 //Wait for button press to continue to next text
