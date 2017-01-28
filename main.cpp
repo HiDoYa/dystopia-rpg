@@ -1,7 +1,12 @@
 #include <cmath>
-#include <SFML/Graphics.hpp>
 #include <string>
 #include <iostream>
+
+//SFML
+#include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
+#include <SFML/Window.hpp>
+#include <SFML/System.hpp>
 
 //Game classes
 #include "include/Textbox.h"
@@ -18,7 +23,6 @@ int main()
 	//Defines what region is shown on screen
 	sf::View view = window.getView();
 
-
 	//Image as cursor
 	window.setMouseCursorVisible(false);
 	sf::Texture cursorTextureDefault, cursorTextureTalk;
@@ -26,6 +30,11 @@ int main()
 	cursorTextureTalk.loadFromFile("images/cursorTalk.png");
 	sf::Sprite cursorSprite(cursorTextureDefault);
 	cursorSprite.setScale(sf::Vector2f(0.09, 0.09));
+
+	//Music
+	sf::Music music;
+	music.openFromFile("sound/ambientMu.ogg");
+	music.play();
 
 	//Instance Tests 
 	Textbox box(window);
