@@ -15,6 +15,18 @@ int main()
 	//Declares and creates a new window
 	sf::RenderWindow window(sf::VideoMode(800, 600), "Game");
 
+	//Defines what region is shown on screen
+	sf::View view = window.getView();
+
+
+	//Image as cursor
+	window.setMouseCursorVisible(false);
+	sf::Texture cursorTexture;
+	cursorTexture.loadFromFile("images/cursor.png");
+	sf::Sprite cursorSprite(cursorTexture);
+	cursorSprite.setScale(sf::Vector2f(0.05, 0.05));
+
+
 	//Instance Tests 
 	Textbox box(window);
 
@@ -30,8 +42,8 @@ int main()
 	sf::Clock clock;
 	sf::Time time;
 
-	//Sets framerate to 30fps
-	window.setFramerateLimit(30);
+	//Sets framerate to 60fps
+	window.setFramerateLimit(60);
 
 	//Main loop - ends when window is closed
 	while(window.isOpen())
@@ -46,9 +58,6 @@ int main()
 				window.close();
 			}
 		}
-
-		time = clock.getElapsedTime();
-		time.asSeconds();
 
 		//Setting the text
 		if(!box.getOpen() && scene == 0)
@@ -86,14 +95,21 @@ int main()
 
 		chr.movePos(10);
 
+		//Cursor position
+		cursorSprite.setPosition(static_cast<sf::Vector2f>(sf::Mouse::getPosition(window)));
+
 		//Activates window for OpenGL rendering
 		sf::Color winColor(107, 120, 140);
 		window.clear(winColor);
+
+		//Sets view
+		window.setView(view);
 
 		//window.draw();
 		window.draw(kitty.getSprite());
 		window.draw(chr.getSprite());
 		box.drawAll(window);
+		window.draw(cursorSprite);
 
 		//End current frame and display its contents on screen
 		window.display();
