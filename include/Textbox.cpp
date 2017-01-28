@@ -20,6 +20,9 @@ Textbox::Textbox(sf::RenderWindow& win)
 	nextPrompt.setFont(font);
 	name.setStyle(sf::Text::Underlined);
 
+	//Load Music
+	mu.openFromFile("sound/textNoise.wav");
+
 	//Sets character sizes
 	text.setCharacterSize(35);
 	name.setCharacterSize(25);
@@ -159,6 +162,9 @@ void Textbox::animateText(sf::String str)
 			//Append a new letter
 			animText += str[textIndex];
 			setText(animText);
+
+			//Play sound
+			mu.play();
 
 			//Set up for next
 			lastTime = currentTime;

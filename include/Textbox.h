@@ -1,3 +1,4 @@
+#include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 
 #ifndef TEXTBOX_H
@@ -13,6 +14,9 @@ class Textbox
 		sf::Text nextPrompt;
 		bool open;
 		bool success;
+
+		//Music
+		sf::Music mu;
 		
 		//Box size and position
 		int width;

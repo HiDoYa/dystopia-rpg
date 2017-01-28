@@ -17,8 +17,15 @@ Player::Player(int x, int y, sf::String nameTexture)
 	//Sets size of sprite
 	collisionRectangle.setSize(sprite.getScale());
 
+	//Sound
+	step1.openFromFile("sound/step1.ogg");
+	step2.openFromFile("sound/step2.ogg");
+	step3.openFromFile("sound/step3.ogg");
+	curStep = 0;
+
 	//Used for time management
 	lastTime = 0;
+	lastTimeMu = 0;
 }
 
 void Player::setTexture(sf::String nameTexture)
@@ -38,6 +45,31 @@ void Player::setScale(double num)
 void Player::setPos(int x, int y)
 {
 	sprite.setPosition(x, y);
+}
+
+void Player::stepSound()
+{
+	tme = clk.getElapsedTime();
+	currentTimeMu = tme.asMilliseconds();
+
+	if(lastTimeMu + 300 < currentTimeMu)
+	{
+		lastTimeMu = currentTimeMu;
+		curStep = (curStep + 1) % 3;
+
+		switch (curStep)
+		{
+			case 0:
+				step1.play();
+				break;
+			case 1:
+				step2.play();
+				break;
+			case 2:
+				step3.play();
+				break;
+		}
+	}
 }
 
 void Player::movePos(int speed)
@@ -61,39 +93,47 @@ void Player::movePos(int speed)
 
 	if((wPress && sPress) || (aPress && dPress))
 	{
-		std::cout << "Moving in opposing directions..." << std::endl;
+		//Do nothing (moving in opposing directions)
 	}
 	else if(wPress && dPress)
 	{
 		sprite.move(speed, -speed);
+		stepSound();
 	}
 	else if(wPress && aPress)
 	{
 		sprite.move(-speed, -speed);
+		stepSound();
 	}
 	else if(sPress && dPress)
 	{
 		sprite.move(speed, speed);
+		stepSound();
 	}
 	else if(sPress && aPress)
 	{
 		sprite.move(-speed, speed);
+		stepSound();
 	}
 	else if(wPress)
 	{
 		sprite.move(0, -speed);
+		stepSound();
 	}
 	else if(sPress)
 	{
 		sprite.move(0, speed);
+		stepSound();
 	}
 	else if(dPress)
 	{
 		sprite.move(speed, 0);
+		stepSound();
 	}
 	else if(aPress)
 	{
 		sprite.move(-speed, 0);
+		stepSound();
 	}
 }
 

@@ -1,3 +1,4 @@
+#include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 
 #ifndef PLAYER_H
@@ -9,15 +10,26 @@ class Player
 		sf::Texture texture;
 		sf::Sprite sprite;
 		sf::RectangleShape collisionRectangle;
+
+		//Time management for box open/close
 		sf::Clock clk;
 		sf::Time tme;
 		double lastTime;
 		double currentTime;
+
+		//Music and time management for music
+		sf::Music step1;
+		sf::Music step2;
+		sf::Music step3;
+		int curStep;
+		double lastTimeMu;
+		double currentTimeMu;
 	public:
 		Player(int, int, sf::String);
 		void setTexture(sf::String);
 		void setScale(double);
 		void setPos(int, int);
+		void stepSound();
 		void movePos(int);
 		void mouseAndCharAngle(sf::Vector2i);
 		void rotatePos(int);
