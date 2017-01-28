@@ -21,7 +21,7 @@ Textbox::Textbox(sf::RenderWindow& win)
 	//Sets character sizes
 	text.setCharacterSize(35);
 	name.setCharacterSize(25);
-	nextPrompt.setCharacterSize(10);
+	nextPrompt.setCharacterSize(0);
 
 	//Sets character color
 	sf::Color txtColor(109, 109, 109);
@@ -32,7 +32,7 @@ Textbox::Textbox(sf::RenderWindow& win)
 	//Sets position of text
 	text.setPosition(sf::Vector2f(60, win.getSize().y - 100));
 	name.setPosition(sf::Vector2f(20, win.getSize().y - 140));
-	nextPrompt.setPosition(sf::Vector2f(700, win.getSize().y - 50));
+	nextPrompt.setPosition(sf::Vector2f(600, win.getSize().y - 20));
 
 	//Next propmt is always the same
 	nextPrompt.setString("Click to continue...");
@@ -118,6 +118,7 @@ void Textbox::drawAll(sf::RenderWindow& win)
 	win.draw(rec);
 	win.draw(text);
 	win.draw(name);
+	win.draw(nextPrompt);
 }
 
 sf::String Textbox::convertText(sf::String str)
@@ -165,6 +166,7 @@ void Textbox::animateText(sf::String str)
 	else
 	{
 		//Resets temp string, and index
+		nextPrompt.setCharacterSize(15);
 		animText = "";
 		textIndex = 0;
 		success = true;
@@ -222,6 +224,7 @@ bool Textbox::nextText()
 	{
 		lastTime = currentTime;
 		std::cout << "Button pressed" << std::endl;
+		nextPrompt.setCharacterSize(0);
 		return true;
 	}
 	return false;
