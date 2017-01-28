@@ -6,9 +6,11 @@ Textbox::Textbox(sf::RenderWindow& win)
 {
 	//Gets box parameters
 	recSize = 150;
-	width = win.getSize().x;
+	//width = win.getSize().x;
+	width = 0;
 	height = recSize;
-	posX = 0;
+	//posX = 0;
+	posX = win.getSize().x / 2;
 	posY = win.getSize().y - recSize; 
 
 	//Loads fonts
@@ -187,7 +189,7 @@ void Textbox::openBox()
 		lastTime = currentTime;
 	}
 
-	if(width == 800)
+	if(width >= 800)
 	{
 		open = true;
 	}

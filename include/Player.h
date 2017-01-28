@@ -8,6 +8,11 @@ class Player
 	private:
 		sf::Texture texture;
 		sf::Sprite sprite;
+		sf::RectangleShape collisionRectangle;
+		sf::Clock clk;
+		sf::Time tme;
+		double lastTime;
+		double currentTime;
 	public:
 		Player(int, int, sf::String);
 		void setTexture(sf::String);
@@ -18,6 +23,7 @@ class Player
 		void rotatePos(int);
 		sf::Texture getTexture();
 		sf::Sprite getSprite();
+		sf::RectangleShape getCollisionRectangle();
 };
 
 #endif

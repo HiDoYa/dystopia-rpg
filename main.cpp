@@ -4,9 +4,9 @@
 #include <iostream>
 
 //Game classes
+#include "include/Textbox.h"
 #include "include/Npc.h"
 #include "include/Player.h"
-#include "include/Textbox.h"
 
 //testing
 
@@ -21,11 +21,11 @@ int main()
 
 	//Image as cursor
 	window.setMouseCursorVisible(false);
-	sf::Texture cursorTexture;
-	cursorTexture.loadFromFile("images/cursor.png");
-	sf::Sprite cursorSprite(cursorTexture);
-	cursorSprite.setScale(sf::Vector2f(0.05, 0.05));
-
+	sf::Texture cursorTextureDefault, cursorTextureTalk;
+	cursorTextureDefault.loadFromFile("images/cursor.png");
+	cursorTextureTalk.loadFromFile("images/cursorTalk.png");
+	sf::Sprite cursorSprite(cursorTextureDefault);
+	cursorSprite.setScale(sf::Vector2f(0.09, 0.09));
 
 	//Instance Tests 
 	Textbox box(window);
@@ -35,8 +35,6 @@ int main()
 
 	Player chr(300, 250, "images/penguin.png");
 	chr.setScale(0.06);
-
-	int scene = 0;
 
 	//Time
 	sf::Clock clock;
@@ -59,44 +57,13 @@ int main()
 			}
 		}
 
-		//Setting the text
-		if(!box.getOpen() && scene == 0)
-		{
-			box.openBox();
-			if(box.getOpen())
-			{
-				scene = 1;
-			}
-		}
-		if(scene == 1)
-		{
-			box.setName("Somebody");
-			box.animateText("hello, this is a test for the text box. asdf asdf filler filler.");
-			if(box.nextText())
-			{
-				scene = 2;
-			}
-		}
-		if(scene == 2)
-		{
-			box.setName("Somebody else");
-			box.animateText("This is somebody else speaking. Hi");
-
-			if(box.nextText())
-			{
-				scene = 3;
-			}
-		}
-		if(scene == 3)
-		{
-			box.closeBox();
-		}
-
-
 		chr.movePos(10);
 
-		//Cursor position
+		//Cursor
 		cursorSprite.setPosition(static_cast<sf::Vector2f>(sf::Mouse::getPosition(window)));
+		kitty.mouseOver(cursorSprite, cursorTextureTalk, cursorTextureDefault);
+		kitty.speak("Kitty", "Hi there", box);
+
 
 		//Activates window for OpenGL rendering
 		sf::Color winColor(107, 120, 140);

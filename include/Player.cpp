@@ -4,13 +4,21 @@
 
 Player::Player(int x, int y, sf::String nameTexture)
 {
+	//Load texture
 	if(!texture.loadFromFile(nameTexture))
 	{
 		std::cout << "Error loading file";
 	}
 
+	//Sets texture and position of sprite
 	sprite.setTexture(texture);
 	sprite.setPosition(x, y);
+
+	//Sets size of sprite
+	collisionRectangle.setSize(sprite.getScale());
+
+	//Used for time management
+	lastTime = 0;
 }
 
 void Player::setTexture(sf::String nameTexture)
@@ -24,6 +32,7 @@ void Player::setTexture(sf::String nameTexture)
 void Player::setScale(double num)
 {
 	sprite.setScale(sf::Vector2f(num, num));
+	collisionRectangle.setSize(sprite.getScale());
 }
 
 void Player::setPos(int x, int y)
@@ -33,10 +42,23 @@ void Player::setPos(int x, int y)
 
 void Player::movePos(int speed)
 {
+	bool spacePress = sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
+
+	tme = clk.getElapsedTime();
+	currentTime = tme.asMilliseconds();
+
+	if(spacePress && currentTime > lastTime + 3000)
+	{
+		lastTime = currentTime;
+		//TODO Speed Modifier. Different sprites? Different movement? 
+		speed *= 2;
+	}
+
 	bool wPress = sf::Keyboard::isKeyPressed(sf::Keyboard::W);
 	bool sPress = sf::Keyboard::isKeyPressed(sf::Keyboard::S);
 	bool aPress = sf::Keyboard::isKeyPressed(sf::Keyboard::A);
 	bool dPress = sf::Keyboard::isKeyPressed(sf::Keyboard::D);
+
 	if((wPress && sPress) || (aPress && dPress))
 	{
 		std::cout << "Moving in opposing directions..." << std::endl;
@@ -87,7 +109,6 @@ void Player::mouseAndCharAngle(sf::Vector2i mo)
 
 void Player::rotatePos(int degrees)
 {
-	//TODO
 	sprite.rotate(degrees);
 }
 
@@ -99,4 +120,9 @@ sf::Texture Player::getTexture()
 sf::Sprite Player::getSprite()
 {
 	return sprite;
+}
+
+sf::RectangleShape Player::getCollisionRectangle()
+{
+	return collisionRectangle;
 }
