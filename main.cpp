@@ -17,12 +17,14 @@ int main()
 
 	//Instance Tests 
 	Textbox box(window);
-	Npc kitty(20, 20, "images/hello.jpeg");
-	kitty.setScale(0.3);
-	Player chr(300, 250, "images/penguin.png");
-	chr.setScale(0.07);
 
-	int txt = 0;
+	Npc kitty(20, 20, "images/hello.jpeg");
+	kitty.setScale(0.2);
+
+	Player chr(300, 250, "images/penguin.png");
+	chr.setScale(0.06);
+
+	int scene = 0;
 
 	//Time
 	sf::Clock clock;
@@ -49,29 +51,29 @@ int main()
 		time.asSeconds();
 
 		//Setting the text
-		if(!box.getOpen() && txt == 0)
+		if(!box.getOpen() && scene == 0)
 		{
 			box.openBox();
 		}
 		if(box.getOpen())
 		{
-			txt = 1;
+			scene = 1;
 			if(box.getSuccess())
 			{
-				box.setText("");
 				box.closeBox();
 			}
 			else
 			{
-				box.animateText("This is a test, abc one two three.");
+				box.animateText("hello, this is a test for the text box. asdf asdf filler filler.");
+				box.setName("Somebody");
 			}
 		}
-		//box.animateText("hello, this is a test for the text box. asdf asdf filler filler.");
 
 		chr.movePos(10);
 
 		//Activates window for OpenGL rendering
-		window.clear(sf::Color::Blue);
+		sf::Color winColor(107, 120, 140);
+		window.clear(winColor);
 
 		//window.draw();
 		window.draw(kitty.getSprite());

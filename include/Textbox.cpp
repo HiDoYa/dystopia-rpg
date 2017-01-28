@@ -15,21 +15,24 @@ Textbox::Textbox(sf::RenderWindow& win)
 	font.loadFromFile("font/Ubuntu.ttf");
 	text.setFont(font);
 	name.setFont(font);
+	name.setStyle(sf::Text::Underlined);
 
 	//Sets character sizes
 	text.setCharacterSize(35);
 	name.setCharacterSize(25);
 
 	//Sets character color
-	text.setColor(sf::Color::Black);
-	name.setColor(sf::Color::Black);
+	sf::Color txtColor(109, 109, 109);
+	text.setColor(txtColor);
+	name.setColor(txtColor);
 
 	//Sets position of text
 	text.setPosition(sf::Vector2f(60, win.getSize().y - 100));
 	name.setPosition(sf::Vector2f(20, win.getSize().y - 140));
 
 	//Box attributes
-	rec.setFillColor(sf::Color::White);
+	sf::Color bxColor(242, 242, 242);
+	rec.setFillColor(bxColor);
 	rec.setSize(sf::Vector2f(width, height));
 	rec.setPosition(sf::Vector2f(posX, posY));
 
@@ -185,6 +188,8 @@ void Textbox::closeBox()
 {
 	tme = clk.getElapsedTime();
 	currentTime = tme.asMilliseconds();
+	text.setString("");
+	name.setString("");
 	if(currentTime > lastTime + 30 && width > 0)
 	{
 		width -= 40;
@@ -204,5 +209,4 @@ void Textbox::closeBox()
 void Textbox::nextText()
 {
 }
-
 
