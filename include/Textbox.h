@@ -10,6 +10,7 @@ class Textbox
 		sf::Font font;
 		sf::Text text;
 		sf::Text name;
+		sf::Text nextPrompt;
 		bool open;
 		bool success;
 		
@@ -47,7 +48,7 @@ class Textbox
 		void animateText(sf::String);
 		void openBox();
 		void closeBox();
-		void nextText();
+		bool nextText();
 };
 
 #endif

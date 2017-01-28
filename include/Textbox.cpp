@@ -15,20 +15,27 @@ Textbox::Textbox(sf::RenderWindow& win)
 	font.loadFromFile("font/Ubuntu.ttf");
 	text.setFont(font);
 	name.setFont(font);
+	nextPrompt.setFont(font);
 	name.setStyle(sf::Text::Underlined);
 
 	//Sets character sizes
 	text.setCharacterSize(35);
 	name.setCharacterSize(25);
+	nextPrompt.setCharacterSize(10);
 
 	//Sets character color
 	sf::Color txtColor(109, 109, 109);
 	text.setColor(txtColor);
 	name.setColor(txtColor);
+	nextPrompt.setColor(txtColor);
 
 	//Sets position of text
 	text.setPosition(sf::Vector2f(60, win.getSize().y - 100));
 	name.setPosition(sf::Vector2f(20, win.getSize().y - 140));
+	nextPrompt.setPosition(sf::Vector2f(700, win.getSize().y - 50));
+
+	//Next propmt is always the same
+	nextPrompt.setString("Click to continue...");
 
 	//Box attributes
 	sf::Color bxColor(242, 242, 242);
@@ -51,6 +58,7 @@ void Textbox::setFont(sf::String str)
 	font.loadFromFile(str);
 	text.setFont(font);
 	name.setFont(font);
+	nextPrompt.setFont(font);
 }
 
 //Sets the string for text
@@ -205,8 +213,17 @@ void Textbox::closeBox()
 	}
 }
 
-//Wait for button press to continue to next text
-void Textbox::nextText()
+//Wait for button press to continue to next text (sub text at bottom that blinks. Asks for player to click to continue)
+bool Textbox::nextText()
 {
+	tme = clk.getElapsedTime();
+	currentTime = tme.asMilliseconds();
+	if(success && open && sf::Mouse::isButtonPressed(sf::Mouse::Left) && lastTime + 300 < currentTime)
+	{
+		lastTime = currentTime;
+		std::cout << "Button pressed" << std::endl;
+		return true;
+	}
+	return false;
 }
 

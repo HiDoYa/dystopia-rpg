@@ -54,20 +54,35 @@ int main()
 		if(!box.getOpen() && scene == 0)
 		{
 			box.openBox();
+			if(box.getOpen())
+			{
+				scene = 1;
+			}
 		}
-		if(box.getOpen())
+		if(scene == 1)
 		{
-			scene = 1;
-			if(box.getSuccess())
+			box.setName("Somebody");
+			box.animateText("hello, this is a test for the text box. asdf asdf filler filler.");
+			if(box.nextText())
 			{
-				box.closeBox();
-			}
-			else
-			{
-				box.animateText("hello, this is a test for the text box. asdf asdf filler filler.");
-				box.setName("Somebody");
+				scene = 2;
 			}
 		}
+		if(scene == 2)
+		{
+			box.setName("Somebody else");
+			box.animateText("This is somebody else speaking. Hi");
+
+			if(box.nextText())
+			{
+				scene = 3;
+			}
+		}
+		if(scene == 3)
+		{
+			box.closeBox();
+		}
+
 
 		chr.movePos(10);
 
