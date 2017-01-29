@@ -90,11 +90,9 @@ bool Npc::getColliding(sf::RectangleShape rec)
 	return collisionRectangle.getGlobalBounds().intersects(rec.getGlobalBounds());
 }
 
+//Gets the converted vector, deals with animation/textbox calls, and deals with multiple textboxes
 void Npc::speak(sf::String nm, sf::String str, Textbox& box)
 {
-	//if mouse pressed and char is within certain range of posX, posY, talk
-	//TODO if str is larger than 120, split it into 2 parts, etc
-	//Setting the text
 	if(isMouseOver && sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
 		box.convertText(str, sVec);

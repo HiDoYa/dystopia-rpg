@@ -49,7 +49,6 @@ class Textbox
 		bool getOpen();
 		bool getSuccess();
 		void drawAll(sf::RenderWindow&);
-		//std::unique_ptr<std::string[]> convertText(std::string, std::unique_ptr<std::string[]>, int);
 		void convertText(std::string, std::vector<std::string>&);
 		void animateText(std::string);
 		void openBox();

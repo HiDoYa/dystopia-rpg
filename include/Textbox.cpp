@@ -138,51 +138,8 @@ void Textbox::drawAll(sf::RenderWindow& win)
 	win.draw(nextPrompt);
 }
 
-//std::unique_ptr<std::string[]> Textbox::convertText(std::string str, std::unique_ptr<std::string[]> sPtr, int numOfStrings)
-//{
-//	//Lastndx used for the text that is used in the last (previous) textbox
-//	int lastNdx = 0;
-//
-//	//Loop separates each 120 chars into a diff array in sPtr
-//	for(int i = 0; i < numOfStrings; i++)
-//	{
-//		for(int text = 120 * (i + 1); text > lastNdx; text--)
-//		{
-//			if(str[text] == ' ')
-//			{
-//				for(int currentText = lastNdx; currentText < text; currentText++)
-//				{
-//					sPtr[i].push_back(str[currentText]);
-//				}
-//				sPtr[i].push_back('\0');
-//				lastNdx = text;
-//				break;
-//			}
-//		}
-//	}
-//
-//	std::cout << "Looped\n";
-//
-//	//Split each box into 2 lines (if above 60 lines)
-//	for(int strNum = 0; strNum < numOfStrings; strNum++)
-//	{
-//		if(sPtr[strNum].length() > 60)
-//		{
-//			//Works backwards from character 40 until a space is found, and replaces it with new line
-//			for(int i = 60; i > 0; i--)
-//			{
-//				if(sPtr[strNum][i] == ' ')
-//				{
-//					sPtr[strNum][i] = '\n';
-//					break;
-//				}
-//			}
-//		}
-//	}
-//	return sPtr;
-//}
-
 //This is the hardest thing I've ever coded wtf.
+//Converts text into vector of strings to output in textbox
 void Textbox::convertText(std::string str, std::vector<std::string>& sVec)
 {
 	//Length of text for each line
@@ -244,14 +201,6 @@ void Textbox::convertText(std::string str, std::vector<std::string>& sVec)
 //Text doesnt appear instantly
 void Textbox::animateText(std::string str)
 {
-	//Converts text (for double lines)
-	//int numOfStrings = 0.9 + (str.length() / 120.0);
-	//std::unique_ptr<std::string[]>sPtr(new std::string[numOfStrings]);
-	//sPtr = convertText(str, sPtr, numOfStrings);
-
-	//std::vector<std::string> sVec;
-	//convertText(str, sVec);
-
 	//Gets current time
 	tme = clk.getElapsedTime();
 	currentTime = tme.asMilliseconds();
