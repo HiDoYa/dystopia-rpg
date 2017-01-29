@@ -28,6 +28,8 @@ class Npc
 		void moveAwayFromChar(int, int);
 		void moveTowardChar(int, int);
 		bool mouseOver(sf::Sprite&, sf::Texture&, sf::Texture&);
+		bool getColliding(sf::Sprite);
+		bool getColliding(sf::RectangleShape);
 		void speak(sf::String, sf::String, Textbox&);
 };
 

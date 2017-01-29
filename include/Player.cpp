@@ -14,9 +14,6 @@ Player::Player(int x, int y, sf::String nameTexture)
 	sprite.setTexture(texture);
 	sprite.setPosition(x, y);
 
-	//Sets size of sprite
-	collisionRectangle.setSize(sprite.getScale());
-
 	//Sound
 	step1.openFromFile("sound/step1.ogg");
 	step2.openFromFile("sound/step2.ogg");
@@ -154,6 +151,11 @@ void Player::dashMove(int speed)
 		//TODO Speed Modifier. Different sprites? Different movement? 
 		speed *= 2;
 	}
+}
+
+sf::Vector2f Player::getPos()
+{
+	return sprite.getPosition();
 }
 
 void Player::mouseAndCharAngle(sf::Vector2i mo)

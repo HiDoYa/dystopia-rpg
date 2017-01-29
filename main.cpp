@@ -9,6 +9,7 @@
 #include <SFML/System.hpp>
 
 //Game classes
+#include "include/Environment.h"
 #include "include/Textbox.h"
 #include "include/Npc.h"
 #include "include/Player.h"
@@ -23,8 +24,8 @@ int main()
 	//Defines what region is shown on screen
 	sf::View view = window.getView();
 	//Used to keep track of mouse movement using both displacement and user mouse movement
-	float mousePosX, mousePosY, mousePosXDisplacement, mousePosYDisplacement;
-	mousePosXDisplacement = mousePosYDisplacement = 0;
+	float mousePosX, mousePosY, mousePosXDisplacement, mousePosYDisplacement, prevMousePosXDisplacement, prevMousePosYDisplacement;
+	mousePosXDisplacement = mousePosYDisplacement = prevMousePosXDisplacement = prevMousePosYDisplacement = 0;
 
 	//Cursor can't leave window
 	//TODO: ??? Not working???
@@ -55,6 +56,11 @@ int main()
 	//Player instances
 	Player chr(window.getSize().x/2, window.getSize().y/2, "images/penguin.png");
 	chr.setScale(0.06);
+	int prevPosX, prevPosY;
+	prevPosX = prevPosY = 0;
+
+	//Environment instance
+	Environment tree(300, 100, "images/tree.png");
 
 	//Temporary Background
 	sf::Texture bgTexture;
@@ -87,6 +93,18 @@ int main()
 		//Character move
 		chr.movePos(10, mousePosXDisplacement, mousePosYDisplacement);
 
+		bool noPass = tree.getColliding(chr.getSprite()) || kitty.getColliding(chr.getSprite());
+		if(noPass)
+		{
+			chr.setPos(prevPosX, prevPosY);
+			mousePosXDisplacement = prevMousePosXDisplacement;
+			mousePosYDisplacement = prevMousePosYDisplacement;
+		}
+		prevPosX = chr.getPos().x;
+		prevPosY = chr.getPos().y;
+		prevMousePosXDisplacement = mousePosXDisplacement;
+		prevMousePosYDisplacement = mousePosYDisplacement;
+
 		//Sets position of cursor
 		cursorSprite.setPosition(sf::Vector2f(mousePosX + mousePosXDisplacement, mousePosY + mousePosYDisplacement));
 
@@ -97,8 +115,6 @@ int main()
 		kitty.mouseOver(cursorSprite, cursorTextureTalk, cursorTextureDefault);
 		kitty.speak("Kitty", "Hi there", box);
 
-
-		
 		//Activates window for OpenGL rendering
 		sf::Color winColor(107, 120, 140);
 		window.clear(winColor);
@@ -111,6 +127,7 @@ int main()
 		window.draw(bgSprite);
 		window.draw(kitty.getSprite());
 		window.draw(chr.getSprite());
+		window.draw(tree.getSprite());
 		box.drawAll(window);
 		window.draw(cursorSprite);
 

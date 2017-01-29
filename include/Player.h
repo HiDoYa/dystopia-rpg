@@ -32,6 +32,7 @@ class Player
 		void stepSound();
 		void movePos(int, float&, float&);
 		void dashMove(int);
+		sf::Vector2f getPos();
 		void mouseAndCharAngle(sf::Vector2i);
 		void rotatePos(int);
 		sf::Texture getTexture();

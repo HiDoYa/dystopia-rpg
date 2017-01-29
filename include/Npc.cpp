@@ -77,6 +77,16 @@ bool Npc::mouseOver(sf::Sprite& mouse, sf::Texture& textureAction, sf::Texture& 
 	}
 }
 
+bool Npc::getColliding(sf::Sprite spr)
+{
+	return sprite.getGlobalBounds().intersects(spr.getGlobalBounds());
+}
+
+bool Npc::getColliding(sf::RectangleShape rec)
+{
+	return sprite.getGlobalBounds().intersects(rec.getGlobalBounds());
+}
+
 void Npc::speak(sf::String nm, sf::String str, Textbox& box)
 {
 	//if mouse pressed and char is within certain range of posX, posY, talk
