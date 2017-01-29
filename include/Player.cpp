@@ -72,20 +72,8 @@ void Player::stepSound()
 	}
 }
 
-void Player::movePos(int speed)
+void Player::movePos(int speed, float& xDisplacement, float& yDisplacement)
 {
-	bool spacePress = sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
-
-	tme = clk.getElapsedTime();
-	currentTime = tme.asMilliseconds();
-
-	if(spacePress && currentTime > lastTime + 3000)
-	{
-		lastTime = currentTime;
-		//TODO Speed Modifier. Different sprites? Different movement? 
-		speed *= 2;
-	}
-
 	bool wPress = sf::Keyboard::isKeyPressed(sf::Keyboard::W);
 	bool sPress = sf::Keyboard::isKeyPressed(sf::Keyboard::S);
 	bool aPress = sf::Keyboard::isKeyPressed(sf::Keyboard::A);
@@ -98,42 +86,73 @@ void Player::movePos(int speed)
 	else if(wPress && dPress)
 	{
 		sprite.move(speed, -speed);
+		xDisplacement += speed;
+		yDisplacement += -speed;
 		stepSound();
 	}
 	else if(wPress && aPress)
 	{
 		sprite.move(-speed, -speed);
+		xDisplacement += -speed;
+		yDisplacement += -speed;
 		stepSound();
 	}
 	else if(sPress && dPress)
 	{
 		sprite.move(speed, speed);
+		xDisplacement += speed;
+		yDisplacement += speed;
 		stepSound();
 	}
 	else if(sPress && aPress)
 	{
 		sprite.move(-speed, speed);
+		xDisplacement += -speed;
+		yDisplacement += speed;
 		stepSound();
 	}
 	else if(wPress)
 	{
 		sprite.move(0, -speed);
+		xDisplacement += 0;
+		yDisplacement += -speed;
 		stepSound();
 	}
 	else if(sPress)
 	{
 		sprite.move(0, speed);
+		xDisplacement += 0;
+		yDisplacement += speed;
 		stepSound();
 	}
 	else if(dPress)
 	{
 		sprite.move(speed, 0);
+		xDisplacement += speed;
+		yDisplacement += 0;
 		stepSound();
 	}
 	else if(aPress)
 	{
 		sprite.move(-speed, 0);
+		xDisplacement += -speed;
+		yDisplacement += 0;
 		stepSound();
+	}
+}
+
+void Player::dashMove(int speed)
+{
+	tme = clk.getElapsedTime();
+	currentTime = tme.asMilliseconds();
+
+	bool spacePress = sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
+
+	if(spacePress && currentTime > lastTime + 3000)
+	{
+		lastTime = currentTime;
+		//TODO Speed Modifier. Different sprites? Different movement? 
+		speed *= 2;
 	}
 }
 

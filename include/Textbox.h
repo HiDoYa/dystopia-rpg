@@ -41,6 +41,8 @@ class Textbox
 		void setName(sf::String);
 		void setTextSpeed(int);
 		bool setSuccess();
+		void setPosition(int, int);
+		void updatePosition();
 		sf::RectangleShape getBox();
 		sf::Text getText();
 		sf::Text getName();

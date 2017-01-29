@@ -18,16 +18,25 @@
 int main()
 {
 	//Declares and creates a new window
-	sf::RenderWindow window(sf::VideoMode(800, 600), "Game");
+	sf::RenderWindow window(sf::VideoMode(1280, 720), "Game");
 
 	//Defines what region is shown on screen
 	sf::View view = window.getView();
+	//Used to keep track of mouse movement using both displacement and user mouse movement
+	float mousePosX, mousePosY, mousePosXDisplacement, mousePosYDisplacement;
+	mousePosXDisplacement = mousePosYDisplacement = 0;
 
-	//Image as cursor
+	//Cursor can't leave window
+	//TODO: ??? Not working???
+	//window.setMouseCursorGrabbed(true);
+
+	//Disable the user's OS mouse
 	window.setMouseCursorVisible(false);
+	//Loads textures for mouses
 	sf::Texture cursorTextureDefault, cursorTextureTalk;
 	cursorTextureDefault.loadFromFile("images/cursor.png");
 	cursorTextureTalk.loadFromFile("images/cursorTalk.png");
+	//Cursor starts off with default
 	sf::Sprite cursorSprite(cursorTextureDefault);
 	cursorSprite.setScale(sf::Vector2f(0.09, 0.09));
 
@@ -36,18 +45,22 @@ int main()
 	music.openFromFile("sound/ambientMu.ogg");
 	music.play();
 
-	//Instance Tests 
+	//Text box instances
 	Textbox box(window);
 
+	//NPC instances
 	Npc kitty(20, 20, "images/hello.jpeg");
 	kitty.setScale(0.2);
 
+	//Player instances
 	Player chr(300, 250, "images/penguin.png");
 	chr.setScale(0.06);
 
-	//Time
-	sf::Clock clock;
-	sf::Time time;
+	//Background
+	sf::Texture bgTexture;
+	bgTexture.loadFromFile("images/forest.jpg");
+	sf::Sprite bgSprite(bgTexture);
+	bgSprite.setPosition(sf::Vector2f(0, 0));
 
 	//Sets framerate to 60fps
 	window.setFramerateLimit(60);
@@ -66,22 +79,30 @@ int main()
 			}
 		}
 
-		chr.movePos(10);
 
 		//Cursor
-		cursorSprite.setPosition(static_cast<sf::Vector2f>(sf::Mouse::getPosition(window)));
+		mousePosX = sf::Mouse::getPosition(window).x;
+		mousePosY = sf::Mouse::getPosition(window).y;
+
+		//Character move
+		chr.movePos(10, mousePosXDisplacement, mousePosYDisplacement);
+
+		cursorSprite.setPosition(sf::Vector2f(mousePosX + mousePosXDisplacement, mousePosY + mousePosYDisplacement));
 		kitty.mouseOver(cursorSprite, cursorTextureTalk, cursorTextureDefault);
 		kitty.speak("Kitty", "Hi there", box);
 
 
+		
 		//Activates window for OpenGL rendering
 		sf::Color winColor(107, 120, 140);
 		window.clear(winColor);
 
 		//Sets view
+		view.setCenter(chr.getSprite().getPosition());
 		window.setView(view);
 
 		//window.draw();
+		window.draw(bgSprite);
 		window.draw(kitty.getSprite());
 		window.draw(chr.getSprite());
 		box.drawAll(window);

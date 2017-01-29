@@ -34,10 +34,8 @@ Textbox::Textbox(sf::RenderWindow& win)
 	name.setColor(txtColor);
 	nextPrompt.setColor(txtColor);
 
-	//Sets position of text
-	text.setPosition(sf::Vector2f(60, win.getSize().y - 100));
-	name.setPosition(sf::Vector2f(20, win.getSize().y - 140));
-	nextPrompt.setPosition(sf::Vector2f(600, win.getSize().y - 20));
+	//Updates position
+	updatePosition();
 
 	//Next propmt is always the same
 	nextPrompt.setString("Click to continue...");
@@ -46,7 +44,6 @@ Textbox::Textbox(sf::RenderWindow& win)
 	sf::Color bxColor(242, 242, 242);
 	rec.setFillColor(bxColor);
 	rec.setSize(sf::Vector2f(width, height));
-	rec.setPosition(sf::Vector2f(posX, posY));
 
 	//Not opened
 	open = false;
@@ -87,6 +84,21 @@ void Textbox::setTextSpeed(int num)
 bool Textbox::setSuccess()
 {
 	success = false;
+}
+
+void Textbox::setPosition(int x, int y)
+{
+	posX += x;
+	posY += y;
+	updatePosition();
+}
+
+void Textbox::updatePosition()
+{
+	text.setPosition(sf::Vector2f(60, posY + 50));
+	name.setPosition(sf::Vector2f(20, posY + 10));
+	nextPrompt.setPosition(sf::Vector2f(600, posY + 130));
+	rec.setPosition(sf::Vector2f(posX, posY));
 }
 
 //Returns box (rectangle)
