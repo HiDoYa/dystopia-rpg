@@ -56,7 +56,7 @@ int main()
 	Player chr(window.getSize().x/2, window.getSize().y/2, "images/penguin.png");
 	chr.setScale(0.06);
 
-	//Background
+	//Temporary Background
 	sf::Texture bgTexture;
 	bgTexture.loadFromFile("images/forest.jpg");
 	sf::Sprite bgSprite(bgTexture);
@@ -87,7 +87,13 @@ int main()
 		//Character move
 		chr.movePos(10, mousePosXDisplacement, mousePosYDisplacement);
 
+		//Sets position of cursor
 		cursorSprite.setPosition(sf::Vector2f(mousePosX + mousePosXDisplacement, mousePosY + mousePosYDisplacement));
+
+		//Sets position of box
+		box.setPosition(mousePosXDisplacement, mousePosYDisplacement);
+
+		//Npc Kitty interactions
 		kitty.mouseOver(cursorSprite, cursorTextureTalk, cursorTextureDefault);
 		kitty.speak("Kitty", "Hi there", box);
 

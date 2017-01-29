@@ -49,7 +49,6 @@ class Textbox
 		bool getOpen();
 		bool getSuccess();
 		void drawAll(sf::RenderWindow&);
-		//TODO Unfinished 
 		sf::String convertText(sf::String);
 		void animateText(sf::String);
 		void openBox();

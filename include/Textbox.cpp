@@ -38,7 +38,7 @@ Textbox::Textbox(sf::RenderWindow& win)
 	updatePosition();
 
 	//Next propmt is always the same
-	nextPrompt.setString("Click to continue...");
+	nextPrompt.setString("Click to continue.");
 
 	//Box attributes
 	sf::Color bxColor(242, 242, 242);
@@ -88,16 +88,16 @@ bool Textbox::setSuccess()
 
 void Textbox::setPosition(int x, int y)
 {
-	posX += x;
-	posY += y;
+	posX = x;
+	posY = y + 570;
 	updatePosition();
 }
 
 void Textbox::updatePosition()
 {
-	text.setPosition(sf::Vector2f(60, posY + 50));
-	name.setPosition(sf::Vector2f(20, posY + 10));
-	nextPrompt.setPosition(sf::Vector2f(600, posY + 130));
+	text.setPosition(sf::Vector2f(posX + 60, posY + 50));
+	name.setPosition(sf::Vector2f(posX + 20, posY + 10));
+	nextPrompt.setPosition(sf::Vector2f(posX + 1100, posY + 120));
 	rec.setPosition(sf::Vector2f(posX, posY));
 }
 
@@ -186,7 +186,7 @@ void Textbox::animateText(sf::String str)
 	else
 	{
 		//Resets temp string, and index
-		nextPrompt.setCharacterSize(15);
+		nextPrompt.setCharacterSize(20);
 		animText = "";
 		textIndex = 0;
 		success = true;
@@ -198,16 +198,15 @@ void Textbox::openBox()
 {
 	tme = clk.getElapsedTime();
 	currentTime = tme.asMilliseconds();
-	if(currentTime > lastTime + 30 && width < 800)
+	if(currentTime > lastTime + 30 && width < 1280)
 	{
-		width += 40;
-		posX -= 20;
+		width += 80;
 		rec.setPosition(sf::Vector2f(posX, posY));
 		rec.setSize(sf::Vector2f(width, height));
 		lastTime = currentTime;
 	}
 
-	if(width >= 800)
+	if(width >= 1280)
 	{
 		open = true;
 	}
@@ -222,8 +221,7 @@ void Textbox::closeBox()
 	name.setString("");
 	if(currentTime > lastTime + 30 && width > 0)
 	{
-		width -= 40;
-		posX += 20;
+		width -= 80;
 		rec.setPosition(sf::Vector2f(posX, posY));
 		rec.setSize(sf::Vector2f(width, height));
 		lastTime = currentTime;
