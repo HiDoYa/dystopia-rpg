@@ -53,7 +53,7 @@ int main()
 	kitty.setScale(0.2);
 
 	//Player instances
-	Player chr(300, 250, "images/penguin.png");
+	Player chr(window.getSize().x/2, window.getSize().y/2, "images/penguin.png");
 	chr.setScale(0.06);
 
 	//Background
