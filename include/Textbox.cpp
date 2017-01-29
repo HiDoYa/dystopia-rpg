@@ -7,11 +7,10 @@
 Textbox::Textbox(sf::RenderWindow& win)
 {
 	//Gets box parameters
-	recSize = 150;
 	width = 0;
-	height = recSize;
+	height = 150;
 	posX = 0;
-	posY = win.getSize().y - recSize; 
+	posY = win.getSize().y - height; 
 
 	//Loads fonts
 	font.loadFromFile("font/Ubuntu.ttf");
@@ -175,7 +174,7 @@ void Textbox::convertText(std::string str, std::vector<std::string>& sVec)
 					sVec[i].push_back(str[currentText]);
 				}
 				sVec[i].push_back('\0');
-				lastNdx = text;
+				lastNdx = text + 1;
 				break;
 			}
 		}

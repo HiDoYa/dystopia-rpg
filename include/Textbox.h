@@ -21,7 +21,6 @@ class Textbox
 		//Box size and position
 		int width;
 		int height;
-		int recSize;
 		int posX;
 		int posY;
 
