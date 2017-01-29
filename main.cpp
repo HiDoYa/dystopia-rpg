@@ -113,7 +113,8 @@ int main()
 
 		//Npc Kitty interactions
 		kitty.mouseOver(cursorSprite, cursorTextureTalk, cursorTextureDefault);
-		kitty.speak("Kitty", "Hi there", box);
+		std::string strTest = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum aliquet dolor urna, eget convallis nulla fringilla vitae. Praesent purus dolor, accumsan eu auctor a, eleifend a nibh. Duis cursus purus nulla, eget fringilla leo sollicitudin sed. Proin et gravida lacus. Nunc nulla urna, tempus et fermentum quis, viverra ac ipsum. Mauris a fermentum ex, nec lobortis mauris. Morbi commodo lorem nec purus iaculis dictum.";
+		kitty.speak("Kitty", strTest, box);
 
 		//Activates window for OpenGL rendering
 		sf::Color winColor(107, 120, 140);

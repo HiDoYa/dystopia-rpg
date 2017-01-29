@@ -1,4 +1,5 @@
 #include "Npc.h"
+#include <vector>
 
 Npc::Npc(int x, int y, sf::String nameTexture)
 {
@@ -13,7 +14,8 @@ Npc::Npc(int x, int y, sf::String nameTexture)
 	sprite.setPosition(x, y);
 
 	//Sets collision rectangle
-	collisionRectangle.setSize(sprite.getScale());
+	collisionRectangle.setSize(sf::Vector2f(sprite.getGlobalBounds().width, sprite.getGlobalBounds().height));
+	collisionRectangle.setPosition(x, y);
 
 	textNum = 0;
 	openBox = false;
@@ -31,12 +33,13 @@ void Npc::setTexture(sf::String nameTexture)
 void Npc::setScale(double num)
 {
 	sprite.setScale(sf::Vector2f(num, num));
-	collisionRectangle.setSize(sprite.getScale());
+	collisionRectangle.setScale(sf::Vector2f(num, num));
 }
 
 void Npc::setPos(int x, int y)
 {
 	sprite.setPosition(x, y);
+	collisionRectangle.setPosition(x, y);
 }
 
 sf::Texture Npc::getTexture()
@@ -79,21 +82,22 @@ bool Npc::mouseOver(sf::Sprite& mouse, sf::Texture& textureAction, sf::Texture& 
 
 bool Npc::getColliding(sf::Sprite spr)
 {
-	return sprite.getGlobalBounds().intersects(spr.getGlobalBounds());
+	return collisionRectangle.getGlobalBounds().intersects(spr.getGlobalBounds());
 }
 
 bool Npc::getColliding(sf::RectangleShape rec)
 {
-	return sprite.getGlobalBounds().intersects(rec.getGlobalBounds());
+	return collisionRectangle.getGlobalBounds().intersects(rec.getGlobalBounds());
 }
 
 void Npc::speak(sf::String nm, sf::String str, Textbox& box)
 {
 	//if mouse pressed and char is within certain range of posX, posY, talk
-	//TODO if str is larger than 80, split it into 2 parts, etc
+	//TODO if str is larger than 120, split it into 2 parts, etc
 	//Setting the text
 	if(isMouseOver && sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
+		box.convertText(str, sVec);
 		if(!box.getOpen() && textNum == 0)
 		{
 			openBox = true;
@@ -113,23 +117,34 @@ void Npc::speak(sf::String nm, sf::String str, Textbox& box)
 	{
 		openBox = false;
 		box.setName(nm);
-		box.animateText(str);
+		box.animateText(sVec[0]);
 		if(box.nextText())
 		{
 			textNum = 2;
 		}
 	}
-	if(textNum == 2)
-	{
-		box.setName(nm);
-		box.animateText("Here I am");
 
-		if(box.nextText())
+	for(int i = 1; i < sVec.size(); i++)
+	{
+		if(textNum == i + 1)
 		{
-			textNum = 3;
+			box.setName(nm);
+			box.animateText(sVec[i]);
+			if(box.nextText())
+			{
+				if(sVec.size() == textNum)
+				{
+					textNum = -1;
+				}
+				else
+				{
+					textNum = i + 2;
+				}
+			}
 		}
 	}
-	if(textNum == 3)
+
+	if(textNum == -1)
 	{
 		closeBox = true;
 	}

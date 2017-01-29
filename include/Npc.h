@@ -17,6 +17,7 @@ class Npc
 		int textNum;
 		sf::Clock clk;
 		sf::Time tme;
+		std::vector<std::string> sVec;
 	public:
 		Npc(int, int, sf::String);
 		void setTexture(sf::String);

@@ -1,4 +1,6 @@
 #include <iostream>
+#include <string>
+#include <vector>
 #include "Textbox.h"
 
 //Default constructor
@@ -6,11 +8,9 @@ Textbox::Textbox(sf::RenderWindow& win)
 {
 	//Gets box parameters
 	recSize = 150;
-	//width = win.getSize().x;
 	width = 0;
 	height = recSize;
-	//posX = 0;
-	posX = win.getSize().x / 2;
+	posX = 0;
 	posY = win.getSize().y - recSize; 
 
 	//Loads fonts
@@ -95,7 +95,7 @@ void Textbox::setPosition(int x, int y)
 
 void Textbox::updatePosition()
 {
-	text.setPosition(sf::Vector2f(posX + 60, posY + 50));
+	text.setPosition(sf::Vector2f(posX + 50, posY + 40));
 	name.setPosition(sf::Vector2f(posX + 20, posY + 10));
 	nextPrompt.setPosition(sf::Vector2f(posX + 1100, posY + 120));
 	rec.setPosition(sf::Vector2f(posX, posY));
@@ -138,28 +138,119 @@ void Textbox::drawAll(sf::RenderWindow& win)
 	win.draw(nextPrompt);
 }
 
-sf::String Textbox::convertText(sf::String str)
+//std::unique_ptr<std::string[]> Textbox::convertText(std::string str, std::unique_ptr<std::string[]> sPtr, int numOfStrings)
+//{
+//	//Lastndx used for the text that is used in the last (previous) textbox
+//	int lastNdx = 0;
+//
+//	//Loop separates each 120 chars into a diff array in sPtr
+//	for(int i = 0; i < numOfStrings; i++)
+//	{
+//		for(int text = 120 * (i + 1); text > lastNdx; text--)
+//		{
+//			if(str[text] == ' ')
+//			{
+//				for(int currentText = lastNdx; currentText < text; currentText++)
+//				{
+//					sPtr[i].push_back(str[currentText]);
+//				}
+//				sPtr[i].push_back('\0');
+//				lastNdx = text;
+//				break;
+//			}
+//		}
+//	}
+//
+//	std::cout << "Looped\n";
+//
+//	//Split each box into 2 lines (if above 60 lines)
+//	for(int strNum = 0; strNum < numOfStrings; strNum++)
+//	{
+//		if(sPtr[strNum].length() > 60)
+//		{
+//			//Works backwards from character 40 until a space is found, and replaces it with new line
+//			for(int i = 60; i > 0; i--)
+//			{
+//				if(sPtr[strNum][i] == ' ')
+//				{
+//					sPtr[strNum][i] = '\n';
+//					break;
+//				}
+//			}
+//		}
+//	}
+//	return sPtr;
+//}
+
+//This is the hardest thing I've ever coded wtf.
+void Textbox::convertText(std::string str, std::vector<std::string>& sVec)
 {
-	if(str.getSize() > 40)
+	//Length of text for each line
+	int textLen = 55;
+	float doubleTextLen = textLen * 2;
+
+	//Resets old content
+	sVec.clear();
+
+	//There must be a space at the end (due to the nature of my algorithm)
+	str.push_back(' ');
+
+	int numOfStrings = 0.9 + (str.length() / doubleTextLen);
+	int maxNdx = str.length() - 1;
+	//Lastndx used for the text that is used in the last (previous) textbox
+	int lastNdx = 0;
+
+	//Loop separates each 120 chars into a diff array in sPtr
+	for(int i = 0; i < numOfStrings; i++)
 	{
-		//Works backwards from character 40 until a space is found, and replaces it with new line
-		for(int i = 40; i > 0; i--)
+		sVec.push_back("");
+		int textToTest = doubleTextLen * (i + 1);
+		if(textToTest > maxNdx)
 		{
-			if(str[i] == ' ')
+			textToTest = maxNdx;
+		}
+		for(int text = textToTest; text > lastNdx; text--)
+		{
+			if(str[text] == ' ')
 			{
-				str[i] = '\n';
+				for(int currentText = lastNdx; currentText < text; currentText++)
+				{
+					sVec[i].push_back(str[currentText]);
+				}
+				sVec[i].push_back('\0');
+				lastNdx = text;
 				break;
 			}
 		}
 	}
-	return str;
-}
 
+	//Split each box into 2 lines (if above 60 lines)
+	for(int strNum = 0; strNum < numOfStrings; strNum++)
+	{
+		if(sVec[strNum].length() > textLen)
+		{
+			//Works backwards from character 40 until a space is found, and replaces it with new line
+			for(int i = textLen; i > 0; i--)
+			{
+				if(sVec[strNum][i] == ' ')
+				{
+					sVec[strNum][i] = '\n';
+					break;
+				}
+			}
+		}
+	}
+}
 //Text doesnt appear instantly
-void Textbox::animateText(sf::String str)
+void Textbox::animateText(std::string str)
 {
 	//Converts text (for double lines)
-	str = convertText(str);
+	//int numOfStrings = 0.9 + (str.length() / 120.0);
+	//std::unique_ptr<std::string[]>sPtr(new std::string[numOfStrings]);
+	//sPtr = convertText(str, sPtr, numOfStrings);
+
+	//std::vector<std::string> sVec;
+	//convertText(str, sVec);
 
 	//Gets current time
 	tme = clk.getElapsedTime();
