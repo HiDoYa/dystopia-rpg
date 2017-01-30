@@ -280,7 +280,6 @@ bool Textbox::nextText()
 	if(success && open && sf::Mouse::isButtonPressed(sf::Mouse::Left) && lastTime + 300 < currentTime)
 	{
 		lastTime = currentTime;
-		std::cout << "Button pressed" << std::endl;
 		nextPrompt.setCharacterSize(0);
 		return true;
 	}
