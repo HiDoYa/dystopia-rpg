@@ -13,6 +13,7 @@
 #include "include/Textbox.h"
 #include "include/Npc.h"
 #include "include/Player.h"
+#include "include/Mouse.h"
 
 //testing
 
@@ -34,12 +35,16 @@ int main()
 	//Disable the user's OS mouse
 	window.setMouseCursorVisible(false);
 	//Loads textures for mouses
-	sf::Texture cursorTextureDefault, cursorTextureTalk;
-	cursorTextureDefault.loadFromFile("images/cursor.png");
-	cursorTextureTalk.loadFromFile("images/cursorTalk.png");
+	//sf::Texture cursorTextureDefault, cursorTextureTalk;
+	//cursorTextureDefault.loadFromFile("images/cursor.png");
+	//cursorTextureTalk.loadFromFile("images/cursorTalk.png");
 	//Cursor starts off with default
-	sf::Sprite cursorSprite(cursorTextureDefault);
-	cursorSprite.setScale(sf::Vector2f(0.09, 0.09));
+	//sf::Sprite cursorSprite(cursorTextureDefault);
+	//cursorSprite.setScale(sf::Vector2f(0.09, 0.09));
+	//
+	//Loads mouse class
+	Mouse mouse;
+
 
 	//Music
 	sf::Music music;
@@ -106,13 +111,21 @@ int main()
 		prevMousePosYDisplacement = mousePosYDisplacement;
 
 		//Sets position of cursor
-		cursorSprite.setPosition(sf::Vector2f(mousePosX + mousePosXDisplacement, mousePosY + mousePosYDisplacement));
+		//cursorSprite.setPosition(sf::Vector2f(mousePosX + mousePosXDisplacement, mousePosY + mousePosYDisplacement));
+		mouse.setPosition(mousePosX + mousePosXDisplacement, mousePosY + mousePosYDisplacement);
 
 		//Sets position of box
 		box.setPosition(mousePosXDisplacement, mousePosYDisplacement);
 
 		//Npc Kitty interactions
-		kitty.mouseOver(cursorSprite, cursorTextureTalk, cursorTextureDefault);
+		if(kitty.mouseOver(mouse.getSprite()))
+		{
+			mouse.useTalkMouse();
+		}
+		else
+		{
+			mouse.useDefaultMouse();
+		}
 		std::string strTest = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum aliquet dolor urna, eget convallis nulla fringilla vitae. Praesent purus dolor, accumsan eu auctor a, eleifend a nibh. Duis cursus purus nulla, eget fringilla leo sollicitudin sed. Proin et gravida lacus. Nunc nulla urna, tempus et fermentum quis, viverra ac ipsum. Mauris a fermentum ex, nec lobortis mauris. Morbi commodo lorem nec purus iaculis dictum.";
 		kitty.speak("Kitty", strTest, box);
 
@@ -121,22 +134,24 @@ int main()
 		window.clear(winColor);
 
 		//Sets view
-		int chrX = chr.getPosition.x;
-		int chrY = chr.getPosition.y;
-		int moX = cursorSprite.getPosition().x;
-		int moY = cursorSprite.getPosition().y;
 
-		if(moX < 400)
-		{
-			moX = 400;
-		}
-		else if(moX  > 800)
-		{
-			moX = 800;
-		}
+		//Getting mouse to change the view
+		//int chrX = chr.getSprite().getPosition().x;
+		//int chrY = chr.getSprite().getPosition().y;
+		//int moX = cursorSprite.getPosition().x;
+		//int moY = cursorSprite.getPosition().y;
+
+		//if(moX < 400)
+		//{
+		//	moX = 400;
+		//}
+		//else if(moX  > 800)
+		//{
+		//	moX = 800;
+		//}
+		//view.setCenter(sf::Vector2f(chrX + moX, chrY + moY));
 		
-		//view.setCenter(chr.getSprite().getPosition());
-		view.setCenter(sf::Vector2f(chrX + moX, chrY + moY));
+		view.setCenter(chr.getSprite().getPosition());
 		window.setView(view);
 
 		//window.draw();
@@ -145,7 +160,7 @@ int main()
 		window.draw(chr.getSprite());
 		window.draw(tree.getSprite());
 		box.drawAll(window);
-		window.draw(cursorSprite);
+		window.draw(mouse.getSprite());
 
 		//End current frame and display its contents on screen
 		window.display();

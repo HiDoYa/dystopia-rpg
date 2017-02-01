@@ -64,17 +64,15 @@ void Npc::moveTowardChar(int charPosX, int charPosY)
 {
 }
 
-bool Npc::mouseOver(sf::Sprite& mouse, sf::Texture& textureAction, sf::Texture& textureDefault)
+bool Npc::mouseOver(sf::Sprite mouse)
 {
 	if(sprite.getGlobalBounds().contains(mouse.getPosition()))
 	{
-		mouse.setTexture(textureAction);
 		isMouseOver = true;
 		return true;
 	}
 	else
 	{
-		mouse.setTexture(textureDefault);
 		isMouseOver = false;
 		return false;
 	}
