@@ -121,7 +121,22 @@ int main()
 		window.clear(winColor);
 
 		//Sets view
-		view.setCenter(chr.getSprite().getPosition());
+		int chrX = chr.getPosition.x;
+		int chrY = chr.getPosition.y;
+		int moX = cursorSprite.getPosition().x;
+		int moY = cursorSprite.getPosition().y;
+
+		if(moX < 400)
+		{
+			moX = 400;
+		}
+		else if(moX  > 800)
+		{
+			moX = 800;
+		}
+		
+		//view.setCenter(chr.getSprite().getPosition());
+		view.setCenter(sf::Vector2f(chrX + moX, chrY + moY));
 		window.setView(view);
 
 		//window.draw();
