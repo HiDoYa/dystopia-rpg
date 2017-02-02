@@ -161,8 +161,8 @@ sf::Vector2f Player::getPos()
 void Player::mouseAndCharAngle(sf::Vector2i mo)
 {
 	//Calculates how much to rotate the player using trigonometry
-	float a = abs(mo.x - sprite.getPosition().x);
-	float b = abs(mo.y - sprite.getPosition().y);
+	float a = mo.x - sprite.getPosition().x;
+	float b = mo.y - sprite.getPosition().y;
 	float r = sqrt(a*a + b*b);
 	sprite.setRotation((asin(b / r)) * 180 / 3.14);
 
