@@ -27,7 +27,7 @@ class Player
 	public:
 		Player(int, int, sf::String);
 		void setTexture(sf::String);
-		void setScale(double);
+		void setScale(float);
 		void setPos(int, int);
 		void stepSound();
 		void movePos(int, float&, float&);

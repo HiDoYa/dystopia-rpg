@@ -33,7 +33,7 @@ void Player::setTexture(sf::String nameTexture)
 	}
 }
 
-void Player::setScale(double num)
+void Player::setScale(float num)
 {
 	sprite.setScale(sf::Vector2f(num, num));
 	collisionRectangle.setSize(sprite.getScale());
@@ -66,6 +66,34 @@ void Player::stepSound()
 				step3.play();
 				break;
 		}
+	}
+}
+
+void setCollisionBools(sf::Sprite spr, int speed)
+{
+	canMoveUp = canMoveDown = canMoveRight = canMoveLeft = false;
+
+	sf::Vector2f sprRightCheckNum = sf::Vector2f(sprite.getGlobalBounds().x + sprite.getGlobalBounds().width + speed, sprite.getGlobalBounds().y)
+	sf::Vector2f sprLeftCheckNum = sf::Vector2f(sprite.getGlobalBounds().x - speed, sprite.getGlobalBounds().y)
+	sf::Vector2f sprUpCheckNum = sf::Vector2f(sprite.getGlobalBounds().x, sprite.getGlobalBounds().y - speed)
+	sf::Vector2f sprDownCheckNum = sf::Vector2f(sprite.getGlobalBounds().x, sprite.getGlobalBounds().y + spr.getGlobalBounds().height + speed)
+
+	//TODO
+	if(sprRightCheckNum)
+	{
+		//Can't move right
+	}
+	else if()
+	{
+		//Can't move left 
+	}
+	else if()
+	{
+		//Can't move up 
+	}
+	else if()
+	{
+		//Can't move down 
 	}
 }
 
@@ -187,6 +215,7 @@ void Player::mouseAndCharAngle(sf::Vector2i mo)
 		mouseAtUp = true;
 	}
 
+	//TODO
 	if(mouseAtRight)
 	{
 		if(mouseAtUp)

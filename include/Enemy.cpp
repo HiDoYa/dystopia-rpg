@@ -1,40 +1,72 @@
 #include "Enemy.h"
 
-Enemy::Enemy()
+Enemy::Enemy(int x, int y, sf::String nameTexture)
 {
+	if(!texture.loadFromFile(nameTexture))
+	{
+		std::cout << "Error loading file\n";
+	}
+
+	//Sets texture and position of sprite
+	sprite.setTexture(texture);
+	sprite.setPosition(x, y);
 }
 
-void setPosition(int x, int y)
+void Enemy::setPosition(int x, int y)
 {
 	sprite.setPosition(sf::Vector2f(x, y));
 }
 
-void setScale(int sc)
+void Enemy::setScale(int sc)
 {
 	sprite.setScale(sf::Vector2f(sc, sc));
 }
 
-void setHealth(int i)
+void Enemy::setHealth(int i)
 {
 	health = i;
 }
 
-void setAttackDmg(int i)
+void Enemy::setAttackDmg(int i)
 {
 	attackDmg = i;
 }
 
-sf::Sprite getSprite()
+sf::Sprite Enemy::getSprite()
 {
 	return sprite;
 }
 
-int getHealth()
+bool Enemy::mouseOver(sf::Sprite mouse)
+{
+	if(sprite.getGlobalBounds().contains(mouse.getPosition()))
+	{
+		isMouseOver = true;
+		return true;
+	}
+	else
+	{
+		isMouseOver = false;
+		return false;
+	}
+}
+
+bool Enemy::getColliding(sf::Sprite spr)
+{
+	return collisionRectangle.getGlobalBounds().intersects(spr.getGlobalBounds());
+}
+
+bool Enemy::getColliding(sf::RectangleShape rec)
+{
+	return collisionRectangle.getGlobalBounds().intersects(rec.getGlobalBounds());
+}
+
+int Enemy::getHealth()
 {
 	return health;
 }
 
-int getAttackDmg()
+int Enemy::getAttackDmg()
 {
 	return attackDmg;
 }

@@ -6,7 +6,7 @@ Npc::Npc(int x, int y, sf::String nameTexture)
 	//Gets texture of sprite
 	if(!texture.loadFromFile(nameTexture))
 	{
-		std::cout << "Error loading file";
+		std::cout << "Error loading file\n";
 	}
 
 	//Set texture and position of sprite
@@ -14,6 +14,7 @@ Npc::Npc(int x, int y, sf::String nameTexture)
 	sprite.setPosition(x, y);
 
 	//Sets collision rectangle
+	//TODO: Might not need
 	collisionRectangle.setSize(sf::Vector2f(sprite.getGlobalBounds().width, sprite.getGlobalBounds().height));
 	collisionRectangle.setPosition(x, y);
 
@@ -30,7 +31,7 @@ void Npc::setTexture(sf::String nameTexture)
 	}
 }
 
-void Npc::setScale(double num)
+void Npc::setScale(float num)
 {
 	sprite.setScale(sf::Vector2f(num, num));
 	collisionRectangle.setScale(sf::Vector2f(num, num));

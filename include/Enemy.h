@@ -6,10 +6,18 @@
 class Enemy 
 {
 	private:
-		sf::Sprite sprite;
+		//Top and bottom of sprite
+		sf::Sprite sprite-fore;
+		sf::Sprite sprite-mid;
+
 		sf::Texture texture;
 		int health;
 		int attackDmg;
+		
+		//Time Management
+		sf::Clock clk;
+		sf::Time tme;
+		int attackInterval;
 	public:
 		Enemy();
 		void setPosition(int, int);
@@ -17,6 +25,9 @@ class Enemy
 		void setHealth(int);
 		void setAttackDmg(int);
 		sf::Sprite getSprite();
+		bool mouseOver(sf::Sprite);
+		bool getColliding(sf::Sprite);
+		bool getColliding(sf::RectangleShape);
 		int getHealth();
 		int getAttackDmg();
 }

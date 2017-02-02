@@ -9,7 +9,9 @@ class Npc
 {
 	private:
 		sf::Texture texture;
-		sf::Sprite sprite;
+		//Top and bottom of sprite
+		sf::Sprite sprite-fore;
+		sf::Sprite sprite-mid;
 		sf::RectangleShape collisionRectangle;
 		bool isMouseOver;
 		bool openBox;
@@ -21,7 +23,7 @@ class Npc
 	public:
 		Npc(int, int, sf::String);
 		void setTexture(sf::String);
-		void setScale(double);
+		void setScale(float);
 		void setPos(int, int);
 		sf::Texture getTexture();
 		sf::Sprite getSprite();
