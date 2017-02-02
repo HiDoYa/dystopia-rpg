@@ -24,16 +24,17 @@ int main()
 
 	//Defines what region is shown on screen
 	sf::View view = window.getView();
+
 	//Used to keep track of mouse movement using both displacement and user mouse movement
 	float mousePosX, mousePosY, mousePosXDisplacement, mousePosYDisplacement, prevMousePosXDisplacement, prevMousePosYDisplacement;
 	mousePosXDisplacement = mousePosYDisplacement = prevMousePosXDisplacement = prevMousePosYDisplacement = 0;
+
 
 	//Disable the user's OS mouse
 	window.setMouseCursorVisible(false);
 
 	//Loads mouse class
 	Mouse mouse;
-
 
 	//Music
 	sf::Music music;
@@ -120,9 +121,7 @@ int main()
 		//Activates window for OpenGL rendering
 		sf::Color winColor(107, 120, 140);
 		window.clear(winColor);
-
-		//Sets view
-
+		
 		//Getting mouse to change the view
 		//int chrX = chr.getSprite().getPosition().x;
 		//int chrY = chr.getSprite().getPosition().y;
@@ -138,7 +137,8 @@ int main()
 		//	moX = 800;
 		//}
 		//view.setCenter(sf::Vector2f(chrX + moX, chrY + moY));
-		
+
+		//Sets view
 		view.setCenter(chr.getSprite().getPosition());
 		window.setView(view);
 
