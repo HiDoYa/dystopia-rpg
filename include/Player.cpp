@@ -160,12 +160,52 @@ sf::Vector2f Player::getPos()
 
 void Player::mouseAndCharAngle(sf::Vector2i mo)
 {
-	//TODO FIX
 	//Calculates how much to rotate the player using trigonometry
-	double a = mo.x - sprite.getPosition().x;
-	double b = sprite.getPosition().y - mo.y;
-	double r = sqrt(a*a + b*b);
+	float a = abs(mo.x - sprite.getPosition().x);
+	float b = abs(mo.y - sprite.getPosition().y);
+	float r = sqrt(a*a + b*b);
 	sprite.setRotation((asin(b / r)) * 180 / 3.14);
+
+	//Resets all booleans
+	bool mouseAtRight, mouseAtLeft, mouseAtUp, mouseAtDown;
+	mouseAtRight = mouseAtLeft = mouseAtUp = mouseAtDown = false;
+
+	if(mo.x > sprite.getPosition().x)
+	{
+		mouseAtRight = true;
+	}
+	if(mo.x < sprite.getPosition().x)
+	{
+		mouseAtLeft = true;
+	}
+	if(mo.y > sprite.getPosition().y)
+	{
+		mouseAtDown = true;
+	}
+	if(mo.y < sprite.getPosition().y)
+	{
+		mouseAtUp = true;
+	}
+
+	if(mouseAtRight)
+	{
+		if(mouseAtUp)
+		{
+			//22.5
+		}
+		else if(mouseAtDown)
+		{
+		}
+	}
+	else if(mouseAtLeft)
+	{
+		if(mouseAtUp)
+		{
+		}
+		else if (mouseAtDown)
+		{
+		}
+	}
 }
 
 void Player::rotatePos(int degrees)
