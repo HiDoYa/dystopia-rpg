@@ -28,20 +28,9 @@ int main()
 	float mousePosX, mousePosY, mousePosXDisplacement, mousePosYDisplacement, prevMousePosXDisplacement, prevMousePosYDisplacement;
 	mousePosXDisplacement = mousePosYDisplacement = prevMousePosXDisplacement = prevMousePosYDisplacement = 0;
 
-	//Cursor can't leave window
-	//TODO: ??? Not working???
-	//window.setMouseCursorGrabbed(true);
-
 	//Disable the user's OS mouse
 	window.setMouseCursorVisible(false);
-	//Loads textures for mouses
-	//sf::Texture cursorTextureDefault, cursorTextureTalk;
-	//cursorTextureDefault.loadFromFile("images/cursor.png");
-	//cursorTextureTalk.loadFromFile("images/cursorTalk.png");
-	//Cursor starts off with default
-	//sf::Sprite cursorSprite(cursorTextureDefault);
-	//cursorSprite.setScale(sf::Vector2f(0.09, 0.09));
-	//
+
 	//Loads mouse class
 	Mouse mouse;
 
@@ -111,7 +100,6 @@ int main()
 		prevMousePosYDisplacement = mousePosYDisplacement;
 
 		//Sets position of cursor
-		//cursorSprite.setPosition(sf::Vector2f(mousePosX + mousePosXDisplacement, mousePosY + mousePosYDisplacement));
 		mouse.setPosition(mousePosX + mousePosXDisplacement, mousePosY + mousePosYDisplacement);
 
 		//Sets position of box
