@@ -30,6 +30,8 @@ class Player
 		bool canMoveDown;
 		bool canMoveRight;
 		bool canMoveLeft;
+		int sizeX;
+		int sizeY;
 	public:
 		Player(int, int, sf::String);
 		void setTexture(sf::String);

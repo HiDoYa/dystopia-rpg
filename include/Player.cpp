@@ -5,14 +5,18 @@
 Player::Player(int x, int y, sf::String nameTexture)
 {
 	//Load texture
-	if(!texture.loadFromFile(nameTexture))
+	if(!texture.loadFromFile("images/chrDown.png"))
 	{
 		std::cout << "Error loading file";
 	}
 
 	//Sets texture and position of sprite
 	sprite.setTexture(texture);
+	sprite.setTextureRect(sf::IntRect(0, 0, 64, 64));
+	sprite.setScale(3, 3);
 	sprite.setPosition(x, y);
+
+	sizeX = sizeY = 0;
 
 	//Sound
 	step1.openFromFile("sound/step1.ogg");
@@ -148,6 +152,20 @@ void Player::movePos(int speed, float& xDisplacement, float& yDisplacement)
 		sprite.move(0, speed);
 		xDisplacement += 0;
 		yDisplacement += speed;
+
+		tme = clk.getElapsedTime();
+		currentTime = tme.asMilliseconds();
+		if(currentTime > lastTime + 90)
+		{
+			lastTime = currentTime;
+			sizeX += 64;
+			if(sizeX > 64 * 6)
+			{
+				sizeX = 64;
+			}
+			sprite.setTextureRect(sf::IntRect(sizeX - 64, sizeY, 64, sizeY + 64));
+		}
+
 		stepSound();
 	}
 	else if(dPress)

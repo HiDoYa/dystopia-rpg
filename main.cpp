@@ -50,7 +50,6 @@ int main()
 
 	//Player instances
 	Player chr(window.getSize().x/2, window.getSize().y/2, "images/penguin.png");
-	chr.setScale(0.06);
 	int prevPosX, prevPosY;
 	prevPosX = prevPosY = 0;
 
