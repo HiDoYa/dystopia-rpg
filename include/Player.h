@@ -24,6 +24,12 @@ class Player
 		int curStep;
 		double lastTimeMu;
 		double currentTimeMu;
+
+		//Movement
+		bool canMoveUp;
+		bool canMoveDown;
+		bool canMoveRight;
+		bool canMoveLeft;
 	public:
 		Player(int, int, sf::String);
 		void setTexture(sf::String);
@@ -31,6 +37,7 @@ class Player
 		void setPos(int, int);
 		void stepSound();
 		void movePos(int, float&, float&);
+		void setCollisionBools(sf::Sprite, int);
 		void dashMove(int);
 		sf::Vector2f getPos();
 		void mouseAndCharAngle(sf::Vector2i);

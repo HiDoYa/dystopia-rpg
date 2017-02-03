@@ -10,8 +10,9 @@ class Npc
 	private:
 		sf::Texture texture;
 		//Top and bottom of sprite
-		sf::Sprite sprite-fore;
-		sf::Sprite sprite-mid;
+		//sf::Sprite spriteFore;
+		//sf::Sprite spriteMid;
+		sf::Sprite sprite;
 		sf::RectangleShape collisionRectangle;
 		bool isMouseOver;
 		bool openBox;

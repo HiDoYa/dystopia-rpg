@@ -69,29 +69,29 @@ void Player::stepSound()
 	}
 }
 
-void setCollisionBools(sf::Sprite spr, int speed)
+void Player::setCollisionBools(sf::Sprite spr, int speed)
 {
 	canMoveUp = canMoveDown = canMoveRight = canMoveLeft = false;
 
-	sf::Vector2f sprRightCheckNum = sf::Vector2f(sprite.getGlobalBounds().x + sprite.getGlobalBounds().width + speed, sprite.getGlobalBounds().y)
-	sf::Vector2f sprLeftCheckNum = sf::Vector2f(sprite.getGlobalBounds().x - speed, sprite.getGlobalBounds().y)
-	sf::Vector2f sprUpCheckNum = sf::Vector2f(sprite.getGlobalBounds().x, sprite.getGlobalBounds().y - speed)
-	sf::Vector2f sprDownCheckNum = sf::Vector2f(sprite.getGlobalBounds().x, sprite.getGlobalBounds().y + spr.getGlobalBounds().height + speed)
+	sf::Vector2f sprRightCheckNum = sf::Vector2f(sprite.getGlobalBounds().left + sprite.getGlobalBounds().width + speed, sprite.getGlobalBounds().top);
+	sf::Vector2f sprLeftCheckNum = sf::Vector2f(sprite.getGlobalBounds().left - speed, sprite.getGlobalBounds().top);
+	sf::Vector2f sprUpCheckNum = sf::Vector2f(sprite.getGlobalBounds().left, sprite.getGlobalBounds().top - speed);
+	sf::Vector2f sprDownCheckNum = sf::Vector2f(sprite.getGlobalBounds().left, sprite.getGlobalBounds().top + spr.getGlobalBounds().height + speed);
 
 	//TODO
-	if(sprRightCheckNum)
+	if(true)
 	{
 		//Can't move right
 	}
-	else if()
+	else if(true)
 	{
 		//Can't move left 
 	}
-	else if()
+	else if(true)
 	{
 		//Can't move up 
 	}
-	else if()
+	else if(true)
 	{
 		//Can't move down 
 	}
