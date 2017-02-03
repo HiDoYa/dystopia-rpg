@@ -1,4 +1,5 @@
 #include <iostream>
+#include <SFML/Graphics.hpp>
 
 #ifndef ENEMY_H
 #define ENEMY_H
@@ -17,14 +18,20 @@ class Enemy
 		//Time Management
 		sf::Clock clk;
 		sf::Time tme;
-		int attackInterval;
+		double currentTime;
+		double lastTime;
+		float attackInterval;
+		bool readyToAttack;
 	public:
-		Enemy();
+		Enemy(int, int, sf::String);
 		void setPosition(int, int);
 		void setScale(int);
 		void setHealth(int);
 		void setAttackDmg(int);
+		void setAttackInterval(float);
 		sf::Sprite getSprite();
+		void checkAttackInterval(float);
+		void attack();
 		bool mouseOver(sf::Sprite);
 		bool getColliding(sf::Sprite);
 		bool getColliding(sf::RectangleShape);

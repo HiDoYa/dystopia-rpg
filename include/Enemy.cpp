@@ -10,6 +10,8 @@ Enemy::Enemy(int x, int y, sf::String nameTexture)
 	//Sets texture and position of sprite
 	sprite.setTexture(texture);
 	sprite.setPosition(x, y);
+
+	lastTime = 0;
 }
 
 void Enemy::setPosition(int x, int y)
@@ -32,9 +34,36 @@ void Enemy::setAttackDmg(int i)
 	attackDmg = i;
 }
 
+void Enemy::setAttackInterval(float time)
+{
+	attackInterval = time;
+}
+
 sf::Sprite Enemy::getSprite()
 {
 	return sprite;
+}
+
+bool Enemy::checkAttackInterval()
+{
+	tme = clk.getElapsedTime();
+	currentTime = tme.asMilliseconds();
+
+	if(currentTime > attackInterval + lastTime)
+	{
+		readyToAttack = true;
+		lastTime = currentTime;
+		return true;
+	}
+	else
+	{
+		readyToAttack = false;
+		return false;
+	}
+}
+
+void Enemy::attack()
+{
 }
 
 bool Enemy::mouseOver(sf::Sprite mouse)
