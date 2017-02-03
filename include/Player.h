@@ -7,9 +7,10 @@
 class Player
 {
 	private:
+		sf::Texture texture;
 		sf::Texture textureUp;
 		sf::Texture textureDown;
-		sf::Texture textureLeft;
+		//sf::Texture textureLeft;
 		sf::Texture textureRight;
 
 		sf::Sprite sprite;
@@ -43,6 +44,7 @@ class Player
 		void setPos(int, int);
 		void stepSound();
 		void movePos(int, float&, float&);
+		void spriteAnimation(int);
 		void setCollisionBools(sf::Sprite, int);
 		void dashMove(int);
 		sf::Vector2f getPos();
