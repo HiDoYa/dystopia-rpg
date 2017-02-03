@@ -151,45 +151,65 @@ void Textbox::convertText(std::string str, std::vector<std::string>& sVec)
 	//There must be a space at the end (due to the nature of my algorithm)
 	str.push_back(' ');
 
+	//Gets num of strings that will be required
 	int numOfStrings = 0.9 + (str.length() / doubleTextLen);
+
+	//maxNdx is used to make sure the loop doesn't check contents that are outside the string's memory
 	int maxNdx = str.length() - 1;
+
 	//Lastndx used for the text that is used in the last (previous) textbox
 	int lastNdx = 0;
 
 	//Loop separates each 120 chars into a diff array in sPtr
 	for(int i = 0; i < numOfStrings; i++)
 	{
+		//Adds a string to the vector
 		sVec.push_back("");
+
+		//Text to test is dependent on how large each vector should be and the current loop
 		int textToTest = doubleTextLen * (i + 1);
+
+		//Makes sure the text to test is less than the maximum index
 		if(textToTest > maxNdx)
 		{
 			textToTest = maxNdx;
 		}
+
+		//Starts at textToTest index and works backwards, checking for a space
 		for(int text = textToTest; text > lastNdx; text--)
 		{
+			//When running into a space, that is the cut off point for the string
 			if(str[text] == ' ')
 			{
+				//Adds all the of the string from the last index (the previous cut off) and the new cut off
 				for(int currentText = lastNdx; currentText < text; currentText++)
 				{
 					sVec[i].push_back(str[currentText]);
 				}
+
+				//Adds a null terminator
 				sVec[i].push_back('\0');
+
+				//Sets lastNdx to the current index plus one
 				lastNdx = text + 1;
 				break;
 			}
 		}
 	}
 
-	//Split each box into 2 lines (if above 60 lines)
+	//Split each box into 2 lines (if above 55 lines)
 	for(int strNum = 0; strNum < numOfStrings; strNum++)
 	{
+		//If the string in the vector is larger than the maximum length per line
 		if(sVec[strNum].length() > textLen)
 		{
 			//Works backwards from character 40 until a space is found, and replaces it with new line
 			for(int i = textLen; i > 0; i--)
 			{
+				//If it finds a space, it is the cut off point
 				if(sVec[strNum][i] == ' ')
 				{
+					//Inserts a carriage return to split the string into two parts  
 					sVec[strNum][i] = '\n';
 					break;
 				}
