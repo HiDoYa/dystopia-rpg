@@ -2,16 +2,12 @@
 #include <cmath>
 #include <iostream>
 
-Player::Player(int x, int y, sf::String nameTexture)
+Player::Player(int x, int y)
 {
-	//Load texture
-	if(!texture.loadFromFile("images/chrDown.png"))
-	{
-		std::cout << "Error loading file";
-	}
+	textureDown.loadFromFile("images/chrDown.png");
 
 	//Sets texture and position of sprite
-	sprite.setTexture(texture);
+	sprite.setTexture(textureDown);
 	sprite.setTextureRect(sf::IntRect(0, 0, 64, 64));
 	sprite.setScale(3, 3);
 	sprite.setPosition(x, y);

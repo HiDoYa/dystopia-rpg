@@ -7,7 +7,11 @@
 class Player
 {
 	private:
-		sf::Texture texture;
+		sf::Texture textureUp;
+		sf::Texture textureDown;
+		sf::Texture textureLeft;
+		sf::Texture textureRight;
+
 		sf::Sprite sprite;
 		sf::RectangleShape collisionRectangle;
 
@@ -33,7 +37,7 @@ class Player
 		int sizeX;
 		int sizeY;
 	public:
-		Player(int, int, sf::String);
+		Player(int, int);
 		void setTexture(sf::String);
 		void setScale(float);
 		void setPos(int, int);
