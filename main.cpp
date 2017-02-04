@@ -72,10 +72,10 @@ int main()
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
-			std::cout << "closing-event ";
 			//Request for closing the window
 			if (event.type == sf::Event::Closed)
 			{
+				std::cout << "closing-event ";
 				window.close();
 			}
 		}
