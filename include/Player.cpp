@@ -9,7 +9,7 @@ Player::Player(int x, int y)
 	//Sets texture and position of sprite
 	sprite.setTexture(texture);
 	sprite.setTextureRect(sf::IntRect(0, 0, 64, 64));
-	sprite.setScale(3, 3);
+	sprite.setScale(1.5, 1.5);
 	sprite.setPosition(x, y);
 
 	texturePosX = texturePosY = 0;
@@ -28,8 +28,9 @@ Player::Player(int x, int y)
 	lastTimeMu = 0;
 
 	//Movement default
+	speedRegular = 10;
+	speedSlow = 5;
 	lastDirection = 0;
-	speed = secondarySpeed = 10;
 }
 
 void Player::setTexture(sf::String nameTexture)
@@ -110,7 +111,7 @@ void Player::movePos(float& xDisplacement, float& yDisplacement)
 	bool dPress = sf::Keyboard::isKeyPressed(sf::Keyboard::D);
 
 	//Resets speed
-	speed = secondarySpeed = 10;
+	primarySpeed = secondarySpeed = speedRegular;
 
 	if((wPress && sPress) || (aPress && dPress))
 	{
@@ -120,20 +121,20 @@ void Player::movePos(float& xDisplacement, float& yDisplacement)
 	{
 		if(lastDirection == 0)
 		{
-			secondarySpeed = 7;
+			secondarySpeed = speedSlow;
 		}
 		else if(lastDirection == 3)
 		{
-			speed = 7;
+			primarySpeed = speedSlow;
 		}
 		else
 		{
 			lastDirection = 0;
-			secondarySpeed = 7;
+			secondarySpeed = speedSlow;
 		}
 
-		sprite.move(speed, -secondarySpeed);
-		xDisplacement += speed;
+		sprite.move(primarySpeed, -secondarySpeed);
+		xDisplacement += primarySpeed;
 		yDisplacement += -secondarySpeed;
 		spriteAnimation(lastDirection);
 		stepSound();
@@ -142,20 +143,20 @@ void Player::movePos(float& xDisplacement, float& yDisplacement)
 	{
 		if(lastDirection == 0)
 		{
-			secondarySpeed = 7;
+			secondarySpeed = speedSlow;
 		}
 		else if(lastDirection == 2)
 		{
-			speed = 7;
+			primarySpeed = speedSlow;
 		}
 		else
 		{
 			lastDirection = 0;
-			secondarySpeed = 7;
+			secondarySpeed = speedSlow;
 		}
 
-		sprite.move(-speed, -secondarySpeed);
-		xDisplacement += -speed;
+		sprite.move(-primarySpeed, -secondarySpeed);
+		xDisplacement += -primarySpeed;
 		yDisplacement += -secondarySpeed;
 		spriteAnimation(lastDirection);
 		stepSound();
@@ -164,20 +165,20 @@ void Player::movePos(float& xDisplacement, float& yDisplacement)
 	{
 		if(lastDirection == 1)
 		{
-			secondarySpeed = 7;
+			secondarySpeed = speedSlow;
 		}
 		else if(lastDirection == 3)
 		{
-			speed = 7;
+			primarySpeed = speedSlow;
 		}
 		else
 		{
 			lastDirection = 1;
-			secondarySpeed = 7;
+			secondarySpeed = speedSlow;
 		}
 
-		sprite.move(speed, secondarySpeed);
-		xDisplacement += speed;
+		sprite.move(primarySpeed, secondarySpeed);
+		xDisplacement += primarySpeed;
 		yDisplacement += secondarySpeed;
 		spriteAnimation(lastDirection);
 		stepSound();
@@ -186,46 +187,46 @@ void Player::movePos(float& xDisplacement, float& yDisplacement)
 	{
 		if(lastDirection == 1)
 		{
-			secondarySpeed = 7;
+			secondarySpeed = speedSlow;
 		}
 		else if(lastDirection == 2)
 		{
-			speed = 7;
+			primarySpeed = speedSlow;
 		}
 		else
 		{
 			lastDirection = 1;
-			secondarySpeed = 7;
+			secondarySpeed = speedSlow;
 		}
 
-		sprite.move(-speed, secondarySpeed);
-		xDisplacement += -speed;
+		sprite.move(-primarySpeed, secondarySpeed);
+		xDisplacement += -primarySpeed;
 		yDisplacement += secondarySpeed;
 		spriteAnimation(lastDirection);
 		stepSound();
 	}
 	else if(wPress)
 	{
-		sprite.move(0, -speed);
+		sprite.move(0, -primarySpeed);
 		xDisplacement += 0;
-		yDisplacement += -speed;
+		yDisplacement += -primarySpeed;
 		spriteAnimation(0);
 		lastDirection = 0;
 		stepSound();
 	}
 	else if(sPress)
 	{
-		sprite.move(0, speed);
+		sprite.move(0, primarySpeed);
 		xDisplacement += 0;
-		yDisplacement += speed;
+		yDisplacement += primarySpeed;
 		spriteAnimation(1);
 		lastDirection = 1;
 		stepSound();
 	}
 	else if(dPress)
 	{
-		sprite.move(speed, 0);
-		xDisplacement += speed;
+		sprite.move(primarySpeed, 0);
+		xDisplacement += primarySpeed;
 		yDisplacement += 0;
 		spriteAnimation(3);
 		lastDirection = 3;
@@ -233,8 +234,8 @@ void Player::movePos(float& xDisplacement, float& yDisplacement)
 	}
 	else if(aPress)
 	{
-		sprite.move(-speed, 0);
-		xDisplacement += -speed;
+		sprite.move(-primarySpeed, 0);
+		xDisplacement += -primarySpeed;
 		yDisplacement += 0;
 		spriteAnimation(2);
 		lastDirection = 2;

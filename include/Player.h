@@ -26,7 +26,10 @@ class Player
 		double currentTimeMu;
 
 		//Movement
-		int speed;
+		//Regular/slow stores actual speed while primary/secondary is for changing speed for actual implementation
+		int speedRegular;
+		int speedSlow;
+		int primarySpeed;
 		int secondarySpeed;
 		int lastDirection;
 		bool canMoveUp;
