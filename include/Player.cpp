@@ -26,8 +26,8 @@ Player::Player(int x, int y)
 	lastTimeMu = 0;
 
 	//Movement default
-	speedRegular = 10;
-	speedSlow = 5;
+	speedRegular = 8;
+	speedSlow = 6;
 	lastDirection = 0;
 }
 
@@ -91,6 +91,25 @@ void Player::setCollisionBools(sf::Sprite spr, int speed)
 	}
 }
 
+void Player::standStill()
+{
+	switch(lastDirection)
+	{
+		case 0:
+			sprite.setTextureRect(sf::IntRect(0, 256, 64, 64));
+			break;
+		case 1:
+			sprite.setTextureRect(sf::IntRect(64, 256, 64, 64));
+			break;
+		case 2:
+			sprite.setTextureRect(sf::IntRect(128, 256, 64, 64));
+			break;
+		case 3:
+			sprite.setTextureRect(sf::IntRect(192, 256, 64, 64));
+			break;
+	}
+}
+
 void Player::movePos(float& xDisplacement, float& yDisplacement)
 {
 	bool wPress = sf::Keyboard::isKeyPressed(sf::Keyboard::W);
@@ -109,16 +128,16 @@ void Player::movePos(float& xDisplacement, float& yDisplacement)
 	{
 		if(lastDirection == 0)
 		{
-			secondarySpeed = speedSlow;
+			primarySpeed = speedSlow;
 		}
 		else if(lastDirection == 3)
 		{
-			primarySpeed = speedSlow;
+			secondarySpeed = speedSlow;
 		}
 		else
 		{
 			lastDirection = 0;
-			secondarySpeed = speedSlow;
+			primarySpeed = speedSlow;
 		}
 
 		sprite.move(primarySpeed, -secondarySpeed);
@@ -131,16 +150,16 @@ void Player::movePos(float& xDisplacement, float& yDisplacement)
 	{
 		if(lastDirection == 0)
 		{
-			secondarySpeed = speedSlow;
+			primarySpeed = speedSlow;
 		}
 		else if(lastDirection == 2)
 		{
-			primarySpeed = speedSlow;
+			secondarySpeed = speedSlow;
 		}
 		else
 		{
 			lastDirection = 0;
-			secondarySpeed = speedSlow;
+			primarySpeed = speedSlow;
 		}
 
 		sprite.move(-primarySpeed, -secondarySpeed);
@@ -153,16 +172,16 @@ void Player::movePos(float& xDisplacement, float& yDisplacement)
 	{
 		if(lastDirection == 1)
 		{
-			secondarySpeed = speedSlow;
+			primarySpeed = speedSlow;
 		}
 		else if(lastDirection == 3)
 		{
-			primarySpeed = speedSlow;
+			secondarySpeed = speedSlow;
 		}
 		else
 		{
 			lastDirection = 1;
-			secondarySpeed = speedSlow;
+			primarySpeed = speedSlow;
 		}
 
 		sprite.move(primarySpeed, secondarySpeed);
@@ -175,16 +194,16 @@ void Player::movePos(float& xDisplacement, float& yDisplacement)
 	{
 		if(lastDirection == 1)
 		{
-			secondarySpeed = speedSlow;
+			primarySpeed = speedSlow;
 		}
 		else if(lastDirection == 2)
 		{
-			primarySpeed = speedSlow;
+			secondarySpeed = speedSlow;
 		}
 		else
 		{
 			lastDirection = 1;
-			secondarySpeed = speedSlow;
+			primarySpeed = speedSlow;
 		}
 
 		sprite.move(-primarySpeed, secondarySpeed);
@@ -211,6 +230,15 @@ void Player::movePos(float& xDisplacement, float& yDisplacement)
 		lastDirection = 1;
 		stepSound();
 	}
+	else if(aPress)
+	{
+		sprite.move(-primarySpeed, 0);
+		xDisplacement += -primarySpeed;
+		yDisplacement += 0;
+		spriteAnimation(2);
+		lastDirection = 2;
+		stepSound();
+	}
 	else if(dPress)
 	{
 		sprite.move(primarySpeed, 0);
@@ -220,14 +248,9 @@ void Player::movePos(float& xDisplacement, float& yDisplacement)
 		lastDirection = 3;
 		stepSound();
 	}
-	else if(aPress)
+	else
 	{
-		sprite.move(-primarySpeed, 0);
-		xDisplacement += -primarySpeed;
-		yDisplacement += 0;
-		spriteAnimation(2);
-		lastDirection = 2;
-		stepSound();
+		standStill();
 	}
 }
 
@@ -268,57 +291,6 @@ void Player::dashMove(int speed)
 sf::Vector2f Player::getPos()
 {
 	return sprite.getPosition();
-}
-
-void Player::mouseAndCharAngle(sf::Vector2i mo)
-{
-	//Calculates how much to rotate the player using trigonometry
-	float a = mo.x - sprite.getPosition().x;
-	float b = mo.y - sprite.getPosition().y;
-	float r = sqrt(a*a + b*b);
-	sprite.setRotation((asin(b / r)) * 180 / 3.14);
-
-	//Resets all booleans
-	bool mouseAtRight, mouseAtLeft, mouseAtUp, mouseAtDown;
-	mouseAtRight = mouseAtLeft = mouseAtUp = mouseAtDown = false;
-
-	if(mo.x > sprite.getPosition().x)
-	{
-		mouseAtRight = true;
-	}
-	if(mo.x < sprite.getPosition().x)
-	{
-		mouseAtLeft = true;
-	}
-	if(mo.y > sprite.getPosition().y)
-	{
-		mouseAtDown = true;
-	}
-	if(mo.y < sprite.getPosition().y)
-	{
-		mouseAtUp = true;
-	}
-
-	//TODO
-	if(mouseAtRight)
-	{
-		if(mouseAtUp)
-		{
-			//22.5
-		}
-		else if(mouseAtDown)
-		{
-		}
-	}
-	else if(mouseAtLeft)
-	{
-		if(mouseAtUp)
-		{
-		}
-		else if (mouseAtDown)
-		{
-		}
-	}
 }
 
 sf::Texture Player::getTexture()
