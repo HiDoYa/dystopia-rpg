@@ -8,11 +8,6 @@ class Player
 {
 	private:
 		sf::Texture texture;
-		sf::Texture textureUp;
-		sf::Texture textureDown;
-		//sf::Texture textureLeft;
-		sf::Texture textureRight;
-
 		sf::Sprite sprite;
 		sf::RectangleShape collisionRectangle;
 
@@ -35,8 +30,8 @@ class Player
 		bool canMoveDown;
 		bool canMoveRight;
 		bool canMoveLeft;
-		int sizeX;
-		int sizeY;
+		int texturePosX;
+		int texturePosY;
 	public:
 		Player(int, int);
 		void setTexture(sf::String);

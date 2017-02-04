@@ -4,17 +4,18 @@
 
 Player::Player(int x, int y)
 {
-	textureDown.loadFromFile("images/character/chrDown.png");
-	textureUp.loadFromFile("images/character/chrUp.png");
-	textureRight.loadFromFile("images/character/chrRight.png");
+	texture.loadFromFile("images/character/player.png");
 
 	//Sets texture and position of sprite
-	sprite.setTexture(textureDown);
+	sprite.setTexture(texture);
 	sprite.setTextureRect(sf::IntRect(0, 0, 64, 64));
 	sprite.setScale(3, 3);
 	sprite.setPosition(x, y);
 
-	sizeX = sizeY = 0;
+	texturePosX = texturePosY = 0;
+
+	//TODO Collision Rectangle
+	//collisionRectangle.setSize(sprite.getScale());
 
 	//Sound
 	step1.openFromFile("sound/step1.ogg");
@@ -38,7 +39,6 @@ void Player::setTexture(sf::String nameTexture)
 void Player::setScale(float num)
 {
 	sprite.setScale(sf::Vector2f(num, num));
-	collisionRectangle.setSize(sprite.getScale());
 }
 
 void Player::setPos(int x, int y)
@@ -142,6 +142,7 @@ void Player::movePos(int speed, float& xDisplacement, float& yDisplacement)
 		sprite.move(0, -speed);
 		xDisplacement += 0;
 		yDisplacement += -speed;
+		spriteAnimation(0);
 		stepSound();
 	}
 	else if(sPress)
@@ -149,7 +150,7 @@ void Player::movePos(int speed, float& xDisplacement, float& yDisplacement)
 		sprite.move(0, speed);
 		xDisplacement += 0;
 		yDisplacement += speed;
-		spriteAnimation(0);
+		spriteAnimation(1);
 		stepSound();
 	}
 	else if(dPress)
@@ -157,6 +158,7 @@ void Player::movePos(int speed, float& xDisplacement, float& yDisplacement)
 		sprite.move(speed, 0);
 		xDisplacement += speed;
 		yDisplacement += 0;
+		spriteAnimation(3);
 		stepSound();
 	}
 	else if(aPress)
@@ -164,6 +166,7 @@ void Player::movePos(int speed, float& xDisplacement, float& yDisplacement)
 		sprite.move(-speed, 0);
 		xDisplacement += -speed;
 		yDisplacement += 0;
+		spriteAnimation(2);
 		stepSound();
 	}
 }
@@ -171,29 +174,19 @@ void Player::movePos(int speed, float& xDisplacement, float& yDisplacement)
 //Direction is 0 when top, 1 when right, 2 when down, 3 when left
 void Player::spriteAnimation(int direction)
 {
-	if(direction == 0)
+	tme = clk.getElapsedTime();
+	currentTime = tme.asMilliseconds();
+
+	if(currentTime > lastTime + 90)
 	{
-		tme = clk.getElapsedTime();
-		currentTime = tme.asMilliseconds();
-		if(currentTime > lastTime + 90)
+		texturePosY = direction * 64;
+		lastTime = currentTime;
+		texturePosX += 64;
+		if(texturePosX > 64 * 6)
 		{
-			lastTime = currentTime;
-			sizeX += 64;
-			if(sizeX > 64 * 6)
-			{
-				sizeX = 64;
-			}
-			sprite.setTextureRect(sf::IntRect(sizeX - 64, sizeY, 64, sizeY + 64));
+			texturePosX = 64;
 		}
-	}
-	else if(true)
-	{
-	}
-	else if(true)
-	{
-	}
-	else if(true)
-	{
+		sprite.setTextureRect(sf::IntRect(texturePosX - 64, texturePosY, 64, 64));
 	}
 }
 
