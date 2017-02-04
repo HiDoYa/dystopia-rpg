@@ -16,6 +16,9 @@ class Player
 		sf::Time tme;
 		double lastTime;
 		double currentTime;
+		int spriteAnimationDelay;
+		int stepSoundDelay;
+		int dashMoveDelay;
 
 		//Music and time management for music
 		sf::Music step1;
@@ -25,11 +28,11 @@ class Player
 		double currentTimeMu;
 
 		//Movement
-		//Regular/slow stores actual speed while primary/secondary is for changing speed for actual implementation
+		//Regular/slow stores actual speed while x/y is for changing speed for actual implementation
 		int speedRegular;
 		int speedSlow;
-		int primarySpeed;
-		int secondarySpeed;
+		int xSpeed;
+		int ySpeed;
 		int lastDirection;
 		bool canMoveUp;
 		bool canMoveDown;

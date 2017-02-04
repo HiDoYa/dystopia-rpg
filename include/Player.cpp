@@ -24,6 +24,9 @@ Player::Player(int x, int y)
 	//Used for time management
 	lastTime = 0;
 	lastTimeMu = 0;
+	spriteAnimationDelay = 90;
+	stepSoundDelay = 300;
+	dashMoveDelay = 3000;
 
 	//Movement default
 	speedRegular = 8;
@@ -46,7 +49,7 @@ void Player::stepSound()
 	tme = clk.getElapsedTime(); 
 	currentTimeMu = tme.asMilliseconds();
 
-	if(lastTimeMu + 300 < currentTimeMu)
+	if(lastTimeMu + stepSoundDelay < currentTimeMu)
 	{
 		lastTimeMu = currentTimeMu;
 		curStep = (curStep + 1) % 2;
@@ -117,9 +120,6 @@ void Player::movePos(float& xDisplacement, float& yDisplacement)
 	bool aPress = sf::Keyboard::isKeyPressed(sf::Keyboard::A);
 	bool dPress = sf::Keyboard::isKeyPressed(sf::Keyboard::D);
 
-	//Resets speed
-	primarySpeed = secondarySpeed = speedRegular;
-
 	if((wPress && sPress) || (aPress && dPress))
 	{
 		//Do nothing (moving in opposing directions)
@@ -128,21 +128,20 @@ void Player::movePos(float& xDisplacement, float& yDisplacement)
 	{
 		if(lastDirection == 0)
 		{
-			primarySpeed = speedSlow;
+			xSpeed = speedSlow;
+			ySpeed = -speedRegular;
 		}
 		else if(lastDirection == 3)
 		{
-			secondarySpeed = speedSlow;
+			xSpeed = speedRegular;
+			ySpeed = -speedSlow;
 		}
 		else
 		{
+			xSpeed = speedSlow;
+			ySpeed = -speedRegular;
 			lastDirection = 0;
-			primarySpeed = speedSlow;
 		}
-
-		sprite.move(primarySpeed, -secondarySpeed);
-		xDisplacement += primarySpeed;
-		yDisplacement += -secondarySpeed;
 		spriteAnimation(lastDirection);
 		stepSound();
 	}
@@ -150,21 +149,20 @@ void Player::movePos(float& xDisplacement, float& yDisplacement)
 	{
 		if(lastDirection == 0)
 		{
-			primarySpeed = speedSlow;
+			xSpeed = -speedSlow;
+			ySpeed = -speedRegular;
 		}
 		else if(lastDirection == 2)
 		{
-			secondarySpeed = speedSlow;
+			xSpeed = -speedRegular;
+			ySpeed = -speedSlow;
 		}
 		else
 		{
+			xSpeed = -speedSlow;
+			ySpeed = -speedRegular;
 			lastDirection = 0;
-			primarySpeed = speedSlow;
 		}
-
-		sprite.move(-primarySpeed, -secondarySpeed);
-		xDisplacement += -primarySpeed;
-		yDisplacement += -secondarySpeed;
 		spriteAnimation(lastDirection);
 		stepSound();
 	}
@@ -172,21 +170,20 @@ void Player::movePos(float& xDisplacement, float& yDisplacement)
 	{
 		if(lastDirection == 1)
 		{
-			primarySpeed = speedSlow;
+			xSpeed = speedSlow;
+			ySpeed = speedRegular;
 		}
 		else if(lastDirection == 3)
 		{
-			secondarySpeed = speedSlow;
+			xSpeed = speedRegular;
+			ySpeed = speedSlow;
 		}
 		else
 		{
+			xSpeed = speedSlow;
+			ySpeed = speedRegular;
 			lastDirection = 1;
-			primarySpeed = speedSlow;
 		}
-
-		sprite.move(primarySpeed, secondarySpeed);
-		xDisplacement += primarySpeed;
-		yDisplacement += secondarySpeed;
 		spriteAnimation(lastDirection);
 		stepSound();
 	}
@@ -194,64 +191,65 @@ void Player::movePos(float& xDisplacement, float& yDisplacement)
 	{
 		if(lastDirection == 1)
 		{
-			primarySpeed = speedSlow;
+			xSpeed = -speedSlow;
+			ySpeed = speedRegular;
 		}
 		else if(lastDirection == 2)
 		{
-			secondarySpeed = speedSlow;
+			xSpeed = -speedRegular;
+			ySpeed = speedSlow;
 		}
 		else
 		{
+			xSpeed = -speedSlow;
+			ySpeed = speedRegular;
 			lastDirection = 1;
-			primarySpeed = speedSlow;
 		}
-
-		sprite.move(-primarySpeed, secondarySpeed);
-		xDisplacement += -primarySpeed;
-		yDisplacement += secondarySpeed;
 		spriteAnimation(lastDirection);
 		stepSound();
 	}
 	else if(wPress)
 	{
-		sprite.move(0, -primarySpeed);
-		xDisplacement += 0;
-		yDisplacement += -primarySpeed;
+		xSpeed = 0;
+		ySpeed = -speedRegular;
 		spriteAnimation(0);
 		lastDirection = 0;
 		stepSound();
 	}
 	else if(sPress)
 	{
-		sprite.move(0, primarySpeed);
-		xDisplacement += 0;
-		yDisplacement += primarySpeed;
+		xSpeed = 0;
+		ySpeed = speedRegular;
 		spriteAnimation(1);
 		lastDirection = 1;
 		stepSound();
 	}
 	else if(aPress)
 	{
-		sprite.move(-primarySpeed, 0);
-		xDisplacement += -primarySpeed;
-		yDisplacement += 0;
+		xSpeed = -speedRegular;
+		ySpeed = 0;
 		spriteAnimation(2);
 		lastDirection = 2;
 		stepSound();
 	}
 	else if(dPress)
 	{
-		sprite.move(primarySpeed, 0);
-		xDisplacement += primarySpeed;
-		yDisplacement += 0;
+		xSpeed = speedRegular;
+		ySpeed = 0;
 		spriteAnimation(3);
 		lastDirection = 3;
 		stepSound();
 	}
 	else
 	{
+		xSpeed = ySpeed = 0;
 		standStill();
 	}
+
+	//Moves sprite and adds to displacement of screen (for mouse)
+	sprite.move(xSpeed, ySpeed);
+	xDisplacement += xSpeed;
+	yDisplacement += ySpeed;
 }
 
 //Direction is 0 when top, 1 when right, 2 when down, 3 when left
@@ -260,7 +258,7 @@ void Player::spriteAnimation(int direction)
 	tme = clk.getElapsedTime();
 	currentTime = tme.asMilliseconds();
 
-	if(currentTime > lastTime + 90)
+	if(currentTime > lastTime + spriteAnimationDelay)
 	{
 		texturePosY = direction * 64;
 		lastTime = currentTime;
@@ -280,7 +278,7 @@ void Player::dashMove(int speed)
 
 	bool spacePress = sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
 
-	if(spacePress && currentTime > lastTime + 3000)
+	if(spacePress && currentTime > lastTime + dashMoveDelay)
 	{
 		lastTime = currentTime;
 		//TODO Speed Modifier. Different sprites? Different movement? 
