@@ -26,6 +26,10 @@ Player::Player(int x, int y)
 	//Used for time management
 	lastTime = 0;
 	lastTimeMu = 0;
+
+	//Movement default
+	lastDirection = 0;
+	speed = secondarySpeed = 10;
 }
 
 void Player::setTexture(sf::String nameTexture)
@@ -98,12 +102,15 @@ void Player::setCollisionBools(sf::Sprite spr, int speed)
 	}
 }
 
-void Player::movePos(int speed, float& xDisplacement, float& yDisplacement)
+void Player::movePos(float& xDisplacement, float& yDisplacement)
 {
 	bool wPress = sf::Keyboard::isKeyPressed(sf::Keyboard::W);
 	bool sPress = sf::Keyboard::isKeyPressed(sf::Keyboard::S);
 	bool aPress = sf::Keyboard::isKeyPressed(sf::Keyboard::A);
 	bool dPress = sf::Keyboard::isKeyPressed(sf::Keyboard::D);
+
+	//Resets speed
+	speed = secondarySpeed = 10;
 
 	if((wPress && sPress) || (aPress && dPress))
 	{
@@ -111,30 +118,90 @@ void Player::movePos(int speed, float& xDisplacement, float& yDisplacement)
 	}
 	else if(wPress && dPress)
 	{
-		sprite.move(speed, -speed);
+		if(lastDirection == 0)
+		{
+			secondarySpeed = 7;
+		}
+		else if(lastDirection == 3)
+		{
+			speed = 7;
+		}
+		else
+		{
+			lastDirection = 0;
+			secondarySpeed = 7;
+		}
+
+		sprite.move(speed, -secondarySpeed);
 		xDisplacement += speed;
-		yDisplacement += -speed;
+		yDisplacement += -secondarySpeed;
+		spriteAnimation(lastDirection);
 		stepSound();
 	}
 	else if(wPress && aPress)
 	{
-		sprite.move(-speed, -speed);
+		if(lastDirection == 0)
+		{
+			secondarySpeed = 7;
+		}
+		else if(lastDirection == 2)
+		{
+			speed = 7;
+		}
+		else
+		{
+			lastDirection = 0;
+			secondarySpeed = 7;
+		}
+
+		sprite.move(-speed, -secondarySpeed);
 		xDisplacement += -speed;
-		yDisplacement += -speed;
+		yDisplacement += -secondarySpeed;
+		spriteAnimation(lastDirection);
 		stepSound();
 	}
 	else if(sPress && dPress)
 	{
-		sprite.move(speed, speed);
+		if(lastDirection == 1)
+		{
+			secondarySpeed = 7;
+		}
+		else if(lastDirection == 3)
+		{
+			speed = 7;
+		}
+		else
+		{
+			lastDirection = 1;
+			secondarySpeed = 7;
+		}
+
+		sprite.move(speed, secondarySpeed);
 		xDisplacement += speed;
-		yDisplacement += speed;
+		yDisplacement += secondarySpeed;
+		spriteAnimation(lastDirection);
 		stepSound();
 	}
 	else if(sPress && aPress)
 	{
-		sprite.move(-speed, speed);
+		if(lastDirection == 1)
+		{
+			secondarySpeed = 7;
+		}
+		else if(lastDirection == 2)
+		{
+			speed = 7;
+		}
+		else
+		{
+			lastDirection = 1;
+			secondarySpeed = 7;
+		}
+
+		sprite.move(-speed, secondarySpeed);
 		xDisplacement += -speed;
-		yDisplacement += speed;
+		yDisplacement += secondarySpeed;
+		spriteAnimation(lastDirection);
 		stepSound();
 	}
 	else if(wPress)
@@ -143,6 +210,7 @@ void Player::movePos(int speed, float& xDisplacement, float& yDisplacement)
 		xDisplacement += 0;
 		yDisplacement += -speed;
 		spriteAnimation(0);
+		lastDirection = 0;
 		stepSound();
 	}
 	else if(sPress)
@@ -151,6 +219,7 @@ void Player::movePos(int speed, float& xDisplacement, float& yDisplacement)
 		xDisplacement += 0;
 		yDisplacement += speed;
 		spriteAnimation(1);
+		lastDirection = 1;
 		stepSound();
 	}
 	else if(dPress)
@@ -159,6 +228,7 @@ void Player::movePos(int speed, float& xDisplacement, float& yDisplacement)
 		xDisplacement += speed;
 		yDisplacement += 0;
 		spriteAnimation(3);
+		lastDirection = 3;
 		stepSound();
 	}
 	else if(aPress)
@@ -167,6 +237,7 @@ void Player::movePos(int speed, float& xDisplacement, float& yDisplacement)
 		xDisplacement += -speed;
 		yDisplacement += 0;
 		spriteAnimation(2);
+		lastDirection = 2;
 		stepSound();
 	}
 }
@@ -259,11 +330,6 @@ void Player::mouseAndCharAngle(sf::Vector2i mo)
 		{
 		}
 	}
-}
-
-void Player::rotatePos(int degrees)
-{
-	sprite.rotate(degrees);
 }
 
 sf::Texture Player::getTexture()

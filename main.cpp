@@ -85,7 +85,7 @@ int main()
 		mousePosY = sf::Mouse::getPosition(window).y;
 
 		//Character move
-		chr.movePos(10, mousePosXDisplacement, mousePosYDisplacement);
+		chr.movePos(mousePosXDisplacement, mousePosYDisplacement);
 
 		bool noPass = tree.getColliding(chr.getSprite()) || kitty.getColliding(chr.getSprite());
 		if(noPass)

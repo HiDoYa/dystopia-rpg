@@ -26,6 +26,9 @@ class Player
 		double currentTimeMu;
 
 		//Movement
+		int speed;
+		int secondarySpeed;
+		int lastDirection;
 		bool canMoveUp;
 		bool canMoveDown;
 		bool canMoveRight;
@@ -38,13 +41,12 @@ class Player
 		void setScale(float);
 		void setPos(int, int);
 		void stepSound();
-		void movePos(int, float&, float&);
+		void movePos(float&, float&);
 		void spriteAnimation(int);
 		void setCollisionBools(sf::Sprite, int);
 		void dashMove(int);
 		sf::Vector2f getPos();
 		void mouseAndCharAngle(sf::Vector2i);
-		void rotatePos(int);
 		sf::Texture getTexture();
 		sf::Sprite getSprite();
 		sf::RectangleShape getCollisionRectangle();
