@@ -11,7 +11,6 @@ Player::Player(int x, int y)
 	sprite.setTextureRect(sf::IntRect(0, 0, 64, 64));
 	sprite.setScale(1.5, 1.5);
 	sprite.setPosition(x, y);
-
 	texturePosX = texturePosY = 0;
 
 	//TODO Collision Rectangle
@@ -20,7 +19,6 @@ Player::Player(int x, int y)
 	//Sound
 	step1.openFromFile("sound/step1.ogg");
 	step2.openFromFile("sound/step2.ogg");
-	step3.openFromFile("sound/step3.ogg");
 	curStep = 0;
 
 	//Used for time management
@@ -31,14 +29,6 @@ Player::Player(int x, int y)
 	speedRegular = 10;
 	speedSlow = 5;
 	lastDirection = 0;
-}
-
-void Player::setTexture(sf::String nameTexture)
-{
-	if(!texture.loadFromFile(nameTexture))
-	{
-		std::cout << "Error loading file";
-	}
 }
 
 void Player::setScale(float num)
@@ -53,12 +43,13 @@ void Player::setPos(int x, int y)
 
 void Player::stepSound()
 {
-	tme = clk.getElapsedTime(); currentTimeMu = tme.asMilliseconds();
+	tme = clk.getElapsedTime(); 
+	currentTimeMu = tme.asMilliseconds();
 
 	if(lastTimeMu + 300 < currentTimeMu)
 	{
 		lastTimeMu = currentTimeMu;
-		curStep = (curStep + 1) % 3;
+		curStep = (curStep + 1) % 2;
 
 		switch (curStep)
 		{
@@ -67,9 +58,6 @@ void Player::stepSound()
 				break;
 			case 1:
 				step2.play();
-				break;
-			case 2:
-				step3.play();
 				break;
 		}
 	}

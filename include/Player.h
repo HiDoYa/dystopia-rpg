@@ -20,7 +20,6 @@ class Player
 		//Music and time management for music
 		sf::Music step1;
 		sf::Music step2;
-		sf::Music step3;
 		int curStep;
 		double lastTimeMu;
 		double currentTimeMu;
@@ -40,7 +39,6 @@ class Player
 		int texturePosY;
 	public:
 		Player(int, int);
-		void setTexture(sf::String);
 		void setScale(float);
 		void setPos(int, int);
 		void stepSound();
