@@ -48,7 +48,6 @@ class Player
 		void setCollisionBools(sf::Sprite, int);
 		void dashMove(int);
 		sf::Vector2f getPos();
-		void mouseAndCharAngle(sf::Vector2i);
 		sf::Texture getTexture();
 		sf::Sprite getSprite();
 		sf::RectangleShape getCollisionRectangle();
