@@ -82,15 +82,8 @@ int main()
 		mousePosY = sf::Mouse::getPosition(window).y;
 
 		//Character move
+		chr.setCollisionBools(kitty.getSprite());
 		chr.movePos(mousePosXDisplacement, mousePosYDisplacement);
-
-		bool noPass = kitty.getColliding(chr.getSprite());
-		if(noPass)
-		{
-			chr.setPos(prevPosX, prevPosY);
-			mousePosXDisplacement = prevMousePosXDisplacement;
-			mousePosYDisplacement = prevMousePosYDisplacement;
-		}
 
 		prevPosX = chr.getPos().x;
 		prevPosY = chr.getPos().y;

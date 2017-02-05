@@ -10,6 +10,7 @@ class Player
 		sf::Texture texture;
 		sf::Sprite sprite;
 		sf::RectangleShape collisionRectangle;
+		sf::Vector2f collisionSize;
 
 		//Time management for box open/close
 		sf::Clock clk;
@@ -28,7 +29,6 @@ class Player
 		double currentTimeMu;
 
 		//Movement
-		//Regular/slow stores actual speed while x/y is for changing speed for actual implementation
 		int speedRegular;
 		int speedSlow;
 		int xSpeed;
@@ -45,10 +45,10 @@ class Player
 		void setScale(float);
 		void setPos(int, int);
 		void stepSound();
+		void setCollisionBools(sf::Sprite);
 		void standStill();
 		void movePos(float&, float&);
 		void spriteAnimation(int);
-		void setCollisionBools(sf::Sprite, int);
 		void dashMove(int);
 		sf::Vector2f getPos();
 		sf::Texture getTexture();

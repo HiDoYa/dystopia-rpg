@@ -13,8 +13,11 @@ Player::Player(int x, int y)
 	sprite.setPosition(x, y);
 	texturePosX = texturePosY = 0;
 
-	//TODO Collision Rectangle
-	//collisionRectangle.setSize(sprite.getScale());
+	//Collision rectangle
+	collisionRectangle.setSize(sf::Vector2f(sprite.getGlobalBounds().width, sprite.getGlobalBounds().height - sprite.getGlobalBounds().height / 2));
+	
+	//Stores size of sprite in vector2f
+	collisionSize = sf::Vector2f(collisionRectangle.getGlobalBounds().width, collisionRectangle.getGlobalBounds().height);
 
 	//Sound
 	step1.openFromFile("sound/step1.ogg");
@@ -66,31 +69,37 @@ void Player::stepSound()
 	}
 }
 
-void Player::setCollisionBools(sf::Sprite spr, int speed)
+void Player::setCollisionBools(sf::Sprite spr)
 {
-	canMoveUp = canMoveDown = canMoveRight = canMoveLeft = false;
+	canMoveUp = canMoveDown = canMoveRight = canMoveLeft = true;
 
-	sf::Vector2f sprRightCheckNum = sf::Vector2f(sprite.getGlobalBounds().left + sprite.getGlobalBounds().width + speed, sprite.getGlobalBounds().top);
-	sf::Vector2f sprLeftCheckNum = sf::Vector2f(sprite.getGlobalBounds().left - speed, sprite.getGlobalBounds().top);
-	sf::Vector2f sprUpCheckNum = sf::Vector2f(sprite.getGlobalBounds().left, sprite.getGlobalBounds().top - speed);
-	sf::Vector2f sprDownCheckNum = sf::Vector2f(sprite.getGlobalBounds().left, sprite.getGlobalBounds().top + spr.getGlobalBounds().height + speed);
+	//Gets point for each given that the sprite moves
+	sf::Vector2f sprUpCheckNum = sf::Vector2f(collisionRectangle.getGlobalBounds().left, collisionRectangle.getGlobalBounds().top - speedRegular);
+	sf::Vector2f sprDownCheckNum = sf::Vector2f(collisionRectangle.getGlobalBounds().left, collisionRectangle.getGlobalBounds().top + speedRegular);
+	sf::Vector2f sprLeftCheckNum = sf::Vector2f(collisionRectangle.getGlobalBounds().left - speedRegular, collisionRectangle.getGlobalBounds().top);
+	sf::Vector2f sprRightCheckNum = sf::Vector2f(collisionRectangle.getGlobalBounds().left + speedRegular, collisionRectangle.getGlobalBounds().top);
+	
+	//Calculates each rectangle for if the player CAN move
+	sf::Rect<float> moveUpRect(sprUpCheckNum, collisionSize);
+	sf::Rect<float> moveDownRect(sprDownCheckNum, collisionSize);
+	sf::Rect<float> moveLeftRect(sprLeftCheckNum, collisionSize);
+	sf::Rect<float> moveRightRect(sprRightCheckNum, collisionSize);
 
-	//TODO
-	if(true)
+	if(spr.getGlobalBounds().intersects(moveUpRect))
 	{
-		//Can't move right
+		canMoveUp = false;
 	}
-	else if(true)
+	if(spr.getGlobalBounds().intersects(moveDownRect))
 	{
-		//Can't move left 
+		canMoveDown = false;
 	}
-	else if(true)
+	if(spr.getGlobalBounds().intersects(moveLeftRect))
 	{
-		//Can't move up 
+		canMoveLeft = false;
 	}
-	else if(true)
+	if(spr.getGlobalBounds().intersects(moveRightRect))
 	{
-		//Can't move down 
+		canMoveRight = false;
 	}
 }
 
@@ -246,8 +255,27 @@ void Player::movePos(float& xDisplacement, float& yDisplacement)
 		standStill();
 	}
 
+	//Checks whether the player CAN move
+	if(!canMoveUp && ySpeed < 0)
+	{
+		ySpeed = 0;
+	}
+	if(!canMoveDown && ySpeed > 0)
+	{
+		ySpeed = 0;
+	}
+	if(!canMoveLeft && xSpeed < 0)
+	{
+		xSpeed = 0;
+	}
+	if(!canMoveRight && xSpeed > 0)
+	{
+		xSpeed = 0;
+	}
+
 	//Moves sprite and adds to displacement of screen (for mouse)
 	sprite.move(xSpeed, ySpeed);
+	collisionRectangle.setPosition(sprite.getGlobalBounds().left, sprite.getGlobalBounds().top + sprite.getGlobalBounds().height - sprite.getGlobalBounds().height / 2);
 	xDisplacement += xSpeed;
 	yDisplacement += ySpeed;
 }
@@ -305,3 +333,4 @@ sf::RectangleShape Player::getCollisionRectangle()
 {
 	return collisionRectangle;
 }
+
