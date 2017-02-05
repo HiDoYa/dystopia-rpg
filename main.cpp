@@ -91,6 +91,7 @@ int main()
 			mousePosXDisplacement = prevMousePosXDisplacement;
 			mousePosYDisplacement = prevMousePosYDisplacement;
 		}
+
 		prevPosX = chr.getPos().x;
 		prevPosY = chr.getPos().y;
 		prevMousePosXDisplacement = mousePosXDisplacement;
@@ -103,16 +104,9 @@ int main()
 		box.setPosition(mousePosXDisplacement, mousePosYDisplacement);
 
 		//Npc Kitty interactions
-		if(kitty.mouseOver(mouse.getSprite()))
-		{
-			mouse.useTalkMouse();
-		}
-		else
-		{
-			mouse.useDefaultMouse();
-		}
-		std::string strTest = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum aliquet dolor urna, eget convallis nulla fringilla vitae. Praesent purus dolor, accumsan eu auctor a, eleifend a nibh. Duis cursus purus nulla, eget fringilla leo sollicitudin sed. Proin et gravida lacus. Nunc nulla urna, tempus et fermentum quis, viverra ac ipsum. Mauris a fermentum ex, nec lobortis mauris. Morbi commodo lorem nec purus iaculis dictum.";
-		kitty.speak("Kitty", strTest, box);
+		mouse.npcTalkSet(&kitty);
+
+		kitty.speak("Kitty", "Lorem ipsum dolor sit amet", box);
 
 		//Activates window for OpenGL rendering
 		sf::Color winColor(107, 120, 140);

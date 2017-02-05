@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include "Npc.h"
 
 #ifndef MOUSE_H
 #define MOUSE_H
@@ -15,6 +16,7 @@ class Mouse
 		void useTalkMouse();
 		void setScale(int);
 		void setPosition(int, int); 
+		void npcTalkSet(Npc*);
 		sf::Sprite getSprite();
 		sf::Texture getTextureDefault();
 		sf::Texture getTextureTalk();

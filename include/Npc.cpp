@@ -117,7 +117,14 @@ void Npc::speak(sf::String nm, sf::String str, Textbox& box)
 		box.animateText(sVec[0]);
 		if(box.nextText())
 		{
-			textNum = 2;
+			if(sVec.size() == textNum)
+			{
+				textNum = -1;
+			}
+			else
+			{
+				textNum = 2;
+			}
 		}
 	}
 

@@ -30,6 +30,18 @@ void Mouse::setPosition(int x, int y)
 	sprite.setPosition(sf::Vector2f(x, y));
 }
 
+void Mouse::npcTalkSet(Npc* npc)
+{
+	if((*npc).mouseOver(sprite))
+	{
+		useTalkMouse();
+	}
+	else
+	{
+		useDefaultMouse();
+	}
+}
+
 sf::Sprite Mouse::getSprite()
 {
 	return sprite;
