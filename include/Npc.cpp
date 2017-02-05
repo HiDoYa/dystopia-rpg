@@ -110,28 +110,11 @@ void Npc::speak(sf::String nm, sf::String str, Textbox& box)
 		}
 	}
 
-	if(textNum == 1)
-	{
-		openBox = false;
-		box.setName(nm);
-		box.animateText(sVec[0]);
-		if(box.nextText())
-		{
-			if(sVec.size() == textNum)
-			{
-				textNum = -1;
-			}
-			else
-			{
-				textNum = 2;
-			}
-		}
-	}
-
-	for(int i = 1; i < sVec.size(); i++)
+	for(int i = 0; i < sVec.size(); i++)
 	{
 		if(textNum == i + 1)
 		{
+			openBox = false;
 			box.setName(nm);
 			box.animateText(sVec[i]);
 			if(box.nextText())
