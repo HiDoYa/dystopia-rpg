@@ -9,7 +9,6 @@
 #include <SFML/System.hpp>
 
 //Game classes
-#include "include/Environment.h"
 #include "include/Textbox.h"
 #include "include/Npc.h"
 #include "include/Player.h"
@@ -53,9 +52,6 @@ int main()
 	int prevPosX, prevPosY;
 	prevPosX = prevPosY = 0;
 
-	//Environment instance
-	Environment tree(300, 100, "images/tree.png");
-
 	//Temporary Background
 	sf::Texture bgTexture;
 	bgTexture.loadFromFile("images/forest.jpg");
@@ -88,7 +84,7 @@ int main()
 		//Character move
 		chr.movePos(mousePosXDisplacement, mousePosYDisplacement);
 
-		bool noPass = tree.getColliding(chr.getSprite()) || kitty.getColliding(chr.getSprite());
+		bool noPass = kitty.getColliding(chr.getSprite());
 		if(noPass)
 		{
 			chr.setPos(prevPosX, prevPosY);
@@ -121,22 +117,6 @@ int main()
 		//Activates window for OpenGL rendering
 		sf::Color winColor(107, 120, 140);
 		window.clear(winColor);
-		
-		//Getting mouse to change the view
-		//int chrX = chr.getSprite().getPosition().x;
-		//int chrY = chr.getSprite().getPosition().y;
-		//int moX = cursorSprite.getPosition().x;
-		//int moY = cursorSprite.getPosition().y;
-
-		//if(moX < 400)
-		//{
-		//	moX = 400;
-		//}
-		//else if(moX  > 800)
-		//{
-		//	moX = 800;
-		//}
-		//view.setCenter(sf::Vector2f(chrX + moX, chrY + moY));
 
 		//Sets view
 		view.setCenter(chr.getSprite().getPosition());
@@ -146,7 +126,6 @@ int main()
 		window.draw(bgSprite);
 		window.draw(kitty.getSprite());
 		window.draw(chr.getSprite());
-		window.draw(tree.getSprite());
 		box.drawAll(window);
 		window.draw(mouse.getSprite());
 

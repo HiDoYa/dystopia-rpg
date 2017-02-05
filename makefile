@@ -1,7 +1,7 @@
 all: game
 
-game: main.o Textbox.o Npc.o Player.o Environment.o Mouse.o
-	g++ main.o Textbox.o Npc.o Player.o Environment.o Mouse.o -o sfml-app -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+game: main.o Textbox.o Npc.o Player.o Mouse.o
+	g++ main.o Textbox.o Npc.o Player.o Mouse.o -o sfml-app -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 	./sfml-app
 
 main.o: main.cpp
@@ -15,9 +15,6 @@ Npc.o: include/Npc.h include/Npc.cpp
 
 Player.o: include/Player.h include/Player.cpp
 	g++ -std=c++11 -c include/Player.cpp
-
-Environment.o: include/Environment.h include/Environment.cpp
-	g++ -std=c++11 -c include/Environment.cpp
 
 Mouse.o: include/Mouse.h include/Mouse.cpp
 	g++ -std=c++11 -c include/Mouse.cpp
