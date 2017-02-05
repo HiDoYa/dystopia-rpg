@@ -69,6 +69,7 @@ void Player::stepSound()
 	}
 }
 
+//TODO Change spr to RectangleShape and change NPC collision return to RectangleShape
 void Player::setCollisionBools(sf::Sprite spr)
 {
 	canMoveUp = canMoveDown = canMoveRight = canMoveLeft = true;
