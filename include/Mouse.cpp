@@ -3,8 +3,8 @@
 
 Mouse::Mouse()
 {
-	textureDefault.loadFromFile("images/cursor.png");
-	textureTalk.loadFromFile("images/cursorTalk.png");
+	textureDefault.loadFromFile("images/cursors/default.png");
+	textureTalk.loadFromFile("images/cursors/talk.png");
 
 	sprite.setTexture(textureDefault);
 	sprite.setScale(sf::Vector2f(0.09, 0.09));
