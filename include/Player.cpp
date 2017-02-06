@@ -8,8 +8,7 @@ Player::Player(int x, int y)
 
 	//Sets texture and position of sprite
 	sprite.setTexture(texture);
-	sprite.setTextureRect(sf::IntRect(0, 0, 64, 64));
-	sprite.setScale(1.5, 1.5);
+	sprite.setTextureRect(sf::IntRect(0, 0, 96, 96));
 	sprite.setPosition(x, y);
 	texturePosX = texturePosY = 0;
 
@@ -109,16 +108,16 @@ void Player::standStill()
 	switch(lastDirection)
 	{
 		case 0:
-			sprite.setTextureRect(sf::IntRect(0, 256, 64, 64));
+			sprite.setTextureRect(sf::IntRect(0, 384, 96, 96));
 			break;
 		case 1:
-			sprite.setTextureRect(sf::IntRect(64, 256, 64, 64));
+			sprite.setTextureRect(sf::IntRect(96, 384, 96, 96));
 			break;
 		case 2:
-			sprite.setTextureRect(sf::IntRect(128, 256, 64, 64));
+			sprite.setTextureRect(sf::IntRect(192, 384, 96, 96));
 			break;
 		case 3:
-			sprite.setTextureRect(sf::IntRect(192, 256, 64, 64));
+			sprite.setTextureRect(sf::IntRect(288, 384, 96, 96));
 			break;
 	}
 }
@@ -289,14 +288,14 @@ void Player::spriteAnimation(int direction)
 
 	if(currentTime > lastTime + spriteAnimationDelay)
 	{
-		texturePosY = direction * 64;
+		texturePosY = direction * 96;
 		lastTime = currentTime;
-		texturePosX += 64;
-		if(texturePosX > 64 * 6)
+		texturePosX += 96;
+		if(texturePosX > 96 * 6)
 		{
-			texturePosX = 64;
+			texturePosX = 96;
 		}
-		sprite.setTextureRect(sf::IntRect(texturePosX - 64, texturePosY, 64, 64));
+		sprite.setTextureRect(sf::IntRect(texturePosX - 96, texturePosY, 96, 96));
 	}
 }
 
