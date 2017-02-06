@@ -11,6 +11,7 @@ Player::Player(int x, int y)
 	sprite.setTextureRect(sf::IntRect(0, 0, 96, 96));
 	sprite.setPosition(x, y);
 	texturePosX = texturePosY = 0;
+	sprite.setScale(1, 1);
 
 	//Collision rectangle
 	collisionRectangle.setSize(sf::Vector2f(sprite.getGlobalBounds().width, sprite.getGlobalBounds().height - sprite.getGlobalBounds().height / 2));
