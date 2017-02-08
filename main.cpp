@@ -14,8 +14,6 @@
 #include "include/Player.h"
 #include "include/Mouse.h"
 
-//testing
-
 int main()
 {
 	//Declares and creates a new window
@@ -122,3 +120,4 @@ int main()
 
 	return 0;
 }
+
