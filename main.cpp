@@ -54,7 +54,7 @@ int main()
 
 	//Temporary Background
 	sf::Texture bgTexture;
-	bgTexture.loadFromFile("images/forest.jpg");
+	bgTexture.loadFromFile("images/maps/testmap.jpg");
 	sf::Sprite bgSprite(bgTexture);
 	bgSprite.setPosition(sf::Vector2f(0, 0));
 
