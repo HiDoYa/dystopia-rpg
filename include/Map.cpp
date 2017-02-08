@@ -2,20 +2,21 @@
 #include <iostream>
 #include <memory>
 
-Map::Map(sf::String textureStr)
+Map::Map(sf::String textureStr, int x, int y)
 {
 	texture.loadFromFile(textureStr);
 
 	sprite.setTexture(texture);
-	sprite.setPosition(0, 0);
+	sprite.setPosition(x, y);
 }
 
-void Map::backgroundRender(sf::RenderWindow win)
+void Map::backgroundRender(sf::RenderWindow& win)
 {
 }
 
-void Map::midgroundRender(sf::RenderWindow win)
+void Map::midgroundRender(sf::RenderWindow& win)
 {
+	win.draw(sprite);
 }
 
 std::unique_ptr<sf::RectangleShape[]> Map::midgroundCollision(int numRect)
@@ -25,25 +26,25 @@ std::unique_ptr<sf::RectangleShape[]> Map::midgroundCollision(int numRect)
 	return rectArrPtr;
 }
 
-void Map::midgroundCollisionBoxSet(int arrNum, int startX, int startY, int width, int height);
+void Map::midgroundCollisionBoxSet(int arrNum, int startX, int startY, int width, int height)
 {
 	//Sets each box
 }
 
-void Map::midgroundFrontRender(sf::RenderWindow win)
+void Map::midgroundFrontRender(sf::RenderWindow& win)
 {
 	//win.draw
 }
 
-void Map::foregroundRender(sf::RenderWindow win)
+void Map::foregroundRender(sf::RenderWindow& win)
 {
 	//win.draw
 }
 
-void Map::allMapRender(sf::RenderWindow win)
+void Map::allMapRender(sf::RenderWindow& win)
 {
-	backgroundRender();
-	midgroundRender();
-	midgroundFrontRender();
-	foregroundRender();
+	backgroundRender(win);
+	midgroundRender(win);
+	midgroundFrontRender(win);
+	foregroundRender(win);
 }

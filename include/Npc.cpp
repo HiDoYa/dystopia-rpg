@@ -4,7 +4,7 @@
 Npc::Npc(int x, int y, sf::String nameTexture)
 {
 	//Gets texture of sprite
-	texture.loadFromFile(nameTexture)
+	texture.loadFromFile(nameTexture);
 
 	//Set texture and position of sprite
 	sprite.setTexture(texture);
@@ -21,7 +21,7 @@ Npc::Npc(int x, int y, sf::String nameTexture)
 
 void Npc::setTexture(sf::String nameTexture)
 {
-	texture.loadFromFile(nameTexture)
+	texture.loadFromFile(nameTexture);
 }
 
 void Npc::setScale(float num)

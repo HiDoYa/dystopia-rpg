@@ -13,6 +13,7 @@
 #include "include/Npc.h"
 #include "include/Player.h"
 #include "include/Mouse.h"
+#include "include/Map.h"
 
 int main()
 {
@@ -51,10 +52,11 @@ int main()
 	prevPosX = prevPosY = 0;
 
 	//Temporary Background
-	sf::Texture bgTexture;
-	bgTexture.loadFromFile("images/maps/testmap.jpg");
-	sf::Sprite bgSprite(bgTexture);
-	bgSprite.setPosition(sf::Vector2f(0, 0));
+	Map testMap("images/maps/testmap.jpg", 0, 0);
+	//sf::Texture bgTexture;
+	//bgTexture.loadFromFile("images/maps/testmap.jpg");
+	//sf::Sprite bgSprite(bgTexture);
+	//bgSprite.setPosition(sf::Vector2f(0, 0));
 
 	//Sets framerate to 60fps
 	window.setFramerateLimit(60);
@@ -108,7 +110,8 @@ int main()
 		window.setView(view);
 
 		//window.draw();
-		window.draw(bgSprite);
+		//window.draw(bgSprite);
+		testMap.allMapRender(window);
 		window.draw(kitty.getSprite());
 		window.draw(chr.getSprite());
 		box.drawAll(window);
