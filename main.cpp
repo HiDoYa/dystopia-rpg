@@ -51,12 +51,8 @@ int main()
 	int prevPosX, prevPosY;
 	prevPosX = prevPosY = 0;
 
-	//Temporary Background
+	//Background
 	Map testMap("images/maps/testmap.jpg", 0, 0);
-	//sf::Texture bgTexture;
-	//bgTexture.loadFromFile("images/maps/testmap.jpg");
-	//sf::Sprite bgSprite(bgTexture);
-	//bgSprite.setPosition(sf::Vector2f(0, 0));
 
 	//Sets framerate to 60fps
 	window.setFramerateLimit(60);
@@ -110,7 +106,6 @@ int main()
 		window.setView(view);
 
 		//window.draw();
-		//window.draw(bgSprite);
 		testMap.allMapRender(window);
 		window.draw(kitty.getSprite());
 		window.draw(chr.getSprite());

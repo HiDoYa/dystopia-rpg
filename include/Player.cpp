@@ -69,7 +69,6 @@ void Player::stepSound()
 	}
 }
 
-//TODO Change spr to RectangleShape and change NPC collision return to RectangleShape
 void Player::setCollisionBools(sf::Sprite spr)
 {
 	canMoveUp = canMoveDown = canMoveRight = canMoveLeft = true;
@@ -99,6 +98,40 @@ void Player::setCollisionBools(sf::Sprite spr)
 		canMoveLeft = false;
 	}
 	if(spr.getGlobalBounds().intersects(moveRightRect))
+	{
+		canMoveRight = false;
+	}
+}
+
+void Player::setCollisionBools(sf::RectangleShape rect)
+{
+	canMoveUp = canMoveDown = canMoveRight = canMoveLeft = true;
+
+	//Gets point for each given that the sprite moves
+	sf::Vector2f sprUpCheckNum = sf::Vector2f(collisionRectangle.getGlobalBounds().left, collisionRectangle.getGlobalBounds().top - speedRegular);
+	sf::Vector2f sprDownCheckNum = sf::Vector2f(collisionRectangle.getGlobalBounds().left, collisionRectangle.getGlobalBounds().top + speedRegular);
+	sf::Vector2f sprLeftCheckNum = sf::Vector2f(collisionRectangle.getGlobalBounds().left - speedRegular, collisionRectangle.getGlobalBounds().top);
+	sf::Vector2f sprRightCheckNum = sf::Vector2f(collisionRectangle.getGlobalBounds().left + speedRegular, collisionRectangle.getGlobalBounds().top);
+	
+	//Calculates each rectangle for if the player CAN move
+	sf::Rect<float> moveUpRect(sprUpCheckNum, collisionSize);
+	sf::Rect<float> moveDownRect(sprDownCheckNum, collisionSize);
+	sf::Rect<float> moveLeftRect(sprLeftCheckNum, collisionSize);
+	sf::Rect<float> moveRightRect(sprRightCheckNum, collisionSize);
+
+	if(rect.getGlobalBounds().intersects(moveUpRect))
+	{
+		canMoveUp = false;
+	}
+	if(rect.getGlobalBounds().intersects(moveDownRect))
+	{
+		canMoveDown = false;
+	}
+	if(rect.getGlobalBounds().intersects(moveLeftRect))
+	{
+		canMoveLeft = false;
+	}
+	if(rect.getGlobalBounds().intersects(moveRightRect))
 	{
 		canMoveRight = false;
 	}

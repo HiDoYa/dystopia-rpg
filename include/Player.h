@@ -46,6 +46,7 @@ class Player
 		void setPos(int, int);
 		void stepSound();
 		void setCollisionBools(sf::Sprite);
+		void setCollisionBools(sf::RectangleShape);
 		void standStill();
 		void movePos(float&, float&);
 		void spriteAnimation(int);
