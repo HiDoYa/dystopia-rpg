@@ -1,4 +1,5 @@
 #include "Map.h"
+#include <fstream>
 #include <iostream>
 #include <memory>
 
@@ -14,26 +15,19 @@ void Map::backgroundRender(sf::RenderWindow& win)
 {
 }
 
-void Map::midgroundRender(sf::RenderWindow& win)
+//Draw bitmap
+void Map::getBitMap(sf::String mapFile, sf::RenderWindow& win)
 {
+	ifstream mapFile;
+	mapFile.open(currentMap);
+	mapFile >> mapLength >> mapHeight;
+	for(int x = 0; x < mapLength; i++)
+	{
+		for(int y = 0; i y < mapHeight; y++)
+		{
+		}
+	}
 	win.draw(sprite);
-}
-
-std::unique_ptr<sf::RectangleShape[]> Map::midgroundCollision(int numRect)
-{
-	//Dynamically allocate RectangleShape (based on how many squares are going to be needed)
-	std::unique_ptr<sf::RectangleShape[]> rectArrPtr( new sf::RectangleShape[numRect]);
-	return rectArrPtr;
-}
-
-void Map::midgroundCollisionBoxSet(int arrNum, int startX, int startY, int width, int height)
-{
-	//Sets each box
-}
-
-void Map::midgroundFrontRender(sf::RenderWindow& win)
-{
-	//win.draw
 }
 
 void Map::foregroundRender(sf::RenderWindow& win)
