@@ -69,6 +69,8 @@ void Player::stepSound()
 	}
 }
 
+
+
 void Player::setCollisionBools(sf::Sprite spr)
 {
 	canMoveUp = canMoveDown = canMoveRight = canMoveLeft = true;

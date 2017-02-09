@@ -8,12 +8,13 @@
 class Map
 {
 	private:
-		sf::Sprite sprite;
-		sf::Texture texture;
+		sf::Sprite tileSprite;
+		sf::Texture tileTexture;
 	public:
 		Map(sf::String, int, int);
 		void backgroundRender(sf::RenderWindow&);
-		void getBitMap(sf::RenderWindow&);
+		void getBitmap(sf::String currentFile, sf::RenderWindow&);
+		void renderBitmap()
 		void foregroundRender(sf::RenderWindow&);
 		void allMapRender(sf::RenderWindow&);
 };

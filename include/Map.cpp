@@ -1,7 +1,9 @@
 #include "Map.h"
+#include <cctype>
 #include <fstream>
 #include <iostream>
 #include <memory>
+#include <string>
 
 Map::Map(sf::String textureStr, int x, int y)
 {
@@ -16,18 +18,38 @@ void Map::backgroundRender(sf::RenderWindow& win)
 }
 
 //Draw bitmap
-void Map::getBitMap(sf::String mapFile, sf::RenderWindow& win)
+void Map::getBitmap(sf::String currentFile, sf::RenderWindow& win)
 {
-	ifstream mapFile;
+	std::ifstream mapFile;
 	mapFile.open(currentMap);
-	mapFile >> mapLength >> mapHeight;
-	for(int x = 0; x < mapLength; i++)
+
+	std::string currentLine;
+
+	sf::Vector2f tiles[100][100];
+
+	if(mapFile.is_open())
 	{
-		for(int y = 0; i y < mapHeight; y++)
+		std::string tileTexturesLoc;
+		mapFile >> tileTexturesLoc;
+		tileTexture.loadFromFile(tileTexturesLoc);
+		tileSprite.setTexture(tileTexture);
+
+		while(!mapFile.eof())
 		{
+			mapFile >> currentLine;
+			for(int i = 0; i < currentLine.length(); i++)
+			{
+				if(isdigit(currentLine[i]))
+				{
+				}
+			}
 		}
 	}
 	win.draw(sprite);
+}
+
+void Map::renderBitmap()
+{
 }
 
 void Map::foregroundRender(sf::RenderWindow& win)

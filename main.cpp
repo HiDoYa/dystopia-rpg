@@ -78,7 +78,6 @@ int main()
 		mousePosY = sf::Mouse::getPosition(window).y;
 
 		//Character move
-		chr.setCollisionBools(kitty.getSprite());
 		chr.movePos(mousePosXDisplacement, mousePosYDisplacement);
 
 		prevPosX = chr.getPos().x;
