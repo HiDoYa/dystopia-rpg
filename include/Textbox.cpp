@@ -85,6 +85,7 @@ bool Textbox::setSuccess()
 	success = false;
 }
 
+//test
 void Textbox::setPosition(int x, int y)
 {
 	posX = x;
