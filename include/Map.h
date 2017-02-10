@@ -10,11 +10,14 @@ class Map
 	private:
 		sf::Sprite tileSprite;
 		sf::Texture tileTexture;
+		sf::Vector2i tiles[100][100];
+		sf::Vector2i loadCounter;
+		sf::Vector2i maxCords;
 	public:
-		Map(sf::String, int, int);
+		Map();
 		void backgroundRender(sf::RenderWindow&);
-		void getBitmap(sf::String currentFile, sf::RenderWindow&);
-		void renderBitmap()
+		void getBitmap(std::string, sf::RenderWindow&);
+		void renderBitmap(sf::RenderWindow&);
 		void foregroundRender(sf::RenderWindow&);
 		void allMapRender(sf::RenderWindow&);
 };

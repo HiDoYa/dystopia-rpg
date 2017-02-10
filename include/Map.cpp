@@ -5,12 +5,8 @@
 #include <memory>
 #include <string>
 
-Map::Map(sf::String textureStr, int x, int y)
+Map::Map()
 {
-	texture.loadFromFile(textureStr);
-
-	sprite.setTexture(texture);
-	sprite.setPosition(x, y);
 }
 
 void Map::backgroundRender(sf::RenderWindow& win)
@@ -18,38 +14,90 @@ void Map::backgroundRender(sf::RenderWindow& win)
 }
 
 //Draw bitmap
-void Map::getBitmap(sf::String currentFile, sf::RenderWindow& win)
+void Map::getBitmap(std::string currentFile, sf::RenderWindow& win)
 {
+	//Loads file
 	std::ifstream mapFile;
-	mapFile.open(currentMap);
+	mapFile.open(currentFile);
 
-	std::string currentLine;
-
-	sf::Vector2f tiles[100][100];
+	//Sets loadcounter to start at location 0 in map
+	loadCounter = sf::Vector2i(0, 0);
+	maxCords = sf::Vector2i(0, 0);
 
 	if(mapFile.is_open())
 	{
+		//Gets spritesheet
 		std::string tileTexturesLoc;
 		mapFile >> tileTexturesLoc;
 		tileTexture.loadFromFile(tileTexturesLoc);
 		tileSprite.setTexture(tileTexture);
 
+		//Initializes str and gets first string
+		std::string str;
+		mapFile >> str;
+
 		while(!mapFile.eof())
 		{
-			mapFile >> currentLine;
-			for(int i = 0; i < currentLine.length(); i++)
+			//Gets first two numbers
+			int x = (str[0] - '0') * 10 + (str[1] - '0');
+			int y = (str[3] - '0') * 10 + (str[4] - '0');
+
+			if(!isdigit(str[0]) || !isdigit(str[3]))
 			{
-				if(isdigit(currentLine[i]))
-				{
-				}
+				tiles[loadCounter.y][loadCounter.x] = sf::Vector2i(-1, -1);
+			}
+			else
+			{
+				tiles[loadCounter.y][loadCounter.x] = sf::Vector2i(x, y);
+			}
+
+			//Change counter
+			if(mapFile.peek() == '\n')
+			{
+				loadCounter.x = 0;
+				loadCounter.y++;
+			}
+			else
+			{
+				loadCounter.x++;
+			}
+
+			//Sets the max height/width
+			if(maxCords.x < loadCounter.x)
+			{
+				maxCords.x = loadCounter.x;
+			}
+			if(maxCords.y < loadCounter.y)
+			{
+				maxCords.y = loadCounter.y;
+			}
+
+			//Gets the next string
+			mapFile >> str;
+		}
+
+		//Apparently the end of a text file has a new line so I have to increment x to make up for it
+		maxCords.x++;
+	}
+
+	mapFile.close();
+}
+
+void Map::renderBitmap(sf::RenderWindow& win)
+{
+	for(int j = 0; j < maxCords.y; j++)
+	{
+		for(int i = 0; i < maxCords.x; i++)
+		{
+			if(tiles[j][i].x != -1 && tiles[j][i].y != -1)
+			{
+				tileSprite.setPosition(i * 64, j * 64);
+				tileSprite.setTextureRect(sf::IntRect(tiles[j][i].x * 64, tiles[j][i].y * 64, 64, 64));
+				win.draw(tileSprite);
 			}
 		}
 	}
-	win.draw(sprite);
-}
 
-void Map::renderBitmap()
-{
 }
 
 void Map::foregroundRender(sf::RenderWindow& win)
@@ -60,7 +108,5 @@ void Map::foregroundRender(sf::RenderWindow& win)
 void Map::allMapRender(sf::RenderWindow& win)
 {
 	backgroundRender(win);
-	midgroundRender(win);
-	midgroundFrontRender(win);
 	foregroundRender(win);
 }

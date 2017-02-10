@@ -52,7 +52,8 @@ int main()
 	prevPosX = prevPosY = 0;
 
 	//Background
-	Map testMap("images/maps/testmap.jpg", 0, 0);
+	Map testMap;
+	testMap.getBitmap("maps/testmap", window);
 
 	//Sets framerate to 60fps
 	window.setFramerateLimit(60);
@@ -88,6 +89,8 @@ int main()
 		//Sets position of cursor
 		mouse.setPosition(mousePosX + mousePosXDisplacement, mousePosY + mousePosYDisplacement);
 
+
+
 		//Sets position of box
 		box.setPosition(mousePosXDisplacement, mousePosYDisplacement);
 
@@ -105,8 +108,8 @@ int main()
 		window.setView(view);
 
 		//window.draw();
-		testMap.allMapRender(window);
-		window.draw(kitty.getSprite());
+		testMap.renderBitmap(window);
+		//window.draw(kitty.getSprite());
 		window.draw(chr.getSprite());
 		box.drawAll(window);
 		window.draw(mouse.getSprite());
