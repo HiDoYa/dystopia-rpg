@@ -4,6 +4,7 @@
 #include <iostream>
 #include <memory>
 #include <string>
+#include <vector>
 
 Map::Map()
 {
@@ -36,6 +37,9 @@ void Map::getBitmap(std::string currentFile, sf::RenderWindow& win)
 		std::string str;
 		mapFile >> str;
 
+		std::vector<sf::Vector2i> newColumn;
+		map.push_back(newColumn);
+
 		while(!mapFile.eof())
 		{
 			//Gets first two numbers
@@ -44,16 +48,17 @@ void Map::getBitmap(std::string currentFile, sf::RenderWindow& win)
 
 			if(!isdigit(str[0]) || !isdigit(str[3]))
 			{
-				tiles[loadCounter.y][loadCounter.x] = sf::Vector2i(-1, -1);
+				map.at(loadCounter.y).push_back(sf::Vector2i(-1, -1));
 			}
 			else
 			{
-				tiles[loadCounter.y][loadCounter.x] = sf::Vector2i(x, y);
+				map.at(loadCounter.y).push_back(sf::Vector2i(x, y));
 			}
 
 			//Change counter
 			if(mapFile.peek() == '\n')
 			{
+				map.push_back(newColumn);
 				loadCounter.x = 0;
 				loadCounter.y++;
 			}
@@ -89,10 +94,10 @@ void Map::renderBitmap(sf::RenderWindow& win)
 	{
 		for(int i = 0; i < maxCords.x; i++)
 		{
-			if(tiles[j][i].x != -1 && tiles[j][i].y != -1)
+			if(map[j][i].x != -1 && map[j][i].y != -1)
 			{
 				tileSprite.setPosition(i * 64, j * 64);
-				tileSprite.setTextureRect(sf::IntRect(tiles[j][i].x * 64, tiles[j][i].y * 64, 64, 64));
+				tileSprite.setTextureRect(sf::IntRect(map[j][i].x * 64, map[j][i].y * 64, 64, 64));
 				win.draw(tileSprite);
 			}
 		}

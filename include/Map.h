@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <fstream>
 #include <memory>
+#include <vector>
 
 #ifndef MAP_H
 #define MAP_H
@@ -10,7 +11,7 @@ class Map
 	private:
 		sf::Sprite tileSprite;
 		sf::Texture tileTexture;
-		sf::Vector2i tiles[100][100];
+		std::vector<std::vector<sf::Vector2i>> map;
 		sf::Vector2i loadCounter;
 		sf::Vector2i maxCords;
 	public:
