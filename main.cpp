@@ -18,7 +18,7 @@
 int main()
 {
 	//Declares and creates a new window
-	sf::RenderWindow window(sf::VideoMode(1280, 720), "Game");
+	sf::RenderWindow window(sf::VideoMode(1024, 768), "Game");
 
 	//Defines what region is shown on screen
 	sf::View view = window.getView();
@@ -89,8 +89,6 @@ int main()
 		//Sets position of cursor
 		mouse.setPosition(mousePosX + mousePosXDisplacement, mousePosY + mousePosYDisplacement);
 
-
-
 		//Sets position of box
 		box.setPosition(mousePosXDisplacement, mousePosYDisplacement);
 
@@ -104,7 +102,7 @@ int main()
 		window.clear(winColor);
 
 		//Sets view
-		view.setCenter(chr.getSprite().getPosition());
+		view.setCenter(0, 0);
 		window.setView(view);
 
 		//window.draw();
