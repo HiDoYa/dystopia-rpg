@@ -8,7 +8,7 @@ Textbox::Textbox(sf::RenderWindow& win)
 {
 	//Gets box parameters
 	width = 0;
-	height = 150;
+	height = 200;
 	posX = 0;
 	posY = win.getSize().y - height; 
 
