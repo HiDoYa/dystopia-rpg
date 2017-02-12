@@ -29,9 +29,8 @@ int main()
 	Textbox box(view);
 
 	//NPC instances
-	Npc kitty(20, 20, "images/hello.jpeg");
-	kitty.setScale(0.2);
-
+	Npc npcTest(128, 128, "images/test4.png");
+	
 	//Player instances
 	Player chr(0, 0);
 
@@ -63,7 +62,7 @@ int main()
 		chr.movePos();
 
 		//Npc Kitty interaction
-		kitty.speak("Kitty", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sed velit semper, bibendum orci id, auctor tellus. Proin sollicitudin, urna et accumsan", box);
+		npcTest.speak("Kitty", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sed velit semper, bibendum orci id, auctor tellus. Proin sollicitudin, urna et accumsan", box);
 
 		//Activates window for OpenGL rendering
 		sf::Color winColor(107, 120, 140);
@@ -82,8 +81,11 @@ int main()
 		//Mid
 		ground.drawBitmap(window);
 		collision.drawCollision(window, chr);
-		window.draw(kitty.getSprite());
 		window.draw(chr.getSprite());
+
+		//Npcs
+		window.draw(npcTest.getSprite());
+		npcTest.collision(chr);
 		
 		//Always on top
 		box.drawAll(window);
