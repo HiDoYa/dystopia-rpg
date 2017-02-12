@@ -40,10 +40,18 @@ Textbox::Textbox(sf::View& view)
 	//Next propmt is always the same
 	nextPrompt.setString("Press spacebar to continue...");
 
+	//Time management for opening/closing box
+	delayBoxSetup = 30;
+	lastTimeBox = 0;
+
+	//To skip text
+	lastNotPressed = false;
+	lastTimeSkip = 0;
+
 	//Initialize for animation
 	textIndex = 0;
 	textSpeed = 20;
-	lastTime = 0;
+	lastTimeLetter = 0;
 }
 
 //Sets the font (for different characters)
@@ -193,15 +201,17 @@ void Textbox::convertText(std::string str, std::vector<std::string>& sVec)
 //Text doesnt appear instantly
 void Textbox::animateText(std::string str)
 {
-	//Gets current time
-	time = clock.getElapsedTime();
-	currentTime = time.asMilliseconds();
-
 	//If the displayed text isnt the same as the str input
 	if(text.getString() != str)
 	{
-		//Only run if the currentTime is above a certain time above lastTime
-		if(currentTime > lastTime + textSpeed)
+		//Gets current time
+		time = clock.getElapsedTime();
+		currentTime = time.asMilliseconds();
+
+		//Current text is not yet completed
+		currentCompleted = false;
+		//Only run if the currentTime is above a certain time above lastTimeLetter
+		if(currentTime > lastTimeLetter + textSpeed)
 		{
 			//Append a new letter
 			animText += str[textIndex];
@@ -211,12 +221,28 @@ void Textbox::animateText(std::string str)
 			mu.play();
 
 			//Set up for next
-			lastTime = currentTime;
+			lastTimeLetter = currentTime;
 			textIndex++;
+		}
+
+		//TO SKIP TEXT
+		//Press spacebar to skip
+		if(!(sf::Keyboard::isKeyPressed(sf::Keyboard::Space)))
+		{
+			lastNotPressed = true;
+		}
+		if(lastNotPressed && sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+		{
+			setText(str);
+			lastNotPressed = false;
+			lastTimeSkip = currentTime;
 		}
 	}
 	else
 	{
+		//Says the current text has completed
+		currentCompleted = true;
+
 		//Resets temp string, and index
 		nextPrompt.setCharacterSize(20);
 		animText = "";
@@ -229,15 +255,15 @@ void Textbox::openBox()
 {
 	time = clock.getElapsedTime();
 	currentTime = time.asMilliseconds();
-	if(currentTime > lastTime + 30 && width < 1280)
+	if(currentTime > lastTimeBox + delayBoxSetup && width < 1024)
 	{
-		width += 80;
+		width += 64;
 		rec.setPosition(sf::Vector2f(posX, posY));
 		rec.setSize(sf::Vector2f(width, height));
-		lastTime = currentTime;
+		lastTimeBox = currentTime;
 	}
 
-	if(width >= 1280)
+	if(width >= 1024)
 	{
 		open = true;
 	}
@@ -250,12 +276,12 @@ void Textbox::closeBox()
 	currentTime = time.asMilliseconds();
 	text.setString("");
 	name.setString("");
-	if(currentTime > lastTime + 30 && width > 0)
+	if(currentTime > lastTimeBox + delayBoxSetup && width > 0)
 	{
-		width -= 80;
+		width -= 64;
 		rec.setPosition(sf::Vector2f(posX, posY));
 		rec.setSize(sf::Vector2f(width, height));
-		lastTime = currentTime;
+		lastTimeBox = currentTime;
 	}
 
 	if(width == 0)
@@ -269,9 +295,9 @@ bool Textbox::nextText()
 {
 	time = clock.getElapsedTime();
 	currentTime = time.asMilliseconds();
-	if(open && sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && lastTime + 300 < currentTime)
+
+	if(open && sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && currentCompleted && (lastTimeSkip + 200 < currentTime))
 	{
-		lastTime = currentTime;
 		nextPrompt.setCharacterSize(0);
 		return true;
 	}

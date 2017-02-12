@@ -13,6 +13,7 @@ class Textbox
 		sf::Text name;
 		sf::Text nextPrompt;
 		bool open;
+		bool currentCompleted;
 
 		//Music
 		sf::Music mu;
@@ -23,11 +24,23 @@ class Textbox
 		int posX;
 		int posY;
 
-		//All for animating text
+		//Speed for closing/opening box
+		int delayBoxSetup;
+		
+		//Time management
 		sf::Clock clock;
 		sf::Time time;
 		float currentTime;
-		float lastTime;
+
+		//To skip text
+		bool lastNotPressed;
+		float lastTimeSkip;
+
+		//For opening and closing box
+		float lastTimeBox;
+
+		//All for animating text
+		float lastTimeLetter;
 		int textSpeed;
 		int textIndex;
 		sf::String animText;
