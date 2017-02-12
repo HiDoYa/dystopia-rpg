@@ -1,5 +1,3 @@
-#include <cmath>
-#include <string>
 #include <iostream>
 
 //SFML
@@ -12,7 +10,6 @@
 #include "include/Textbox.h"
 #include "include/Npc.h"
 #include "include/Player.h"
-#include "include/Mouse.h"
 #include "include/Map.h"
 
 int main()
@@ -23,37 +20,26 @@ int main()
 	//Defines what region is shown on screen
 	sf::View view = window.getView();
 
-	//Used to keep track of mouse movement using both displacement and user mouse movement
-	float mousePosX, mousePosY, mousePosXDisplacement, mousePosYDisplacement, prevMousePosXDisplacement, prevMousePosYDisplacement;
-	mousePosXDisplacement = mousePosYDisplacement = prevMousePosXDisplacement = prevMousePosYDisplacement = 0;
-
-
-	//Disable the user's OS mouse
-	window.setMouseCursorVisible(false);
-
-	//Loads mouse class
-	Mouse mouse;
-
 	//Music
 	sf::Music music;
 	music.openFromFile("sound/ambientMu.ogg");
 	music.play();
 
 	//Text box instances
-	Textbox box(window);
+	Textbox box(view);
 
 	//NPC instances
 	Npc kitty(20, 20, "images/hello.jpeg");
 	kitty.setScale(0.2);
 
 	//Player instances
-	Player chr(window.getSize().x/2, window.getSize().y/2);
-	int prevPosX, prevPosY;
-	prevPosX = prevPosY = 0;
+	Player chr(0, 0);
 
 	//Background
-	Map testMap;
-	testMap.getBitmap("maps/testmap", window);
+	Map ground, background, collision;
+	ground.setupBitmap("maps/testmap", window);
+	collision.setupBitmap("maps/testcollision", window);
+	background.setupStatic("images/background.jpg");
 
 	//Sets framerate to 60fps
 	window.setFramerateLimit(60);
@@ -73,44 +59,34 @@ int main()
 			}
 		}
 
-
-		//Cursor
-		mousePosX = sf::Mouse::getPosition(window).x;
-		mousePosY = sf::Mouse::getPosition(window).y;
-
 		//Character move
-		chr.movePos(mousePosXDisplacement, mousePosYDisplacement);
+		chr.movePos();
 
-		prevPosX = chr.getPos().x;
-		prevPosY = chr.getPos().y;
-		prevMousePosXDisplacement = mousePosXDisplacement;
-		prevMousePosYDisplacement = mousePosYDisplacement;
-
-		//Sets position of cursor
-		mouse.setPosition(mousePosX + mousePosXDisplacement, mousePosY + mousePosYDisplacement);
-
-		//Sets position of box
-		box.setPosition(mousePosXDisplacement, mousePosYDisplacement);
-
-		//Npc Kitty interactions
-		mouse.npcTalkSet(&kitty);
-
-		kitty.speak("Kitty", "Lorem ipsum dolor sit amet", box);
+		//Npc Kitty interaction
+		kitty.speak("Kitty", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sed velit semper, bibendum orci id, auctor tellus. Proin sollicitudin, urna et accumsan", box);
 
 		//Activates window for OpenGL rendering
 		sf::Color winColor(107, 120, 140);
 		window.clear(winColor);
 
 		//Sets view
-		view.setCenter(0, 0);
+		view.setCenter(chr.getPosition());
 		window.setView(view);
 
-		//window.draw();
-		testMap.renderBitmap(window);
-		//window.draw(kitty.getSprite());
+		//Sets position of box
+		box.updatePosition(view);
+
+		//Always on bottom
+		background.drawStatic(window, view); 
+
+		//Mid
+		ground.drawBitmap(window);
+		collision.drawCollision(window, chr);
+		window.draw(kitty.getSprite());
 		window.draw(chr.getSprite());
+		
+		//Always on top
 		box.drawAll(window);
-		window.draw(mouse.getSprite());
 
 		//End current frame and display its contents on screen
 		window.display();
