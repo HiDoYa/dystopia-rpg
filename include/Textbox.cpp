@@ -226,8 +226,8 @@ void Textbox::animateText(std::string str)
 		}
 
 		//TO SKIP TEXT
-		//Press spacebar to skip
-		if(!(sf::Keyboard::isKeyPressed(sf::Keyboard::Space)))
+		//Press spacebar to skip. 
+		if(!(sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) && (currentTime > lastTimeSkip + 100))
 		{
 			lastNotPressed = true;
 		}
@@ -299,6 +299,7 @@ bool Textbox::nextText()
 	if(open && sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && currentCompleted && (lastTimeSkip + 200 < currentTime))
 	{
 		nextPrompt.setCharacterSize(0);
+		lastNotPressed = false;
 		lastTimeSkip = currentTime;
 		return true;
 	}
