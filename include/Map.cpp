@@ -62,10 +62,10 @@ void Map::setupBitmap(std::string currentFile, sf::RenderWindow& win)
 			{
 				map.at(loadCounter.y).push_back(sf::Vector2i(-1, -1));
 			}
-			else if(str[0] == n)
+			else if(str[0] == 'n')
 			{
 				//TODO setup new map mechanic in player class
-				int newZoneNum = ((str[1] - '0');
+				int newZoneNum = (str[1] - '0');
 				int newMapNum = ((str[3] - '0') * 10) + (str[4] - '0');
 				map.at(loadCounter.y).push_back(sf::Vector2i(-2, newMapNum));
 			}
