@@ -106,8 +106,10 @@ void Map::drawBitmap(sf::RenderWindow& win)
 	{
 		for(int i = 0; i < maxCords.x; i++)
 		{
+			//If the map index isn't empty
 			if(map[j][i].x != -1 && map[j][i].y != -1)
 			{
+				//Draws tiles
 				tileSprite.setPosition(i * 64, j * 64);
 				tileSprite.setTextureRect(sf::IntRect(map[j][i].x * 64, map[j][i].y * 64, 64, 64));
 				win.draw(tileSprite);
@@ -123,34 +125,17 @@ void Map::drawCollision(sf::RenderWindow& win, Player& player)
 	{
 		for(int i = 0; i < maxCords.x; i++)
 		{
-			if(!(map[j][i].x == -1 && map[j][i].y == -1))
+			//If the map index isn't empty
+			if(map[j][i].x != -1 && map[j][i].y != -1)
 			{
+				//Draws collision tiles
 				tileSprite.setPosition(i * 64, j * 64);
 				tileSprite.setTextureRect(sf::IntRect(map[j][i].x * 64, map[j][i].y * 64, 64, 64));
 				win.draw(tileSprite);
+
+				//Checks for collision for player movement
 				player.collisionZones(i, j);
 			}
-			
-			//	sf::RectangleShape tileRect(sf::Vector2f(64, 64));
-			//	tileRect.setPosition(i * 64, j * 64);
-
-			//	int playerCenterX, playerCenterY;
-			//	playerCenterX = player.getGlobalBounds().left + player.getGlobalBounds().width / 2;
-			//	playerCenterY = player.getGlobalBounds().top + player.getGlobalBounds().height / 2;
-
-			//	if(tileRect.getGlobalBounds().contains(playerCenterX, playerCenterY))
-			//	{
-			//		std::cout << "Colliding\n";
-			//	}
-
-			//	tileSprite.setPosition(i * 64, j * 64);
-			//	tileSprite.setTextureRect(sf::IntRect(map[j][i].x * 64, map[j][i].y * 64, 64, 64));
-			//	win.draw(tileSprite);
-			//}
-			//else
-			//{
-			//	std::cout << "Not colliding\n";
-			//}
 		}
 	}
 }

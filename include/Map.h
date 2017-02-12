@@ -8,10 +8,13 @@
 class Map
 {
 	private:
+		//Used to setup bitmaps
 		sf::Sprite tileSprite;
 		sf::Texture tileTexture;
 		std::vector<std::vector<sf::Vector2i>> map;
 		sf::Vector2i loadCounter;
+
+		//Used to load maps
 		sf::Vector2i maxCords;
 	public:
 		Map();
