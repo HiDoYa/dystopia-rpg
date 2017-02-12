@@ -299,6 +299,7 @@ bool Textbox::nextText()
 	if(open && sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && currentCompleted && (lastTimeSkip + 200 < currentTime))
 	{
 		nextPrompt.setCharacterSize(0);
+		lastTimeSkip = currentTime;
 		return true;
 	}
 	return false;
