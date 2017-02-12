@@ -27,6 +27,9 @@ void Map::drawStatic(sf::RenderWindow& win, sf::View view)
 }
 
 //Draw bitmap
+//Format for regular tile where 12 is the x, 34 is the y -> 12,34
+//Format for new map where 1 is the zone, 23 is the map number -> n1,23 
+//Format for nothing -> xx,xx
 void Map::setupBitmap(std::string currentFile, sf::RenderWindow& win)
 {
 	//Loads file
@@ -54,16 +57,23 @@ void Map::setupBitmap(std::string currentFile, sf::RenderWindow& win)
 
 		while(!mapFile.eof())
 		{
-			//Gets first two numbers
-			int x = (str[0] - '0') * 10 + (str[1] - '0');
-			int y = (str[3] - '0') * 10 + (str[4] - '0');
 
 			if(!isdigit(str[0]) || !isdigit(str[3]))
 			{
 				map.at(loadCounter.y).push_back(sf::Vector2i(-1, -1));
 			}
+			else if(str[0] == n)
+			{
+				//TODO setup new map mechanic in player class
+				int newZoneNum = ((str[1] - '0');
+				int newMapNum = ((str[3] - '0') * 10) + (str[4] - '0');
+				map.at(loadCounter.y).push_back(sf::Vector2i(-2, newMapNum));
+			}
 			else
 			{
+				//Gets first two numbers
+				int x = (str[0] - '0') * 10 + (str[1] - '0');
+				int y = (str[3] - '0') * 10 + (str[4] - '0');
 				map.at(loadCounter.y).push_back(sf::Vector2i(x, y));
 			}
 
