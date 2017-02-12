@@ -29,7 +29,7 @@ class Npc
 		void setTexture(sf::String);
 		void setPosition(int, int);
 		sf::Sprite getSprite();
-		void speak(sf::String, sf::String, Textbox&);
+		bool speak(sf::String, sf::String, Textbox&);
 		void collision(Player&);
 };
 
