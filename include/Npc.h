@@ -9,9 +9,6 @@ class Npc
 {
 	private:
 		sf::Texture texture;
-		//Top and bottom of sprite
-		//sf::Sprite spriteFore;
-		//sf::Sprite spriteMid;
 		sf::Sprite sprite;
 		sf::RectangleShape collisionRectangle;
 		bool isMouseOver;
@@ -28,9 +25,6 @@ class Npc
 		void setPos(int, int);
 		sf::Texture getTexture();
 		sf::Sprite getSprite();
-		void autoMove();
-		void moveAwayFromChar(int, int);
-		void moveTowardChar(int, int);
 		bool mouseOver(sf::Sprite);
 		bool getColliding(sf::Sprite);
 		bool getColliding(sf::RectangleShape);
@@ -38,3 +32,4 @@ class Npc
 };
 
 #endif
+

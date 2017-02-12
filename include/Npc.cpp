@@ -46,18 +46,6 @@ sf::Sprite Npc::getSprite()
 	return sprite;
 }
 
-void Npc::autoMove()
-{
-}
-
-void Npc::moveAwayFromChar(int charPosX, int charPosY)
-{
-}
-
-void Npc::moveTowardChar(int charPosX, int charPosY)
-{
-}
-
 bool Npc::mouseOver(sf::Sprite mouse)
 {
 	if(sprite.getGlobalBounds().contains(mouse.getPosition()))
