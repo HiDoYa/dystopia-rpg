@@ -17,6 +17,9 @@ Npc::Npc(int x, int y, sf::String nameTexture)
 	textNum = 0;
 	openBox = false;
 	closeBox = false;
+
+	//Initializes speaking bool
+	speaking = false;
 }
 
 void Npc::setTexture(sf::String nameTexture)
@@ -35,14 +38,10 @@ sf::Sprite Npc::getSprite()
 }
 
 //Gets the converted vector, deals with animation/textbox calls, and deals with multiple textboxes
-//Returns true if the NPC is still speaking
-bool Npc::speak(sf::String nm, sf::String str, Textbox& box)
+void Npc::speak(sf::String nm, sf::String str, Textbox& box)
 {
-	bool speaking = false;
-
 	if(colliding && sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
-		speaking = true;
 		box.convertText(str, sVec);
 		if(!box.getOpen() && textNum == 0)
 		{
@@ -62,7 +61,6 @@ bool Npc::speak(sf::String nm, sf::String str, Textbox& box)
 
 	for(int i = 0; i < sVec.size(); i++)
 	{
-		speaking = true;
 		if(textNum == i + 1)
 		{
 			openBox = false;
@@ -84,6 +82,7 @@ bool Npc::speak(sf::String nm, sf::String str, Textbox& box)
 
 	if(textNum == -1)
 	{
+		speaking = false;
 		closeBox = true;
 	}
 
@@ -96,7 +95,10 @@ bool Npc::speak(sf::String nm, sf::String str, Textbox& box)
 		}
 		textNum = 0;
 	}
+}
 
+bool Npc::getSpeaking()
+{
 	return speaking;
 }
 

@@ -58,11 +58,15 @@ int main()
 			}
 		}
 
-		//Character move
-		chr.movePos();
 
-		//Npc Kitty interaction
-		npcTest.speak("Kitty", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sed velit semper, bibendum orci id, auctor tellus. Proin sollicitudin, urna et accumsan", box);
+		//Npc interaction
+		npcTest.speak("That One Guy", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sed velit semper, bibendum orci id, auctor tellus. Proin sollicitudin, urna et accumsan", box);
+
+		//Character moves if npcs aren't speaking
+		if(!npcTest.getSpeaking())
+		{
+			chr.movePos();
+		}
 
 		//Activates window for OpenGL rendering
 		sf::Color winColor(107, 120, 140);

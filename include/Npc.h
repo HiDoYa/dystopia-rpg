@@ -21,6 +21,9 @@ class Npc
 		//Used to store the text that the character will speak (separated into different lines). Textnum stores number for the current sVec element that is being displayed
 		std::vector<std::string> sVec;
 		int textNum;
+
+		//Stores whether npc is speaking or not
+		bool speaking;
 		
 		//Stores whether player is next to npc
 		bool colliding;
@@ -29,7 +32,8 @@ class Npc
 		void setTexture(sf::String);
 		void setPosition(int, int);
 		sf::Sprite getSprite();
-		bool speak(sf::String, sf::String, Textbox&);
+		void speak(sf::String, sf::String, Textbox&);
+		bool getSpeaking();
 		void collision(Player&);
 };
 
