@@ -10,14 +10,17 @@
 class Npc
 {
 	private:
+		//Texture and sprite of npc
 		sf::Texture texture;
 		sf::Sprite sprite;
+		
+		//Textbox management
 		bool openBox;
 		bool closeBox;
-		int textNum;
-		sf::Clock clk;
-		sf::Time tme;
+
+		//Used to store the text that the character will speak (separated into different lines). Textnum stores number for the current sVec element that is being displayed
 		std::vector<std::string> sVec;
+		int textNum;
 		
 		//Stores whether player is next to npc
 		bool colliding;
