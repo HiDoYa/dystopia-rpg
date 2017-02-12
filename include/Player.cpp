@@ -174,8 +174,12 @@ void Player::spriteAnimation()
 }
 
 //Checks for collision
-void Player::collisionZones(int i, int j)
+bool Player::collisionZones(int i, int j)
 {
+	//Checks if player is colliding
+	bool colliding = false;
+
+	//Gets the coordinates of players (in terms of every 64 pixels)
 	int currentPlayerX, currentPlayerY;
 	currentPlayerX = sprite.getPosition().x / 64;
 	currentPlayerY = sprite.getPosition().y / 64;
@@ -188,10 +192,12 @@ void Player::collisionZones(int i, int j)
 			if(currentPlayerY - 1 == j)
 			{
 				canMoveUp = false;
+				colliding = true;
 			}
 			if(currentPlayerY + 1 == j)
 			{
 				canMoveDown = false;
+				colliding = true;
 			}
 		}
 
@@ -200,13 +206,17 @@ void Player::collisionZones(int i, int j)
 			if(currentPlayerX - 1 == i)
 			{
 				canMoveLeft = false;
+				colliding = true;
 			}
 			if(currentPlayerX + 1 == i)
 			{
 				canMoveRight = false;
+				colliding = true;
 			}
 		}
 	}
+
+	return colliding;
 }
 
 sf::Vector2f Player::getPosition()

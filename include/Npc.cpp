@@ -1,5 +1,8 @@
 #include "Npc.h"
+#include "Player.h"
+
 #include <vector>
+#include <iostream>
 
 Npc::Npc(int x, int y, sf::String nameTexture)
 {
@@ -10,10 +13,7 @@ Npc::Npc(int x, int y, sf::String nameTexture)
 	sprite.setTexture(texture);
 	sprite.setPosition(x, y);
 
-	//Sets collision rectangle
-	collisionRectangle.setSize(sf::Vector2f(sprite.getGlobalBounds().width, sprite.getGlobalBounds().height));
-	collisionRectangle.setPosition(x, y);
-
+	//Default for textbox
 	textNum = 0;
 	openBox = false;
 	closeBox = false;
@@ -24,21 +24,9 @@ void Npc::setTexture(sf::String nameTexture)
 	texture.loadFromFile(nameTexture);
 }
 
-void Npc::setScale(float num)
-{
-	sprite.setScale(sf::Vector2f(num, num));
-	collisionRectangle.setScale(sf::Vector2f(num, num));
-}
-
-void Npc::setPos(int x, int y)
+void Npc::setPosition(int x, int y)
 {
 	sprite.setPosition(x, y);
-	collisionRectangle.setPosition(x, y);
-}
-
-sf::Texture Npc::getTexture()
-{
-	return texture;
 }
 
 sf::Sprite Npc::getSprite()
@@ -46,34 +34,10 @@ sf::Sprite Npc::getSprite()
 	return sprite;
 }
 
-bool Npc::mouseOver(sf::Sprite mouse)
-{
-	if(sprite.getGlobalBounds().contains(mouse.getPosition()))
-	{
-		isMouseOver = true;
-		return true;
-	}
-	else
-	{
-		isMouseOver = false;
-		return false;
-	}
-}
-
-bool Npc::getColliding(sf::Sprite spr)
-{
-	return collisionRectangle.getGlobalBounds().intersects(spr.getGlobalBounds());
-}
-
-bool Npc::getColliding(sf::RectangleShape rec)
-{
-	return collisionRectangle.getGlobalBounds().intersects(rec.getGlobalBounds());
-}
-
 //Gets the converted vector, deals with animation/textbox calls, and deals with multiple textboxes
 void Npc::speak(sf::String nm, sf::String str, Textbox& box)
 {
-	if(isMouseOver && sf::Mouse::isButtonPressed(sf::Mouse::Left))
+	if(colliding && sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
 		box.convertText(str, sVec);
 		if(!box.getOpen() && textNum == 0)
@@ -128,3 +92,7 @@ void Npc::speak(sf::String nm, sf::String str, Textbox& box)
 	}
 }
 
+void Npc::collision(Player& player)
+{
+	colliding = player.collisionZones(sprite.getPosition().x / 64, sprite.getPosition().y / 64);
+}

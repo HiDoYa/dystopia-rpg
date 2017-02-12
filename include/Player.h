@@ -46,7 +46,7 @@ class Player
 		void standStill();
 		void movePos();
 		void spriteAnimation();
-		void collisionZones(int, int);
+		bool collisionZones(int, int);
 		sf::Vector2f getPosition();
 		sf::Sprite getSprite();
 };
