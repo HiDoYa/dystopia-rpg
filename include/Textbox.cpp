@@ -38,7 +38,7 @@ Textbox::Textbox(sf::View& view)
 	nextPrompt.setColor(txtColor);
 
 	//Next propmt is always the same
-	nextPrompt.setString("Click to continue...");
+	nextPrompt.setString("Press spacebar to continue...");
 
 	//Initialize for animation
 	textIndex = 0;
@@ -80,7 +80,7 @@ void Textbox::updatePosition(sf::View view)
 
 	text.setPosition(sf::Vector2f(posX + 50, posY + 40));
 	name.setPosition(sf::Vector2f(posX + 20, posY + 10));
-	nextPrompt.setPosition(sf::Vector2f(posX + 700, posY + 110));
+	nextPrompt.setPosition(sf::Vector2f(posX + 700, posY + 120));
 	rec.setPosition(sf::Vector2f(posX, posY));
 }
 
@@ -269,7 +269,7 @@ bool Textbox::nextText()
 {
 	time = clock.getElapsedTime();
 	currentTime = time.asMilliseconds();
-	if(open && sf::Mouse::isButtonPressed(sf::Mouse::Left) && lastTime + 300 < currentTime)
+	if(open && sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && lastTime + 300 < currentTime)
 	{
 		lastTime = currentTime;
 		nextPrompt.setCharacterSize(0);
