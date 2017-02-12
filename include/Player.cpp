@@ -18,7 +18,7 @@ Player::Player(int x, int y)
 	curStep = 0;
 
 	//Used for time management
-	lastTime = 0;
+	lastTimeAnim = 0;
 	lastTimeMu = 0;
 	spriteAnimationDelay = 90;
 	stepSoundDelay = 300;
@@ -28,11 +28,7 @@ Player::Player(int x, int y)
 	lastDirection = 0;
 	moving = false;
 	movingNum = 0;
-}
-
-void Player::setScale(float num)
-{
-	sprite.setScale(sf::Vector2f(num, num));
+	canMoveUp = canMoveDown = canMoveLeft = canMoveRight = true;
 }
 
 void Player::setPos(int x, int y)
@@ -42,12 +38,12 @@ void Player::setPos(int x, int y)
 
 void Player::stepSound()
 {
-	tme = clk.getElapsedTime(); 
-	currentTimeMu = tme.asMilliseconds();
+	time = clock.getElapsedTime(); 
+	currentTime = time.asMilliseconds();
 
-	if(lastTimeMu + stepSoundDelay < currentTimeMu)
+	if(lastTimeMu + stepSoundDelay < currentTime)
 	{
-		lastTimeMu = currentTimeMu;
+		lastTimeMu = currentTime;
 		curStep = (curStep + 1) % 2;
 
 		switch (curStep)
@@ -67,26 +63,27 @@ void Player::standStill()
 	switch(lastDirection)
 	{
 		case 0:
-			sprite.setTextureRect(sf::IntRect(0, 384, 64, 64));
+			sprite.setTextureRect(sf::IntRect(0, 256, 64, 64));
 			break;
 		case 1:
-			sprite.setTextureRect(sf::IntRect(96, 384, 64, 64));
+			sprite.setTextureRect(sf::IntRect(64, 256, 64, 64));
 			break;
 		case 2:
-			sprite.setTextureRect(sf::IntRect(192, 384, 64, 64));
+			sprite.setTextureRect(sf::IntRect(128, 256, 64, 64));
 			break;
 		case 3:
-			sprite.setTextureRect(sf::IntRect(288, 384, 64, 64));
+			sprite.setTextureRect(sf::IntRect(192, 256, 64, 64));
 			break;
 	}
 }
 
-void Player::movePos(float& xDisplacement, float& yDisplacement)
+void Player::movePos()
 {
 	bool wPress = sf::Keyboard::isKeyPressed(sf::Keyboard::W);
 	bool sPress = sf::Keyboard::isKeyPressed(sf::Keyboard::S);
 	bool aPress = sf::Keyboard::isKeyPressed(sf::Keyboard::A);
 	bool dPress = sf::Keyboard::isKeyPressed(sf::Keyboard::D);
+
 	xSpeed = ySpeed = 0;
 
 	if(moving)
@@ -107,38 +104,46 @@ void Player::movePos(float& xDisplacement, float& yDisplacement)
 				break;
 		}
 		movingNum++;
-		if(movingNum == 7)
+
+		//Stop moving after 8 times
+		if(movingNum == 8)
 		{
 			movingNum = 0;
 			moving = false;
 		}
+		
+		sprite.move(xSpeed, ySpeed);
 	}
 	else if((wPress && sPress) || (aPress && dPress))
 	{
 		//Do nothing (moving in opposing directions)
 	}
-	else if(wPress)
+	else if(wPress && canMoveUp)
 	{
 		lastDirection = 0;
 		moving = true;
+		//spriteAnimation();
 		stepSound();
 	}
-	else if(sPress)
+	else if(sPress && canMoveDown)
 	{
 		lastDirection = 1;
 		moving = true;
+		//spriteAnimation();
 		stepSound();
 	}
-	else if(aPress)
+	else if(aPress && canMoveLeft)
 	{
 		lastDirection = 2;
 		moving = true;
+		//spriteAnimation();
 		stepSound();
 	}
-	else if(dPress)
+	else if(dPress && canMoveRight)
 	{
 		lastDirection = 3;
 		moving = true;
+		//spriteAnimation();
 		stepSound();
 	}
 	else
@@ -146,57 +151,67 @@ void Player::movePos(float& xDisplacement, float& yDisplacement)
 		//standStill();
 	}
 
-	//Checks whether the player CAN move
-	//if(!canMoveUp && ySpeed < 0)
-	//{
-	//	ySpeed = 0;
-	//}
-	//if(!canMoveDown && ySpeed > 0)
-	//{
-	//	ySpeed = 0;
-	//}
-	//if(!canMoveLeft && xSpeed < 0)
-	//{
-	//	xSpeed = 0;
-	//}
-	//if(!canMoveRight && xSpeed > 0)
-	//{
-	//	xSpeed = 0;
-	//}
-
-	//Moves sprite and adds to displacement of screen (for mouse)
-	sprite.move(xSpeed, ySpeed);
-	xDisplacement += xSpeed;
-	yDisplacement += ySpeed;
+	canMoveUp = canMoveDown = canMoveLeft = canMoveRight = true;
 }
 
 //Direction is 0 when top, 1 when right, 2 when down, 3 when left
-void Player::spriteAnimation(int direction)
+void Player::spriteAnimation()
 {
-	tme = clk.getElapsedTime();
-	currentTime = tme.asMilliseconds();
+	time = clock.getElapsedTime();
+	currentTime = time.asMilliseconds();
 
-	if(currentTime > lastTime + spriteAnimationDelay)
+	if(currentTime > lastTimeAnim + spriteAnimationDelay)
 	{
-		texturePosY = direction * 96;
-		lastTime = currentTime;
-		texturePosX += 96;
-		if(texturePosX > 96 * 6)
+		texturePosY = lastDirection * 64;
+		lastTimeAnim = currentTime;
+		texturePosX += 64;
+		if(texturePosX > 64 * 6)
 		{
-			texturePosX = 96;
+			texturePosX = 64;
 		}
-		sprite.setTextureRect(sf::IntRect(texturePosX - 96, texturePosY, 96, 96));
+		sprite.setTextureRect(sf::IntRect(texturePosX - 64, texturePosY, 64, 64));
 	}
 }
 
-sf::Vector2f Player::getPos()
+//Checks for collision
+void Player::collisionZones(int i, int j)
 {
-	return sprite.getPosition();
+	int currentPlayerX, currentPlayerY;
+	currentPlayerX = sprite.getPosition().x / 64;
+	currentPlayerY = sprite.getPosition().y / 64;
+
+	//Only if the player is within one block from the collision tile
+	if((currentPlayerX == i && (currentPlayerY + 1 == j || currentPlayerY - 1 == j)) || (currentPlayerY == j && (currentPlayerX == i + 1 || currentPlayerX == i - 1)))
+	{
+		if(currentPlayerX == i)
+		{
+			if(currentPlayerY - 1 == j)
+			{
+				canMoveUp = false;
+			}
+			if(currentPlayerY + 1 == j)
+			{
+				canMoveDown = false;
+			}
+		}
+
+		if(currentPlayerY == j)
+		{
+			if(currentPlayerX - 1 == i)
+			{
+				canMoveLeft = false;
+			}
+			if(currentPlayerX + 1 == i)
+			{
+				canMoveRight = false;
+			}
+		}
+	}
 }
 
-sf::Texture Player::getTexture()
+sf::Vector2f Player::getPosition()
 {
-	return texture;
+	return sprite.getPosition();
 }
 
 sf::Sprite Player::getSprite()

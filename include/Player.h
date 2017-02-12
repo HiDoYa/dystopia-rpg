@@ -11,44 +11,43 @@ class Player
 		sf::Sprite sprite;
 
 		//Time management for box open/close
-		sf::Clock clk;
-		sf::Time tme;
-		double lastTime;
-		double currentTime;
+		sf::Clock clock;
+		sf::Time time;
+		float lastTimeAnim;
+		float lastTimeMu;
+		float currentTime;
 		int spriteAnimationDelay;
 		int stepSoundDelay;
-		int dashMoveDelay;
 
 		//Music and time management for music
 		sf::Music step1;
 		sf::Music step2;
 		int curStep;
-		double lastTimeMu;
-		double currentTimeMu;
 
 		//Movement
 		int speed;
 		int xSpeed;
 		int ySpeed;
 		int lastDirection;
-		bool canMoveUp;
-		bool canMoveDown;
-		bool canMoveRight;
-		bool canMoveLeft;
 		int texturePosX;
 		int texturePosY;
 		bool moving;
 		int movingNum;
+
+		//Prohibit movement
+		bool canMoveUp;
+		bool canMoveDown;
+		bool canMoveRight;
+		bool canMoveLeft;
 	public:
 		Player(int, int);
-		void setScale(float);
 		void setPos(int, int);
 		void stepSound();
 		void standStill();
-		void movePos(float&, float&);
-		void spriteAnimation(int);
-		sf::Vector2f getPos();
-		sf::Texture getTexture();
+		void movePos();
+		void spriteAnimation();
+		void collisionZones(int, int);
+		sf::Vector2f getPosition();
 		sf::Sprite getSprite();
 };
 

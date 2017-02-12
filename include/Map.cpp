@@ -1,8 +1,9 @@
 #include "Map.h"
+#include "Player.h"
+
 #include <cctype>
 #include <fstream>
 #include <iostream>
-#include <memory>
 #include <string>
 #include <vector>
 
@@ -10,12 +11,23 @@ Map::Map()
 {
 }
 
-void Map::backgroundRender(sf::RenderWindow& win)
+
+void Map::setupStatic(sf::String textureInp)
 {
+	tileTexture.loadFromFile(textureInp);
+	tileSprite.setTexture(tileTexture);
+}
+
+void Map::drawStatic(sf::RenderWindow& win, sf::View view)
+{
+	int x = view.getCenter().x - view.getSize().x/2;
+	int y = view.getCenter().y - view.getSize().y/2;
+	tileSprite.setPosition(x, y);
+	win.draw(tileSprite);
 }
 
 //Draw bitmap
-void Map::getBitmap(std::string currentFile, sf::RenderWindow& win)
+void Map::setupBitmap(std::string currentFile, sf::RenderWindow& win)
 {
 	//Loads file
 	std::ifstream mapFile;
@@ -88,7 +100,7 @@ void Map::getBitmap(std::string currentFile, sf::RenderWindow& win)
 	mapFile.close();
 }
 
-void Map::renderBitmap(sf::RenderWindow& win)
+void Map::drawBitmap(sf::RenderWindow& win)
 {
 	for(int j = 0; j < maxCords.y; j++)
 	{
@@ -105,13 +117,40 @@ void Map::renderBitmap(sf::RenderWindow& win)
 
 }
 
-void Map::foregroundRender(sf::RenderWindow& win)
+void Map::drawCollision(sf::RenderWindow& win, Player& player)
 {
-	//win.draw
-}
+	for(int j = 0; j < maxCords.y; j++)
+	{
+		for(int i = 0; i < maxCords.x; i++)
+		{
+			if(!(map[j][i].x == -1 && map[j][i].y == -1))
+			{
+				tileSprite.setPosition(i * 64, j * 64);
+				tileSprite.setTextureRect(sf::IntRect(map[j][i].x * 64, map[j][i].y * 64, 64, 64));
+				win.draw(tileSprite);
+				player.collisionZones(i, j);
+			}
+			
+			//	sf::RectangleShape tileRect(sf::Vector2f(64, 64));
+			//	tileRect.setPosition(i * 64, j * 64);
 
-void Map::allMapRender(sf::RenderWindow& win)
-{
-	backgroundRender(win);
-	foregroundRender(win);
+			//	int playerCenterX, playerCenterY;
+			//	playerCenterX = player.getGlobalBounds().left + player.getGlobalBounds().width / 2;
+			//	playerCenterY = player.getGlobalBounds().top + player.getGlobalBounds().height / 2;
+
+			//	if(tileRect.getGlobalBounds().contains(playerCenterX, playerCenterY))
+			//	{
+			//		std::cout << "Colliding\n";
+			//	}
+
+			//	tileSprite.setPosition(i * 64, j * 64);
+			//	tileSprite.setTextureRect(sf::IntRect(map[j][i].x * 64, map[j][i].y * 64, 64, 64));
+			//	win.draw(tileSprite);
+			//}
+			//else
+			//{
+			//	std::cout << "Not colliding\n";
+			//}
+		}
+	}
 }
