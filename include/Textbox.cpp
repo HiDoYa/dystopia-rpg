@@ -4,28 +4,32 @@
 #include "Textbox.h"
 
 //Default constructor
-Textbox::Textbox(sf::RenderWindow& win)
+Textbox::Textbox(sf::View& view)
 {
 	//Gets box parameters
 	width = 0;
-	height = 200;
-	posX = 0;
-	posY = win.getSize().y - height; 
+	height = 150;
 
-	//Loads fonts
+	//Box attributes (box starts off closed)
+	sf::Color bxColor(242, 242, 242);
+	rec.setFillColor(bxColor);
+	rec.setSize(sf::Vector2f(width, height));
+	open = false;
+
+	//Loads fonts and styling
 	font.loadFromFile("font/Ubuntu.ttf");
 	text.setFont(font);
 	name.setFont(font);
 	nextPrompt.setFont(font);
 	name.setStyle(sf::Text::Underlined);
 
-	//Load Music
-	mu.openFromFile("sound/textNoise.wav");
-
 	//Sets character sizes
 	text.setCharacterSize(35);
 	name.setCharacterSize(25);
 	nextPrompt.setCharacterSize(0);
+
+	//Load Music
+	mu.openFromFile("sound/textNoise.wav");
 
 	//Sets character color
 	sf::Color txtColor(109, 109, 109);
@@ -33,19 +37,8 @@ Textbox::Textbox(sf::RenderWindow& win)
 	name.setColor(txtColor);
 	nextPrompt.setColor(txtColor);
 
-	//Updates position
-	updatePosition();
-
 	//Next propmt is always the same
-	nextPrompt.setString("Click to continue.");
-
-	//Box attributes
-	sf::Color bxColor(242, 242, 242);
-	rec.setFillColor(bxColor);
-	rec.setSize(sf::Vector2f(width, height));
-
-	//Not opened
-	open = false;
+	nextPrompt.setString("Click to continue...");
 
 	//Initialize for animation
 	textIndex = 0;
@@ -53,7 +46,7 @@ Textbox::Textbox(sf::RenderWindow& win)
 	lastTime = 0;
 }
 
-//Sets the font
+//Sets the font (for different characters)
 void Textbox::setFont(sf::String str)
 {
 	font.loadFromFile(str);
@@ -62,16 +55,16 @@ void Textbox::setFont(sf::String str)
 	nextPrompt.setFont(font);
 }
 
-//Sets the string for text
-void Textbox::setText(sf::String str)
-{
-	text.setString(str);
-}
-
 //Sets the for string for name
 void Textbox::setName(sf::String str)
 {
 	name.setString(str);
+}
+
+//Sets the string for text
+void Textbox::setText(sf::String str)
+{
+	text.setString(str);
 }
 
 //Sets textspeed
@@ -80,37 +73,15 @@ void Textbox::setTextSpeed(int num)
 	textSpeed = num;
 }
 
-bool Textbox::setSuccess()
+void Textbox::updatePosition(sf::View view)
 {
-	success = false;
-}
+	posX = view.getCenter().x - (view.getSize().x / 2);
+	posY = view.getCenter().y + (view.getSize().y / 2) - height; 
 
-//test
-void Textbox::setPosition(int x, int y)
-{
-	posX = x;
-	posY = y + 570;
-	updatePosition();
-}
-
-void Textbox::updatePosition()
-{
 	text.setPosition(sf::Vector2f(posX + 50, posY + 40));
 	name.setPosition(sf::Vector2f(posX + 20, posY + 10));
-	nextPrompt.setPosition(sf::Vector2f(posX + 1100, posY + 120));
+	nextPrompt.setPosition(sf::Vector2f(posX + 700, posY + 110));
 	rec.setPosition(sf::Vector2f(posX, posY));
-}
-
-//Returns box (rectangle)
-sf::RectangleShape Textbox::getBox()
-{
-	return rec;
-}
-
-//Returns text 
-sf::Text Textbox::getText()
-{
-	return text;
 }
 
 //Returns name
@@ -119,14 +90,15 @@ sf::Text Textbox::getName()
 	return name;
 }
 
+//Returns text 
+sf::Text Textbox::getText()
+{
+	return text;
+}
+
 bool Textbox::getOpen()
 {
 	return open;
-}
-
-bool Textbox::getSuccess()
-{
-	return success;
 }
 
 //Draws rectangle (textbox), text, and name
@@ -143,8 +115,8 @@ void Textbox::drawAll(sf::RenderWindow& win)
 void Textbox::convertText(std::string str, std::vector<std::string>& sVec)
 {
 	//Length of text for each line
-	int textLen = 55;
-	float doubleTextLen = textLen * 2;
+	int textLen = 40;
+	float fullTextLen = textLen * 2;
 
 	//Resets old content
 	sVec.clear();
@@ -153,7 +125,7 @@ void Textbox::convertText(std::string str, std::vector<std::string>& sVec)
 	str.push_back(' ');
 
 	//Gets num of strings that will be required
-	int numOfStrings = 0.9 + (str.length() / doubleTextLen);
+	int numOfStrings = 0.9 + (str.length() / fullTextLen);
 
 	//maxNdx is used to make sure the loop doesn't check contents that are outside the string's memory
 	int maxNdx = str.length() - 1;
@@ -168,7 +140,7 @@ void Textbox::convertText(std::string str, std::vector<std::string>& sVec)
 		sVec.push_back("");
 
 		//Text to test is dependent on how large each vector should be and the current loop
-		int textToTest = doubleTextLen * (i + 1);
+		int textToTest = fullTextLen * (i + 1);
 
 		//Makes sure the text to test is less than the maximum index
 		if(textToTest > maxNdx)
@@ -222,8 +194,8 @@ void Textbox::convertText(std::string str, std::vector<std::string>& sVec)
 void Textbox::animateText(std::string str)
 {
 	//Gets current time
-	tme = clk.getElapsedTime();
-	currentTime = tme.asMilliseconds();
+	time = clock.getElapsedTime();
+	currentTime = time.asMilliseconds();
 
 	//If the displayed text isnt the same as the str input
 	if(text.getString() != str)
@@ -249,15 +221,14 @@ void Textbox::animateText(std::string str)
 		nextPrompt.setCharacterSize(20);
 		animText = "";
 		textIndex = 0;
-		success = true;
 	}
 }
 
 //Animation for box popping open
 void Textbox::openBox()
 {
-	tme = clk.getElapsedTime();
-	currentTime = tme.asMilliseconds();
+	time = clock.getElapsedTime();
+	currentTime = time.asMilliseconds();
 	if(currentTime > lastTime + 30 && width < 1280)
 	{
 		width += 80;
@@ -275,8 +246,8 @@ void Textbox::openBox()
 //Animation for box closing 
 void Textbox::closeBox()
 {
-	tme = clk.getElapsedTime();
-	currentTime = tme.asMilliseconds();
+	time = clock.getElapsedTime();
+	currentTime = time.asMilliseconds();
 	text.setString("");
 	name.setString("");
 	if(currentTime > lastTime + 30 && width > 0)
@@ -296,9 +267,9 @@ void Textbox::closeBox()
 //Wait for button press to continue to next text (sub text at bottom that blinks. Asks for player to click to continue)
 bool Textbox::nextText()
 {
-	tme = clk.getElapsedTime();
-	currentTime = tme.asMilliseconds();
-	if(success && open && sf::Mouse::isButtonPressed(sf::Mouse::Left) && lastTime + 300 < currentTime)
+	time = clock.getElapsedTime();
+	currentTime = time.asMilliseconds();
+	if(open && sf::Mouse::isButtonPressed(sf::Mouse::Left) && lastTime + 300 < currentTime)
 	{
 		lastTime = currentTime;
 		nextPrompt.setCharacterSize(0);

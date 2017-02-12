@@ -13,7 +13,6 @@ class Textbox
 		sf::Text name;
 		sf::Text nextPrompt;
 		bool open;
-		bool success;
 
 		//Music
 		sf::Music mu;
@@ -25,28 +24,24 @@ class Textbox
 		int posY;
 
 		//All for animating text
-		sf::Clock clk;
-		sf::Time tme;
+		sf::Clock clock;
+		sf::Time time;
+		float currentTime;
+		float lastTime;
 		int textSpeed;
-		double currentTime;
-		double lastTime;
 		int textIndex;
 		sf::String animText;
 
 	public:
-		Textbox(sf::RenderWindow&);
+		Textbox(sf::View&);
 		void setFont(sf::String);
-		void setText(sf::String);
 		void setName(sf::String);
+		void setText(sf::String);
 		void setTextSpeed(int);
-		bool setSuccess();
-		void setPosition(int, int);
-		void updatePosition();
-		sf::RectangleShape getBox();
-		sf::Text getText();
+		void updatePosition(sf::View);
 		sf::Text getName();
+		sf::Text getText();
 		bool getOpen();
-		bool getSuccess();
 		void drawAll(sf::RenderWindow&);
 		void convertText(std::string, std::vector<std::string>&);
 		void animateText(std::string);
