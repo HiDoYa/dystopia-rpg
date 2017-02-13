@@ -7,6 +7,7 @@
 #include <SFML/System.hpp>
 
 //Game classes
+#include "include/Battle.h"
 #include "include/Textbox.h"
 #include "include/Npc.h"
 #include "include/Player.h"
@@ -40,6 +41,10 @@ int main()
 	collision.setupBitmap("maps/testcollision", window);
 	background.setupStatic("images/background.jpg");
 
+	//Scene
+	//0 = menu, 1 = map, 2 = battle
+	int scene = 1;
+
 	//Sets framerate to 60fps
 	window.setFramerateLimit(60);
 
@@ -59,40 +64,50 @@ int main()
 		}
 
 
-		//Npc interaction
-		npcTest.speak("That One Guy", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sed velit semper, bibendum orci id, auctor tellus. Proin sollicitudin, urna et accumsan", box);
-
-		//Character moves if npcs aren't speaking
-		if(!npcTest.getSpeaking())
+		if(scene == 1)
 		{
-			chr.movePos();
+
+			//Npc interaction
+			npcTest.speak("That One Guy", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sed velit semper, bibendum orci id, auctor tellus. Proin sollicitudin, urna et accumsan", box);
+
+			//Character moves if npcs aren't speaking
+			if(!npcTest.getSpeaking())
+			{
+				chr.movePos();
+			}
+
+			//Activates window for OpenGL rendering
+			sf::Color winColor(107, 120, 140);
+			window.clear(winColor);
+
+			//Sets view
+			view.setCenter(chr.getPosition());
+			window.setView(view);
+
+			//Sets position of box
+			box.updatePosition(view);
+
+			//Always on bottom
+			background.drawStatic(window, view); 
+
+			//Mid
+			ground.drawBitmap(window);
+			collision.drawCollision(window, chr);
+			window.draw(chr.getSprite());
+
+			//Npcs
+			window.draw(npcTest.getSprite());
+			npcTest.collision(chr);
+			
+			//Always on top
+			box.drawAll(window);
 		}
+		else if(scene == 2)
+		{
 
-		//Activates window for OpenGL rendering
-		sf::Color winColor(107, 120, 140);
-		window.clear(winColor);
-
-		//Sets view
-		view.setCenter(chr.getPosition());
-		window.setView(view);
-
-		//Sets position of box
-		box.updatePosition(view);
-
-		//Always on bottom
-		background.drawStatic(window, view); 
-
-		//Mid
-		ground.drawBitmap(window);
-		collision.drawCollision(window, chr);
-		window.draw(chr.getSprite());
-
-		//Npcs
-		window.draw(npcTest.getSprite());
-		npcTest.collision(chr);
-		
-		//Always on top
-		box.drawAll(window);
+			//Background image
+			background.drawStatic(window,view);
+		}
 
 		//End current frame and display its contents on screen
 		window.display();

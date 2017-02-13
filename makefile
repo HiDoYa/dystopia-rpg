@@ -1,4 +1,4 @@
-OBJ = main.o Textbox.o Npc.o Player.o Map.o
+OBJ = main.o Textbox.o Npc.o Player.o Map.o Battle.o
 
 all: game
 
@@ -19,4 +19,7 @@ Player.o: include/Player.cpp include/Player.h
 	g++ -std=c++11 -c $<
 
 Map.o: include/Map.cpp include/Map.h
+	g++ -std=c++11 -c $<
+
+Battle.o: include/Battle.cpp include/Battle.h
 	g++ -std=c++11 -c $<
