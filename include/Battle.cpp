@@ -102,7 +102,7 @@ void Battle::changeEnemyTarget()
 		//TODO Fix this shit
 		currentEnemySelected++;
 
-		if(currentEnemySelected > enemiesAliveIndex().size)
+		if(currentEnemySelected > enemiesAliveIndex.size())
 		{
 			currentEnemySelected = enemiesAliveIndex[0];
 		}
@@ -222,7 +222,7 @@ void Battle::enemyAttack()
 	//Player has died. Game over
 	if(playerHp < 1)
 	{
-		scene = 0;
+		//scene = 0;
 	}
 }
 
