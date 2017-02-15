@@ -16,10 +16,13 @@ class Map
 
 		//Used to load maps
 		sf::Vector2i maxCords;
+
+		int yDisp;
 	public:
 		Map();
 		void setupStatic(sf::String textureInp);
 		void drawStatic(sf::RenderWindow&, sf::View);
+		void drawStatic(sf::RenderWindow&, sf::View, int);
 		void setupBitmap(std::string, sf::RenderWindow&);
 		void drawBitmap(sf::RenderWindow&);
 		void drawCollision(sf::RenderWindow&, Player&);

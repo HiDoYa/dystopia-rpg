@@ -26,6 +26,14 @@ void Map::drawStatic(sf::RenderWindow& win, sf::View view)
 	win.draw(tileSprite);
 }
 
+void Map::drawStatic(sf::RenderWindow& win, sf::View view, int yDisp)
+{
+	int x = view.getCenter().x - view.getSize().x/2;
+	int y = view.getCenter().y - view.getSize().y/2 + yDisp;
+	tileSprite.setPosition(x, y);
+	win.draw(tileSprite);
+}
+
 //Draw bitmap
 //Format for regular tile where 12 is the x, 34 is the y -> 12,34
 //Format for new map where 1 is the zone, 23 is the map number -> n1,23 

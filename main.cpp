@@ -33,7 +33,7 @@ int main()
 	Npc npcTest(128, 128, "images/test4.png");
 	
 	//Player instances
-	Player chr(0, 0);
+	Player chr(64, 64);
 
 	//Background
 	Map ground, background, collision;
@@ -46,7 +46,7 @@ int main()
 	int scene = 1;
 
 	//Sets framerate to 60fps
-	window.setFramerateLimit(60);
+	window.setFramerateLimit(50);
 
 	//Main loop - ends when window is closed
 	while(window.isOpen())
@@ -105,8 +105,16 @@ int main()
 		else if(scene == 2)
 		{
 
+			view.setCenter(sf::Vector2f(640, 384));
+			window.setView(view);
+			
+			chr.setPos(900, 450);
+
 			//Background image
-			background.drawStatic(window,view);
+			background.drawStatic(window, view);
+
+			//Midground
+			window.draw(chr.getSprite());
 		}
 
 		//End current frame and display its contents on screen
