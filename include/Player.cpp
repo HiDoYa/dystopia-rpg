@@ -11,6 +11,9 @@ Player::Player(int x, int y)
 	sprite.setTextureRect(sf::IntRect(0, 0, 64, 64));
 	sprite.setPosition(x, y);
 	texturePosX = texturePosY = 0;
+
+	//Hp
+	hp = 100;
 	
 	//Sound
 	step1.openFromFile("sound/step1.ogg");
@@ -173,6 +176,11 @@ void Player::spriteAnimation()
 	}
 }
 
+void Player::setHp(int hpSet)
+{
+	hp = hpSet;
+}
+
 //Checks for collision
 bool Player::collisionZones(int i, int j)
 {
@@ -229,3 +237,7 @@ sf::Sprite Player::getSprite()
 	return sprite;
 }
 
+int Player::getHp()
+{
+	return hp;
+}

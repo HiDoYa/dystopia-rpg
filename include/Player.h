@@ -10,6 +10,9 @@ class Player
 		sf::Texture texture;
 		sf::Sprite sprite;
 
+		//Hp
+		int hp;
+
 		//Time management for box open/close
 		sf::Clock clock;
 		sf::Time time;
@@ -46,9 +49,11 @@ class Player
 		void standStill();
 		void movePos();
 		void spriteAnimation();
+		void setHp(int);
 		bool collisionZones(int, int);
 		sf::Vector2f getPosition();
 		sf::Sprite getSprite();
+		int getHp();
 };
 
 #endif
