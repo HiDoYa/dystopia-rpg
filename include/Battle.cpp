@@ -20,37 +20,41 @@ Battle::Battle()
 	immobilizationTime = 3000;
 }
 
-void Battle::setupBattle(int minLevel, int maxLevel)
+void Battle::setupBattle(int minLevel, int maxLevel, int hp)
 {
 	//Temporary input
 	char inp;
 	std::string tempGarbage;
 
-	//Open file and get combos
-	std::ifstream comboFile("combo");
-	comboFile >> inp;
+	//Set Hp
+	playerHp = hp;
 
-	while(!comboFile.eof())
-	{
-		if(inp == 'u')
-		{
-			validCombos.push_back("");
-			comboFile >> validCombos[validCombos.size() - 1];
-		}
-		else
-		{
-			comboFile >> tempGarbage;
-		}
+	//TODO Open file and get combos
+	//std::ifstream comboFile("combo");
+	//comboFile >> inp;
 
-		comboFile >> inp;
-	}
+	//while(!comboFile.eof())
+	//{
+	//	if(inp == 'u')
+	//	{
+	//		validCombos.push_back("");
+	//		comboFile >> validCombos[validCombos.size() - 1];
+	//	}
+	//	else
+	//	{
+	//		comboFile >> tempGarbage;
+	//	}
 
-	comboFile.close();
+	//	comboFile >> inp;
+	//}
+
+	//comboFile.close();
 
 	//Get enemies
 	time = clock.getElapsedTime();
 	currentTime = time.asMilliseconds();
 	srand(currentTime);
+	
 	//3 enemies at max
 	int numEnemies = rand() % 2 + 1;
 
@@ -59,15 +63,18 @@ void Battle::setupBattle(int minLevel, int maxLevel)
 	{
 		//TODO HP and attack of enemy scales by level
 		//Different character sheet holding data of enemies?
+		enemyLvls.push_back(rand() % (maxLevel - minLevel) + 1);
+		//Used to store sprite, attacks, etc. of enemy
+		//enemyType.push_back();
 		enemyHp.push_back(100);
 		enemyAtk.push_back(10);
 		enemyAttackDelay.push_back(5000);
 		enemiesAliveIndex.push_back(1);
 	}
 }
+
 void Battle::startBattle()
 {
-
 }
 
 void Battle::endBattle(int& scene)
@@ -228,10 +235,12 @@ void Battle::enemyAttack()
 
 void Battle::setPlayerHp(int hpChange)
 {
+	playerHp += hpChange;
 }
 
-void Battle::setEnemyHp(int hpChange)
+void Battle::setEnemyHp(int enemyNum, int hpChange)
 {
+	enemyHp[enemyNum] += hpChange;
 }
 
 int Battle::getPlayerHp()

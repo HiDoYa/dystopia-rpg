@@ -35,6 +35,8 @@ class Battle
 		sf::Texture enemyTexture;
 		std::vector<sf::Sprite> enemySprite;
 		std::vector<int> enemyHp;
+		std::vector<int> enemyType;
+		std::vector<int> enemyLvls;
 		std::vector<int> enemyAtk;
 		std::vector<int> enemyAttackDelay;
 		std::vector<int> enemiesAliveIndex;
@@ -46,7 +48,7 @@ class Battle
 		float currentTime;
 	private:
 		Battle();
-		void setupBattle(int, int);
+		void setupBattle(int, int, int);
 		void startBattle();
 		void endBattle(int&);
 		void changeEnemyTarget();
@@ -55,7 +57,7 @@ class Battle
 		void activateAttack();
 		void enemyAttack();
 		void setPlayerHp(int);
-		void setEnemyHp(int);
+		void setEnemyHp(int, int);
 		int getPlayerHp();
 		int getEnemyHp(int);
 		int getNumEnemies();
