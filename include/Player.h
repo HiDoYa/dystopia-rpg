@@ -1,18 +1,13 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
+#include "SpriteManage.h"
 
 #ifndef PLAYER_H
 #define PLAYER_H
 
-class Player
+class Player: public SpriteManage
 {
 	private:
-		sf::Texture texture;
-		sf::Sprite sprite;
-
-		//Hp
-		int hp;
-
 		//Time management for box open/close
 		sf::Clock clock;
 		sf::Time time;
@@ -37,6 +32,9 @@ class Player
 		bool moving;
 		int movingNum;
 
+		//Attributes
+		int hp;
+
 		//Prohibit movement
 		bool canMoveUp;
 		bool canMoveDown;
@@ -44,16 +42,19 @@ class Player
 		bool canMoveLeft;
 	public:
 		Player(int, int);
-		void setPos(int, int);
+
+		//***** Mutators *******
+		void setHp(int);
+
+		//***** Accessor *******
+		int getHp();
+
+		//***** Etc *******
 		void stepSound();
 		void standStill();
 		void movePos();
 		void spriteAnimation();
-		void setHp(int);
 		bool collisionZones(int, int);
-		sf::Vector2f getPosition();
-		sf::Sprite getSprite();
-		int getHp();
 };
 
 #endif

@@ -4,17 +4,14 @@
 
 Player::Player(int x, int y)
 {
-	texture.loadFromFile("images/character/char1.png");
-
 	//Sets texture and position of sprite
-	sprite.setTexture(texture);
-	sprite.setTextureRect(sf::IntRect(0, 0, 64, 64));
-	sprite.setPosition(x, y);
 	texturePosX = texturePosY = 0;
 
-	//Hp
-	hp = 100;
-	
+	//A character
+	setTextureSprite("images/character/char1.png");
+	setTextureRect(0, 0);
+	setPosition(x, y);
+
 	//Sound
 	step1.openFromFile("sound/step1.ogg");
 	step2.openFromFile("sound/step2.ogg");
@@ -34,9 +31,14 @@ Player::Player(int x, int y)
 	canMoveUp = canMoveDown = canMoveLeft = canMoveRight = true;
 }
 
-void Player::setPos(int x, int y)
+void Player::setHp(int inp)
 {
-	sprite.setPosition(x, y);
+	hp = inp;
+}
+
+int Player::getHp()
+{
+	return hp;
 }
 
 void Player::stepSound()
@@ -66,16 +68,16 @@ void Player::standStill()
 	switch(lastDirection)
 	{
 		case 0:
-			sprite.setTextureRect(sf::IntRect(0, 256, 64, 64));
+			setTextureRect(0, 256);
 			break;
 		case 1:
-			sprite.setTextureRect(sf::IntRect(64, 256, 64, 64));
+			setTextureRect(64, 256);
 			break;
 		case 2:
-			sprite.setTextureRect(sf::IntRect(128, 256, 64, 64));
+			setTextureRect(128, 256);
 			break;
 		case 3:
-			sprite.setTextureRect(sf::IntRect(192, 256, 64, 64));
+			setTextureRect(192, 256);
 			break;
 	}
 }
@@ -115,7 +117,8 @@ void Player::movePos()
 			moving = false;
 		}
 		
-		sprite.move(xSpeed, ySpeed);
+		//TODO
+		moveSprite(xSpeed, ySpeed);
 	}
 	else if((wPress && sPress) || (aPress && dPress))
 	{
@@ -172,13 +175,8 @@ void Player::spriteAnimation()
 		{
 			texturePosX = 64;
 		}
-		sprite.setTextureRect(sf::IntRect(texturePosX - 64, texturePosY, 64, 64));
+		setTextureRect(texturePosX - 64, texturePosY);
 	}
-}
-
-void Player::setHp(int hpSet)
-{
-	hp = hpSet;
 }
 
 //Checks for collision
@@ -189,8 +187,8 @@ bool Player::collisionZones(int i, int j)
 
 	//Gets the coordinates of players (in terms of every 64 pixels)
 	int currentPlayerX, currentPlayerY;
-	currentPlayerX = sprite.getPosition().x / 64;
-	currentPlayerY = sprite.getPosition().y / 64;
+	currentPlayerX = getPosition().x / 64;
+	currentPlayerY = getPosition().y / 64;
 
 	//Only if the player is within one block from the collision tile
 	if((currentPlayerX == i && (currentPlayerY + 1 == j || currentPlayerY - 1 == j)) || (currentPlayerY == j && (currentPlayerX == i + 1 || currentPlayerX == i - 1)))
@@ -225,19 +223,4 @@ bool Player::collisionZones(int i, int j)
 	}
 
 	return colliding;
-}
-
-sf::Vector2f Player::getPosition()
-{
-	return sprite.getPosition();
-}
-
-sf::Sprite Player::getSprite()
-{
-	return sprite;
-}
-
-int Player::getHp()
-{
-	return hp;
 }
