@@ -12,6 +12,7 @@
 #include "include/Npc.h"
 #include "include/Player.h"
 #include "include/Map.h"
+#include "include/SpriteManage.h"
 
 int main()
 {
@@ -46,7 +47,7 @@ int main()
 	int scene = 1;
 
 	//Sets framerate to 60fps
-	window.setFramerateLimit(50);
+	window.setFramerateLimit(60);
 
 	//Main loop - ends when window is closed
 	while(window.isOpen())
@@ -93,7 +94,7 @@ int main()
 			//Mid
 			ground.drawBitmap(window);
 			collision.drawCollision(window, chr);
-			window.draw(chr.getSprite());
+			chr.drawSprite(window);
 
 			//Npcs
 			window.draw(npcTest.getSprite());
@@ -108,7 +109,7 @@ int main()
 			view.setCenter(sf::Vector2f(640, 384));
 			window.setView(view);
 			
-			chr.setPos(900, 450);
+			chr.setPosition(900, 450);
 
 			//Background image
 			background.drawStatic(window, view);
