@@ -1,4 +1,5 @@
 #include "Battle.h"
+#include "Enemy.h"
 
 #include <SFML/Graphics.hpp>
 
@@ -56,20 +57,20 @@ void Battle::setupBattle(int minLevel, int maxLevel, int hp)
 	srand(currentTime);
 	
 	//3 enemies at max
-	int numEnemies = rand() % 2 + 1;
+	numEnemies = rand() % 2 + 1;
 
 	//Initialize enemies
 	for(int i = 0; i < numEnemies; i++)
 	{
+		enemies.push_back();
 		//TODO HP and attack of enemy scales by level
 		//Different character sheet holding data of enemies?
-		enemyLvls.push_back(rand() % (maxLevel - minLevel) + 1);
+		enemies[i].setLevel(rand() % (maxLevel - minLevel) + 1);
 		//Used to store sprite, attacks, etc. of enemy
-		//enemyType.push_back();
-		enemyHp.push_back(100);
-		enemyAtk.push_back(10);
-		enemyAttackDelay.push_back(5000);
-		enemiesAliveIndex.push_back(1);
+		enemies[i].setHp(100);
+		enemies[i].setAtk(10);
+		enemies[i].setDelay(5000000);
+		enemies[i].setAlive(true);
 	}
 }
 
@@ -80,10 +81,10 @@ void Battle::startBattle()
 void Battle::endBattle(int& scene)
 {
 	bool gameWin = true;
-	for(int i = 0; i < enemiesAliveIndex.size(); i++)
+	for(int i = 0; i < numEnemies; i++)
 	{
-		//If some enemies are still alive, you win
-		if(enemiesAliveIndex[i] == 1)
+		//If some enemies are still alive, you don't win
+		if(enemies[i].alive)
 		{
 			gameWin = false;
 		}
@@ -109,9 +110,9 @@ void Battle::changeEnemyTarget()
 		//TODO Fix this shit
 		currentEnemySelected++;
 
-		if(currentEnemySelected > enemiesAliveIndex.size())
+		if(currentEnemySelected > numEnemies)
 		{
-			currentEnemySelected = enemiesAliveIndex[0];
+			currentEnemySelected = enemies[0].getAlive;
 		}
 
 		if(enemyHp[currentEnemySelected] < 1)

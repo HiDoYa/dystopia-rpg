@@ -32,14 +32,16 @@ class Battle
 		float lastImmobilizationTime;
 
 		//For enemies
-		sf::Texture enemyTexture;
-		std::vector<sf::Sprite> enemySprite;
-		std::vector<int> enemyHp;
-		std::vector<int> enemyType;
-		std::vector<int> enemyLvls;
-		std::vector<int> enemyAtk;
-		std::vector<int> enemyAttackDelay;
-		std::vector<int> enemiesAliveIndex;
+		//sf::Texture enemyTexture;
+		//std::vector<sf::Sprite> enemySprite;
+		//std::vector<int> enemyHp;
+		//std::vector<int> enemyType;
+		//std::vector<int> enemyLvls;
+		//std::vector<int> enemyAtk;
+		//std::vector<int> enemyAttackDelay;
+		//std::vector<int> enemiesAliveIndex;
+		std::vector<Enemy> enemies;
+		int numEnemies;
 		int currentEnemySelected;
 
 		//Time management
