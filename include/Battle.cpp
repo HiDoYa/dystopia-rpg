@@ -17,6 +17,10 @@ Battle::Battle()
 	lastImmobilizationTime = 0;
 	currentEnemySelected = 0;
 
+	//Sets player health bars
+	playerHealth.setSize(sf::Vector2f());
+	playerDamage.setSize(sf::Vector2f());
+
 	//Time that player is immobilized if fail
 	immobilizationTime = 3000;
 }
@@ -26,6 +30,12 @@ void Battle::setupBattle(int minLevel, int maxLevel, int hp)
 	//Temporary input
 	char inp;
 	std::string tempGarbage;
+
+	//Lists off the possible area that the enemy can be spawned in
+	std::vector<sf::Vector2f> enemyPlaces;
+	enemyPlaces.push_back(sf::Vector2f(100, 100));
+	enemyPlaces.push_back(sf::Vector2f(300, 300));
+	enemyPlaces.push_back(sf::Vector2f(100, 500));
 
 	//Set Hp
 	playerHp = hp;
@@ -56,20 +66,20 @@ void Battle::setupBattle(int minLevel, int maxLevel, int hp)
 	currentTime = time.asMilliseconds();
 	srand(currentTime);
 	
-	//3 enemies at max
+	//3 enemies max
 	numEnemies = rand() % 2 + 1;
 
 	//Initialize enemies
 	for(int i = 0; i < numEnemies; i++)
 	{
-		enemies.push_back();
+		Enemy temp(enemyPlaces[i].x, enemyPlaces[i].y, 64);
+		enemies.push_back(temp);
 		//TODO HP and attack of enemy scales by level
 		//Different character sheet holding data of enemies?
 		enemies[i].setLevel(rand() % (maxLevel - minLevel) + 1);
-		//Used to store sprite, attacks, etc. of enemy
 		enemies[i].setHp(100);
 		enemies[i].setAtk(10);
-		enemies[i].setDelay(5000000);
+		enemies[i].setDelay(5000);
 		enemies[i].setAlive(true);
 	}
 }
@@ -84,7 +94,7 @@ void Battle::endBattle(int& scene)
 	for(int i = 0; i < numEnemies; i++)
 	{
 		//If some enemies are still alive, you don't win
-		if(enemies[i].alive)
+		if(enemies[i].getAlive())
 		{
 			gameWin = false;
 		}
@@ -107,29 +117,39 @@ void Battle::changeEnemyTarget()
 
 	if(keyQ && keyQUp)
 	{
-		//TODO Fix this shit
-		currentEnemySelected++;
-
-		if(currentEnemySelected > numEnemies)
-		{
-			currentEnemySelected = enemies[0].getAlive;
-		}
-
-		if(enemyHp[currentEnemySelected] < 1)
+		bool enemiesAllDead = true;
+		
+		for(int ndx = 0; ndx < 3 && !enemiesAllDead; ndx++)
 		{
 			currentEnemySelected++;
+
+			if(currentEnemySelected > numEnemies)
+			{
+				currentEnemySelected = 0;
+			}
+
+			if(enemies[currentEnemySelected].getHp() > 1)
+			{
+				enemiesAllDead = false;
+				break;
+			}
+		}
+
+		if(enemiesAllDead)
+		{
+			//battle ends
 		}
 	}
 }
 
 void Battle::checkEnemyDeaths()
 {
-	for(int i = 0 ; i < enemyHp.size(); i++)
+	for(int i = 0 ; i < numEnemies; i++)
 	{
-		if(enemyHp[i] < 1)
+		if(enemies[i].getHp() < 1)
 		{
 			//enemy has died
-			enemiesAliveIndex[i] = 0;
+			enemies[i].setAlive(false);
 		}
 	}
 }
@@ -205,7 +225,7 @@ void Battle::activateAttack()
 				if(validCombos[i] == currentCombo)
 				{
 					//TODO Damage calc (based on combo size or file holding damage multiplier?)
-					enemyHp[currentEnemySelected] -= 10;
+					enemies[currentEnemySelected].setHp(enemies[currentEnemySelected].getHp() - 10);
 					successCombo = true;
 				}
 			}
@@ -223,14 +243,23 @@ void Battle::activateAttack()
 	}
 }
 
-void Battle::enemyAttack()
+void Battle::enemyAttack(int enemNum)
 {
 	//TODO
+	playerHp -= enemies[enemNum].getAtk();
 
-	//Player has died. Game over
 	if(playerHp < 1)
 	{
+		//Player has died. Game over
 		//scene = 0;
+	}
+}
+
+void Battle::drawEnemies(sf::RenderWindow& win)
+{
+	for(int i = 0; i < numEnemies; i++)
+	{
+		win.draw(enemies[i].getSprite());
 	}
 }
 
@@ -239,9 +268,9 @@ void Battle::setPlayerHp(int hpChange)
 	playerHp += hpChange;
 }
 
-void Battle::setEnemyHp(int enemyNum, int hpChange)
+void Battle::setEnemyHp(int enemyNum, int newHp)
 {
-	enemyHp[enemyNum] += hpChange;
+	enemies[enemyNum].setHp(newHp);
 }
 
 int Battle::getPlayerHp()
@@ -252,10 +281,12 @@ int Battle::getPlayerHp()
 //Input is which enemy hp you want
 int Battle::getEnemyHp(int enemyNum)
 {
-	return enemyHp[enemyNum];
+	return enemies[enemyNum].getHp();
 }
 
 int Battle::getNumEnemies()
 {
-	return enemyHp.size();
+	return numEnemies;
 }
+
+

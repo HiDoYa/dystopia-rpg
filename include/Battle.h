@@ -1,3 +1,5 @@
+#include "Enemy.h"
+
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <vector>
@@ -7,7 +9,7 @@
 
 class Battle
 {
-	public:
+	private:
 		//For player
 		sf::Texture playerTexture;
 		sf::Sprite playerSprite;
@@ -32,14 +34,6 @@ class Battle
 		float lastImmobilizationTime;
 
 		//For enemies
-		//sf::Texture enemyTexture;
-		//std::vector<sf::Sprite> enemySprite;
-		//std::vector<int> enemyHp;
-		//std::vector<int> enemyType;
-		//std::vector<int> enemyLvls;
-		//std::vector<int> enemyAtk;
-		//std::vector<int> enemyAttackDelay;
-		//std::vector<int> enemiesAliveIndex;
 		std::vector<Enemy> enemies;
 		int numEnemies;
 		int currentEnemySelected;
@@ -48,18 +42,24 @@ class Battle
 		sf::Clock clock;
 		sf::Time time;
 		float currentTime;
-	private:
+	public:
 		Battle();
 		void setupBattle(int, int, int);
 		void startBattle();
 		void endBattle(int&);
+
 		void changeEnemyTarget();
 		void checkEnemyDeaths();
 		void playerAttack();
 		void activateAttack();
-		void enemyAttack();
+		void enemyAttack(int);
+		void drawEnemies(sf::RenderWindow&);
+
+		//Mutators
 		void setPlayerHp(int);
 		void setEnemyHp(int, int);
+
+		//Accessors
 		int getPlayerHp();
 		int getEnemyHp(int);
 		int getNumEnemies();
