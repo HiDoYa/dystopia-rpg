@@ -44,7 +44,7 @@ int main()
 
 	//Scene
 	//0 = menu, 1 = map, 2 = battle
-	int scene = 1;
+	int scene = 2;
 
 	//Sets framerate to 60fps
 	window.setFramerateLimit(60);
@@ -105,16 +105,19 @@ int main()
 		}
 		else if(scene == 2)
 		{
+			Battle battleScene;
 
 			view.setCenter(sf::Vector2f(640, 384));
 			window.setView(view);
 			
 			chr.setPosition(900, 450);
 
+
 			//Background image
 			background.drawStatic(window, view);
 
 			//Midground
+			battleScene.drawEnemies(window);
 			window.draw(chr.getSprite());
 		}
 
