@@ -8,17 +8,23 @@ class Enemy: public SpriteManage
 {
 	private:
 		int id;
-		int hp;
+		int currentHp;
+		int maxHp;
 		int level;
 		int atk;
 		int delay;
 		bool alive;
+
+		//Health bars
+		sf::RectangleShape health;
+		sf::RectangleShape damage;
 	public:
 		Enemy(int, int, int);
 
 		//Mutators
 		void setId(int);
-		void setHp(int);
+		void setCurrentHp(int);
+		void setMaxHp(int);
 		void setLevel(int);
 		void setAtk(int);
 		void setDelay(int);
@@ -26,7 +32,8 @@ class Enemy: public SpriteManage
 
 		//Accessors
 		int getLevel();
-		int getHp();
+		int getCurrentHp();
+		int getMaxHp();
 		int getAtk();
 		int getDelay();
 		bool getAlive();

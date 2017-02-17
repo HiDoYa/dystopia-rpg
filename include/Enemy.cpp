@@ -4,7 +4,7 @@
 
 Enemy::Enemy(int x, int y, int downFromTop)
 {
-	//Default
+	//Default attributes of enemy
 	id = 1;
 	hp = 100;
 	level = 3;
@@ -12,7 +12,11 @@ Enemy::Enemy(int x, int y, int downFromTop)
 	delay = 6000;
 	alive = true;
 
-	//TODO setTextureSprite(asdf);
+	//Sets health bars
+	health.setSize(sf::Vector2f(100, 50));
+	damage.setSize(sf::Vector2f(100, 50));
+
+	//TODO setTextureSprite("someEnemySpriteSheet.png");
 	setTextureRect(0, downFromTop);
 	setPosition(x, y);
 }
@@ -24,9 +28,14 @@ void Enemy::setId(int inp)
 	id = inp;
 }
 
-void Enemy::setHp(int inp)
+void Enemy::setCurrentHp(int inp)
 {
-	hp = inp;
+	currentHp = inp;
+}
+
+void Enemy::setMaxHp(int inp)
+{
+	maxHp = inp;
 }
 
 void Enemy::setLevel(int inp)
@@ -56,9 +65,14 @@ int Enemy::getLevel()
 	return level;
 }
 
-int Enemy::getHp()
+int Enemy::getCurrentHp()
 {
-	return hp;
+	return currentHp;
+}
+
+int Enemy::getMaxHp()
+{
+	return maxHp;
 }
 
 int Enemy::getAtk()
