@@ -15,6 +15,7 @@ class UIOverlay
 		sf::RectangleShape damageBar;
 
 		//TODO Energy Bars?
+		//
 
 		//Exp bar and level indicator
 		sf::Text levelNum;
