@@ -35,19 +35,19 @@ class UIOverlay
 
 		//Mutators
 		void setPosition(int, int);
-		void setCurrencyText(float);
-		void setLevelText(int);
+		void setCurrency(float);
+		void setLevel(int);
 		void setMaxHealth(int);
 		void setCurrentHealth(int);
-		void setExpBar(int);
+		void setExp(int);
 
 		//Accessors
 		sf::Vector2f getPosition();
-		float getCurrencyText();
-		int getLevelText();
+		float getCurrency();
+		int getLevel();
 		int getMaxHealth();
 		int getCurrentHealth();
-		int getExpBar();
+		int getExp();
 
 		void move();
 };
