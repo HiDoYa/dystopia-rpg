@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 
 #include <cctype>
+#include <ctime>
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -11,36 +12,17 @@
 
 Battle::Battle()
 {
-	//Initializations
-	currentCombo = "";
-	nextAttackBlock = false;
-	lastImmobilizationTime = 0;
-	currentEnemySelected = 0;
-
-	//Sets player health bars
-	playerHealth.setSize(sf::Vector2f());
-	playerDamage.setSize(sf::Vector2f());
-
-	//Time that player is immobilized if fail
-	immobilizationTime = 3000;
 }
 
-void Battle::setupBattle(int minLevel, int maxLevel, int hp)
+void Battle::setupBattle(sf::String enemyList)
 {
-	//Temporary input
-	char inp;
-	std::string tempGarbage;
-
 	//Lists off the possible area that the enemy can be spawned in
 	std::vector<sf::Vector2f> enemyPlaces;
-	enemyPlaces.push_back(sf::Vector2f(100, 100));
 	enemyPlaces.push_back(sf::Vector2f(300, 300));
-	enemyPlaces.push_back(sf::Vector2f(100, 500));
+	enemyPlaces.push_back(sf::Vector2f(500, 450));
+	enemyPlaces.push_back(sf::Vector2f(300, 600));
 
-	//Set Hp
-	playerHp = hp;
-
-	//TODO Open file and get combos
+	//TODO Open file and get player attacks 
 	//std::ifstream comboFile("combo");
 	//comboFile >> inp;
 
@@ -62,24 +44,36 @@ void Battle::setupBattle(int minLevel, int maxLevel, int hp)
 	//comboFile.close();
 
 	//Get enemies
-	time = clock.getElapsedTime();
-	currentTime = time.asMilliseconds();
-	srand(currentTime);
+	srand(time(NULL));
 	
-	//3 enemies max
-	numEnemies = rand() % 2 + 1;
+	//3 enemies max (pick randomly)
+	//numEnemies = rand() % 3 + 1;
+	numEnemies = 3;
+	currentEnemySelected = 0;
+
+	//Gets the number of monsters to choose from
+	int inp, numEnemiesInFile;
+	std::ifstream enemyFile(enemyList);
+	enemyFile >> inp;
+	numEnemiesInFile = inp;
 
 	//Initialize enemies
 	for(int i = 0; i < numEnemies; i++)
 	{
-		Enemy temp(enemyPlaces[i].x, enemyPlaces[i].y, 64);
+		//TODO
+		//std::ifstream enemyFile(enemyList);
+		//enemyFile >> inp;
+
+		Enemy temp(enemyPlaces[i].x, enemyPlaces[i].y);
 		enemies.push_back(temp);
 		//TODO HP and attack of enemy scales by level
 		//Different character sheet holding data of enemies?
-		enemies[i].setLevel(rand() % (maxLevel - minLevel) + 1);
-		enemies[i].setHp(100);
+		enemies[i].setLevel(3);
+		enemies[i].setCurrentHp(100);
+		enemies[i].setMaxHp(100);
+		enemies[i].setMaxMana(100);
 		enemies[i].setAtk(10);
-		enemies[i].setDelay(5000);
+		enemies[i].setAgility(50);
 		enemies[i].setAlive(true);
 	}
 }
@@ -106,187 +100,87 @@ void Battle::endBattle(int& scene)
 	}
 }
 
-//Pressing Q scrolls through enemies that are alive
-void Battle::changeEnemyTarget()
+void Battle::changeEnemyFocus()
 {
-	bool keyQ = sf::Keyboard::isKeyPressed(sf::Keyboard::Q);
-	if(!keyQUp && !keyQ)
+	bool qPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Q);
+	
+	if(!qPressed)
 	{
-		keyQUp = true;
+		qNotPressed = true;
 	}
 
-	if(keyQ && keyQUp)
+	if(qPressed && qNotPressed)
 	{
-		bool enemiesAllDead = true;
-		
-		for(int ndx = 0; ndx < 3 && !enemiesAllDead; ndx++)
+		for(int i = 0; i < numEnemies; i++)
 		{
 			currentEnemySelected++;
-
-			if(currentEnemySelected > numEnemies)
+			if(currentEnemySelected >= numEnemies)
 			{
 				currentEnemySelected = 0;
 			}
 
-			if(enemies[currentEnemySelected].getHp() > 1)
+			if(!(enemies[currentEnemySelected].getAlive()))
 			{
-				enemiesAllDead = false;
 				break;
 			}
 		}
-
-		if(enemiesAllDead)
-		{
-			//battle ends
-		}
 	}
 }
 
-void Battle::checkEnemyDeaths()
+//Returns true if player is dead
+bool Battle::checkPlayerDeath(Player player)
 {
+	if(player.getCurrentHp() < 1)
+	{
+		//Player dies, game over
+		return false;
+	}
+}
+
+//Returns true if all enemies are dead
+bool Battle::checkEnemyDeaths()
+{
+	bool allDead = true;
+
 	for(int i = 0 ; i < numEnemies; i++)
 	{
-		if(enemies[i].getHp() < 1)
+		if(enemies[i].getCurrentHp() < 1)
 		{
 			//enemy has died
 			enemies[i].setAlive(false);
+			allDead = false;
 		}
 	}
+
+	return allDead;
 }
 
-void Battle::playerAttack()
+void Battle::enemyAttack(int enemNum, Player player)
 {
-	bool keyW = sf::Keyboard::isKeyPressed(sf::Keyboard::W);
-	bool keyA = sf::Keyboard::isKeyPressed(sf::Keyboard::A);
-	bool keyS = sf::Keyboard::isKeyPressed(sf::Keyboard::S);
-	bool keyD = sf::Keyboard::isKeyPressed(sf::Keyboard::D);
-
-	//Make sure key goes up before pressing again
-	if(currentTime > immobilizationTime + lastImmobilizationTime)
-	{
-		if(!keyWUp && !keyW)
-		{
-			keyWUp = true;
-		}
-		if(!keyAUp && !keyA)
-		{
-			keyAUp = true;
-		}
-		if(!keySUp && !keyS)
-		{
-			keySUp = true;
-		}
-		if(!keyDUp && !keyD)
-		{
-			keyDUp = true;
-		}
-		
-		//Individual key presses
-		if(keyW && keyWUp)
-		{
-			currentCombo.push_back('W');
-			keyWUp = false;
-		}
-		if(keyA && keyAUp)
-		{
-			currentCombo.push_back('A');
-			keyAUp = false;
-		}
-		if(keyS && keySUp)
-		{
-			currentCombo.push_back('S');
-			keySUp = false;
-		}
-		if(keyD && keyDUp)
-		{
-			currentCombo.push_back('D');
-			keyDUp = false;
-		}
-	}
-}
-
-void Battle::activateAttack()
-{
-	bool keySpace = sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
-	time = clock.getElapsedTime();
-	currentTime = time.asMilliseconds();
-
-	if(keySpace)
-	{
-		if(currentCombo == "s")
-		{
-			nextAttackBlock = true;
-			successCombo = true;
-		}
-		else
-		{
-			for(int i = 0; i < validCombos.size(); i++)
-			{
-				if(validCombos[i] == currentCombo)
-				{
-					//TODO Damage calc (based on combo size or file holding damage multiplier?)
-					enemies[currentEnemySelected].setHp(enemies[currentEnemySelected].getHp() - 10);
-					successCombo = true;
-				}
-			}
-		}
-	}
-
-	//Resets combo if successful
-	if(successCombo)
-	{
-		currentCombo = "";
-	}
-	else
-	{
-		lastImmobilizationTime = currentTime;
-	}
-}
-
-void Battle::enemyAttack(int enemNum)
-{
-	//TODO
-	playerHp -= enemies[enemNum].getAtk();
-
-	if(playerHp < 1)
-	{
-		//Player has died. Game over
-		//scene = 0;
-	}
+	player.setCurrentHp(player.getCurrentHp() - enemies[enemNum].getAtk());
 }
 
 void Battle::drawEnemies(sf::RenderWindow& win)
 {
 	for(int i = 0; i < numEnemies; i++)
 	{
-		win.draw(enemies[i].getSprite());
+		enemies[i].drawAll(win);
 	}
-}
-
-void Battle::setPlayerHp(int hpChange)
-{
-	playerHp += hpChange;
 }
 
 void Battle::setEnemyHp(int enemyNum, int newHp)
 {
-	enemies[enemyNum].setHp(newHp);
-}
-
-int Battle::getPlayerHp()
-{
-	return playerHp;
+	enemies[enemyNum].setCurrentHp(newHp);
 }
 
 //Input is which enemy hp you want
 int Battle::getEnemyHp(int enemyNum)
 {
-	return enemies[enemyNum].getHp();
+	return enemies[enemyNum].getCurrentHp();
 }
 
 int Battle::getNumEnemies()
 {
 	return numEnemies;
 }
-
 
