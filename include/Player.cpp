@@ -1,4 +1,6 @@
 #include "Player.h"
+#include "UIOverlay.h"
+
 #include <cmath>
 #include <iostream>
 
@@ -31,15 +33,81 @@ Player::Player(int x, int y)
 	canMoveUp = canMoveDown = canMoveLeft = canMoveRight = true;
 }
 
-void Player::setHp(int inp)
+//*********** MUTATORS ************
+
+void Player::setCurrentHp(int inp)
 {
-	hp = inp;
+	currentHp = inp;
 }
 
-int Player::getHp()
+void Player::setMaxHp(int inp)
 {
-	return hp;
+	maxHp = inp;
 }
+
+void Player::setCurrentMana(int inp)
+{
+	currentMana = inp;
+}
+
+void Player::setMaxMana(int inp)
+{
+	maxMana = inp;
+}
+
+void Player::setLevel(int inp)
+{
+	level = inp;
+}
+
+void Player::setExp(int inp)
+{
+	exp = inp;
+}
+
+void Player::setCurrency(float inp)
+{
+	currency = inp;
+}
+
+//*********** ACCESSORS ************
+
+int Player::getCurrentHp()
+{
+	return currentHp;
+}
+
+int Player::getMaxHp()
+{
+	return maxHp;
+}
+
+int Player::getCurrentMana()
+{
+	return currentMana;
+}
+
+int Player::getMaxMana()
+{
+	return maxMana;
+}
+
+int Player::getLevel()
+{
+	return level;
+}
+
+int Player::getExp()
+{
+	return exp;
+}
+
+float Player::getCurrency()
+{
+	return currency;
+}
+
+//*********** ETC ************
 
 void Player::stepSound()
 {

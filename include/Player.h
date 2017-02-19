@@ -33,7 +33,15 @@ class Player: public SpriteManage
 		int movingNum;
 
 		//Attributes
-		int hp;
+		int currentHp;
+		int maxHp;
+		int currentMana;
+		int maxMana;
+
+		int level;
+		int exp;
+
+		float currency;
 
 		//Prohibit movement
 		bool canMoveUp;
@@ -44,10 +52,22 @@ class Player: public SpriteManage
 		Player(int, int);
 
 		//***** Mutators *******
-		void setHp(int);
+		void setCurrentHp(int);
+		void setMaxHp(int);
+		void setCurrentMana(int);
+		void setMaxMana(int);
+		void setLevel(int);
+		void setExp(int);
+		void setCurrency(float);
 
 		//***** Accessor *******
-		int getHp();
+		int getCurrentHp();
+		int getMaxHp();
+		int getCurrentMana();
+		int getMaxMana();
+		int getLevel();
+		int getExp();
+		float getCurrency();
 
 		//***** Etc *******
 		void stepSound();

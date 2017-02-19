@@ -14,11 +14,10 @@ class UIOverlay
 		sf::RectangleShape hpBar;
 		sf::RectangleShape damageBar;
 
-		//TODO Energy Bars?
-		//
+		//TODO Mana
 
 		//Exp bar and level indicator
-		sf::Text levelNum;
+		sf::Text levelText;
 		sf::CircleShape levelNumWrapper;
 		sf::RectangleShape expBar;
 
@@ -27,7 +26,7 @@ class UIOverlay
 		std::vector<sf::CircleShape> skillIcons;
 
 		//Currency and other data
-		sf::Text miscText;
+		sf::Text currencyText;
 
 		//TODO Minimap [low-prio]
 
@@ -35,22 +34,12 @@ class UIOverlay
 		UIOverlay();
 
 		//Mutators
-		void setPosition(int, int);
+		void setPosition(sf::View);
 		void setCurrency(float);
 		void setLevel(int);
-		void setMaxHealth(int);
-		void setCurrentHealth(int);
-		void setExp(int);
-
-		//Accessors
-		sf::Vector2f getPosition();
-		float getCurrency();
-		int getLevel();
-		int getMaxHealth();
-		int getCurrentHealth();
-		int getExp();
-
-		void move();
+		void setHealth(int, int);
+		void setMana(int, int);
+		void setExp(int, int);
 };
 
 #endif
