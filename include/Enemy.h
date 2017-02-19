@@ -7,36 +7,50 @@
 class Enemy: public SpriteManage 
 {
 	private:
-		int id;
+		sf::Text name;
+		int level;
 		int currentHp;
 		int maxHp;
-		int level;
+		int currentMana;
+		int maxMana;
+		int agility;
 		int atk;
-		int delay;
 		bool alive;
 
-		//Health bars
+		//Bars
 		sf::RectangleShape health;
 		sf::RectangleShape damage;
+		sf::RectangleShape timeReq;
+		sf::RectangleShape timeFilled;
 	public:
-		Enemy(int, int, int);
+		Enemy(int, int);
 
 		//Mutators
-		void setId(int);
+		void setName(sf::String);
+		void setLevel(int);
 		void setCurrentHp(int);
 		void setMaxHp(int);
-		void setLevel(int);
+		void setCurrentMana(int);
+		void setMaxMana(int);
+		void setAgility(int);
 		void setAtk(int);
-		void setDelay(int);
 		void setAlive(bool);
 
 		//Accessors
+		sf::String getName();
 		int getLevel();
 		int getCurrentHp();
 		int getMaxHp();
+		int getCurrentMana();
+		int getMaxMana();
+		int getAgility();
 		int getAtk();
-		int getDelay();
 		bool getAlive();
+
+		//Draw bars
+		void drawHealthBar(sf::RenderWindow&);
+		void drawTimeBar(sf::RenderWindow&);
+		void drawAll(sf::RenderWindow&);
 };
 
 #endif

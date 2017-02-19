@@ -38,8 +38,8 @@ int main()
 
 	//Background
 	Map ground, background, collision;
-	ground.setupBitmap("maps/testmap", window);
-	collision.setupBitmap("maps/testcollision", window);
+	ground.setupBitmap("data/maps/testmap", window);
+	collision.setupBitmap("data/maps/testcollision", window);
 	background.setupStatic("images/background.jpg");
 
 	//Scene
@@ -102,23 +102,29 @@ int main()
 			
 			//Always on top
 			box.drawAll(window);
+
+			//TODO Draw UI
 		}
 		else if(scene == 2)
 		{
+			//Use dynamically allocated Battle instance to later delete
 			Battle battleScene;
-
+			battleScene.setupBattle("data/enemies/testenemy");
+			
+			//Reset screen view
 			view.setCenter(sf::Vector2f(640, 384));
 			window.setView(view);
-			
-			chr.setPosition(900, 450);
 
+			chr.setPosition(900, 450);
 
 			//Background image
 			background.drawStatic(window, view);
 
 			//Midground
+			chr.drawSprite(window);
 			battleScene.drawEnemies(window);
-			window.draw(chr.getSprite());
+
+			//TODO Update UI
 		}
 
 		//End current frame and display its contents on screen
