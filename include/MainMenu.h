@@ -6,7 +6,7 @@
 #ifndef MAINMENU_H
 #define MAINMENU_H
 
-class MainMenu
+class MainMenu: public SpriteManage
 {
 	private:
 		int currentlySelected;
