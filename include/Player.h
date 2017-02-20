@@ -1,5 +1,7 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
+
+#include "UIOverlay.h"
 #include "SpriteManage.h"
 
 #ifndef PLAYER_H
@@ -10,7 +12,7 @@ class Player: public SpriteManage
 	private:
 		//Time management for box open/close
 		sf::Clock clock;
-		sf::Time time;
+		sf::Time tme;
 		float lastTimeAnim;
 		float lastTimeMu;
 		float currentTime;
@@ -48,17 +50,20 @@ class Player: public SpriteManage
 		bool canMoveDown;
 		bool canMoveRight;
 		bool canMoveLeft;
+
+		//To check for enemy
+		bool checkEncounter;
 	public:
 		Player(int, int);
 
 		//***** Mutators *******
-		void setCurrentHp(int);
-		void setMaxHp(int);
-		void setCurrentMana(int);
-		void setMaxMana(int);
-		void setLevel(int);
-		void setExp(int);
-		void setCurrency(float);
+		void setCurrentHp(int, UIOverlay);
+		void setMaxHp(int, UIOverlay);
+		void setCurrentMana(int, UIOverlay);
+		void setMaxMana(int, UIOverlay);
+		void setLevel(int, UIOverlay);
+		void setExp(int, UIOverlay);
+		void setCurrency(float, UIOverlay);
 
 		//***** Accessor *******
 		int getCurrentHp();
@@ -73,6 +78,7 @@ class Player: public SpriteManage
 		void stepSound();
 		void standStill();
 		void movePos();
+		void encounter(int, int&);
 		void spriteAnimation();
 		bool collisionZones(int, int);
 };

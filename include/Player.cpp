@@ -19,7 +19,7 @@ Player::Player(int x, int y)
 	step2.openFromFile("sound/step2.ogg");
 	curStep = 0;
 
-	//Used for time management
+	//Used for tme management
 	lastTimeAnim = 0;
 	lastTimeMu = 0;
 	spriteAnimationDelay = 90;
@@ -31,43 +31,52 @@ Player::Player(int x, int y)
 	moving = false;
 	movingNum = 0;
 	canMoveUp = canMoveDown = canMoveLeft = canMoveRight = true;
+
+	checkEncounter = false;
 }
 
 //*********** MUTATORS ************
 
-void Player::setCurrentHp(int inp)
+void Player::setCurrentHp(int inp, UIOverlay overlay)
 {
 	currentHp = inp;
+	overlay.setHealth(currentHp, maxHp);
 }
 
-void Player::setMaxHp(int inp)
+void Player::setMaxHp(int inp, UIOverlay overlay)
 {
 	maxHp = inp;
+	overlay.setHealth(currentHp, maxHp);
 }
 
-void Player::setCurrentMana(int inp)
+void Player::setCurrentMana(int inp, UIOverlay overlay)
 {
 	currentMana = inp;
+	overlay.setMana(currentMana, maxMana);
 }
 
-void Player::setMaxMana(int inp)
+void Player::setMaxMana(int inp, UIOverlay overlay)
 {
 	maxMana = inp;
+	overlay.setMana(currentMana, maxMana);
 }
 
-void Player::setLevel(int inp)
+void Player::setLevel(int inp, UIOverlay overlay)
 {
 	level = inp;
+	overlay.setLevel(level);
 }
 
-void Player::setExp(int inp)
+void Player::setExp(int inp, UIOverlay overlay)
 {
 	exp = inp;
+	//TODO overlay.setExp();
 }
 
-void Player::setCurrency(float inp)
+void Player::setCurrency(float inp, UIOverlay overlay)
 {
 	currency = inp;
+	overlay.setCurrency(currency);
 }
 
 //*********** ACCESSORS ************
@@ -111,8 +120,8 @@ float Player::getCurrency()
 
 void Player::stepSound()
 {
-	time = clock.getElapsedTime(); 
-	currentTime = time.asMilliseconds();
+	tme = clock.getElapsedTime(); 
+	currentTime = tme.asMilliseconds();
 
 	if(lastTimeMu + stepSoundDelay < currentTime)
 	{
@@ -178,14 +187,14 @@ void Player::movePos()
 		}
 		movingNum++;
 
-		//Stop moving after 8 times
+		//Stop moving after 8 tmes
 		if(movingNum == 8)
 		{
 			movingNum = 0;
 			moving = false;
+			checkEncounter = true;
 		}
 		
-		//TODO
 		moveSprite(xSpeed, ySpeed);
 	}
 	else if((wPress && sPress) || (aPress && dPress))
@@ -196,7 +205,7 @@ void Player::movePos()
 	{
 		lastDirection = 0;
 		moving = true;
-		//spriteAnimation();
+		//TODO spriteAnimation();
 		stepSound();
 	}
 	else if(sPress && canMoveDown)
@@ -228,11 +237,25 @@ void Player::movePos()
 	canMoveUp = canMoveDown = canMoveLeft = canMoveRight = true;
 }
 
+//Calculates whether player should encounter enemy. Encounter chance is from 0-100
+void Player::encounter(int encounterChance, int& scene)
+{
+	if(checkEncounter)
+	{
+		checkEncounter = false;
+		srand(time(NULL));
+		if((rand() % 101) < encounterChance)
+		{
+			scene = 2;
+		}
+	}
+}
+
 //Direction is 0 when top, 1 when right, 2 when down, 3 when left
 void Player::spriteAnimation()
 {
-	time = clock.getElapsedTime();
-	currentTime = time.asMilliseconds();
+	tme = clock.getElapsedTime();
+	currentTime = tme.asMilliseconds();
 
 	if(currentTime > lastTimeAnim + spriteAnimationDelay)
 	{
