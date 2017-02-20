@@ -18,8 +18,10 @@ class Enemy: public SpriteManage
 		bool alive;
 
 		//Bars
-		sf::RectangleShape health;
-		sf::RectangleShape damage;
+		sf::RectangleShape maxHpBar;
+		sf::RectangleShape currentHpBar;
+		sf::RectangleShape maxManaBar;
+		sf::RectangleShape currentManaBar;
 		sf::RectangleShape timeReq;
 		sf::RectangleShape timeFilled;
 	public:

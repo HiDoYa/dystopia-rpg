@@ -7,19 +7,24 @@
 class UIOverlay
 {
 	private:
+		//Mainwrapper
 		sf::Texture mainWrapperTexture;
 		sf::Sprite mainWrapperSprite;
 
-		//Health bars
-		sf::RectangleShape hpBar;
-		sf::RectangleShape damageBar;
+		//Font Used
+		sf::Font font;
 
-		//TODO Mana
+		//Bars
+		sf::RectangleShape maxHpBar;
+		sf::RectangleShape currentHpBar;
+		sf::RectangleShape maxManaBar;
+		sf::RectangleShape currentManaBar;
+		sf::RectangleShape maxExpBar;
+		sf::RectangleShape currentExpBar;
 
 		//Exp bar and level indicator
-		sf::Text levelText;
 		sf::CircleShape levelNumWrapper;
-		sf::RectangleShape expBar;
+		sf::Text levelText;
 
 		//Equipped skills
 		std::vector<sf::Texture> skillIconTextures;
@@ -27,19 +32,21 @@ class UIOverlay
 
 		//Currency and other data
 		sf::Text currencyText;
-
-		//TODO Minimap [low-prio]
-
 	public:
 		UIOverlay();
 
 		//Mutators
 		void setPosition(sf::View);
-		void setCurrency(float);
+		void setCurrency(int);
 		void setLevel(int);
 		void setHealth(int, int);
 		void setMana(int, int);
 		void setExp(int, int);
+		//TODO Skill display
+		//TODO Minimap [low-prio]
+
+		//Etc
+		void drawAll(sf::RenderWindow&);
 };
 
 #endif

@@ -16,8 +16,8 @@ Enemy::Enemy(int x, int y)
 	alive = true;
 
 	//Sets health bars
-	health.setSize(sf::Vector2f(100, 50));
-	damage.setSize(sf::Vector2f(100, 50));
+	maxHpBar.setSize(sf::Vector2f(100, 50));
+	currentHpBar.setSize(sf::Vector2f(100, 50));
 
 	//Sets position 
 	setPosition(x, y);
@@ -38,27 +38,33 @@ void Enemy::setLevel(int inp)
 void Enemy::setCurrentHp(int inp)
 {
 	currentHp = inp;
-	damage.setFillColor(sf::Color::Green);
-	damage.setSize(sf::Vector2f(100, 10));
-	damage.setPosition(getPosition().x - 15, getPosition().y - 50);
+	currentHpBar.setFillColor(sf::Color::Green);
+	currentHpBar.setSize(sf::Vector2f(100, 10));
+	currentHpBar.setPosition(getPosition().x - 15, getPosition().y - 50);
 }
 
 void Enemy::setMaxHp(int inp)
 {
 	maxHp = inp;
-	health.setFillColor(sf::Color::Red);
-	health.setSize(sf::Vector2f(100, 10));
-	health.setPosition(getPosition().x - 15, getPosition().y - 50);
+	maxHpBar.setFillColor(sf::Color::Red);
+	maxHpBar.setSize(sf::Vector2f(100, 10));
+	maxHpBar.setPosition(getPosition().x - 15, getPosition().y - 50);
 }
 
 void Enemy::setCurrentMana(int inp)
 {
 	currentMana = inp;
+	currentManaBar.setFillColor(sf::Color::Green);
+	currentManaBar.setSize(sf::Vector2f(100, 10));
+	currentManaBar.setPosition(getPosition().x - 15, getPosition().y - 50);
 }
 
 void Enemy::setMaxMana(int inp)
 {
 	maxMana = inp;
+	maxManaBar.setFillColor(sf::Color::Red);
+	maxManaBar.setSize(sf::Vector2f(100, 10));
+	maxManaBar.setPosition(getPosition().x - 15, getPosition().y - 50);
 }
 
 void Enemy::setAgility(int inp)
@@ -127,8 +133,8 @@ bool Enemy::getAlive()
 
 void Enemy::drawHealthBar(sf::RenderWindow& win)
 {
-	win.draw(health);
-	win.draw(damage);
+	win.draw(maxHpBar);
+	win.draw(currentHpBar);
 }
 
 void Enemy::drawTimeBar(sf::RenderWindow& win)
