@@ -54,7 +54,7 @@ class Player: public SpriteManage
 		//To check for enemy
 		bool checkEncounter;
 	public:
-		Player(int, int);
+		Player();
 
 		//***** Mutators *******
 		void setCurrentHp(int, UIOverlay);

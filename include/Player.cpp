@@ -4,7 +4,7 @@
 #include <cmath>
 #include <iostream>
 
-Player::Player(int x, int y)
+Player::Player()
 {
 	//Sets texture and position of sprite
 	texturePosX = texturePosY = 0;
@@ -12,7 +12,6 @@ Player::Player(int x, int y)
 	//A character
 	setTextureSprite("images/character/char1.png");
 	setTextureRect(0, 0);
-	setPosition(x, y);
 
 	//Sound
 	step1.openFromFile("sound/step1.ogg");
