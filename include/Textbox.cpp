@@ -4,7 +4,7 @@
 #include "Textbox.h"
 
 //Default constructor
-Textbox::Textbox(sf::View& view)
+Textbox::Textbox()
 {
 	//Gets box parameters
 	width = 0;

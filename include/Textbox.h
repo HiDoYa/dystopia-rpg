@@ -46,7 +46,7 @@ class Textbox
 		sf::String animText;
 
 	public:
-		Textbox(sf::View&);
+		Textbox();
 		void setFont(sf::String);
 		void setName(sf::String);
 		void setText(sf::String);
