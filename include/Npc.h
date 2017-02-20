@@ -1,5 +1,6 @@
 #include "Textbox.h"
 #include "Player.h"
+#include "SpriteManage.h"
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
@@ -7,13 +8,9 @@
 #ifndef NPC_H
 #define NPC_H
 
-class Npc
+class Npc: public SpriteManage
 {
 	private:
-		//Texture and sprite of npc
-		sf::Texture texture;
-		sf::Sprite sprite;
-		
 		//Textbox management
 		bool openBox;
 		bool closeBox;
@@ -28,10 +25,7 @@ class Npc
 		//Stores whether player is next to npc
 		bool colliding;
 	public:
-		Npc(int, int, sf::String);
-		void setTexture(sf::String);
-		void setPosition(int, int);
-		sf::Sprite getSprite();
+		Npc();
 		void speak(sf::String, sf::String, Textbox&);
 		bool getSpeaking();
 		void collision(Player&);

@@ -1,18 +1,15 @@
 #include "Npc.h"
 #include "Player.h"
+#include "SpriteManage.h"
 
 #include <vector>
 #include <iostream>
 
-Npc::Npc(int x, int y, sf::String nameTexture)
+Npc::Npc()
 {
 	//Gets texture of sprite
-	texture.loadFromFile(nameTexture);
-
-	//Set texture and position of sprite
-	sprite.setTexture(texture);
-	sprite.setPosition(x, y);
-
+	setTextureRect(0, 0);
+	
 	//Default for textbox
 	textNum = 0;
 	openBox = false;
@@ -20,21 +17,7 @@ Npc::Npc(int x, int y, sf::String nameTexture)
 
 	//Initializes speaking bool
 	speaking = false;
-}
-
-void Npc::setTexture(sf::String nameTexture)
-{
-	texture.loadFromFile(nameTexture);
-}
-
-void Npc::setPosition(int x, int y)
-{
-	sprite.setPosition(x, y);
-}
-
-sf::Sprite Npc::getSprite()
-{
-	return sprite;
+	colliding = false;
 }
 
 //Gets the converted vector, deals with animation/textbox calls, and deals with multiple textboxes
@@ -104,5 +87,5 @@ bool Npc::getSpeaking()
 
 void Npc::collision(Player& player)
 {
-	colliding = player.collisionZones(sprite.getPosition().x / 64, sprite.getPosition().y / 64);
+	colliding = player.collisionZones(getPosition().x / 64, getPosition().y / 64);
 }
