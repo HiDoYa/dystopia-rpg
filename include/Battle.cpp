@@ -18,9 +18,9 @@ void Battle::setupBattle(sf::String enemyList)
 {
 	//Lists off the possible area that the enemy can be spawned in
 	std::vector<sf::Vector2f> enemyPlaces;
-	enemyPlaces.push_back(sf::Vector2f(300, 300));
-	enemyPlaces.push_back(sf::Vector2f(500, 450));
-	enemyPlaces.push_back(sf::Vector2f(300, 600));
+	enemyPlaces.push_back(sf::Vector2f(200, 300));
+	enemyPlaces.push_back(sf::Vector2f(400, 450));
+	enemyPlaces.push_back(sf::Vector2f(200, 600));
 
 	//TODO Open file and get player attacks 
 	//std::ifstream comboFile("combo");
@@ -157,7 +157,7 @@ bool Battle::checkEnemyDeaths()
 
 void Battle::enemyAttack(int enemNum, Player player)
 {
-	player.setCurrentHp(player.getCurrentHp() - enemies[enemNum].getAtk());
+	//TODO player.setCurrentHp(player.getCurrentHp() - enemies[enemNum].getAtk());
 }
 
 void Battle::drawEnemies(sf::RenderWindow& win)
