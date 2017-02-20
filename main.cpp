@@ -8,11 +8,13 @@
 
 //Game classes
 #include "include/Battle.h"
-#include "include/Textbox.h"
+#include "include/MainMenu.h"
+#include "include/Map.h"
 #include "include/Npc.h"
 #include "include/Player.h"
-#include "include/Map.h"
 #include "include/SpriteManage.h"
+#include "include/Textbox.h"
+#include "include/UIOverlay.h"
 
 int main()
 {
@@ -22,19 +24,25 @@ int main()
 	//Defines what region is shown on screen
 	sf::View view = window.getView();
 
-	//Music
-	sf::Music music;
-	music.openFromFile("sound/ambientMu.ogg");
-	music.play();
-
 	//Text box instances
 	Textbox box(view);
+
+	//UIOverlay
+	UIOverlay overlay;
+	overlay.setCurrency(0);
+	overlay.setLevel(1);
+	overlay.setExp(1, 10);
+	overlay.setHealth(90, 100);
+	overlay.setMana(90, 100);
 
 	//NPC instances
 	Npc npcTest(128, 128, "images/test4.png");
 	
 	//Player instances
 	Player chr(64, 64);
+
+	//Main menu instance
+	MainMenu mainMenu;
 
 	//Background
 	Map ground, background, collision;
@@ -44,7 +52,7 @@ int main()
 
 	//Scene
 	//0 = menu, 1 = map, 2 = battle
-	int scene = 2;
+	int scene = 0;
 
 	//Sets framerate to 60fps
 	window.setFramerateLimit(60);
@@ -65,7 +73,31 @@ int main()
 		}
 
 
-		if(scene == 1)
+		if(scene == 0)
+		{
+			mainMenu.scroll();
+			mainMenu.currentlySelectedIndicate();
+
+			if(mainMenu.selection() == 0)
+			{
+				scene = 1;
+			}
+			else if(mainMenu.selection() == 1)
+			{
+				//TODO load game
+			}
+			else if(mainMenu.selection() == 2)
+			{
+				break;
+			}
+
+			//TODO Draw background image
+			background.drawStatic(window, view); 
+
+			//Draw main menu buttons
+			mainMenu.drawAll(window);
+		}
+		else if(scene == 1)
 		{
 
 			//Npc interaction
@@ -76,6 +108,7 @@ int main()
 			{
 				chr.movePos();
 			}
+			chr.encounter(10, scene);
 
 			//Activates window for OpenGL rendering
 			sf::Color winColor(107, 120, 140);
@@ -85,7 +118,8 @@ int main()
 			view.setCenter(chr.getPosition());
 			window.setView(view);
 
-			//Sets position of box
+			//Sets position based on view
+			overlay.setPosition(view);
 			box.updatePosition(view);
 
 			//Always on bottom
@@ -103,19 +137,21 @@ int main()
 			//Always on top
 			box.drawAll(window);
 
-			//TODO Draw UI
+			//Draw UI
+			overlay.drawAll(window);
 		}
 		else if(scene == 2)
 		{
+			chr.setPosition(800, 450);
+
 			//Use dynamically allocated Battle instance to later delete
 			Battle battleScene;
 			battleScene.setupBattle("data/enemies/testenemy");
 			
 			//Reset screen view
-			view.setCenter(sf::Vector2f(640, 384));
+			view.setCenter(sf::Vector2f(512, 384));
 			window.setView(view);
-
-			chr.setPosition(900, 450);
+			overlay.setPosition(view);
 
 			//Background image
 			background.drawStatic(window, view);
@@ -124,7 +160,8 @@ int main()
 			chr.drawSprite(window);
 			battleScene.drawEnemies(window);
 
-			//TODO Update UI
+			//Update UI
+			overlay.drawAll(window);
 		}
 
 		//End current frame and display its contents on screen

@@ -1,4 +1,4 @@
-OBJ = main.o Textbox.o SpriteManage.o Npc.o Player.o Enemy.o Map.o Battle.o 
+OBJ = main.o Textbox.o SpriteManage.o Map.o Npc.o Player.o Enemy.o  Battle.o UIOverlay.o MainMenu.o
 all: game
 
 game: $(OBJ)
@@ -8,24 +8,29 @@ game: $(OBJ)
 main.o: main.cpp
 	g++ -std=c++11 -c $<
 
-Textbox.o: include/Textbox.cpp include/Textbox.h
-	g++ -std=c++11 -c $<
-
-SpriteManage.o: include/SpriteManage.cpp include/SpriteManage.h
-	g++ -std=c++11 -c $<
-
-Npc.o: include/Npc.cpp include/Npc.h
-	g++ -std=c++11 -c $<
-
-Player.o: include/Player.cpp include/Player.h
+Battle.o: include/Battle.cpp include/Battle.h
 	g++ -std=c++11 -c $<
 
 Enemy.o: include/Enemy.cpp include/Enemy.h
 	g++ -std=c++11 -c $<
 
+Player.o: include/Player.cpp include/Player.h
+	g++ -std=c++11 -c $<
+
+MainMenu.o: include/MainMenu.cpp include/MainMenu.h
+	g++ -std=c++11 -c $<
+
 Map.o: include/Map.cpp include/Map.h
 	g++ -std=c++11 -c $<
 
-Battle.o: include/Battle.cpp include/Battle.h
+Npc.o: include/Npc.cpp include/Npc.h
 	g++ -std=c++11 -c $<
 
+SpriteManage.o: include/SpriteManage.cpp include/SpriteManage.h
+	g++ -std=c++11 -c $<
+
+Textbox.o: include/Textbox.cpp include/Textbox.h
+	g++ -std=c++11 -c $<
+
+UIOverlay.o: include/UIOverlay.cpp include/UIOverlay.h
+	g++ -std=c++11 -c $<
