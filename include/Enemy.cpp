@@ -4,6 +4,9 @@
 
 Enemy::Enemy(int x, int y)
 {
+	//The length of all bars
+	length = 100;
+
 	//Default attributes of enemy
 	name.setString("Enemy");
 	level = 3;
@@ -14,12 +17,18 @@ Enemy::Enemy(int x, int y)
 	agility = 100;
 	atk = 10;
 	alive = true;
+	
+	//Set bar color
+	currentHpBar.setFillColor(sf::Color::Green);
+	maxHpBar.setFillColor(sf::Color::Red);
+	
+	currentManaBar.setFillColor(sf::Color::Blue);
+	maxManaBar.setFillColor(sf::Color::Black);
 
-	//Sets health bars
-	maxHpBar.setSize(sf::Vector2f(100, 50));
-	currentHpBar.setSize(sf::Vector2f(100, 50));
+	timeReq.setFillColor(sf::Color::Yellow);
+	timeFull.setFillColor(sf::Color::Black);
 
-	//Sets position 
+	//Sets position of sprite
 	setPosition(x, y);
 }
 
@@ -35,41 +44,36 @@ void Enemy::setLevel(int inp)
 	level = inp;
 }
 
-void Enemy::setCurrentHp(int inp)
-{
-	currentHp = inp;
-	currentHpBar.setFillColor(sf::Color::Green);
-	currentHpBar.setSize(sf::Vector2f(100, 10));
-	currentHpBar.setPosition(getPosition().x - 15, getPosition().y - 50);
-}
-
 void Enemy::setMaxHp(int inp)
 {
 	maxHp = inp;
-	maxHpBar.setFillColor(sf::Color::Red);
-	maxHpBar.setSize(sf::Vector2f(100, 10));
-	maxHpBar.setPosition(getPosition().x - 15, getPosition().y - 50);
+	maxHpBar.setSize(sf::Vector2f(length, 10));
 }
 
-void Enemy::setCurrentMana(int inp)
+void Enemy::setCurrentHp(int inp)
 {
-	currentMana = inp;
-	currentManaBar.setFillColor(sf::Color::Green);
-	currentManaBar.setSize(sf::Vector2f(100, 10));
-	currentManaBar.setPosition(getPosition().x - 15, getPosition().y - 50);
+	currentHp = inp;
+	currentHpBar.setSize(sf::Vector2f((static_cast<float>(currentHp) / maxHp) * length, 10));
 }
 
 void Enemy::setMaxMana(int inp)
 {
 	maxMana = inp;
-	maxManaBar.setFillColor(sf::Color::Red);
-	maxManaBar.setSize(sf::Vector2f(100, 10));
-	maxManaBar.setPosition(getPosition().x - 15, getPosition().y - 50);
+	maxManaBar.setSize(sf::Vector2f(length, 10));
+}
+
+void Enemy::setCurrentMana(int inp)
+{
+	currentMana = inp;
+	currentManaBar.setSize(sf::Vector2f((static_cast<float>(currentMana) / maxMana) * length, 10));
 }
 
 void Enemy::setAgility(int inp)
 {
 	agility = inp;
+	timeReq.setSize(sf::Vector2f((length), 10));
+	timeFull.setSize(sf::Vector2f((static_cast<float>(1) * length), 10));
+	//TODO timeReq.
 }
 
 void Enemy::setAtk(int inp)
@@ -94,24 +98,24 @@ int Enemy::getLevel()
 	return level;
 }
 
-int Enemy::getCurrentHp()
-{
-	return currentHp;
-}
-
 int Enemy::getMaxHp()
 {
 	return maxHp;
 }
 
-int Enemy::getCurrentMana()
+int Enemy::getCurrentHp()
 {
-	return currentMana;
+	return currentHp;
 }
 
 int Enemy::getMaxMana()
 {
 	return maxMana;
+}
+
+int Enemy::getCurrentMana()
+{
+	return currentMana;
 }
 
 int Enemy::getAgility()
@@ -131,23 +135,32 @@ bool Enemy::getAlive()
 
 //************ DRAW
 
-void Enemy::drawHealthBar(sf::RenderWindow& win)
+void Enemy::updatePosition()
 {
-	win.draw(maxHpBar);
-	win.draw(currentHpBar);
-}
+	//Sets bar placement
+	currentHpBar.setPosition(getPosition().x - 15, getPosition().y - 50);
+	maxHpBar.setPosition(getPosition().x - 15, getPosition().y - 50);
 
-void Enemy::drawTimeBar(sf::RenderWindow& win)
-{
-	win.draw(timeReq);
-	win.draw(timeFilled);
+	currentManaBar.setPosition(getPosition().x - 15, getPosition().y - 40);
+	maxManaBar.setPosition(getPosition().x - 15, getPosition().y - 40);
+
+	timeReq.setPosition(getPosition().x - 15, getPosition().y - 20);
+	timeFull.setPosition(getPosition().x - 15, getPosition().y - 20);
 }
 
 void Enemy::drawAll(sf::RenderWindow& win)
-{
-	//Draw bars
-	drawHealthBar(win);
-	drawTimeBar(win);
+{	
+	//Draw hp bars
+	win.draw(maxHpBar);
+	win.draw(currentHpBar);
+	
+	//Draw mana bars
+	win.draw(maxManaBar);
+	win.draw(currentManaBar);
+
+	//Draw timebars
+	win.draw(timeReq);
+	win.draw(timeFull);
 
 	//Draws sprite
 	setTextureSprite("images/enemies/test4.png");

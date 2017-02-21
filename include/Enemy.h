@@ -17,23 +17,25 @@ class Enemy: public SpriteManage
 		int atk;
 		bool alive;
 
+		int length;
+
 		//Bars
 		sf::RectangleShape maxHpBar;
 		sf::RectangleShape currentHpBar;
 		sf::RectangleShape maxManaBar;
 		sf::RectangleShape currentManaBar;
 		sf::RectangleShape timeReq;
-		sf::RectangleShape timeFilled;
+		sf::RectangleShape timeFull;
 	public:
 		Enemy(int, int);
 
 		//Mutators
 		void setName(sf::String);
 		void setLevel(int);
-		void setCurrentHp(int);
 		void setMaxHp(int);
-		void setCurrentMana(int);
+		void setCurrentHp(int);
 		void setMaxMana(int);
+		void setCurrentMana(int);
 		void setAgility(int);
 		void setAtk(int);
 		void setAlive(bool);
@@ -41,17 +43,16 @@ class Enemy: public SpriteManage
 		//Accessors
 		sf::String getName();
 		int getLevel();
-		int getCurrentHp();
 		int getMaxHp();
-		int getCurrentMana();
+		int getCurrentHp();
 		int getMaxMana();
+		int getCurrentMana();
 		int getAgility();
 		int getAtk();
 		bool getAlive();
 
 		//Draw bars
-		void drawHealthBar(sf::RenderWindow&);
-		void drawTimeBar(sf::RenderWindow&);
+		void updatePosition();
 		void drawAll(sf::RenderWindow&);
 };
 

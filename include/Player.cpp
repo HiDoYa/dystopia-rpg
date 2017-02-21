@@ -36,6 +36,12 @@ Player::Player()
 
 //*********** MUTATORS ************
 
+void Player::setLevel(int inp, UIOverlay overlay)
+{
+	level = inp;
+	overlay.setLevel(level);
+}
+
 void Player::setCurrentHp(int inp, UIOverlay overlay)
 {
 	currentHp = inp;
@@ -60,25 +66,35 @@ void Player::setMaxMana(int inp, UIOverlay overlay)
 	overlay.setMana(currentMana, maxMana);
 }
 
-void Player::setLevel(int inp, UIOverlay overlay)
+void Player::setAgility(int inp)
 {
-	level = inp;
-	overlay.setLevel(level);
+	agility = inp;
+}
+
+void Player::setAtk(int inp)
+{
+	atk = inp;
 }
 
 void Player::setExp(int inp, UIOverlay overlay)
 {
 	exp = inp;
-	//TODO overlay.setExp();
+	//TODO This formula right?
+	overlay.setExp(exp, level * 100);
 }
 
-void Player::setCurrency(float inp, UIOverlay overlay)
+void Player::setCurrency(int inp, UIOverlay overlay)
 {
 	currency = inp;
 	overlay.setCurrency(currency);
 }
 
 //*********** ACCESSORS ************
+
+int Player::getLevel()
+{
+	return level;
+}
 
 int Player::getCurrentHp()
 {
@@ -100,9 +116,14 @@ int Player::getMaxMana()
 	return maxMana;
 }
 
-int Player::getLevel()
+int Player::getAgility()
 {
-	return level;
+	return agility;
+}
+
+int Player::getAtk()
+{
+	return atk;
 }
 
 int Player::getExp()
@@ -110,7 +131,7 @@ int Player::getExp()
 	return exp;
 }
 
-float Player::getCurrency()
+int Player::getCurrency()
 {
 	return currency;
 }

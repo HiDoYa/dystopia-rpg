@@ -46,16 +46,16 @@ void Battle::setupBattle(sf::String enemyList)
 	//Get enemies
 	srand(time(NULL));
 	
-	//3 enemies max (pick randomly)
+	//TODO 3 enemies max (pick randomly)
 	//numEnemies = rand() % 3 + 1;
 	numEnemies = 3;
 	currentEnemySelected = 0;
 
-	//Gets the number of monsters to choose from
-	int inp, numEnemiesInFile;
-	std::ifstream enemyFile(enemyList);
-	enemyFile >> inp;
-	numEnemiesInFile = inp;
+	//TODO Gets the number of monsters to choose from
+	//int inp, numEnemiesInFile;
+	//std::ifstream enemyFile(enemyList);
+	//enemyFile >> inp;
+	//numEnemiesInFile = inp;
 
 	//Initialize enemies
 	for(int i = 0; i < numEnemies; i++)
@@ -68,18 +68,29 @@ void Battle::setupBattle(sf::String enemyList)
 		enemies.push_back(temp);
 		//TODO HP and attack of enemy scales by level
 		//Different character sheet holding data of enemies?
+		enemies[i].setName("Bob");
 		enemies[i].setLevel(3);
-		enemies[i].setCurrentHp(100);
 		enemies[i].setMaxHp(100);
+		enemies[i].setCurrentHp(100);
 		enemies[i].setMaxMana(100);
-		enemies[i].setAtk(10);
+		enemies[i].setCurrentMana(90);
 		enemies[i].setAgility(50);
+		enemies[i].setAtk(10);
+
 		enemies[i].setAlive(true);
+		enemies[i].updatePosition();
 	}
 }
 
 void Battle::startBattle()
 {
+	//TODO Animation to transition from map to battle
+}
+
+void Battle::tickBattle()
+{
+	tme = clock.getElapsedTime();
+	currentTime = tme.asMilliseconds();
 }
 
 void Battle::endBattle(int& scene)
@@ -168,11 +179,14 @@ void Battle::drawEnemies(sf::RenderWindow& win)
 	}
 }
 
+//*************** MUTATORS ******************
+
 void Battle::setEnemyHp(int enemyNum, int newHp)
 {
 	enemies[enemyNum].setCurrentHp(newHp);
 }
 
+//*************** ACCESSORS ******************
 //Input is which enemy hp you want
 int Battle::getEnemyHp(int enemyNum)
 {

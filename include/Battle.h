@@ -8,11 +8,14 @@
 #ifndef BATTLE_H
 #define BATTLE_H
 
-//Handles enemies and battles
+//Handles enemies and battles class Battle
 class Battle
 {
 	private:
 		//For player
+		sf::RectangleShape timeReq;
+		sf::RectangleShape timeFull;
+
 		sf::Texture playerTexture;
 		sf::Sprite playerSprite;
 		bool qNotPressed;
@@ -26,11 +29,13 @@ class Battle
 		sf::Clock clock;
 		sf::Time tme;
 		float currentTime;
+		float lastTime;
 	public:
 		Battle();
 
 		void setupBattle(sf::String);
 		void startBattle();
+		void tickBattle();
 		void endBattle(int&);
 
 		void changeEnemyFocus();
