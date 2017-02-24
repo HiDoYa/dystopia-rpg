@@ -41,6 +41,8 @@ int main()
 			//Request for closing the window
 			if(event.type == sf::Event::Closed)
 			{
+				//Somehow this line fixes a bunch of errors??
+				std::cout << "Closing event\n";
 				window.close();
 			}
 		}
