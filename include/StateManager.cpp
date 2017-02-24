@@ -107,8 +107,7 @@ void StateManager::updateMap(sf::RenderWindow& win, sf::View& view)
 	if(!npc[0].getSpeaking())
 	{
 		player.movePos();
-	}
-
+	} 
 	//TODO Set encounter rate based on map
 	player.encounter(100, currentState);
 
@@ -186,7 +185,7 @@ void StateManager::renderBattle(sf::RenderWindow& win, sf::View& view)
 
 	//TODO Mid ground
 	player.drawSprite(win);
-	battle.drawEnemies(win);
+	battle.drawAll(win);
 
 	//TODO On top
 	overlay.drawAll(win);
