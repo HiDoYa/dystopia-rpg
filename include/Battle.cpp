@@ -46,16 +46,33 @@ void Battle::setupBattle(sf::String enemyList)
 	//Get enemies
 	srand(time(NULL));
 	
-	//TODO 3 enemies max (pick randomly)
-	//numEnemies = rand() % 3 + 1;
-	numEnemies = 3;
+	numEnemies = rand() % 3 + 1;
 	currentEnemySelected = 0;
 
 	//TODO Gets the number of monsters to choose from
+	//STORE ENEMY INFORMATION FROM FILE INTO A VECTOR/CLASS IN GAME
+	//MAKE MEMBER FUNCTION FOR ENEMY TO GET INFO FROM FILE
 	//int inp, numEnemiesInFile;
 	//std::ifstream enemyFile(enemyList);
 	//enemyFile >> inp;
 	//numEnemiesInFile = inp;
+	
+
+	//Initialize circle shape
+	//TODO Get player optins from file and get numSkills from file
+	numSkills = 2;
+	for(int i = 0; i < numSkills; i++)
+	{
+		playerOptions.push_back(sf::CircleShape());
+		playerOptions[i].setRadius(15);
+		playerOptions[i].setPosition(sf::Vector2f(900, 500));
+		playerOptions[i].setFillColor(sf::Color::Blue);
+		//playerOptions[1].setRadius(15);
+		//playerOptions[2].setRadius(15);
+		//playerOptions[3].setRadius(15);
+		//playerOptions[4].setRadius(15);
+		//playerOptions[5].setRadius(15);
+	}
 
 	//Initialize enemies
 	for(int i = 0; i < numEnemies; i++)
@@ -66,8 +83,9 @@ void Battle::setupBattle(sf::String enemyList)
 
 		Enemy temp(enemyPlaces[i].x, enemyPlaces[i].y);
 		enemies.push_back(temp);
-		//TODO HP and attack of enemy scales by level
-		//Different character sheet holding data of enemies?
+		
+		//TODO Different character sheet holding data of enemies?
+
 		enemies[i].setName("Bob");
 		enemies[i].setLevel(3);
 		enemies[i].setMaxHp(100);
@@ -92,9 +110,7 @@ void Battle::tickBattle()
 	tme = clock.getElapsedTime();
 	currentTime = tme.asMilliseconds();
 }
-
-void Battle::endBattle(int& scene)
-{
+void Battle::endBattle(int& scene) {
 	bool gameWin = true;
 	for(int i = 0; i < numEnemies; i++)
 	{
@@ -144,8 +160,9 @@ bool Battle::checkPlayerDeath(Player player)
 	if(player.getCurrentHp() < 1)
 	{
 		//Player dies, game over
-		return false;
+		return true;
 	}
+	return false;
 }
 
 //Returns true if all enemies are dead
@@ -177,6 +194,18 @@ void Battle::drawEnemies(sf::RenderWindow& win)
 	{
 		enemies[i].drawAll(win);
 	}
+}
+
+void Battle::drawAll(sf::RenderWindow& win)
+{
+	drawEnemies(win);
+	for(int i = 0; i < playerOptions.size(); i++)
+	{
+		win.draw(playerOptions[i]);
+	}
+	//TODO
+	//win.draw(timeReq);
+	//win.draw(timeFull);
 }
 
 //*************** MUTATORS ******************

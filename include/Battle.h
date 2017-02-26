@@ -19,6 +19,11 @@ class Battle
 		sf::Texture playerTexture;
 		sf::Sprite playerSprite;
 		bool qNotPressed;
+
+		//Player options
+		std::vector<sf::CircleShape> playerOptions;
+		int numSkills;
+
 		
 		//For enemies
 		std::vector<Enemy> enemies;
@@ -43,6 +48,7 @@ class Battle
 		bool checkEnemyDeaths();
 		void enemyAttack(int, Player);
 		void drawEnemies(sf::RenderWindow&);
+		void drawAll(sf::RenderWindow&);
 
 		//Mutators
 		void setEnemyHp(int, int);
