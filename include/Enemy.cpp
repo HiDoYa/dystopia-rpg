@@ -25,9 +25,6 @@ Enemy::Enemy(int x, int y)
 	currentManaBar.setFillColor(sf::Color::Blue);
 	maxManaBar.setFillColor(sf::Color::Black);
 
-	timeReq.setFillColor(sf::Color::Yellow);
-	timeFull.setFillColor(sf::Color::Black);
-
 	//Sets position of sprite
 	setPosition(x, y);
 }
@@ -71,9 +68,6 @@ void Enemy::setCurrentMana(int inp)
 void Enemy::setAgility(int inp)
 {
 	agility = inp;
-	timeReq.setSize(sf::Vector2f((length), 10));
-	timeFull.setSize(sf::Vector2f((static_cast<float>(1) * length), 10));
-	//TODO timeReq.
 }
 
 void Enemy::setAtk(int inp)
@@ -143,9 +137,6 @@ void Enemy::updatePosition()
 
 	currentManaBar.setPosition(getPosition().x - 15, getPosition().y - 40);
 	maxManaBar.setPosition(getPosition().x - 15, getPosition().y - 40);
-
-	timeReq.setPosition(getPosition().x - 15, getPosition().y - 20);
-	timeFull.setPosition(getPosition().x - 15, getPosition().y - 20);
 }
 
 void Enemy::drawAll(sf::RenderWindow& win)
@@ -157,10 +148,6 @@ void Enemy::drawAll(sf::RenderWindow& win)
 	//Draw mana bars
 	win.draw(maxManaBar);
 	win.draw(currentManaBar);
-
-	//Draw timebars
-	win.draw(timeReq);
-	win.draw(timeFull);
 
 	//Draws sprite
 	setTextureSprite("images/enemies/test4.png");

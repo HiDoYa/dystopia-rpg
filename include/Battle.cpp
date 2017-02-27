@@ -63,15 +63,11 @@ void Battle::setupBattle(sf::String enemyList)
 	numSkills = 2;
 	for(int i = 0; i < numSkills; i++)
 	{
-		playerOptions.push_back(sf::CircleShape());
+		sf::CircleShape temp;
+		playerOptions.push_back(temp);
 		playerOptions[i].setRadius(15);
 		playerOptions[i].setPosition(sf::Vector2f(900, 500));
 		playerOptions[i].setFillColor(sf::Color::Blue);
-		//playerOptions[1].setRadius(15);
-		//playerOptions[2].setRadius(15);
-		//playerOptions[3].setRadius(15);
-		//playerOptions[4].setRadius(15);
-		//playerOptions[5].setRadius(15);
 	}
 
 	//Initialize enemies
@@ -80,12 +76,12 @@ void Battle::setupBattle(sf::String enemyList)
 		//TODO
 		//std::ifstream enemyFile(enemyList);
 		//enemyFile >> inp;
-
+		
+		//TODO Make unique_ptrs
 		Enemy temp(enemyPlaces[i].x, enemyPlaces[i].y);
 		enemies.push_back(temp);
 		
 		//TODO Different character sheet holding data of enemies?
-
 		enemies[i].setName("Bob");
 		enemies[i].setLevel(3);
 		enemies[i].setMaxHp(100);
@@ -203,9 +199,6 @@ void Battle::drawAll(sf::RenderWindow& win)
 	{
 		win.draw(playerOptions[i]);
 	}
-	//TODO
-	//win.draw(timeReq);
-	//win.draw(timeFull);
 }
 
 //*************** MUTATORS ******************

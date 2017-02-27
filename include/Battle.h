@@ -12,10 +12,6 @@
 class Battle
 {
 	private:
-		//For player
-		sf::RectangleShape timeReq;
-		sf::RectangleShape timeFull;
-
 		sf::Texture playerTexture;
 		sf::Sprite playerSprite;
 		bool qNotPressed;

@@ -24,8 +24,6 @@ class Enemy: public SpriteManage
 		sf::RectangleShape currentHpBar;
 		sf::RectangleShape maxManaBar;
 		sf::RectangleShape currentManaBar;
-		sf::RectangleShape timeReq;
-		sf::RectangleShape timeFull;
 	public:
 		Enemy(int, int);
 
