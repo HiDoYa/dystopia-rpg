@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-Enemy::Enemy(int x, int y)
+Enemy::Enemy()
 {
 	//The length of all bars
 	length = 100;
@@ -24,9 +24,6 @@ Enemy::Enemy(int x, int y)
 	
 	currentManaBar.setFillColor(sf::Color::Blue);
 	maxManaBar.setFillColor(sf::Color::Black);
-
-	//Sets position of sprite
-	setPosition(x, y);
 }
 
 //********* MUTATORS *********

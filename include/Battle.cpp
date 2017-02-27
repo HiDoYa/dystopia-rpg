@@ -78,10 +78,11 @@ void Battle::setupBattle(sf::String enemyList)
 		//enemyFile >> inp;
 		
 		//TODO Make unique_ptrs
-		Enemy temp(enemyPlaces[i].x, enemyPlaces[i].y);
+		Enemy temp;
 		enemies.push_back(temp);
 		
 		//TODO Different character sheet holding data of enemies?
+		enemies[i].setPosition(enemyPlaces[i].x, enemyPlaces[i].y);
 		enemies[i].setName("Bob");
 		enemies[i].setLevel(3);
 		enemies[i].setMaxHp(100);

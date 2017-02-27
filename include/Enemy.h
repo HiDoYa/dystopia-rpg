@@ -25,7 +25,7 @@ class Enemy: public SpriteManage
 		sf::RectangleShape maxManaBar;
 		sf::RectangleShape currentManaBar;
 	public:
-		Enemy(int, int);
+		Enemy();
 
 		//Mutators
 		void setName(sf::String);
