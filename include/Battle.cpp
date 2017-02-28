@@ -22,6 +22,14 @@ void Battle::setupBattle(sf::String enemyList)
 	enemyPlaces.push_back(sf::Vector2f(400, 450));
 	enemyPlaces.push_back(sf::Vector2f(200, 600));
 
+	std::vector<sf::Vector2f> skillsPlaces;
+	skillsPlaces.push_back(sf::Vector2f(610, 300));
+	skillsPlaces.push_back(sf::Vector2f(600, 400));
+	skillsPlaces.push_back(sf::Vector2f(610, 500));
+	skillsPlaces.push_back(sf::Vector2f(890, 300));
+	skillsPlaces.push_back(sf::Vector2f(900, 400));
+	skillsPlaces.push_back(sf::Vector2f(890, 500));
+
 	//TODO Open file and get player attacks 
 	//std::ifstream comboFile("combo");
 	//comboFile >> inp;
@@ -60,13 +68,13 @@ void Battle::setupBattle(sf::String enemyList)
 
 	//Initialize circle shape
 	//TODO Get player optins from file and get numSkills from file
-	numSkills = 2;
+	numSkills = 6;
 	for(int i = 0; i < numSkills; i++)
 	{
 		sf::CircleShape temp;
 		playerOptions.push_back(temp);
-		playerOptions[i].setRadius(15);
-		playerOptions[i].setPosition(sf::Vector2f(900, 500));
+		playerOptions[i].setRadius(25);
+		playerOptions[i].setPosition(skillsPlaces[i]);
 		playerOptions[i].setFillColor(sf::Color::Blue);
 	}
 
