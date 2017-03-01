@@ -309,6 +309,7 @@ void Battle::playerAttackAnimation(int& currentBattleState, Player& player)
 	}
 	else
 	{
+		playerCanAttack = false;
 		currentBattleState++;
 	}
 }
@@ -336,30 +337,32 @@ void Battle::enemyAttackAnimation(int& currentBattleState)
 	}
 	else
 	{ 
+		enemies[nextAttack].setCanAtk(false);
 		currentBattleState++;
 	}
 }
 
 //******** BATTLE STATE 2 **************
 //Calculates hp change for enemy and player
-void Battle::hpCalculate(Player& player, UIOverlay& overlay)
+void Battle::hpCalculate(int& currentBattleState, Player& player, UIOverlay& overlay)
 {
 	switch (nextAttack)
 	{
 		case -1:
+			enemyHpDecrease(enemies[currentEnemySelected].getInitHp() - player.getAtk(), currentBattleState);
 			//Animate enemy hp decrease with new hp and old hp and currentselectedenemy
 			break;
 		case 0:
 		case 1:
 		case 2:
-			playerHpDecrease(initHp - enemies[nextAttack].getAtk(), player, overlay);
+			playerHpDecrease(initHp - enemies[nextAttack].getAtk(), player, overlay, currentBattleState);
 			//Animate player hp with new hp and old hp
 			break;
 	}
 }
 
 //TODO Cases in which hp doesn't decrease? low prio - (FILE BASED) (ADD STATUS EFFECTS)
-void Battle::playerHpDecrease(int hpFinal, Player& player, UIOverlay& overlay)
+void Battle::playerHpDecrease(int hpFinal, Player& player, UIOverlay& overlay, int& currentBattleState)
 {
 	if(player.getCurrentHp() > hpFinal + 2)
 	{
@@ -369,10 +372,26 @@ void Battle::playerHpDecrease(int hpFinal, Player& player, UIOverlay& overlay)
 	{
 		player.setCurrentHp(hpFinal, overlay);
 	}
+	else
+	{
+		currentBattleState = 1;
+	}
 }
 
-void Battle::enemyHpDecrease(int hpFinal)
+void Battle::enemyHpDecrease(int hpFinal, int& currentBattleState)
 {
+	if(enemies[currentEnemySelected].getCurrentHp() > hpFinal + 2)
+	{
+		enemies[currentEnemySelected].setCurrentHp(enemies[currentEnemySelected].getCurrentHp() - 3);
+	}
+	else if(enemies[currentEnemySelected].getCurrentHp() != hpFinal)
+	{
+		enemies[currentEnemySelected].setCurrentHp(hpFinal);
+	}
+	else
+	{
+		currentBattleState = 1;
+	}
 }
 
 void Battle::playerPostAttackAnimation(Player& player)
@@ -455,9 +474,14 @@ void Battle::setEnemyHp(int enemyNum, int newHp)
 	enemies[enemyNum].setCurrentHp(newHp);
 }
 
+//For both enemy and player
 void Battle::setInitHp(int inp)
 {
 	initHp = inp;
+	for(int i = 0; i < numEnemies; i++)
+	{
+		enemies[i].setInitHp(enemies[i].getCurrentHp());
+	}
 }
 
 //*************** ACCESSORS ******************

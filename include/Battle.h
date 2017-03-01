@@ -20,8 +20,6 @@ class Battle
 		int numSkills;
 		int currentSkill;
 		bool playerCanAttack;
-
-		//For damage calculation
 		int initHp;
 
 		//Skill Pressed
@@ -65,9 +63,9 @@ class Battle
 		void enemyAttackAnimation(int&);
 		
 		//Battle state 2
-		void hpCalculate(Player&, UIOverlay&);
-		void playerHpDecrease(int, Player&, UIOverlay&);
-		void enemyHpDecrease(int);
+		void hpCalculate(int&, Player&, UIOverlay&);
+		void playerHpDecrease(int, Player&, UIOverlay&, int&);
+		void enemyHpDecrease(int, int&);
 		void playerPostAttackAnimation(Player&);
 		void enemyPostAttackAnimation();
 		

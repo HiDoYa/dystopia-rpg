@@ -11,6 +11,7 @@ class Enemy: public SpriteManage
 		int level;
 		int currentHp;
 		int maxHp;
+		int initHp;
 		int currentMana;
 		int maxMana;
 		int agility;
@@ -33,6 +34,7 @@ class Enemy: public SpriteManage
 		void setLevel(int);
 		void setMaxHp(int);
 		void setCurrentHp(int);
+		void setInitHp(int);
 		void setMaxMana(int);
 		void setCurrentMana(int);
 		void setAgility(int);
@@ -45,6 +47,7 @@ class Enemy: public SpriteManage
 		int getLevel();
 		int getMaxHp();
 		int getCurrentHp();
+		int getInitHp();
 		int getMaxMana();
 		int getCurrentMana();
 		int getAgility();

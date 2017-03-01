@@ -199,7 +199,7 @@ void StateManager::updateBattle(sf::RenderWindow& win, sf::View& view)
 			break;
 		//Battle state 2 (calculate damage, animate hp going down, ending animation)
 		case 2:
-			battle.hpCalculate(player, overlay);
+			battle.hpCalculate(currentBattleState, player, overlay);
 			break;
 		//Battle state 3 (check for game over. go back to 0 if not game over)
 		case 3:

@@ -12,6 +12,7 @@ Enemy::Enemy()
 	level = 3;
 	maxHp = 100;
 	currentHp = 100;
+	initHp = 100;
 	maxMana = 10;
 	currentMana = 10;
 	agility = 100;
@@ -49,6 +50,11 @@ void Enemy::setCurrentHp(int inp)
 {
 	currentHp = inp;
 	currentHpBar.setSize(sf::Vector2f((static_cast<float>(currentHp) / maxHp) * length, 10));
+}
+
+void Enemy::setInitHp(int inp)
+{
+	initHp = inp;
 }
 
 void Enemy::setMaxMana(int inp)
@@ -103,6 +109,11 @@ int Enemy::getMaxHp()
 int Enemy::getCurrentHp()
 {
 	return currentHp;
+}
+
+int Enemy::getInitHp()
+{
+	return initHp;
 }
 
 int Enemy::getMaxMana()
