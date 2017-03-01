@@ -12,6 +12,8 @@
 
 Battle::Battle()
 {
+	numSkills = 6;
+	currentSkill = 0;
 }
 
 void Battle::setupBattle(sf::String enemyList)
@@ -68,14 +70,13 @@ void Battle::setupBattle(sf::String enemyList)
 
 	//Initialize circle shape
 	//TODO Get player optins from file and get numSkills from file
-	numSkills = 6;
 	for(int i = 0; i < numSkills; i++)
 	{
 		sf::CircleShape temp;
 		playerOptions.push_back(temp);
 		playerOptions[i].setRadius(25);
 		playerOptions[i].setPosition(skillsPlaces[i]);
-		playerOptions[i].setFillColor(sf::Color::Blue);
+		playerOptions[i].setFillColor(sf::Color(160, 196, 255));
 	}
 
 	//Initialize enemies
@@ -110,11 +111,6 @@ void Battle::startBattle()
 	//TODO Animation to transition from map to battle
 }
 
-void Battle::tickBattle()
-{
-	tme = clock.getElapsedTime();
-	currentTime = tme.asMilliseconds();
-}
 void Battle::endBattle(int& scene) {
 	bool gameWin = true;
 	for(int i = 0; i < numEnemies; i++)
@@ -132,6 +128,7 @@ void Battle::endBattle(int& scene) {
 	}
 }
 
+//*********** BATTLE STATE 0 *********************
 void Battle::changeEnemyFocus()
 {
 	bool qPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Q);
@@ -156,6 +153,190 @@ void Battle::changeEnemyFocus()
 				break;
 			}
 		}
+	}
+}
+
+void Battle::changeCurrentSkill()
+{
+	bool wPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::W);
+	bool aPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::A);
+	bool sPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::S);
+	bool dPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::D);
+
+	//Reset and prevent full press
+	if(!wPressed)
+	{
+		wNotPressed = true;
+	}
+	if(!aPressed)
+	{
+		aNotPressed = true;
+	}
+	if(!sPressed)
+	{
+		sNotPressed = true;
+	}
+	if(!dPressed)
+	{
+		dNotPressed = true;
+	}
+
+	//TODO Change skill
+	if(wPressed && wNotPressed)
+	{
+		wNotPressed = false;
+		currentSkill--;
+		
+		//Special exceptions
+		if(currentSkill == -1)
+		{
+			currentSkill = 0;
+		}
+		else if(currentSkill == 2)
+		{
+			currentSkill = 3;
+		}
+	}
+	if(aPressed && aNotPressed)
+	{
+		aNotPressed = false;
+		currentSkill -= 3;
+
+		//Special exceptions
+		if(currentSkill < 0)
+		{
+			currentSkill += 3;
+		}
+	}
+	if(sPressed && sNotPressed)
+	{
+		sNotPressed = false;
+		currentSkill++;
+		
+		//Special exceptions
+		if(currentSkill == 6)
+		{
+			currentSkill = 5;
+		}
+		else if(currentSkill == 3)
+		{
+			currentSkill = 2;
+		}
+	}
+	if(dPressed && dNotPressed)
+	{
+		dNotPressed = false;
+		currentSkill += 3;
+
+		//Special exceptions
+		if(currentSkill > 5)
+		{
+			currentSkill -= 3;
+		}
+	}
+	
+	//Reset all colors
+	for(int i = 0; i < numSkills; i++)
+	{
+		playerOptions[i].setFillColor(sf::Color(160, 196, 255));
+	}
+
+	//Highlight current
+	playerOptions[currentSkill].setFillColor(sf::Color::Blue);
+}
+
+int Battle::chooseCurrentSkill()
+{
+	bool spacePressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
+
+	if(spacePressed)
+	{
+		return 1;
+	}
+	return 0;
+}
+
+//*********** BATTLE STATE 1 *********************
+//Sets nextAttack based on who is the fastest (-1 for player, -2 if everybody is done)
+void Battle::findFastestChar(Player& player)
+{
+	int highestAgil = -1;
+
+	for(int i = 0; i < numEnemies; i++)
+	{
+		if(enemies[i].getCanAtk() && highestAgil < enemies[i].getAgility())
+		{
+			highestAgil = enemies[i].getAgility();
+			nextAttack = i;
+		}
+	}
+
+	if(playerCanAttack && player.getAgility() > highestAgil)
+	{
+		nextAttack = -1;
+	}
+}
+
+void Battle::attackManager(int& currentBattleState, Player& player)
+{
+	findFastestChar(player);
+	nextAttack = 0;
+
+	switch (nextAttack)
+	{
+		//Game exits
+		case -2:
+			currentBattleState = 0;
+			break;
+		//Player Attacks
+		case -1:
+			currentBattleState = 2;
+			playerAttackAnimation(currentBattleState, player);
+			break;
+		//Enemy Attacks
+		case 0:
+		case 1:
+		case 2:
+			enemyAttackAnimation(currentBattleState);
+			break;
+	}
+}
+
+void Battle::playerAttackAnimation(int& currentBattleState, Player& player)
+{
+	if(player.getPosition().x > 650)
+	{
+		player.setPosition(player.getPosition().x - 5, player.getPosition().y);
+	}
+	else
+	{
+		currentBattleState++;
+	}
+}
+
+void Battle::enemyAttackAnimation(int& currentBattleState)
+{
+	sf::Vector2f current = enemies[nextAttack].getPosition();
+	
+	//Sets the area to stop
+	int goalPlace;
+	if(nextAttack == 2)
+	{
+		goalPlace = 300;
+	}
+	else
+	{
+		goalPlace = 500;
+	}
+	
+	//Moves the enemy, otherwise increments battle state
+	if(current.x < goalPlace)
+	{
+		enemies[nextAttack].setPosition(current.x + 5, current.y);
+	}
+	else
+	{ 
+		currentBattleState++;
 	}
 }
 
@@ -201,12 +382,15 @@ void Battle::drawEnemies(sf::RenderWindow& win)
 	}
 }
 
-void Battle::drawAll(sf::RenderWindow& win)
+void Battle::drawAll(sf::RenderWindow& win, int currentBattleState)
 {
 	drawEnemies(win);
-	for(int i = 0; i < playerOptions.size(); i++)
+	if(currentBattleState == 0)
 	{
-		win.draw(playerOptions[i]);
+		for(int i = 0; i < playerOptions.size(); i++)
+		{
+			win.draw(playerOptions[i]);
+		}
 	}
 }
 

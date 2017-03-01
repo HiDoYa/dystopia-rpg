@@ -9,6 +9,7 @@
 StateManager::StateManager()
 {
 	currentState = 0;
+	currentBattleState = 0;
 
 	menuLoaded = false;
 	mapLoaded = false;
@@ -157,6 +158,8 @@ void StateManager::loadBattle(sf::RenderWindow& win, sf::View& view)
 {
 	if(!battleLoaded)
 	{
+		player.setPosition(750, 400);
+
 		mapLoaded = false;
 		battleLoaded = true;
 
@@ -175,7 +178,26 @@ void StateManager::loadBattle(sf::RenderWindow& win, sf::View& view)
 void StateManager::updateBattle(sf::RenderWindow& win, sf::View& view)
 {
 	//TODO
-	player.setPosition(800, 450);
+
+	switch (currentBattleState)
+	{
+		//Battle state 0 Menu shows and player can make decision
+		case 0:
+			battle.changeCurrentSkill();
+			battle.changeEnemyFocus();
+			currentBattleState = battle.chooseCurrentSkill();
+			break;
+		//Battle state 1 (find enemies that should attack, start animating, and go to 2 OR go to 0)
+		case 1:
+			battle.attackManager(currentBattleState, player);
+			break;
+		//Battle state 2 (calculate damage, animate hp going down, ending animation)
+		case 2:
+			break;
+		//Battle state 3 (check for game over. go back to 0 if not game over)
+		case 3:
+			break;
+	}
 }
 
 void StateManager::renderBattle(sf::RenderWindow& win, sf::View& view)
@@ -185,7 +207,7 @@ void StateManager::renderBattle(sf::RenderWindow& win, sf::View& view)
 
 	//TODO Mid ground
 	player.drawSprite(win);
-	battle.drawAll(win);
+	battle.drawAll(win, currentBattleState);
 
 	//TODO On top
 	overlay.drawAll(win);

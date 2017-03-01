@@ -16,6 +16,7 @@ class Enemy: public SpriteManage
 		int agility;
 		int atk;
 		bool alive;
+		bool canAtk;
 
 		int length;
 
@@ -37,6 +38,7 @@ class Enemy: public SpriteManage
 		void setAgility(int);
 		void setAtk(int);
 		void setAlive(bool);
+		void setCanAtk(bool);
 
 		//Accessors
 		sf::String getName();
@@ -48,6 +50,7 @@ class Enemy: public SpriteManage
 		int getAgility();
 		int getAtk();
 		bool getAlive();
+		bool getCanAtk();
 
 		//Draw bars
 		void updatePosition();

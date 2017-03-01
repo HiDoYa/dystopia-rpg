@@ -17,6 +17,7 @@ class StateManager
 {
 	private:
 		int currentState;
+		int currentBattleState;
 
 		//Menu (state 0)
 		bool menuLoaded;

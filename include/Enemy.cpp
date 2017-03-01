@@ -17,6 +17,7 @@ Enemy::Enemy()
 	agility = 100;
 	atk = 10;
 	alive = true;
+	canAtk = true;
 	
 	//Set bar color
 	currentHpBar.setFillColor(sf::Color::Green);
@@ -77,6 +78,11 @@ void Enemy::setAlive(bool inp)
 	alive = inp;
 }
 
+void Enemy::setCanAtk(bool inp)
+{
+	canAtk = inp;
+}
+
 //********* ACCESSORS *********
 
 sf::String Enemy::getName()
@@ -122,6 +128,11 @@ int Enemy::getAtk()
 bool Enemy::getAlive()
 {
 	return alive;
+}
+
+bool Enemy::getCanAtk()
+{
+	return canAtk;
 }
 
 //************ DRAW
