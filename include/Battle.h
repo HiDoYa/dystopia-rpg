@@ -21,6 +21,9 @@ class Battle
 		int currentSkill;
 		bool playerCanAttack;
 
+		//For damage calculation
+		int initHp;
+
 		//Skill Pressed
 		bool qNotPressed;
 		bool wNotPressed;
@@ -53,26 +56,33 @@ class Battle
 		void changeCurrentSkill();
 		int chooseCurrentSkill();
 
-		//Battle state 1 (find enemies that should attack and go to 2 OR go to 0)
+		//Battle state 1
 		void findFastestChar(Player&);
 		void attackManager(int&, Player&);
 
-		//Battle state 1.5 (animate attack, animate hp going down)
+		//Battle state 1.5
 		void playerAttackAnimation(int&, Player&);
 		void enemyAttackAnimation(int&);
 		
-		//Battle state 2 (ending animation, hp calculations)
+		//Battle state 2
+		void hpCalculate(Player&, UIOverlay&);
+		void playerHpDecrease(int, Player&, UIOverlay&);
+		void enemyHpDecrease(int);
+		void playerPostAttackAnimation(Player&);
+		void enemyPostAttackAnimation();
 		
-		//Battle state 3 (check for game over. go back to 0 if not game over)
-		
-		bool checkPlayerDeath(Player);
+		//Battle state 3
+		bool checkPlayerDeath(Player&);
 		bool checkEnemyDeaths();
-		void enemyAttack(int, Player);
+		void endBattle(Player&);
+		
+		//Drawing
 		void drawEnemies(sf::RenderWindow&);
 		void drawAll(sf::RenderWindow&, int);
 
 		//Mutators
 		void setEnemyHp(int, int);
+		void setInitHp(int);
 
 		//Accessors
 		int getEnemyHp(int);

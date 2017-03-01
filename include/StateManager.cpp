@@ -95,11 +95,13 @@ void StateManager::loadMap(sf::RenderWindow& win)
 void StateManager::updateMap(sf::RenderWindow& win, sf::View& view)
 {
 	//TODO Set overlay based on player stats
-	overlay.setCurrency(0);
-	overlay.setLevel(1);
-	overlay.setExp(1, 10);
-	overlay.setHealth(90, 100);
-	overlay.setMana(90, 100);
+	player.setLevel(2, overlay);
+	player.setMaxHp(100, overlay);
+	player.setCurrentHp(90, overlay);
+	player.setMaxMana(100, overlay);
+	player.setCurrentMana(80, overlay);
+	player.setExp(3, overlay);
+	player.setCurrency(25, overlay);
 
 	//TODO NPC speak
 	npc[0].speak("That One Guy", "Lorem ipsum dolor", textbox);
@@ -183,6 +185,10 @@ void StateManager::updateBattle(sf::RenderWindow& win, sf::View& view)
 	{
 		//Battle state 0 Menu shows and player can make decision
 		case 0:
+			//For damage calc
+			battle.setInitHp(player.getCurrentHp());
+
+			//For skill
 			battle.changeCurrentSkill();
 			battle.changeEnemyFocus();
 			currentBattleState = battle.chooseCurrentSkill();
@@ -193,6 +199,7 @@ void StateManager::updateBattle(sf::RenderWindow& win, sf::View& view)
 			break;
 		//Battle state 2 (calculate damage, animate hp going down, ending animation)
 		case 2:
+			battle.hpCalculate(player, overlay);
 			break;
 		//Battle state 3 (check for game over. go back to 0 if not game over)
 		case 3:

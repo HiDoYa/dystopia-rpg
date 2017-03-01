@@ -57,15 +57,15 @@ class Player: public SpriteManage
 		Player();
 
 		//***** Mutators *******
-		void setLevel(int, UIOverlay);
-		void setCurrentHp(int, UIOverlay);
-		void setMaxHp(int, UIOverlay);
-		void setCurrentMana(int, UIOverlay);
-		void setMaxMana(int, UIOverlay);
+		void setLevel(int, UIOverlay&);
+		void setCurrentHp(int, UIOverlay&);
+		void setMaxHp(int, UIOverlay&);
+		void setCurrentMana(int, UIOverlay&);
+		void setMaxMana(int, UIOverlay&);
 		void setAgility(int);
 		void setAtk(int);
-		void setExp(int, UIOverlay);
-		void setCurrency(int, UIOverlay);
+		void setExp(int, UIOverlay&);
+		void setCurrency(int, UIOverlay&);
 
 		//***** Accessor *******
 		int getLevel();

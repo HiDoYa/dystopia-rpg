@@ -53,9 +53,8 @@ void Battle::setupBattle(sf::String enemyList)
 
 	//comboFile.close();
 
-	//Get enemies
+	//Get number of enemies
 	srand(time(NULL));
-	
 	numEnemies = rand() % 3 + 1;
 	currentEnemySelected = 0;
 
@@ -282,7 +281,7 @@ void Battle::attackManager(int& currentBattleState, Player& player)
 
 	switch (nextAttack)
 	{
-		//Game exits
+		//Battle state goes back to 0
 		case -2:
 			currentBattleState = 0;
 			break;
@@ -300,6 +299,8 @@ void Battle::attackManager(int& currentBattleState, Player& player)
 	}
 }
 
+//********** BATTLE STATE 1.5 ****************
+//Player simply moves forward
 void Battle::playerAttackAnimation(int& currentBattleState, Player& player)
 {
 	if(player.getPosition().x > 650)
@@ -312,6 +313,7 @@ void Battle::playerAttackAnimation(int& currentBattleState, Player& player)
 	}
 }
 
+//Enemy simply moves forward
 void Battle::enemyAttackAnimation(int& currentBattleState)
 {
 	sf::Vector2f current = enemies[nextAttack].getPosition();
@@ -338,8 +340,52 @@ void Battle::enemyAttackAnimation(int& currentBattleState)
 	}
 }
 
+//******** BATTLE STATE 2 **************
+//Calculates hp change for enemy and player
+void Battle::hpCalculate(Player& player, UIOverlay& overlay)
+{
+	switch (nextAttack)
+	{
+		case -1:
+			//Animate enemy hp decrease with new hp and old hp and currentselectedenemy
+			break;
+		case 0:
+		case 1:
+		case 2:
+			playerHpDecrease(initHp - enemies[nextAttack].getAtk(), player, overlay);
+			//Animate player hp with new hp and old hp
+			break;
+	}
+}
+
+//TODO Cases in which hp doesn't decrease? low prio - (FILE BASED) (ADD STATUS EFFECTS)
+void Battle::playerHpDecrease(int hpFinal, Player& player, UIOverlay& overlay)
+{
+	if(player.getCurrentHp() > hpFinal + 2)
+	{
+		player.setCurrentHp(player.getCurrentHp() - 3, overlay);
+	}
+	else if (player.getCurrentHp() != hpFinal)
+	{
+		player.setCurrentHp(hpFinal, overlay);
+	}
+}
+
+void Battle::enemyHpDecrease(int hpFinal)
+{
+}
+
+void Battle::playerPostAttackAnimation(Player& player)
+{
+}
+
+void Battle::enemyPostAttackAnimation()
+{
+}
+
+//*************** BATTLE STATE 3 *********************
 //Returns true if player is dead
-bool Battle::checkPlayerDeath(Player player)
+bool Battle::checkPlayerDeath(Player& player)
 {
 	if(player.getCurrentHp() < 1)
 	{
@@ -367,10 +413,20 @@ bool Battle::checkEnemyDeaths()
 	return allDead;
 }
 
-void Battle::enemyAttack(int enemNum, Player player)
+void Battle::endBattle(Player& player)
 {
-	//TODO player.setCurrentHp(player.getCurrentHp() - enemies[enemNum].getAtk());
+	if(checkPlayerDeath(player))
+	{
+		//TODO Game over screen or player death animation
+	}
+
+	if(checkEnemyDeaths())
+	{
+		//TODO Win the battle
+	}
 }
+
+//************ DRAWING ***************
 
 void Battle::drawEnemies(sf::RenderWindow& win)
 {
@@ -397,6 +453,11 @@ void Battle::drawAll(sf::RenderWindow& win, int currentBattleState)
 void Battle::setEnemyHp(int enemyNum, int newHp)
 {
 	enemies[enemyNum].setCurrentHp(newHp);
+}
+
+void Battle::setInitHp(int inp)
+{
+	initHp = inp;
 }
 
 //*************** ACCESSORS ******************

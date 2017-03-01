@@ -36,31 +36,31 @@ Player::Player()
 
 //*********** MUTATORS ************
 
-void Player::setLevel(int inp, UIOverlay overlay)
+void Player::setLevel(int inp, UIOverlay& overlay)
 {
 	level = inp;
 	overlay.setLevel(level);
 }
 
-void Player::setCurrentHp(int inp, UIOverlay overlay)
+void Player::setCurrentHp(int inp, UIOverlay& overlay)
 {
 	currentHp = inp;
 	overlay.setHealth(currentHp, maxHp);
 }
 
-void Player::setMaxHp(int inp, UIOverlay overlay)
+void Player::setMaxHp(int inp, UIOverlay& overlay)
 {
 	maxHp = inp;
 	overlay.setHealth(currentHp, maxHp);
 }
 
-void Player::setCurrentMana(int inp, UIOverlay overlay)
+void Player::setCurrentMana(int inp, UIOverlay& overlay)
 {
 	currentMana = inp;
 	overlay.setMana(currentMana, maxMana);
 }
 
-void Player::setMaxMana(int inp, UIOverlay overlay)
+void Player::setMaxMana(int inp, UIOverlay& overlay)
 {
 	maxMana = inp;
 	overlay.setMana(currentMana, maxMana);
@@ -76,14 +76,14 @@ void Player::setAtk(int inp)
 	atk = inp;
 }
 
-void Player::setExp(int inp, UIOverlay overlay)
+void Player::setExp(int inp, UIOverlay& overlay)
 {
 	exp = inp;
 	//TODO This formula right?
 	overlay.setExp(exp, level * 100);
 }
 
-void Player::setCurrency(int inp, UIOverlay overlay)
+void Player::setCurrency(int inp, UIOverlay& overlay)
 {
 	currency = inp;
 	overlay.setCurrency(currency);
