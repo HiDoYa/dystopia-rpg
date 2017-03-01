@@ -29,6 +29,7 @@ class Battle
 		bool dNotPressed;
 		
 		//For enemies
+		Enemy temp;
 		std::vector<Enemy> enemies;
 		int numEnemies;
 		int currentEnemySelected;

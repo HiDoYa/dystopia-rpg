@@ -85,9 +85,7 @@ void Battle::setupBattle(sf::String enemyList)
 		//TODO
 		//std::ifstream enemyFile(enemyList);
 		//enemyFile >> inp;
-		
-		//TODO Make unique_ptrs
-		Enemy temp;
+
 		enemies.push_back(temp);
 		
 		//TODO Different character sheet holding data of enemies?
@@ -306,7 +304,7 @@ void Battle::playerAttackAnimation(int& currentBattleState, Player& player)
 {
 	if(player.getPosition().x > 650)
 	{
-		player.setPosition(player.getPosition().x - 5, player.getPosition().y);
+		player.setPosition(player.getPosition().x - 10, player.getPosition().y);
 	}
 	else
 	{
@@ -320,19 +318,19 @@ void Battle::enemyAttackAnimation(int& currentBattleState)
 	
 	//Sets the area to stop
 	int goalPlace;
-	if(nextAttack == 2)
+	if(nextAttack == 1)
 	{
-		goalPlace = 300;
+		goalPlace = 500;
 	}
 	else
 	{
-		goalPlace = 500;
+		goalPlace = 300;
 	}
 	
 	//Moves the enemy, otherwise increments battle state
 	if(current.x < goalPlace)
 	{
-		enemies[nextAttack].setPosition(current.x + 5, current.y);
+		enemies[nextAttack].setPosition(current.x + 10, current.y);
 	}
 	else
 	{ 
