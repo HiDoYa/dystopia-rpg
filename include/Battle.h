@@ -36,6 +36,10 @@ class Battle
 		int currentEnemySelected;
 		int nextAttack;
 
+		//Check for competion
+		bool hpComplete;
+		bool animComplete;
+
 		//Time management
 		//TODO currently not used
 		sf::Clock clock;
@@ -68,11 +72,13 @@ class Battle
 		void enemyHpDecrease(int, int&);
 		void playerPostAttackAnimation(Player&);
 		void enemyPostAttackAnimation();
+		void checkForCompletion(int&);
 		
 		//Battle state 3
 		bool checkPlayerDeath(Player&);
 		bool checkEnemyDeaths();
-		void endBattle(Player&);
+		void checkEndBattle(Player&, int&, int&);
+		void newTurn();
 		
 		//Drawing
 		void drawEnemies(sf::RenderWindow&);

@@ -100,6 +100,8 @@ void StateManager::updateMap(sf::RenderWindow& win, sf::View& view)
 	player.setCurrentHp(90, overlay);
 	player.setMaxMana(100, overlay);
 	player.setCurrentMana(80, overlay);
+	player.setAgility(3);
+	player.setAtk(5);
 	player.setExp(3, overlay);
 	player.setCurrency(25, overlay);
 
@@ -179,8 +181,6 @@ void StateManager::loadBattle(sf::RenderWindow& win, sf::View& view)
 
 void StateManager::updateBattle(sf::RenderWindow& win, sf::View& view)
 {
-	//TODO
-
 	switch (currentBattleState)
 	{
 		//Battle state 0 Menu shows and player can make decision
@@ -203,6 +203,7 @@ void StateManager::updateBattle(sf::RenderWindow& win, sf::View& view)
 			break;
 		//Battle state 3 (check for game over. go back to 0 if not game over)
 		case 3:
+			battle.checkEndBattle(player, currentBattleState, currentState);
 			break;
 	}
 }

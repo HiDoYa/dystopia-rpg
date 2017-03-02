@@ -14,6 +14,8 @@ Battle::Battle()
 {
 	numSkills = 6;
 	currentSkill = 0;
+	playerCanAttack = true;
+	currentEnemySelected = 0;
 }
 
 void Battle::setupBattle(sf::String enemyList)
@@ -56,7 +58,6 @@ void Battle::setupBattle(sf::String enemyList)
 	//Get number of enemies
 	srand(time(NULL));
 	numEnemies = rand() % 3 + 1;
-	currentEnemySelected = 0;
 
 	//TODO Gets the number of monsters to choose from
 	//STORE ENEMY INFORMATION FROM FILE INTO A VECTOR/CLASS IN GAME
@@ -108,7 +109,8 @@ void Battle::startBattle()
 	//TODO Animation to transition from map to battle
 }
 
-void Battle::endBattle(int& scene) {
+void Battle::endBattle(int& scene) 
+{
 	bool gameWin = true;
 	for(int i = 0; i < numEnemies; i++)
 	{
@@ -258,6 +260,7 @@ int Battle::chooseCurrentSkill()
 void Battle::findFastestChar(Player& player)
 {
 	int highestAgil = -1;
+	nextAttack = -2;
 
 	for(int i = 0; i < numEnemies; i++)
 	{
@@ -277,17 +280,14 @@ void Battle::findFastestChar(Player& player)
 void Battle::attackManager(int& currentBattleState, Player& player)
 {
 	findFastestChar(player);
-	nextAttack = 0;
 
 	switch (nextAttack)
 	{
-		//Battle state goes back to 0
 		case -2:
-			currentBattleState = 0;
+			currentBattleState = 3;
 			break;
 		//Player Attacks
 		case -1:
-			currentBattleState = 2;
 			playerAttackAnimation(currentBattleState, player);
 			break;
 		//Enemy Attacks
@@ -303,7 +303,7 @@ void Battle::attackManager(int& currentBattleState, Player& player)
 //Player simply moves forward
 void Battle::playerAttackAnimation(int& currentBattleState, Player& player)
 {
-	if(player.getPosition().x > 650)
+	if(player.getPosition().x > 700)
 	{
 		player.setPosition(player.getPosition().x - 10, player.getPosition().y);
 	}
@@ -350,15 +350,20 @@ void Battle::hpCalculate(int& currentBattleState, Player& player, UIOverlay& ove
 	{
 		case -1:
 			enemyHpDecrease(enemies[currentEnemySelected].getInitHp() - player.getAtk(), currentBattleState);
+			playerPostAttackAnimation(player);
 			//Animate enemy hp decrease with new hp and old hp and currentselectedenemy
 			break;
 		case 0:
 		case 1:
 		case 2:
 			playerHpDecrease(initHp - enemies[nextAttack].getAtk(), player, overlay, currentBattleState);
+			enemyPostAttackAnimation();
 			//Animate player hp with new hp and old hp
 			break;
 	}
+
+	//For incrementing currentBattleState
+	checkForCompletion(currentBattleState);
 }
 
 //TODO Cases in which hp doesn't decrease? low prio - (FILE BASED) (ADD STATUS EFFECTS)
@@ -374,7 +379,7 @@ void Battle::playerHpDecrease(int hpFinal, Player& player, UIOverlay& overlay, i
 	}
 	else
 	{
-		currentBattleState = 1;
+		hpComplete = true;
 	}
 }
 
@@ -390,16 +395,56 @@ void Battle::enemyHpDecrease(int hpFinal, int& currentBattleState)
 	}
 	else
 	{
-		currentBattleState = 1;
+		hpComplete = true;
 	}
 }
 
 void Battle::playerPostAttackAnimation(Player& player)
 {
+	if(player.getPosition().x < 750)
+	{
+		player.setPosition(player.getPosition().x + 10, player.getPosition().y);
+	}
+	else
+	{
+		animComplete = true;
+	}
 }
 
 void Battle::enemyPostAttackAnimation()
 {
+	sf::Vector2f current = enemies[nextAttack].getPosition();
+	
+	//Sets the area to stop
+	int goalPlace;
+	if(nextAttack == 1)
+	{
+		goalPlace = 400;
+	}
+	else
+	{
+		goalPlace = 200;
+	}
+	
+	//Moves the enemy, otherwise increments battle state
+	if(current.x > goalPlace)
+	{
+		enemies[nextAttack].setPosition(current.x - 10, current.y);
+	}
+	else
+	{
+		animComplete = true;
+	}
+}
+
+void Battle::checkForCompletion(int& currentBattleState)
+{
+	if(hpComplete && animComplete)
+	{
+		hpComplete = animComplete = false;
+		currentBattleState = 1;
+	}
+	
 }
 
 //*************** BATTLE STATE 3 *********************
@@ -417,31 +462,52 @@ bool Battle::checkPlayerDeath(Player& player)
 //Returns true if all enemies are dead
 bool Battle::checkEnemyDeaths()
 {
-	bool allDead = true;
+	bool allDead = false;
 
 	for(int i = 0 ; i < numEnemies; i++)
 	{
-		if(enemies[i].getCurrentHp() < 1)
+		if(enemies[i].getCurrentHp() > 1)
+		{
+			allDead = false;
+		}
+		else 
 		{
 			//enemy has died
 			enemies[i].setAlive(false);
-			allDead = false;
 		}
 	}
 
 	return allDead;
 }
 
-void Battle::endBattle(Player& player)
+void Battle::checkEndBattle(Player& player, int& currentBattleState, int& currentState)
 {
 	if(checkPlayerDeath(player))
 	{
-		//TODO Game over screen or player death animation
+		//TODO Gameover
+		currentState = 0;
 	}
-
-	if(checkEnemyDeaths())
+	else if(checkEnemyDeaths())
 	{
-		//TODO Win the battle
+		//TODO Wins the battle
+		currentState = 1;
+	}
+	else
+	{
+		newTurn();
+		currentBattleState = 0;
+	}
+}
+
+void Battle::newTurn()
+{
+	playerCanAttack = true;
+	for(int i = 0; i < numEnemies; i++)
+	{
+		if(enemies[i].getAlive())
+		{
+			enemies[i].setCanAtk(true);
+		}
 	}
 }
 
