@@ -21,9 +21,9 @@ Npc::Npc()
 }
 
 //Gets the converted vector, deals with animation/textbox calls, and deals with multiple textboxes
-void Npc::speak(sf::String nm, sf::String str, Textbox& box)
+void Npc::speak(sf::String nm, sf::String str, Textbox& box, Player& player)
 {
-	if(colliding && sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+	if(colliding && !player.getMoving() &&  sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
 		box.convertText(str, sVec);
 		if(!box.getOpen() && textNum == 0)

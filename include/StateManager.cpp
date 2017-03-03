@@ -82,6 +82,7 @@ void StateManager::loadMap(sf::RenderWindow& win)
 		background.setupStatic("images/background.jpg");
 
 		//TODO Load appropriate npcs w/ dynamic allocation and from files. Use some loop for number of npcs.
+		//TODO When loading another map, pop_back all current npcs
 		Npc temp;
 		temp.setPosition(128, 128);
 		npc.push_back(temp);
@@ -106,7 +107,7 @@ void StateManager::updateMap(sf::RenderWindow& win, sf::View& view)
 	player.setCurrency(25, overlay);
 
 	//TODO NPC speak
-	npc[0].speak("That One Guy", "Lorem ipsum dolor", textbox);
+	npc[0].speak("That One Guy", "Lorem ipsum dolor", textbox, player);
 
 	//TODO Loop so all npcs are checked
 	if(!npc[0].getSpeaking())

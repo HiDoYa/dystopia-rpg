@@ -78,6 +78,8 @@ class Player: public SpriteManage
 		int getExp();
 		int getCurrency();
 
+		bool getMoving();
+
 		//***** Etc *******
 		void stepSound();
 		void standStill();

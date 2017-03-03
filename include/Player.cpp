@@ -136,6 +136,11 @@ int Player::getCurrency()
 	return currency;
 }
 
+bool Player::getMoving()
+{
+	return moving;
+}
+
 //*********** ETC ************
 
 void Player::stepSound()

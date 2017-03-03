@@ -26,7 +26,7 @@ class Npc: public SpriteManage
 		bool colliding;
 	public:
 		Npc();
-		void speak(sf::String, sf::String, Textbox&);
+		void speak(sf::String, sf::String, Textbox&, Player&);
 		bool getSpeaking();
 		void collision(Player&);
 };
