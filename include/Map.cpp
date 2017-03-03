@@ -160,6 +160,10 @@ void Map::drawCollision(sf::RenderWindow& win, Player& player)
 	}
 }
 
+void Map::changeMap(int zone, int map)
+{
+}
+
 //******* ACCESSORS FOR NEW MAPS ************
 
 std::vector<sf::Vector2i> Map::getNewMapCords()
