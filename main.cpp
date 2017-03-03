@@ -1,16 +1,6 @@
-//#include <cctype>
-//#include <cmath>
-//#include <ctime>
-#include <iostream>
-//#include <fstream>
-//#include <string>
-//#include <vector>
-
-//SFML
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
-#include <SFML/Window.hpp>
-#include <SFML/System.hpp>
+#include <iostream>
 
 //Game classes
 #include "include/Battle.h"
