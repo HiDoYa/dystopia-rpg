@@ -78,6 +78,7 @@ class Battle
 		bool checkPlayerDeath(Player&);
 		bool checkEnemyDeaths();
 		void checkEndBattle(Player&, int&, int&);
+		void currentEnemyDeath();
 		void newTurn();
 		
 		//Drawing
@@ -91,6 +92,9 @@ class Battle
 		//Accessors
 		int getEnemyHp(int);
 		int getNumEnemies();
+
+		//Utility
+		int getMaxNum(int, int);
 };
 
 #endif

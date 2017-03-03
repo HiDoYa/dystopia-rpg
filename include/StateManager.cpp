@@ -101,7 +101,7 @@ void StateManager::updateMap(sf::RenderWindow& win, sf::View& view)
 	player.setMaxMana(100, overlay);
 	player.setCurrentMana(80, overlay);
 	player.setAgility(3);
-	player.setAtk(5);
+	player.setAtk(500);
 	player.setExp(3, overlay);
 	player.setCurrency(25, overlay);
 
@@ -114,7 +114,7 @@ void StateManager::updateMap(sf::RenderWindow& win, sf::View& view)
 		player.movePos();
 	} 
 	//TODO Set encounter rate based on map
-	player.encounter(100, currentState);
+	player.encounter(1, currentState);
 
 	//Activate window for OpenGL rendering
 	win.clear();

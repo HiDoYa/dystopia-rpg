@@ -13,9 +13,6 @@
 Battle::Battle()
 {
 	numSkills = 6;
-	currentSkill = 0;
-	playerCanAttack = true;
-	currentEnemySelected = 0;
 }
 
 void Battle::setupBattle(sf::String enemyList)
@@ -55,6 +52,11 @@ void Battle::setupBattle(sf::String enemyList)
 
 	//comboFile.close();
 
+	//Initialize
+	currentSkill = 0;
+	playerCanAttack = true;
+	currentEnemySelected = 0;
+	
 	//Get number of enemies
 	srand(time(NULL));
 	numEnemies = rand() % 3 + 1;
@@ -137,21 +139,17 @@ void Battle::changeEnemyFocus()
 		qNotPressed = true;
 	}
 
+	//If q pressed, swap to next enemy that is not dead
 	if(qPressed && qNotPressed)
 	{
-		for(int i = 0; i < numEnemies; i++)
+		do
 		{
 			currentEnemySelected++;
 			if(currentEnemySelected >= numEnemies)
 			{
 				currentEnemySelected = 0;
 			}
-
-			if(!(enemies[currentEnemySelected].getAlive()))
-			{
-				break;
-			}
-		}
+		}while(!(enemies[currentEnemySelected].getAlive()));
 	}
 }
 
@@ -346,17 +344,24 @@ void Battle::enemyAttackAnimation(int& currentBattleState)
 //Calculates hp change for enemy and player
 void Battle::hpCalculate(int& currentBattleState, Player& player, UIOverlay& overlay)
 {
+	int tempHpFinal;
 	switch (nextAttack)
 	{
 		case -1:
-			enemyHpDecrease(enemies[currentEnemySelected].getInitHp() - player.getAtk(), currentBattleState);
+			tempHpFinal = enemies[currentEnemySelected].getInitHp() - player.getAtk();
+			//Makes sure the lowest hp possible is 0
+			tempHpFinal = getMaxNum(0, tempHpFinal);
+			enemyHpDecrease(tempHpFinal, currentBattleState);
 			playerPostAttackAnimation(player);
 			//Animate enemy hp decrease with new hp and old hp and currentselectedenemy
 			break;
 		case 0:
 		case 1:
 		case 2:
-			playerHpDecrease(initHp - enemies[nextAttack].getAtk(), player, overlay, currentBattleState);
+			tempHpFinal = initHp - enemies[nextAttack].getAtk();
+			//Makes sure the lowest hp possible is 0
+			tempHpFinal = getMaxNum(0, tempHpFinal);
+			playerHpDecrease(tempHpFinal, player, overlay, currentBattleState);
 			enemyPostAttackAnimation();
 			//Animate player hp with new hp and old hp
 			break;
@@ -462,7 +467,7 @@ bool Battle::checkPlayerDeath(Player& player)
 //Returns true if all enemies are dead
 bool Battle::checkEnemyDeaths()
 {
-	bool allDead = false;
+	bool allDead = true;
 
 	for(int i = 0 ; i < numEnemies; i++)
 	{
@@ -476,7 +481,6 @@ bool Battle::checkEnemyDeaths()
 			enemies[i].setAlive(false);
 		}
 	}
-
 	return allDead;
 }
 
@@ -495,15 +499,34 @@ void Battle::checkEndBattle(Player& player, int& currentBattleState, int& curren
 	else
 	{
 		newTurn();
+		currentEnemyDeath();
 		currentBattleState = 0;
 	}
 }
 
+//Change current enemy selected if the current enemy is dead (and battle is not over yet)
+void Battle::currentEnemyDeath()
+{
+	if(!enemies[currentEnemySelected].getAlive())
+	{
+		do
+		{
+			currentEnemySelected++;
+			if(currentEnemySelected >= numEnemies)
+			{
+				currentEnemySelected = 0;
+			}
+		}while(!enemies[currentEnemySelected].getAlive());
+	}
+}
+
+//Sets up for new turn
 void Battle::newTurn()
 {
 	playerCanAttack = true;
 	for(int i = 0; i < numEnemies; i++)
 	{
+		//Enemies can only attack next turn if they are still alive
 		if(enemies[i].getAlive())
 		{
 			enemies[i].setCanAtk(true);
@@ -517,7 +540,10 @@ void Battle::drawEnemies(sf::RenderWindow& win)
 {
 	for(int i = 0; i < numEnemies; i++)
 	{
-		enemies[i].drawAll(win);
+		if(enemies[i].getAlive())
+		{
+			enemies[i].drawAll(win);
+		}
 	}
 }
 
@@ -560,5 +586,18 @@ int Battle::getEnemyHp(int enemyNum)
 int Battle::getNumEnemies()
 {
 	return numEnemies;
+}
+
+//*************** UTILITY *******************
+int Battle::getMaxNum(int numOne, int numTwo)
+{
+	if(numOne > numTwo)
+	{
+		return numOne;
+	}
+	else if(numTwo > numOne)
+	{
+		return numTwo;
+	}
 }
 
