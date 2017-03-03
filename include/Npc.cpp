@@ -1,9 +1,11 @@
 #include <SFML/Graphics.hpp>
+#include <iostream>
+
+#include "Player.h"
+#include "Textbox.h"
+#include "UIOverlay.h"
 
 #include "Npc.h"
-#include "Player.h"
-#include "SpriteManage.h"
-#include "Textbox.h"
 
 Npc::Npc()
 {

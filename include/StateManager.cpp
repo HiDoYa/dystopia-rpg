@@ -1,10 +1,15 @@
+#include <SFML/Graphics.hpp>
+#include <iostream>
+
 #include "Battle.h"
 #include "MainMenu.h"
 #include "Map.h"
 #include "Npc.h"
+#include "Player.h"
 #include "Textbox.h"
-#include "StateManager.h"
+#include "UIOverlay.h"
 
+#include "StateManager.h"
 
 StateManager::StateManager()
 {

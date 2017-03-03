@@ -1,9 +1,10 @@
 #include <SFML/Graphics.hpp>
 #include <fstream>
-#include <string>
+#include <iostream>
+
+#include "Player.h"
 
 #include "Map.h"
-#include "Player.h"
 
 Map::Map()
 {

@@ -1,5 +1,7 @@
 #include "Enemy.h"
-#include "Player.h"
+#include "UIOverlay.h"
+
+class Player;
 
 #ifndef BATTLE_H
 #define BATTLE_H

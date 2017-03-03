@@ -1,10 +1,10 @@
-#include <cctype>
-#include <cmath>
-#include <ctime>
+//#include <cctype>
+//#include <cmath>
+//#include <ctime>
 #include <iostream>
-#include <fstream>
-#include <string>
-#include <vector>
+//#include <fstream>
+//#include <string>
+//#include <vector>
 
 //SFML
 #include <SFML/Graphics.hpp>
@@ -19,9 +19,11 @@
 #include "include/Npc.h"
 #include "include/Player.h"
 #include "include/SpriteManage.h"
-#include "include/StateManager.h"
 #include "include/Textbox.h"
 #include "include/UIOverlay.h"
+
+//Has to be included last
+#include "include/StateManager.h"
 
 int main()
 {

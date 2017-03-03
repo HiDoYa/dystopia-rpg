@@ -1,7 +1,3 @@
-#include "UIOverlay.h"
-
-class Npc;
-
 #ifndef STATEMANAGER_H
 #define STATEMANAGER_H
 

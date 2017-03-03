@@ -1,8 +1,10 @@
 #include <SFML/Graphics.hpp>
+#include <iostream>
 
 #include "Map.h"
-#include "Player.h"
 #include "UIOverlay.h"
+
+#include "Player.h"
 
 Player::Player()
 {

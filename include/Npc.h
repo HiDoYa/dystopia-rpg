@@ -1,6 +1,5 @@
 #include "SpriteManage.h"
 
-class Player;
 class Textbox;
 
 #ifndef NPC_H

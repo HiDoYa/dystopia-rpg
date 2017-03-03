@@ -1,6 +1,9 @@
 #include <SFML/Graphics.hpp>
+#include <iostream>
+
+#include "Player.h"
+
 #include "Battle.h"
-#include "Enemy.h"
 
 Battle::Battle()
 {
