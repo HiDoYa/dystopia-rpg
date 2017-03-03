@@ -1,9 +1,7 @@
-#include "Textbox.h"
-#include "Player.h"
 #include "SpriteManage.h"
 
-#include <SFML/Graphics.hpp>
-#include <iostream>
+class Player;
+class Textbox;
 
 #ifndef NPC_H
 #define NPC_H

@@ -1,8 +1,9 @@
 #include <SFML/Audio.hpp>
-#include <SFML/Graphics.hpp>
-
-#include "UIOverlay.h"
 #include "SpriteManage.h"
+
+class Map;
+class UIOverlay;
+
 
 #ifndef PLAYER_H
 #define PLAYER_H
@@ -84,6 +85,7 @@ class Player: public SpriteManage
 		void stepSound();
 		void standStill();
 		void movePos();
+		bool newMap(Map&);
 		void encounter(int, int&);
 		void spriteAnimation();
 		bool collisionZones(int, int);

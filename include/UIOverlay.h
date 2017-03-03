@@ -1,6 +1,3 @@
-#include <iostream>
-#include <SFML/Graphics.hpp>
-
 #ifndef UIOVERLAY_H
 #define UIOVERLAY_H
 

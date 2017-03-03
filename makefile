@@ -8,32 +8,32 @@ game: $(OBJ)
 main.o: main.cpp
 	g++ -std=c++11 -c $<
 
-Battle.o: include/Battle.cpp include/Battle.h
+Battle.o: include/Battle.cpp
 	g++ -std=c++11 -c $<
 
-Enemy.o: include/Enemy.cpp include/Enemy.h
+Enemy.o: include/Enemy.cpp
 	g++ -std=c++11 -c $<
 
-Player.o: include/Player.cpp include/Player.h
+Player.o: include/Player.cpp
 	g++ -std=c++11 -c $<
 
-MainMenu.o: include/MainMenu.cpp include/MainMenu.h
+MainMenu.o: include/MainMenu.cpp
 	g++ -std=c++11 -c $<
 
-Map.o: include/Map.cpp include/Map.h
+Map.o: include/Map.cpp
 	g++ -std=c++11 -c $<
 
-Npc.o: include/Npc.cpp include/Npc.h
+Npc.o: include/Npc.cpp
 	g++ -std=c++11 -c $<
 
-SpriteManage.o: include/SpriteManage.cpp include/SpriteManage.h
+SpriteManage.o: include/SpriteManage.cpp
 	g++ -std=c++11 -c $<
 
-StateManager.o: include/StateManager.cpp include/StateManager.h
+StateManager.o: include/StateManager.cpp
 	g++ -std=c++11 -c $<
 	
-Textbox.o: include/Textbox.cpp include/Textbox.h
+Textbox.o: include/Textbox.cpp
 	g++ -std=c++11 -c $<
 
-UIOverlay.o: include/UIOverlay.cpp include/UIOverlay.h
+UIOverlay.o: include/UIOverlay.cpp
 	g++ -std=c++11 -c $<

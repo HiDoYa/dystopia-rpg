@@ -1,5 +1,4 @@
 #include <SFML/Audio.hpp>
-#include <SFML/Graphics.hpp>
 
 #ifndef TEXTBOX_H
 #define TEXTBOX_H

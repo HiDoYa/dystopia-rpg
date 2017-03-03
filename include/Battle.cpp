@@ -1,14 +1,6 @@
+#include <SFML/Graphics.hpp>
 #include "Battle.h"
 #include "Enemy.h"
-
-#include <SFML/Graphics.hpp>
-
-#include <cctype>
-#include <ctime>
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <vector>
 
 Battle::Battle()
 {

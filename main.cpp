@@ -1,4 +1,10 @@
+#include <cctype>
+#include <cmath>
+#include <ctime>
 #include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
 
 //SFML
 #include <SFML/Graphics.hpp>

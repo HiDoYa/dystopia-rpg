@@ -2,8 +2,6 @@
 
 #include "MainMenu.h"
 
-#include <iostream>
-
 MainMenu::MainMenu()
 {
 	//TODO Add bgm

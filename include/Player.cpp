@@ -1,8 +1,8 @@
+#include <SFML/Graphics.hpp>
+
+#include "Map.h"
 #include "Player.h"
 #include "UIOverlay.h"
-
-#include <cmath>
-#include <iostream>
 
 Player::Player()
 {
@@ -260,6 +260,21 @@ void Player::movePos()
 	}
 
 	canMoveUp = canMoveDown = canMoveLeft = canMoveRight = true;
+}
+
+//Returns true if player is on tile for new map
+bool Player::newMap(Map& groundMap)
+{
+	sf::Vector2i curPos = sf::Vector2i(getPosition());
+
+	for(int i = 0; i < groundMap.getNewMapCounter(); i++)
+	{
+		if(groundMap.getNewMapCords()[i] == curPos)
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 //Calculates whether player should encounter enemy. Encounter chance is from 0-100

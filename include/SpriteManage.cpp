@@ -1,7 +1,6 @@
-#include "SpriteManage.h"
-
-#include <iostream>
 #include <SFML/Graphics.hpp>
+
+#include "SpriteManage.h"
 
 //****************** MUTATORS ********************
 void SpriteManage::setTextureSprite(sf::String inp)

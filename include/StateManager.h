@@ -1,14 +1,6 @@
-#include <SFML/Graphics.hpp>
-
-#include "Battle.h"
-#include "MainMenu.h"
-#include "Map.h"
-#include "Npc.h"
-#include "Textbox.h"
 #include "UIOverlay.h"
 
-#include <iostream>
-#include <vector>
+class Npc;
 
 #ifndef STATEMANAGER_H
 #define STATEMANAGER_H

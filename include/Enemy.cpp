@@ -1,6 +1,6 @@
-#include "Enemy.h"
+#include <SFML/Graphics.hpp>
 
-#include <iostream>
+#include "Enemy.h"
 
 Enemy::Enemy()
 {

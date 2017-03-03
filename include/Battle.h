@@ -1,10 +1,6 @@
 #include "Enemy.h"
 #include "Player.h"
 
-#include <SFML/Graphics.hpp>
-#include <iostream>
-#include <vector>
-
 #ifndef BATTLE_H
 #define BATTLE_H
 

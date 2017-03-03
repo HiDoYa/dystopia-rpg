@@ -1,14 +1,13 @@
+#include <SFML/Graphics.hpp>
+#include <fstream>
+#include <string>
+
 #include "Map.h"
 #include "Player.h"
 
-#include <cctype>
-#include <fstream>
-#include <iostream>
-#include <string>
-#include <vector>
-
 Map::Map()
 {
+	newMapCounter = 0;
 }
 
 
@@ -73,9 +72,11 @@ void Map::setupBitmap(std::string currentFile, sf::RenderWindow& win)
 			else if(str[0] == 'n')
 			{
 				//TODO setup new map mechanic in player class
-				int newZoneNum = (str[1] - '0');
-				int newMapNum = ((str[3] - '0') * 10) + (str[4] - '0');
-				map.at(loadCounter.y).push_back(sf::Vector2i(-2, newMapNum));
+				newZoneNum.push_back(str[1] - '0');
+				newMapNum.push_back(((str[3] - '0') * 10) + (str[4] - '0'));
+				changeMapCords.push_back(sf::Vector2i(loadCounter.x, loadCounter.y));
+				newMapCounter++;
+				map.at(loadCounter.y).push_back(sf::Vector2i(-1, -1));
 			}
 			else
 			{
@@ -156,4 +157,26 @@ void Map::drawCollision(sf::RenderWindow& win, Player& player)
 			}
 		}
 	}
+}
+
+//******* ACCESSORS FOR NEW MAPS ************
+
+std::vector<sf::Vector2i> Map::getNewMapCords()
+{
+	return changeMapCords;
+}
+
+int Map::getNewMapCounter()
+{
+	return newMapCounter;
+}
+
+std::vector<int> Map::getNewZoneNum()
+{
+	return newZoneNum;
+}
+
+std::vector<int> Map::getNewMapNum()
+{
+	return newMapNum;
 }

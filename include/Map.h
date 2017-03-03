@@ -1,6 +1,4 @@
-#include "Player.h"
-#include <SFML/Graphics.hpp>
-#include <vector>
+class Player;
 
 #ifndef MAP_H
 #define MAP_H
@@ -17,6 +15,12 @@ class Map
 		//Used to load maps
 		sf::Vector2i maxCords;
 
+		//Used to change maps
+		std::vector<sf::Vector2i> changeMapCords;
+		int newMapCounter;
+		std::vector<int> newZoneNum;
+		std::vector<int> newMapNum;
+
 		int yDisp;
 	public:
 		Map();
@@ -26,6 +30,12 @@ class Map
 		void setupBitmap(std::string, sf::RenderWindow&);
 		void drawBitmap(sf::RenderWindow&);
 		void drawCollision(sf::RenderWindow&, Player&);
+
+		//Accessors for new map
+		std::vector<sf::Vector2i> getNewMapCords();
+		int getNewMapCounter();
+		std::vector<int> getNewZoneNum();
+		std::vector<int> getNewMapNum();
 };
 
 #endif

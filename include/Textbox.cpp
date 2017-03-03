@@ -1,6 +1,5 @@
-#include <iostream>
-#include <string>
-#include <vector>
+#include <SFML/Graphics.hpp>
+
 #include "Textbox.h"
 
 //Default constructor
