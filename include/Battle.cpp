@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <fstream>
 #include <iostream>
 
 #include "Player.h"
@@ -63,8 +64,8 @@ void Battle::setupBattle(sf::String enemyList)
 	//std::ifstream enemyFile(enemyList);
 	//enemyFile >> inp;
 	//numEnemiesInFile = inp;
+	ifstream enemyFile;
 	
-
 	//Initialize circle shape
 	//TODO Get player optins from file and get numSkills from file
 	for(int i = 0; i < numSkills; i++)

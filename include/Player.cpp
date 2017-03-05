@@ -264,21 +264,6 @@ void Player::movePos()
 	canMoveUp = canMoveDown = canMoveLeft = canMoveRight = true;
 }
 
-//Returns true if player is on tile for new map
-void Player::newMap(Map& ground, Map& collision)
-{
-	sf::Vector2i curPos = sf::Vector2i(getPosition());
-
-	for(int i = 0; i < ground.getNewMapCounter(); i++)
-	{
-		if(ground.getNewMapCords()[i] == curPos)
-		{
-			ground.changeMap(ground.getNewZoneNum()[i], ground.getNewMapNum()[i]);
-			collision.changeMap(ground.getNewZoneNum()[i], ground.getNewMapNum()[i]);
-		}
-	}
-}
-
 //Calculates whether player should encounter enemy. Encounter chance is from 0-100
 void Player::encounter(int encounterChance, int& scene)
 {

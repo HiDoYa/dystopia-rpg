@@ -11,6 +11,13 @@ Map::Map()
 	newMapCounter = 0;
 }
 
+//Tile-based: (Ground, collision, foreground)
+//Static: (Background)
+
+void Map::setupAll(sf::String mainFileNm)
+{
+
+}
 
 void Map::setupStatic(sf::String textureInp)
 {
@@ -45,8 +52,15 @@ void Map::setupBitmap(std::string currentFile, sf::RenderWindow& win)
 	mapFile.open(currentFile);
 
 	//Sets loadcounter to start at location 0 in map
+	map.clear();
 	loadCounter = sf::Vector2i(0, 0);
 	maxCords = sf::Vector2i(0, 0);
+
+	//Resets change map
+	changeMapCords.clear();
+	newMapCounter = 0;
+	newZoneNum.clear();
+	newMapNum.clear();
 
 	if(mapFile.is_open())
 	{
@@ -65,18 +79,17 @@ void Map::setupBitmap(std::string currentFile, sf::RenderWindow& win)
 
 		while(!mapFile.eof())
 		{
-
-			if(!isdigit(str[0]) || !isdigit(str[3]))
-			{
-				map.at(loadCounter.y).push_back(sf::Vector2i(-1, -1));
-			}
-			else if(str[0] == 'n')
+			if(str[0] == 'n')
 			{
 				//TODO setup new map mechanic in player class
 				newZoneNum.push_back(str[1] - '0');
 				newMapNum.push_back(((str[3] - '0') * 10) + (str[4] - '0'));
-				changeMapCords.push_back(sf::Vector2i(loadCounter.x, loadCounter.y));
+				changeMapCords.push_back(sf::Vector2i(loadCounter.x * 64, loadCounter.y * 64));
 				newMapCounter++;
+				map.at(loadCounter.y).push_back(sf::Vector2i(-1, -1));
+			}
+			else if(!isdigit(str[0]) || !isdigit(str[3]))
+			{
 				map.at(loadCounter.y).push_back(sf::Vector2i(-1, -1));
 			}
 			else
@@ -136,7 +149,6 @@ void Map::drawBitmap(sf::RenderWindow& win)
 			}
 		}
 	}
-
 }
 
 void Map::drawCollision(sf::RenderWindow& win, Player& player)
@@ -160,8 +172,45 @@ void Map::drawCollision(sf::RenderWindow& win, Player& player)
 	}
 }
 
-void Map::changeMap(int zone, int map)
+//TODO Add foreground
+void Map::newMap(Map& collision, Player& player, sf::RenderWindow& win)
 {
+	sf::Vector2i playerPos = sf::Vector2i(player.getPosition());
+
+	for(int i = 0; i < newMapCounter; i++)
+	{
+		if(changeMapCords[i] == playerPos)
+		{
+			collision.changeMap(newZoneNum[i], newMapNum[i], 1, win);
+			changeMap(newZoneNum[i], newMapNum[i], 0, win);
+		}
+	}
+}
+
+//TODO Refactor to process through a main map file which links to each individual map
+//type indicates whether it is ground, collision, or foreground
+void Map::changeMap(int zone, int map, int type, sf::RenderWindow& win)
+{
+	std::string fileAccString = "data/maps/";
+
+	fileAccString += "z" + std::to_string(zone);
+
+	switch (type)
+	{
+		case 0:
+			fileAccString += "/ground/";
+			break;
+		case 1:
+			fileAccString += "/collision/";
+			break;
+		case 2: 
+			fileAccString += "/foreground/";
+			break;
+	}
+
+	fileAccString += "m" + std::to_string(map);
+
+	setupBitmap(fileAccString, win);
 }
 
 //******* ACCESSORS FOR NEW MAPS ************

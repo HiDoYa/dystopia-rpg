@@ -20,6 +20,7 @@ class StateManager
 		Map ground;
 		Map background;
 		Map collision;
+		//Map foreground;
 
 		std::vector<Npc> npc;
 		Player player;

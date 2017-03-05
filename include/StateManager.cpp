@@ -120,11 +120,9 @@ void StateManager::updateMap(sf::RenderWindow& win, sf::View& view)
 		player.movePos();
 	} 
 	//TODO Set encounter rate based on map
-	player.encounter(1, currentState);
+	player.encounter(100, currentState);
 
-	if(player.newMap(ground))
-	{
-	}
+	ground.newMap(collision, player, win);
 
 	//Activate window for OpenGL rendering
 	win.clear();

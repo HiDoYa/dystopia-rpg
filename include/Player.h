@@ -84,7 +84,6 @@ class Player: public SpriteManage
 		void stepSound();
 		void standStill();
 		void movePos();
-		void newMap(Map&, Map&);
 		void encounter(int, int&);
 		void spriteAnimation();
 		bool collisionZones(int, int);

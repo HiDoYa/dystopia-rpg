@@ -24,12 +24,15 @@ class Map
 		int yDisp;
 	public:
 		Map();
+		void setupAll(sf::String);
 		void setupStatic(sf::String textureInp);
 		void drawStatic(sf::RenderWindow&, sf::View);
 		void drawStatic(sf::RenderWindow&, sf::View, int);
 		void setupBitmap(std::string, sf::RenderWindow&);
 		void drawBitmap(sf::RenderWindow&);
 		void drawCollision(sf::RenderWindow&, Player&);
+		void newMap(Map&, Player&, sf::RenderWindow&);
+		void changeMap(int, int, int, sf::RenderWindow&);
 
 		//Accessors for new map
 		std::vector<sf::Vector2i> getNewMapCords();
