@@ -173,6 +173,7 @@ void Map::drawCollision(sf::RenderWindow& win, Player& player)
 }
 
 //TODO Add foreground
+//TODO Perhaps delete along with changeMap?
 bool Map::newMap(Map& collision, Player& player, sf::RenderWindow& win)
 {
 	sf::Vector2i playerPos = sf::Vector2i(player.getPosition());
