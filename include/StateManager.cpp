@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <memory>
 
 #include "Battle.h"
 #include "MainMenu.h"
@@ -15,10 +16,13 @@ StateManager::StateManager()
 {
 	currentState = 0;
 	currentBattleState = 0;
+	startPosX = startPosY = 64;
+	currentZone = currentMap = 0;
 
 	menuLoaded = false;
 	mapLoaded = false;
 	battleLoaded = false;
+
 }
 
 //********* MENU *************
@@ -79,12 +83,23 @@ void StateManager::loadMap(sf::RenderWindow& win)
 {
 	if(!mapLoaded)
 	{
+		ground.reset(new Map);
+		collision.reset(new Map);
+		background.reset(new Map);
+
 		battleLoaded = false;
 		mapLoaded = true;
 		//TODO Load file that contains names of all three of these ground/collision/background files for loading
-		ground.setupBitmap("data/maps/testmap", win);
-		collision.setupBitmap("data/maps/testcollision", win);
-		background.setupStatic("images/background.jpg");
+		std::string mapFileString1 = "data/maps/z" + std::to_string(currentZone) + "/";
+		std::string mapFileString2 = "/m" + std::to_string(currentMap);
+
+		ground->setupBitmap(mapFileString1 + "ground" + mapFileString2, win);
+		collision->setupBitmap(mapFileString1 + "collision" + mapFileString2, win);
+		background->setupStatic("images/background.jpg");
+
+		//TODO
+		startPosX = 128;
+		startPosY = 128;
 
 		//TODO Load appropriate npcs w/ dynamic allocation and from files. Use some loop for number of npcs.
 		//TODO When loading another map, pop_back all current npcs
@@ -94,7 +109,7 @@ void StateManager::loadMap(sf::RenderWindow& win)
 		npc[0].setTextureSprite("images/test4.png");
 
 		//TODO Set player position based on map or other factors
-		player.setPosition(64, 64);
+		player.setPosition(startPosX, startPosY);
 	}
 }
 
@@ -118,11 +133,18 @@ void StateManager::updateMap(sf::RenderWindow& win, sf::View& view)
 	if(!npc[0].getSpeaking())
 	{
 		player.movePos();
+		startPosX = player.getPosition().x;
+		startPosY = player.getPosition().y;
 	} 
 	//TODO Set encounter rate based on map
-	player.encounter(100, currentState);
+	player.encounter(1, currentState);
 
-	ground.newMap(collision, player, win);
+	if(ground->newMap(*collision, player, win))
+	{
+		currentZone = 0;
+		currentMap = 1;
+		mapLoaded = false;
+	}
 
 	//Activate window for OpenGL rendering
 	win.clear();
@@ -139,11 +161,11 @@ void StateManager::updateMap(sf::RenderWindow& win, sf::View& view)
 void StateManager::renderMap(sf::RenderWindow& win, sf::View& view)
 {
 	//Bot ground
-	background.drawStatic(win, view);
+	background->drawStatic(win, view);
 
 	//Mid ground
-	ground.drawBitmap(win);
-	collision.drawCollision(win, player);
+	ground->drawBitmap(win);
+	collision->drawCollision(win, player);
 	player.drawSprite(win);
 	
 	//TODO Loop for npcs
@@ -219,7 +241,7 @@ void StateManager::updateBattle(sf::RenderWindow& win, sf::View& view)
 void StateManager::renderBattle(sf::RenderWindow& win, sf::View& view)
 {
 	//Background image
-	background.drawStatic(win, view);
+	background->drawStatic(win, view);
 
 	//TODO Mid ground
 	player.drawSprite(win);

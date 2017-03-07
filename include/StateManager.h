@@ -6,6 +6,11 @@ class StateManager
 	private:
 		int currentState;
 		int currentBattleState;
+		
+		int startPosX;
+		int startPosY;
+		int currentZone;
+		int currentMap;
 
 		//Menu (state 0)
 		bool menuLoaded;
@@ -17,9 +22,9 @@ class StateManager
 		UIOverlay overlay;
 		Textbox textbox;
 
-		Map ground;
-		Map background;
-		Map collision;
+		std::unique_ptr<Map> ground;
+		std::unique_ptr<Map> background;
+		std::unique_ptr<Map> collision;
 		//Map foreground;
 
 		std::vector<Npc> npc;

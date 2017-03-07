@@ -64,7 +64,7 @@ void Battle::setupBattle(sf::String enemyList)
 	//std::ifstream enemyFile(enemyList);
 	//enemyFile >> inp;
 	//numEnemiesInFile = inp;
-	ifstream enemyFile;
+	std::ifstream enemyFile;
 	
 	//Initialize circle shape
 	//TODO Get player optins from file and get numSkills from file

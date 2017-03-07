@@ -31,7 +31,7 @@ class Map
 		void setupBitmap(std::string, sf::RenderWindow&);
 		void drawBitmap(sf::RenderWindow&);
 		void drawCollision(sf::RenderWindow&, Player&);
-		void newMap(Map&, Player&, sf::RenderWindow&);
+		bool newMap(Map&, Player&, sf::RenderWindow&);
 		void changeMap(int, int, int, sf::RenderWindow&);
 
 		//Accessors for new map

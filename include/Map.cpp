@@ -173,7 +173,7 @@ void Map::drawCollision(sf::RenderWindow& win, Player& player)
 }
 
 //TODO Add foreground
-void Map::newMap(Map& collision, Player& player, sf::RenderWindow& win)
+bool Map::newMap(Map& collision, Player& player, sf::RenderWindow& win)
 {
 	sf::Vector2i playerPos = sf::Vector2i(player.getPosition());
 
@@ -181,10 +181,12 @@ void Map::newMap(Map& collision, Player& player, sf::RenderWindow& win)
 	{
 		if(changeMapCords[i] == playerPos)
 		{
-			collision.changeMap(newZoneNum[i], newMapNum[i], 1, win);
-			changeMap(newZoneNum[i], newMapNum[i], 0, win);
+			//collision.changeMap(newZoneNum[i], newMapNum[i], 1, win);
+			//changeMap(newZoneNum[i], newMapNum[i], 0, win);
+			return true;
 		}
 	}
+	return false;
 }
 
 //TODO Refactor to process through a main map file which links to each individual map
