@@ -31,8 +31,8 @@ class Map
 		void setupBitmap(std::string, sf::RenderWindow&);
 		void drawBitmap(sf::RenderWindow&);
 		void drawCollision(sf::RenderWindow&, Player&);
-		bool newMap(Map&, Player&, sf::RenderWindow&);
-		void changeMap(int, int, int, sf::RenderWindow&);
+		bool newMap(Player&, int&, int&);
+		void newMapCheck(Player&, int&, int&, int&, int&, bool&, int&);
 
 		//Accessors for new map
 		std::vector<sf::Vector2i> getNewMapCords();

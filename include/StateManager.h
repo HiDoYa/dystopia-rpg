@@ -4,14 +4,10 @@
 class StateManager
 {
 	private:
+		//State control
 		int currentState;
 		int currentBattleState;
-		
-		int startPosX;
-		int startPosY;
-		int currentZone;
-		int currentMap;
-
+	
 		//Menu (state 0)
 		bool menuLoaded;
 		MainMenu mainMenu;
@@ -25,12 +21,19 @@ class StateManager
 		std::unique_ptr<Map> ground;
 		std::unique_ptr<Map> background;
 		std::unique_ptr<Map> collision;
-		//Map foreground;
+		//TODO Map foreground;
 
 		std::vector<Npc> npc;
 		Player player;
 
-		//Map (state 2)
+		//Map specific
+		int startPosX;
+		int startPosY;
+		int currentZone;
+		int currentMap;
+		int encounterRate;
+
+		//Battle (state 2)
 		bool battleLoaded;
 		//TODO Think of how Battle class will be used for different battles (deleted vector?)
 		Battle battle;

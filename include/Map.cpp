@@ -173,8 +173,7 @@ void Map::drawCollision(sf::RenderWindow& win, Player& player)
 }
 
 //TODO Add foreground
-//TODO Perhaps delete along with changeMap?
-bool Map::newMap(Map& collision, Player& player, sf::RenderWindow& win)
+bool Map::newMap(Player& player, int& zone, int& map)
 {
 	sf::Vector2i playerPos = sf::Vector2i(player.getPosition());
 
@@ -182,39 +181,27 @@ bool Map::newMap(Map& collision, Player& player, sf::RenderWindow& win)
 	{
 		if(changeMapCords[i] == playerPos)
 		{
-			//collision.changeMap(newZoneNum[i], newMapNum[i], 1, win);
-			//changeMap(newZoneNum[i], newMapNum[i], 0, win);
+			zone = newZoneNum[i];
+			map = newMapNum[i];
 			return true;
 		}
 	}
 	return false;
 }
 
-//TODO Refactor to process through a main map file which links to each individual map
-//type indicates whether it is ground, collision, or foreground
-void Map::changeMap(int zone, int map, int type, sf::RenderWindow& win)
+void Map::newMapCheck(Player& player, int& startPosX, int& startPosY, int& currentZone, int& currentMap, bool& mapLoaded, int& encounterRate)
 {
-	std::string fileAccString = "data/maps/";
-
-	fileAccString += "z" + std::to_string(zone);
-
-	switch (type)
+	if(newMap(player, currentZone, currentMap))
 	{
-		case 0:
-			fileAccString += "/ground/";
-			break;
-		case 1:
-			fileAccString += "/collision/";
-			break;
-		case 2: 
-			fileAccString += "/foreground/";
-			break;
+		mapLoaded = false;
+
+		//TODO Get correct numbers
+		encounterRate = 5;
+		startPosX = 256;
+		startPosY = 256;
 	}
-
-	fileAccString += "m" + std::to_string(map);
-
-	setupBitmap(fileAccString, win);
 }
+
 
 //******* ACCESSORS FOR NEW MAPS ************
 

@@ -14,10 +14,14 @@
 
 StateManager::StateManager()
 {
+	//Placeholder defaults
+	startPosX = startPosY = 64;
+	encounterRate = 5;
+	currentZone = currentMap = 0;
+
+	//Defaults
 	currentState = 0;
 	currentBattleState = 0;
-	startPosX = startPosY = 64;
-	currentZone = currentMap = 0;
 
 	menuLoaded = false;
 	mapLoaded = false;
@@ -44,6 +48,9 @@ void StateManager::loadMenu()
 
 void StateManager::updateMenu(sf::RenderWindow& win)
 {
+	//Activate window for OpenGL rendering
+	win.clear();
+
 	mainMenu.scroll();
 	mainMenu.currentlySelectedIndicate();
 
@@ -97,9 +104,6 @@ void StateManager::loadMap(sf::RenderWindow& win)
 		collision->setupBitmap(mapFileString1 + "collision" + mapFileString2, win);
 		background->setupStatic("images/background.jpg");
 
-		//TODO
-		startPosX = 128;
-		startPosY = 128;
 
 		//TODO Load appropriate npcs w/ dynamic allocation and from files. Use some loop for number of npcs.
 		//TODO When loading another map, pop_back all current npcs
@@ -115,6 +119,9 @@ void StateManager::loadMap(sf::RenderWindow& win)
 
 void StateManager::updateMap(sf::RenderWindow& win, sf::View& view)
 {
+	//Activate window for OpenGL rendering
+	win.clear();
+
 	//TODO Set overlay based on player stats
 	player.setLevel(2, overlay);
 	player.setMaxHp(100, overlay);
@@ -137,17 +144,9 @@ void StateManager::updateMap(sf::RenderWindow& win, sf::View& view)
 		startPosY = player.getPosition().y;
 	} 
 	//TODO Set encounter rate based on map
-	player.encounter(1, currentState);
+	player.encounter(encounterRate, currentState);
 
-	if(ground->newMap(*collision, player, win))
-	{
-		currentZone = 0;
-		currentMap = 1;
-		mapLoaded = false;
-	}
-
-	//Activate window for OpenGL rendering
-	win.clear();
+	ground->newMapCheck(player, startPosX, startPosY, currentZone, currentMap, mapLoaded, encounterRate);
 
 	//Set view
 	view.setCenter(player.getPosition());
@@ -211,6 +210,9 @@ void StateManager::loadBattle(sf::RenderWindow& win, sf::View& view)
 
 void StateManager::updateBattle(sf::RenderWindow& win, sf::View& view)
 {
+	//Activate window for OpenGL rendering
+	win.clear();
+
 	switch (currentBattleState)
 	{
 		//Battle state 0 Menu shows and player can make decision
