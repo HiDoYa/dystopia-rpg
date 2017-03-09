@@ -94,6 +94,18 @@ void StateManager::loadMap(sf::RenderWindow& win)
 		collision.reset(new Map);
 		background.reset(new Map);
 
+		//TODO Set overlay based on player stats
+		//Set player stats
+		player.setLevel(player.getLevel(), overlay);
+		player.setMaxHp(player.getMaxHp(), overlay);
+		player.setCurrentHp(player.getCurrentHp(), overlay);
+		player.setMaxMana(player.getMaxMana(), overlay);
+		player.setCurrentMana(player.getCurrentMana(), overlay);
+		player.setAgility(player.getAgility());
+		player.setAtk(player.getAtk());
+		player.setExp(player.getExp(), overlay);
+		player.setCurrency(player.getCurrency(), overlay);
+
 		battleLoaded = false;
 		mapLoaded = true;
 		//TODO Load file that contains names of all three of these ground/collision/background files for loading
@@ -113,7 +125,7 @@ void StateManager::loadMap(sf::RenderWindow& win)
 		npc[0].setTextureSprite("images/test4.png");
 
 		//TODO Set player position based on map or other factors
-		player.setPosition(startPosX, startPosY);
+		player.setPosition(player.getPosition().x, player.getPosition().y);
 	}
 }
 
@@ -121,17 +133,6 @@ void StateManager::updateMap(sf::RenderWindow& win, sf::View& view)
 {
 	//Activate window for OpenGL rendering
 	win.clear();
-
-	//TODO Set overlay based on player stats
-	player.setLevel(2, overlay);
-	player.setMaxHp(100, overlay);
-	player.setCurrentHp(90, overlay);
-	player.setMaxMana(100, overlay);
-	player.setCurrentMana(80, overlay);
-	player.setAgility(3);
-	player.setAtk(500);
-	player.setExp(3, overlay);
-	player.setCurrency(25, overlay);
 
 	//TODO NPC speak
 	npc[0].speak("That One Guy", "Lorem ipsum dolor", textbox, player);
