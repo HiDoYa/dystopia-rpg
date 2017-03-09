@@ -34,14 +34,13 @@ Player::Player()
 	canMoveUp = canMoveDown = canMoveLeft = canMoveRight = true;
 
 	//Default stats
-	setPosition(64, 64);
 	level = 1;
 	currentHp = 100;
 	maxHp = 100;
 	currentMana = 80;
 	maxMana = 80;
 	agility = 5;
-	atk = 15;
+	atk = 1500;
 	exp = 10;
 	currency = 15;
 

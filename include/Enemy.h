@@ -6,6 +6,7 @@
 class Enemy: public SpriteManage 
 {
 	private:
+		sf::Font font;
 		sf::Text name;
 		int level;
 		int currentHp;
@@ -15,6 +16,8 @@ class Enemy: public SpriteManage
 		int maxMana;
 		int agility;
 		int atk;
+
+		int chance;
 		bool alive;
 		bool canAtk;
 
@@ -40,6 +43,7 @@ class Enemy: public SpriteManage
 		void setAtk(int);
 		void setAlive(bool);
 		void setCanAtk(bool);
+		void setChance(int);
 
 		//Accessors
 		sf::String getName();
@@ -53,6 +57,7 @@ class Enemy: public SpriteManage
 		int getAtk();
 		bool getAlive();
 		bool getCanAtk();
+		int getChance();
 
 		//Draw bars
 		void updatePosition();

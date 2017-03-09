@@ -47,7 +47,7 @@ class Battle
 	public:
 		Battle();
 
-		void setupBattle(sf::String);
+		void setupBattle(std::vector<Enemy>);
 		void startBattle();
 		void endBattle(int&);
 

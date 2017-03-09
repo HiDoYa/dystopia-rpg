@@ -8,10 +8,9 @@
 
 Battle::Battle()
 {
-	numSkills = 6;
 }
 
-void Battle::setupBattle(sf::String enemyList)
+void Battle::setupBattle(std::vector<Enemy> enemyList)
 {
 	//Lists off the possible area that the enemy can be spawned in
 	std::vector<sf::Vector2f> enemyPlaces;
@@ -28,44 +27,13 @@ void Battle::setupBattle(sf::String enemyList)
 	skillsPlaces.push_back(sf::Vector2f(890, 500));
 
 	//TODO Open file and get player attacks 
-	//std::ifstream comboFile("combo");
-	//comboFile >> inp;
-
-	//while(!comboFile.eof())
-	//{
-	//	if(inp == 'u')
-	//	{
-	//		validCombos.push_back("");
-	//		comboFile >> validCombos[validCombos.size() - 1];
-	//	}
-	//	else
-	//	{
-	//		comboFile >> tempGarbage;
-	//	}
-
-	//	comboFile >> inp;
-	//}
-
-	//comboFile.close();
-
+	
 	//Initialize
 	currentSkill = 0;
 	playerCanAttack = true;
+	numSkills = 6;
 	currentEnemySelected = 0;
-	
-	//Get number of enemies
-	srand(time(NULL));
-	numEnemies = rand() % 3 + 1;
 
-	//TODO Gets the number of monsters to choose from
-	//STORE ENEMY INFORMATION FROM FILE INTO A VECTOR/CLASS IN GAME
-	//MAKE MEMBER FUNCTION FOR ENEMY TO GET INFO FROM FILE
-	//int inp, numEnemiesInFile;
-	//std::ifstream enemyFile(enemyList);
-	//enemyFile >> inp;
-	//numEnemiesInFile = inp;
-	std::ifstream enemyFile;
-	
 	//Initialize circle shape
 	//TODO Get player optins from file and get numSkills from file
 	for(int i = 0; i < numSkills; i++)
@@ -77,27 +45,28 @@ void Battle::setupBattle(sf::String enemyList)
 		playerOptions[i].setFillColor(sf::Color(160, 196, 255));
 	}
 
+	//Get number of enemies
+	srand(time(NULL));
+	numEnemies = rand() % 3 + 1;
+	
 	//Initialize enemies
 	for(int i = 0; i < numEnemies; i++)
 	{
-		//TODO
-		//std::ifstream enemyFile(enemyList);
-		//enemyFile >> inp;
-
-		enemies.push_back(temp);
+		int maxRandChance = 0;
+		int index = 0;
 		
-		//TODO Different character sheet holding data of enemies?
+		for(int potentialEnem = 0; potentialEnem < enemyList.size(); potentialEnem++)
+		{
+			int tempNum = ((rand() % 100) + 1) * enemyList[potentialEnem].getChance();
+			if(tempNum > maxRandChance)
+			{
+				maxRandChance = tempNum;
+				index = potentialEnem;
+				std::cout << enemyList.size() << '\n';
+			}
+		}
+		enemies.push_back(enemyList[index]);
 		enemies[i].setPosition(enemyPlaces[i].x, enemyPlaces[i].y);
-		enemies[i].setName("Bob");
-		enemies[i].setLevel(3);
-		enemies[i].setMaxHp(100);
-		enemies[i].setCurrentHp(100);
-		enemies[i].setMaxMana(100);
-		enemies[i].setCurrentMana(90);
-		enemies[i].setAgility(50);
-		enemies[i].setAtk(10);
-
-		enemies[i].setAlive(true);
 		enemies[i].updatePosition();
 	}
 }

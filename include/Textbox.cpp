@@ -15,6 +15,8 @@ Textbox::Textbox()
 	rec.setFillColor(bxColor);
 	rec.setSize(sf::Vector2f(width, height));
 	open = false;
+	startOpening = false;
+	currentCompleted = false;
 
 	//Loads fonts and styling
 	font.loadFromFile("font/Ubuntu.ttf");

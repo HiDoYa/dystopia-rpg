@@ -18,6 +18,8 @@ Enemy::Enemy()
 	currentMana = 10;
 	agility = 100;
 	atk = 10;
+
+	chance = 50;
 	alive = true;
 	canAtk = true;
 	
@@ -27,6 +29,11 @@ Enemy::Enemy()
 	
 	currentManaBar.setFillColor(sf::Color::Blue);
 	maxManaBar.setFillColor(sf::Color::Black);
+
+	//Set name
+	font.loadFromFile("font/Ubuntu.ttf");
+	name.setFont(font);
+	name.setCharacterSize(15);
 }
 
 //********* MUTATORS *********
@@ -90,6 +97,11 @@ void Enemy::setCanAtk(bool inp)
 	canAtk = inp;
 }
 
+void Enemy::setChance(int inp)
+{
+	chance = inp;
+}
+
 //********* ACCESSORS *********
 
 sf::String Enemy::getName()
@@ -147,6 +159,11 @@ bool Enemy::getCanAtk()
 	return canAtk;
 }
 
+int Enemy::getChance()
+{
+	return chance;
+}
+
 //************ DRAW
 
 void Enemy::updatePosition()
@@ -157,6 +174,9 @@ void Enemy::updatePosition()
 
 	currentManaBar.setPosition(getPosition().x - 15, getPosition().y - 40);
 	maxManaBar.setPosition(getPosition().x - 15, getPosition().y - 40);
+
+	//Set name pos
+	name.setPosition(getPosition().x - 10, getPosition().y - 80);
 }
 
 void Enemy::drawAll(sf::RenderWindow& win)
@@ -168,6 +188,9 @@ void Enemy::drawAll(sf::RenderWindow& win)
 	//Draw mana bars
 	win.draw(maxManaBar);
 	win.draw(currentManaBar);
+
+	//Draw name
+	win.draw(name);
 
 	//Draws sprite
 	setTextureSprite("images/enemies/test4.png");

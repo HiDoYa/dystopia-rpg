@@ -32,11 +32,13 @@ class StateManager
 		int currentZone;
 		int currentMap;
 		int encounterRate;
+		Enemy tempEnemy;
+		std::vector<Enemy> enemyListStore;
 
 		//Battle (state 2)
 		bool battleLoaded;
 		//TODO Think of how Battle class will be used for different battles (deleted vector?)
-		Battle battle;
+		std::unique_ptr<Battle> battle;
 
 	public:
 		StateManager();

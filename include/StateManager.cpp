@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <fstream>
 #include <memory>
 
 #include "Battle.h"
@@ -16,7 +17,7 @@ StateManager::StateManager()
 {
 	//Placeholder defaults
 	startPosX = startPosY = 64;
-	encounterRate = 5;
+	encounterRate = 75;
 	currentZone = currentMap = 0;
 
 	//Defaults
@@ -90,9 +91,83 @@ void StateManager::loadMap(sf::RenderWindow& win)
 {
 	if(!mapLoaded)
 	{
-		ground.reset(new Map);
-		collision.reset(new Map);
-		background.reset(new Map);
+		mapLoaded = true;
+
+		//TODO Get enemy list
+		std::string enemyList = "data/enemies/enemyList0";
+
+		//Temp variables
+		std::string strInp;
+		int tempCounter = -1;
+
+		//Read from enemyFile to create enemies purely for storing enemy info
+		std::ifstream enemyFile(enemyList);
+		while(!enemyFile.eof())
+		{
+			enemyFile >> strInp;
+			if(strInp == "Enemy")
+			{
+				//Increments counter and creates new enemy
+				tempCounter++;
+				enemyListStore.push_back(tempEnemy);
+				enemyListStore[tempCounter].setAlive(true);
+				enemyFile >> strInp;
+			}
+			if(strInp == "Name")
+			{
+				std::string nameAdding;
+				strInp = "";
+				do
+				{
+					enemyFile >> nameAdding;
+					strInp += nameAdding + ' ';
+				} while(enemyFile.peek() != '\n');
+				strInp.pop_back();
+				enemyListStore[tempCounter].setName(strInp);
+			}
+			if(strInp == "Chance")
+			{
+				enemyFile >> strInp;
+				enemyListStore[tempCounter].setChance(atoi(strInp.c_str()));
+			}
+			if(strInp == "Level")
+			{
+				enemyFile >> strInp;
+				enemyListStore[tempCounter].setLevel(atoi(strInp.c_str()));
+			}
+			if(strInp == "Hp")
+			{
+				enemyFile >> strInp;
+				enemyListStore[tempCounter].setMaxHp(atoi(strInp.c_str()));
+				enemyListStore[tempCounter].setCurrentHp(atoi(strInp.c_str()));
+			}
+			if(strInp == "Mana")
+			{
+				enemyFile >> strInp;
+				enemyListStore[tempCounter].setMaxMana(atoi(strInp.c_str()));
+				enemyListStore[tempCounter].setCurrentMana(atoi(strInp.c_str()));
+			}
+			if(strInp == "Agility")
+			{
+				enemyFile >> strInp;
+				enemyListStore[tempCounter].setAgility(atoi(strInp.c_str()));
+			}
+			if(strInp == "Atk")
+			{
+				enemyFile >> strInp;
+				enemyListStore[tempCounter].setAtk(atoi(strInp.c_str()));
+			}
+			if(strInp == "Image")
+			{
+				enemyFile >> strInp;
+				enemyListStore[tempCounter].setTextureSprite(strInp);
+				enemyFile >> strInp;
+				//TODO enemy sizes variance
+				enemyListStore[tempCounter].setTextureRect(0, atoi(strInp.c_str()));
+			}
+		}
+
+		enemyFile.close();
 
 		//TODO Set overlay based on player stats
 		//Set player stats
@@ -106,12 +181,14 @@ void StateManager::loadMap(sf::RenderWindow& win)
 		player.setExp(player.getExp(), overlay);
 		player.setCurrency(player.getCurrency(), overlay);
 
-		battleLoaded = false;
-		mapLoaded = true;
 		//TODO Load file that contains names of all three of these ground/collision/background files for loading
 		std::string mapFileString1 = "data/maps/z" + std::to_string(currentZone) + "/";
 		std::string mapFileString2 = "/m" + std::to_string(currentMap);
 
+		//Set maps
+		ground.reset(new Map);
+		collision.reset(new Map);
+		background.reset(new Map);
 		ground->setupBitmap(mapFileString1 + "ground" + mapFileString2, win);
 		collision->setupBitmap(mapFileString1 + "collision" + mapFileString2, win);
 		background->setupStatic("images/background.jpg");
@@ -125,12 +202,16 @@ void StateManager::loadMap(sf::RenderWindow& win)
 		npc[0].setTextureSprite("images/test4.png");
 
 		//TODO Set player position based on map or other factors
-		player.setPosition(player.getPosition().x, player.getPosition().y);
+		player.setPosition(startPosX, startPosY);
 	}
 }
 
 void StateManager::updateMap(sf::RenderWindow& win, sf::View& view)
 {
+	//Battles must be loaded when going from map
+	battleLoaded = false;
+	player.setPosition(startPosX, startPosY);
+
 	//Activate window for OpenGL rendering
 	win.clear();
 
@@ -192,13 +273,13 @@ void StateManager::loadBattle(sf::RenderWindow& win, sf::View& view)
 {
 	if(!battleLoaded)
 	{
+		battle.reset(new Battle);
 		player.setPosition(750, 400);
 
-		mapLoaded = false;
 		battleLoaded = true;
 
 		//TODO Load battle data
-		battle.setupBattle("data/enemies/testenemy");
+		battle->setupBattle(enemyListStore);
 
 		//Set view
 		view.setCenter(sf::Vector2f(512, 384));
@@ -219,24 +300,24 @@ void StateManager::updateBattle(sf::RenderWindow& win, sf::View& view)
 		//Battle state 0 Menu shows and player can make decision
 		case 0:
 			//For damage calc
-			battle.setInitHp(player.getCurrentHp());
+			battle->setInitHp(player.getCurrentHp());
 
 			//For skill
-			battle.changeCurrentSkill();
-			battle.changeEnemyFocus();
-			currentBattleState = battle.chooseCurrentSkill();
+			battle->changeCurrentSkill();
+			battle->changeEnemyFocus();
+			currentBattleState = battle->chooseCurrentSkill();
 			break;
 		//Battle state 1 (find enemies that should attack, start animating, and go to 2 OR go to 0)
 		case 1:
-			battle.attackManager(currentBattleState, player);
+			battle->attackManager(currentBattleState, player);
 			break;
 		//Battle state 2 (calculate damage, animate hp going down, ending animation)
 		case 2:
-			battle.hpCalculate(currentBattleState, player, overlay);
+			battle->hpCalculate(currentBattleState, player, overlay);
 			break;
 		//Battle state 3 (check for game over. go back to 0 if not game over)
 		case 3:
-			battle.checkEndBattle(player, currentBattleState, currentState);
+			battle->checkEndBattle(player, currentBattleState, currentState);
 			break;
 	}
 }
@@ -248,7 +329,7 @@ void StateManager::renderBattle(sf::RenderWindow& win, sf::View& view)
 
 	//TODO Mid ground
 	player.drawSprite(win);
-	battle.drawAll(win, currentBattleState);
+	battle->drawAll(win, currentBattleState);
 
 	//TODO On top
 	overlay.drawAll(win);
