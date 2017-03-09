@@ -50,10 +50,12 @@ Textbox::Textbox()
 
 	//Initialize for animation
 	textIndex = 0;
+	textNum = 0;
 	textSpeed = 20;
 	lastTimeLetter = 0;
 }
 
+//*********** ACCESSORS *************
 //Sets the font (for different characters)
 void Textbox::setFont(sf::String str)
 {
@@ -81,17 +83,7 @@ void Textbox::setTextSpeed(int num)
 	textSpeed = num;
 }
 
-void Textbox::updatePosition(sf::View view)
-{
-	posX = view.getCenter().x - (view.getSize().x / 2);
-	posY = view.getCenter().y + (view.getSize().y / 2) - height; 
-
-	text.setPosition(sf::Vector2f(posX + 50, posY + 40));
-	name.setPosition(sf::Vector2f(posX + 20, posY + 10));
-	nextPrompt.setPosition(sf::Vector2f(posX + 700, posY + 120));
-	rec.setPosition(sf::Vector2f(posX, posY));
-}
-
+//********* MUTATORS *********
 //Returns name
 sf::Text Textbox::getName()
 {
@@ -104,9 +96,16 @@ sf::Text Textbox::getText()
 	return text;
 }
 
-bool Textbox::getOpen()
+//********** UTILITY *************
+void Textbox::updatePosition(sf::View view)
 {
-	return open;
+	posX = view.getCenter().x - (view.getSize().x / 2);
+	posY = view.getCenter().y + (view.getSize().y / 2) - height; 
+
+	text.setPosition(sf::Vector2f(posX + 50, posY + 40));
+	name.setPosition(sf::Vector2f(posX + 20, posY + 10));
+	nextPrompt.setPosition(sf::Vector2f(posX + 700, posY + 120));
+	rec.setPosition(sf::Vector2f(posX, posY));
 }
 
 //Draws rectangle (textbox), text, and name
@@ -118,6 +117,7 @@ void Textbox::drawAll(sf::RenderWindow& win)
 	win.draw(nextPrompt);
 }
 
+//********** PRETEXT ***********
 //This is the hardest thing I've ever coded wtf.
 //Converts text into vector of strings to output in textbox
 void Textbox::convertText(std::string str, std::vector<std::string>& sVec)
@@ -198,6 +198,27 @@ void Textbox::convertText(std::string str, std::vector<std::string>& sVec)
 		}
 	}
 }
+
+//Animation for box popping open
+void Textbox::openBox()
+{
+	time = clock.getElapsedTime();
+	currentTime = time.asMilliseconds();
+	if(currentTime > lastTimeBox + delayBoxSetup && width < 1024)
+	{
+		width += 64;
+		rec.setPosition(sf::Vector2f(posX, posY));
+		rec.setSize(sf::Vector2f(width, height));
+		lastTimeBox = currentTime;
+	}
+
+	if(width >= 1024)
+	{
+		open = true;
+	}
+}
+
+//********* DURING TEXT **************
 //Text doesnt appear instantly
 void Textbox::animateText(std::string str)
 {
@@ -250,25 +271,56 @@ void Textbox::animateText(std::string str)
 	}
 }
 
-//Animation for box popping open
-void Textbox::openBox()
+void Textbox::textHandler(sf::String nm, sf::String str, bool condition, bool& speaking)
 {
-	time = clock.getElapsedTime();
-	currentTime = time.asMilliseconds();
-	if(currentTime > lastTimeBox + delayBoxSetup && width < 1024)
+	if(condition && textNum == 0)
 	{
-		width += 64;
-		rec.setPosition(sf::Vector2f(posX, posY));
-		rec.setSize(sf::Vector2f(width, height));
-		lastTimeBox = currentTime;
+		startOpening = true;
+		speaking = true;
+		convertText(str, sVec);
 	}
 
-	if(width >= 1024)
+	if(startOpening)
 	{
-		open = true;
+		openBox();
+		if(open)
+		{
+			textNum = 1;
+			startOpening = false;
+		}
+	}
+
+	for(int i = 0; i < sVec.size(); i++)
+	{
+		if(textNum == i + 1)
+		{
+			setName(nm);
+			animateText(sVec[i]);
+			if(nextText())
+			{
+				if(sVec.size() == textNum)
+				{
+					textNum = -1;
+				}
+				else
+				{
+					textNum = i + 2;
+				}
+			}
+		}
+	}
+	if(textNum == -1)
+	{
+		closeBox();
+		if(!open)
+		{
+			textNum = 0;
+			speaking = false;
+		}
 	}
 }
 
+//************* POST TEXT *****************
 //Animation for box closing 
 void Textbox::closeBox()
 {
@@ -296,7 +348,7 @@ bool Textbox::nextText()
 	time = clock.getElapsedTime();
 	currentTime = time.asMilliseconds();
 
-	if(open && sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && currentCompleted && (lastTimeSkip + 200 < currentTime))
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && currentCompleted && (lastTimeSkip + 200 < currentTime))
 	{
 		nextPrompt.setCharacterSize(0);
 		lastNotPressed = false;
@@ -305,4 +357,5 @@ bool Textbox::nextText()
 	}
 	return false;
 }
+
 

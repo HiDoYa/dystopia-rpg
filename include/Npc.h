@@ -8,14 +8,6 @@ class Textbox;
 class Npc: public SpriteManage
 {
 	private:
-		//Textbox management
-		bool openBox;
-		bool closeBox;
-
-		//Used to store the text that the character will speak (separated into different lines). Textnum stores number for the current sVec element that is being displayed
-		std::vector<std::string> sVec;
-		int textNum;
-
 		//Stores whether npc is speaking or not
 		bool speaking;
 		

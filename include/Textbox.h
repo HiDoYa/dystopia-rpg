@@ -12,7 +12,12 @@ class Textbox
 		sf::Text name;
 		sf::Text nextPrompt;
 		bool open;
+		bool startOpening;
 		bool currentCompleted;
+
+		//Stores text split up
+		std::vector<std::string>sVec;
+		int textNum = 0;
 
 		//Music
 		sf::Music mu;
@@ -46,18 +51,29 @@ class Textbox
 
 	public:
 		Textbox();
+		//****** ACCESSORS *********
 		void setFont(sf::String);
 		void setName(sf::String);
 		void setText(sf::String);
 		void setTextSpeed(int);
-		void updatePosition(sf::View);
+		
+		//****** MUTATORS *********
 		sf::Text getName();
 		sf::Text getText();
-		bool getOpen();
+
+		//******* UTILITY *********
+		void updatePosition(sf::View);
 		void drawAll(sf::RenderWindow&);
+
+		//*** PRETEXT *********
 		void convertText(std::string, std::vector<std::string>&);
-		void animateText(std::string);
 		void openBox();
+
+		//**** DURING TEXT *********
+		void animateText(std::string);
+		void textHandler(sf::String, sf::String, bool, bool&);
+
+		//****** POST TEXT *********
 		void closeBox();
 		bool nextText();
 };
