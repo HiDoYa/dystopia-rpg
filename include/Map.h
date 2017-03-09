@@ -24,7 +24,6 @@ class Map
 		int yDisp;
 	public:
 		Map();
-		void setupAll(sf::String);
 		void setupStatic(sf::String textureInp);
 		void drawStatic(sf::RenderWindow&, sf::View);
 		void drawStatic(sf::RenderWindow&, sf::View, int);

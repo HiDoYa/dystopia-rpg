@@ -14,11 +14,6 @@ Map::Map()
 //Tile-based: (Ground, collision, foreground)
 //Static: (Background)
 
-void Map::setupAll(sf::String mainFileNm)
-{
-
-}
-
 void Map::setupStatic(sf::String textureInp)
 {
 	tileTexture.loadFromFile(textureInp);
@@ -195,13 +190,12 @@ void Map::newMapCheck(Player& player, int& startPosX, int& startPosY, int& curre
 	{
 		mapLoaded = false;
 
-		//TODO Get correct numbers
+		//TODO Get correct numbers via fstream
 		encounterRate = 5;
 		startPosX = 256;
 		startPosY = 256;
 	}
 }
-
 
 //******* ACCESSORS FOR NEW MAPS ************
 
