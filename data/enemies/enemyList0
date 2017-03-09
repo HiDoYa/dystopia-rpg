@@ -1,0 +1,21 @@
+NumEnemies 2
+
+Enemy 1
+Name Testing
+Chance 5
+Level 3
+Hp 100
+Mana 80
+Delay 5000
+Atk 15
+images/enemies/test4.png 0
+
+Enemy 2
+Name Test two
+Chance 95
+Level 4
+Hp 250
+Mana 50
+Delay 9000
+Atk 20
+images/enemies/test4.png 128

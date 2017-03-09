@@ -1,1 +1,22 @@
+PrevZ 0
+PrevM 0
+NewPos 5 10
 
+Npc 1
+ImagePos 0 0
+ImageSize 64 64
+Pos 5 10
+Name TestNpc
+CondTrue 5 Lorem ipusm harhar
+SetCondFalse 5
+CondFalse 4 Lorem ipsum xdxd
+SetCondTrue 4
+CondTrue 0 Lorem ipsum dolor amet
+
+Npc 2
+Image Pos 0 64
+ImageSize 64 64
+Pos 15 3
+Name this is a test
+CondTrue 3 Lorem ipsumss
+CondTrue 0 I hae nothing to say
