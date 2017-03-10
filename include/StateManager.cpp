@@ -17,7 +17,7 @@ StateManager::StateManager()
 {
 	//Placeholder defaults
 	startPosX = startPosY = 64;
-	encounterRate = 75;
+	encounterRate = 0;
 	currentZone = currentMap = 0;
 
 	//Defaults
@@ -216,7 +216,7 @@ void StateManager::updateMap(sf::RenderWindow& win, sf::View& view)
 	win.clear();
 
 	//TODO NPC speak
-	npc[0].speak("That One Guy", "Lorem ipsum dolor", textbox, player);
+	npc[0].speak("That One Guy", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean eu diam eget magna ullamcorper", textbox, player);
 
 	//TODO Loop so all npcs are checked
 	if(!npc[0].getSpeaking())

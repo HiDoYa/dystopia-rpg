@@ -30,6 +30,14 @@ Textbox::Textbox()
 	name.setCharacterSize(25);
 	nextPrompt.setCharacterSize(0);
 
+	//TODO Choices
+	choiceOne.setFont(font);
+	choiceTwo.setFont(font);
+	choiceOne.setCharacterSize(30);
+	choiceTwo.setCharacterSize(30);
+	choiceRect.setFillColor(sf::Color::Green);
+	choiceRect.setSize(sf::Vector2f(35, 800));
+
 	//Load Music
 	mu.openFromFile("sound/textNoise.wav");
 
@@ -85,6 +93,12 @@ void Textbox::setTextSpeed(int num)
 	textSpeed = num;
 }
 
+void Textbox::setChoices(std::string inpOne, std::string inpTwo)
+{
+	choiceOne.setString(inpOne);
+	choiceTwo.setString(inpTwo);
+}
+
 //********* MUTATORS *********
 //Returns name
 sf::Text Textbox::getName()
@@ -107,6 +121,8 @@ void Textbox::updatePosition(sf::View view)
 	text.setPosition(sf::Vector2f(posX + 50, posY + 40));
 	name.setPosition(sf::Vector2f(posX + 20, posY + 10));
 	nextPrompt.setPosition(sf::Vector2f(posX + 700, posY + 120));
+	choiceOne.setPosition(sf::Vector2f(posX + 80, posY + 50));
+	choiceTwo.setPosition(sf::Vector2f(posX + 80, posY + 30));
 	rec.setPosition(sf::Vector2f(posX, posY));
 }
 
@@ -273,12 +289,12 @@ void Textbox::animateText(std::string str)
 	}
 }
 
-void Textbox::textHandler(sf::String nm, sf::String str, bool condition, bool& speaking)
+void Textbox::textHandler(sf::String nm, sf::String str, bool condition, bool& currentlyTalking)
 {
 	if(condition && textNum == 0)
 	{
 		startOpening = true;
-		speaking = true;
+		currentlyTalking = true;
 		convertText(str, sVec);
 	}
 
@@ -311,15 +327,22 @@ void Textbox::textHandler(sf::String nm, sf::String str, bool condition, bool& s
 			}
 		}
 	}
+
 	if(textNum == -1)
 	{
 		closeBox();
 		if(!open)
 		{
 			textNum = 0;
-			speaking = false;
+			currentlyTalking = false;
 		}
 	}
+}
+
+void Textbox::choiceBoxDisp()
+{
+	choiceRect.setPosition(sf::Vector2f(15, 900));
+	choiceRect.setPosition(sf::Vector2f(15, 945));
 }
 
 //************* POST TEXT *****************

@@ -62,7 +62,6 @@ void Battle::setupBattle(std::vector<Enemy> enemyList)
 			{
 				maxRandChance = tempNum;
 				index = potentialEnem;
-				std::cout << enemyList.size() << '\n';
 			}
 		}
 		enemies.push_back(enemyList[index]);
