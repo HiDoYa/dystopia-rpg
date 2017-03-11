@@ -33,6 +33,7 @@ void Battle::setupBattle(std::vector<Enemy> enemyList)
 	playerCanAttack = true;
 	numSkills = 6;
 	currentEnemySelected = 0;
+	animComplete = hpComplete = false;
 
 	//Initialize circle shape
 	//TODO Get player optins from file and get numSkills from file
@@ -315,8 +316,11 @@ void Battle::hpCalculate(int& currentBattleState, Player& player, UIOverlay& ove
 			tempHpFinal = enemies[currentEnemySelected].getInitHp() - player.getAtk();
 			//Makes sure the lowest hp possible is 0
 			tempHpFinal = getMaxNum(0, tempHpFinal);
-			enemyHpDecrease(tempHpFinal, currentBattleState);
 			playerPostAttackAnimation(player);
+			if(animComplete)
+			{
+				enemyHpChange(tempHpFinal, currentBattleState);
+			}
 			//Animate enemy hp decrease with new hp and old hp and currentselectedenemy
 			break;
 		case 0:
@@ -325,8 +329,11 @@ void Battle::hpCalculate(int& currentBattleState, Player& player, UIOverlay& ove
 			tempHpFinal = initHp - enemies[nextAttack].getAtk();
 			//Makes sure the lowest hp possible is 0
 			tempHpFinal = getMaxNum(0, tempHpFinal);
-			playerHpDecrease(tempHpFinal, player, overlay, currentBattleState);
 			enemyPostAttackAnimation();
+			if(animComplete)
+			{
+				playerHpChange(tempHpFinal, player, overlay, currentBattleState);
+			}
 			//Animate player hp with new hp and old hp
 			break;
 	}
@@ -335,12 +342,31 @@ void Battle::hpCalculate(int& currentBattleState, Player& player, UIOverlay& ove
 	checkForCompletion(currentBattleState);
 }
 
-//TODO Cases in which hp doesn't decrease? low prio - (FILE BASED) (ADD STATUS EFFECTS)
-void Battle::playerHpDecrease(int hpFinal, Player& player, UIOverlay& overlay, int& currentBattleState)
+int Battle::findHpChangeSign(int hpFinal, int hpInit)
 {
-	if(player.getCurrentHp() > hpFinal + 2)
+	int sign;
+	if(hpFinal < hpInit)
 	{
-		player.setCurrentHp(player.getCurrentHp() - 3, overlay);
+		sign = -1;
+	}
+	else if(hpFinal > hpInit)
+	{
+		sign = 1;
+	}
+	else
+	{
+		sign = 0;
+	}
+	return sign;
+}
+
+//TODO Cases in which hp doesn't decrease? low prio - (FILE BASED) (ADD STATUS EFFECTS)
+void Battle::playerHpChange(int hpFinal, Player& player, UIOverlay& overlay, int& currentBattleState)
+{
+	int sign = findHpChangeSign(hpFinal, player.getCurrentHp());
+	if(player.getCurrentHp() > hpFinal + 3 || player.getCurrentHp() < hpFinal - 3)
+	{
+		player.setCurrentHp(player.getCurrentHp() + (3 * sign), overlay);
 	}
 	else if (player.getCurrentHp() != hpFinal)
 	{
@@ -352,13 +378,15 @@ void Battle::playerHpDecrease(int hpFinal, Player& player, UIOverlay& overlay, i
 	}
 }
 
-void Battle::enemyHpDecrease(int hpFinal, int& currentBattleState)
+void Battle::enemyHpChange(int hpFinal, int& currentBattleState)
 {
-	if(enemies[currentEnemySelected].getCurrentHp() > hpFinal + 2)
+	int currentEnemyHp = enemies[currentEnemySelected].getCurrentHp();
+	int sign = findHpChangeSign(hpFinal, currentEnemyHp);
+	if(currentEnemyHp > hpFinal + 3 || currentEnemyHp < hpFinal - 3)
 	{
-		enemies[currentEnemySelected].setCurrentHp(enemies[currentEnemySelected].getCurrentHp() - 3);
+		enemies[currentEnemySelected].setCurrentHp(currentEnemyHp + (3 * sign));
 	}
-	else if(enemies[currentEnemySelected].getCurrentHp() != hpFinal)
+	else if (currentEnemyHp != hpFinal)
 	{
 		enemies[currentEnemySelected].setCurrentHp(hpFinal);
 	}

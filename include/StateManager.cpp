@@ -17,7 +17,7 @@ StateManager::StateManager()
 {
 	//Placeholder defaults
 	startPosX = startPosY = 64;
-	encounterRate = 0;
+	encounterRate = 20;
 	currentZone = currentMap = 0;
 
 	//Defaults
@@ -101,6 +101,7 @@ void StateManager::loadMap(sf::RenderWindow& win)
 		int tempCounter = -1;
 
 		//Read from enemyFile to create enemies purely for storing enemy info
+		enemyListStore.clear();
 		std::ifstream enemyFile(enemyList);
 		while(!enemyFile.eof())
 		{

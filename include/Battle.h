@@ -66,8 +66,9 @@ class Battle
 		
 		//Battle state 2
 		void hpCalculate(int&, Player&, UIOverlay&);
-		void playerHpDecrease(int, Player&, UIOverlay&, int&);
-		void enemyHpDecrease(int, int&);
+		int findHpChangeSign(int, int);
+		void playerHpChange(int, Player&, UIOverlay&, int&);
+		void enemyHpChange(int, int&);
 		void playerPostAttackAnimation(Player&);
 		void enemyPostAttackAnimation();
 		void checkForCompletion(int&);
