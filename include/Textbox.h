@@ -68,6 +68,7 @@ class Textbox
 
 		//******* UTILITY *********
 		void updatePosition(sf::View);
+		void readFromScript(std::string);
 		void drawAll(sf::RenderWindow&);
 
 		//*** PRETEXT *********

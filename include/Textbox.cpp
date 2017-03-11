@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <fstream>
 #include <iostream>
 
 #include "Textbox.h"
@@ -122,6 +123,12 @@ void Textbox::updatePosition(sf::View view)
 	choiceOne.setPosition(sf::Vector2f(posX + 80, posY + 50));
 	choiceTwo.setPosition(sf::Vector2f(posX + 80, posY + 30));
 	rec.setPosition(sf::Vector2f(posX, posY));
+}
+
+void Textbox::readFromScript(std::string inpFile)
+{
+	std::ifstream scriptFile(inpFile);
+	//script.get(i);
 }
 
 //Draws rectangle (textbox), text, and name
