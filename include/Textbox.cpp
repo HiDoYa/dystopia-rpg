@@ -7,15 +7,13 @@
 Textbox::Textbox()
 {
 	//Gets box parameters
-	width = 0;
 	height = 150;
 
 	//Box attributes (box starts off closed)
 	sf::Color bxColor(242, 242, 242);
 	rec.setFillColor(bxColor);
-	rec.setSize(sf::Vector2f(width, height));
+	rec.setSize(sf::Vector2f(0, height));
 	open = false;
-	startOpening = false;
 	currentCompleted = false;
 
 	//Loads fonts and styling
@@ -220,20 +218,8 @@ void Textbox::convertText(std::string str, std::vector<std::string>& sVec)
 //Animation for box popping open
 void Textbox::openBox()
 {
-	time = clock.getElapsedTime();
-	currentTime = time.asMilliseconds();
-	if(currentTime > lastTimeBox + delayBoxSetup && width < 1024)
-	{
-		width += 64;
-		rec.setPosition(sf::Vector2f(posX, posY));
-		rec.setSize(sf::Vector2f(width, height));
-		lastTimeBox = currentTime;
-	}
-
-	if(width >= 1024)
-	{
-		open = true;
-	}
+	open = true;
+	rec.setSize(sf::Vector2f(1024, height));
 }
 
 //********* DURING TEXT **************
@@ -291,21 +277,14 @@ void Textbox::animateText(std::string str)
 
 void Textbox::textHandler(sf::String nm, sf::String str, bool condition, bool& currentlyTalking)
 {
-	if(condition && textNum == 0)
-	{
-		startOpening = true;
-		currentlyTalking = true;
-		convertText(str, sVec);
-	}
-
-	if(startOpening)
+	time = clock.getElapsedTime();
+	currentTime = time.asMilliseconds();
+	if(condition && textNum == 0 && lastTimeBox + 350 < currentTime)
 	{
 		openBox();
-		if(open)
-		{
-			textNum = 1;
-			startOpening = false;
-		}
+		textNum = 1;
+		currentlyTalking = true;
+		convertText(str, sVec);
 	}
 
 	for(int i = 0; i < sVec.size(); i++)
@@ -331,11 +310,8 @@ void Textbox::textHandler(sf::String nm, sf::String str, bool condition, bool& c
 	if(textNum == -1)
 	{
 		closeBox();
-		if(!open)
-		{
-			textNum = 0;
-			currentlyTalking = false;
-		}
+		textNum = 0;
+		currentlyTalking = false;
 	}
 }
 
@@ -350,21 +326,11 @@ void Textbox::choiceBoxDisp()
 void Textbox::closeBox()
 {
 	time = clock.getElapsedTime();
-	currentTime = time.asMilliseconds();
+	lastTimeBox = time.asMilliseconds();
 	text.setString("");
 	name.setString("");
-	if(currentTime > lastTimeBox + delayBoxSetup && width > 0)
-	{
-		width -= 64;
-		rec.setPosition(sf::Vector2f(posX, posY));
-		rec.setSize(sf::Vector2f(width, height));
-		lastTimeBox = currentTime;
-	}
-
-	if(width == 0)
-	{
-		open = false;
-	}
+	open = false;
+	rec.setSize(sf::Vector2f(0, height));
 }
 
 //Wait for button press to continue to next text (sub text at bottom that blinks. Asks for player to click to continue)

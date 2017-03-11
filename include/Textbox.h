@@ -12,7 +12,6 @@ class Textbox
 		sf::Text name;
 		sf::Text nextPrompt;
 		bool open;
-		bool startOpening;
 		bool currentCompleted;
 
 		//Choices
@@ -29,7 +28,6 @@ class Textbox
 		sf::Music mu;
 		
 		//Box size and position
-		int width;
 		int height;
 		int posX;
 		int posY;
