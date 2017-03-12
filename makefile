@@ -1,4 +1,4 @@
-OBJ = main.o Textbox.o SpriteManage.o Map.o Npc.o Player.o Enemy.o  Battle.o UIOverlay.o MainMenu.o StateManager.o
+OBJ = main.o Textbox.o SpriteManage.o Map.o Npc.o Player.o Enemy.o  Battle.o UIOverlay.o MainMenu.o StateManager.o Ally.o
 all: game
 
 game: $(OBJ)
@@ -6,6 +6,9 @@ game: $(OBJ)
 	./sfml-app -g
 
 main.o: main.cpp
+	g++ -std=c++11 -c $<
+
+Ally.o: include/Ally.cpp
 	g++ -std=c++11 -c $<
 
 Battle.o: include/Battle.cpp

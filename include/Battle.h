@@ -10,11 +10,9 @@ class Player;
 class Battle
 {
 	private:
-		sf::Texture playerTexture;
-		sf::Sprite playerSprite;
-
 		//Player options
-		std::vector<sf::CircleShape> playerOptions;
+		std::vector<sf::CircleShape> allyOptions;
+		std::vector<sf::RectangleShape> gridRect;
 		int numSkills;
 		int currentSkill;
 		bool playerCanAttack;
@@ -38,16 +36,14 @@ class Battle
 		bool hpComplete;
 		bool animComplete;
 
-		//Time management
-		//TODO currently not used
-		sf::Clock clock;
-		sf::Time tme;
-		float currentTime;
-		float lastTime;
+		//Grid battle
+		std::vector<sf::Vector2f> allyPos;
+		std::vector<sf::Vector2f> enemyPos;
+		std::vector<sf::Vector2f> optionsPos;
 	public:
 		Battle();
 
-		void setupBattle(std::vector<Enemy>);
+		void setupBattle(std::vector<Enemy>, Player&);
 		void startBattle();
 		void endBattle(int&);
 

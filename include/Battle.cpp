@@ -10,13 +10,13 @@ Battle::Battle()
 {
 }
 
-void Battle::setupBattle(std::vector<Enemy> enemyList)
+void Battle::setupBattle(std::vector<Enemy> enemyList, Player& player)
 {
 	//Lists off the possible area that the enemy can be spawned in
-	std::vector<sf::Vector2f> enemyPlaces;
-	enemyPlaces.push_back(sf::Vector2f(200, 300));
-	enemyPlaces.push_back(sf::Vector2f(400, 450));
-	enemyPlaces.push_back(sf::Vector2f(200, 600));
+	//std::vector<sf::Vector2f> enemyPlaces;
+	//enemyPlaces.push_back(sf::Vector2f(200, 300));
+	//enemyPlaces.push_back(sf::Vector2f(400, 450));
+	//enemyPlaces.push_back(sf::Vector2f(200, 600));
 
 	std::vector<sf::Vector2f> skillsPlaces;
 	skillsPlaces.push_back(sf::Vector2f(610, 300));
@@ -26,7 +26,31 @@ void Battle::setupBattle(std::vector<Enemy> enemyList)
 	skillsPlaces.push_back(sf::Vector2f(900, 400));
 	skillsPlaces.push_back(sf::Vector2f(890, 500));
 
-	//TODO Open file and get player attacks 
+	//Ally positions
+	allyPos.push_back(sf::Vector2f(750, 200));
+	allyPos.push_back(sf::Vector2f(750, 400));
+	allyPos.push_back(sf::Vector2f(750, 600));
+	allyPos.push_back(sf::Vector2f(950, 200));
+	allyPos.push_back(sf::Vector2f(950, 400));
+	allyPos.push_back(sf::Vector2f(950, 600));
+
+	//Enemy Positions
+	enemyPos.push_back(sf::Vector2f(150, 200));
+	enemyPos.push_back(sf::Vector2f(150, 400));
+	enemyPos.push_back(sf::Vector2f(150, 600));
+	enemyPos.push_back(sf::Vector2f(350, 200));
+	enemyPos.push_back(sf::Vector2f(350, 400));
+	enemyPos.push_back(sf::Vector2f(350, 600));
+
+	//Options positions
+	optionsPos.push_back(sf::Vector2f(-100, -100));
+	optionsPos.push_back(sf::Vector2f(-100, 0));
+	optionsPos.push_back(sf::Vector2f(-100, 100));
+	optionsPos.push_back(sf::Vector2f(100, -100));
+	optionsPos.push_back(sf::Vector2f(100, 0));
+	optionsPos.push_back(sf::Vector2f(100, 100));
+
+	//TODO Open file and get ally attacks 
 	
 	//Initialize
 	currentSkill = 0;
@@ -35,27 +59,30 @@ void Battle::setupBattle(std::vector<Enemy> enemyList)
 	currentEnemySelected = 0;
 	animComplete = hpComplete = false;
 
+	//TODO Player and ally positions
+	player.setPosition(allyPos[player.getBattlePos()].x, allyPos[player.getBattlePos()].y);
+
 	//Initialize circle shape
 	//TODO Get player optins from file and get numSkills from file
 	for(int i = 0; i < numSkills; i++)
 	{
-		sf::CircleShape temp;
-		playerOptions.push_back(temp);
-		playerOptions[i].setRadius(25);
-		playerOptions[i].setPosition(skillsPlaces[i]);
-		playerOptions[i].setFillColor(sf::Color(160, 196, 255));
+		sf::CircleShape tempCircle;
+		allyOptions.push_back(tempCircle);
+		allyOptions[i].setRadius(25);
+		allyOptions[i].setPosition(optionsPos[i]);
+		allyOptions[i].setFillColor(sf::Color(160, 196, 255));
 	}
 
 	//Get number of enemies
 	srand(time(NULL));
-	numEnemies = rand() % 3 + 1;
+	numEnemies = rand() % 6 + 1;
 	
 	//Initialize enemies
 	for(int i = 0; i < numEnemies; i++)
 	{
+		//Chooses enemy from list
 		int maxRandChance = 0;
 		int index = 0;
-		
 		for(int potentialEnem = 0; potentialEnem < enemyList.size(); potentialEnem++)
 		{
 			int tempNum = ((rand() % 100) + 1) * enemyList[potentialEnem].getChance();
@@ -65,8 +92,10 @@ void Battle::setupBattle(std::vector<Enemy> enemyList)
 				index = potentialEnem;
 			}
 		}
+
+		//Adds enemy
 		enemies.push_back(enemyList[index]);
-		enemies[i].setPosition(enemyPlaces[i].x, enemyPlaces[i].y);
+		enemies[i].setPosition(enemyPos[i].x, enemyPos[i].y);
 		enemies[i].updatePosition();
 	}
 }
@@ -200,11 +229,11 @@ void Battle::changeCurrentSkill()
 	//Reset all colors
 	for(int i = 0; i < numSkills; i++)
 	{
-		playerOptions[i].setFillColor(sf::Color(160, 196, 255));
+		allyOptions[i].setFillColor(sf::Color(160, 196, 255));
 	}
 
 	//Highlight current
-	playerOptions[currentSkill].setFillColor(sf::Color::Blue);
+	allyOptions[currentSkill].setFillColor(sf::Color::Blue);
 }
 
 int Battle::chooseCurrentSkill()
@@ -544,9 +573,9 @@ void Battle::drawAll(sf::RenderWindow& win, int currentBattleState)
 	drawEnemies(win);
 	if(currentBattleState == 0)
 	{
-		for(int i = 0; i < playerOptions.size(); i++)
+		for(int i = 0; i < allyOptions.size(); i++)
 		{
-			win.draw(playerOptions[i]);
+			win.draw(allyOptions[i]);
 		}
 	}
 }

@@ -43,6 +43,7 @@ Player::Player()
 	atk = 1500;
 	exp = 10;
 	currency = 15;
+	battlePos = 1;
 
 	checkEncounter = false;
 }
@@ -102,6 +103,11 @@ void Player::setCurrency(int inp, UIOverlay& overlay)
 	overlay.setCurrency(currency);
 }
 
+void Player::setBattlePos(int inp)
+{
+	battlePos = inp;
+}
+
 //*********** ACCESSORS ************
 
 int Player::getLevel()
@@ -147,6 +153,11 @@ int Player::getExp()
 int Player::getCurrency()
 {
 	return currency;
+}
+
+int Player::getBattlePos()
+{
+	return battlePos;
 }
 
 bool Player::getMoving()

@@ -3,6 +3,7 @@
 #include <iostream>
 
 //Game classes
+#include "include/Ally.h"
 #include "include/Battle.h"
 #include "include/MainMenu.h"
 #include "include/Map.h"

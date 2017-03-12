@@ -36,14 +36,16 @@ class Player: public SpriteManage
 
 		//Attributes
 		int level;
-		int currentHp;
 		int maxHp;
-		int currentMana;
+		int currentHp;
 		int maxMana;
+		int currentMana;
 		int agility;
 		int atk;
 		int exp;
 		int currency;
+
+		int battlePos;
 
 		//Prohibit movement
 		bool canMoveUp;
@@ -66,6 +68,7 @@ class Player: public SpriteManage
 		void setAtk(int);
 		void setExp(int, UIOverlay&);
 		void setCurrency(int, UIOverlay&);
+		void setBattlePos(int);
 
 		//***** Accessor *******
 		int getLevel();
@@ -78,6 +81,7 @@ class Player: public SpriteManage
 		int getExp();
 		int getCurrency();
 
+		int getBattlePos();
 		bool getMoving();
 
 		//***** Etc *******
