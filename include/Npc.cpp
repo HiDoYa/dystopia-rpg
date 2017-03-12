@@ -21,8 +21,9 @@ Npc::Npc()
 void Npc::speak(sf::String nm, sf::String str, Textbox& box, Player& player)
 {
 	bool cond = colliding && !player.getMoving() && sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
-	box.textHandler(nm, str, cond, speaking);
+	//box.textHandler(nm, str, cond, speaking);
 	//test
+	box.choiceBoxDisp("Hello", "Not Hello", cond, speaking);
 }
 
 bool Npc::getSpeaking()

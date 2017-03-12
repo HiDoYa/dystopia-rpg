@@ -30,12 +30,10 @@ Textbox::Textbox()
 	nextPrompt.setCharacterSize(0);
 
 	//TODO Choices
-	choiceOne.setFont(font);
-	choiceTwo.setFont(font);
-	choiceOne.setCharacterSize(30);
-	choiceTwo.setCharacterSize(30);
 	choiceRect.setFillColor(sf::Color::Green);
-	choiceRect.setSize(sf::Vector2f(35, 800));
+	choiceRect.setSize(sf::Vector2f(800, 45));
+	currentChoice = 0;
+	choiceBoxOpen = false;
 
 	//Load Music
 	mu.openFromFile("sound/textNoise.wav");
@@ -45,9 +43,6 @@ Textbox::Textbox()
 	text.setColor(txtColor);
 	name.setColor(txtColor);
 	nextPrompt.setColor(txtColor);
-
-	//Next propmt is always the same
-	nextPrompt.setString("Press spacebar to continue...");
 
 	//Time management for opening/closing box
 	delayBoxSetup = 30;
@@ -92,12 +87,6 @@ void Textbox::setTextSpeed(int num)
 	textSpeed = num;
 }
 
-void Textbox::setChoices(std::string inpOne, std::string inpTwo)
-{
-	choiceOne.setString(inpOne);
-	choiceTwo.setString(inpTwo);
-}
-
 //********* MUTATORS *********
 //Returns name
 sf::Text Textbox::getName()
@@ -119,10 +108,26 @@ void Textbox::updatePosition(sf::View view)
 
 	text.setPosition(sf::Vector2f(posX + 50, posY + 40));
 	name.setPosition(sf::Vector2f(posX + 20, posY + 10));
-	nextPrompt.setPosition(sf::Vector2f(posX + 700, posY + 120));
-	choiceOne.setPosition(sf::Vector2f(posX + 80, posY + 50));
-	choiceTwo.setPosition(sf::Vector2f(posX + 80, posY + 30));
+	if(choiceBoxOpen)
+	{
+		nextPrompt.setPosition(sf::Vector2f(posX + 700, posY + 120));
+	}
+	else
+	{
+		nextPrompt.setPosition(sf::Vector2f(posX + 650, posY + 120));
+	}
+
 	rec.setPosition(sf::Vector2f(posX, posY));
+
+	//Sets the position of box 
+	if(currentChoice == 0)
+	{
+		choiceRect.setPosition(sf::Vector2f(posX + 35, posY + 38));
+	}
+	else if(currentChoice == 1)
+	{
+		choiceRect.setPosition(sf::Vector2f(posX + 35, posY + 83));
+	}
 }
 
 void Textbox::readFromScript(std::string inpFile)
@@ -135,6 +140,10 @@ void Textbox::readFromScript(std::string inpFile)
 void Textbox::drawAll(sf::RenderWindow& win)
 {
 	win.draw(rec);
+	if(choiceBoxOpen)
+	{
+		win.draw(choiceRect);
+	}
 	win.draw(text);
 	win.draw(name);
 	win.draw(nextPrompt);
@@ -276,7 +285,20 @@ void Textbox::animateText(std::string str)
 		currentCompleted = true;
 
 		//Resets temp string, and index
-		nextPrompt.setCharacterSize(20);
+		nextPrompt.setCharacterSize(25);
+
+		if(choiceBoxOpen)
+		{
+			//Choice text
+			nextPrompt.setString("Make a decision...");
+		}
+		else
+		{
+			//Reg text
+			nextPrompt.setString("Press spacebar to continue...");
+		}
+
+
 		animText = "";
 		textIndex = 0;
 	}
@@ -322,10 +344,61 @@ void Textbox::textHandler(sf::String nm, sf::String str, bool condition, bool& c
 	}
 }
 
-void Textbox::choiceBoxDisp()
+void Textbox::choiceBoxDisp(std::string choiceOne, std::string choiceTwo, bool condition, bool& currentlyTalking)
 {
-	choiceRect.setPosition(sf::Vector2f(15, 900));
-	choiceRect.setPosition(sf::Vector2f(15, 945));
+	time = clock.getElapsedTime();
+	currentTime = time.asMilliseconds();
+
+	if(condition && textNum == 0 && lastTimeBox + 350 < currentTime)
+	{
+		choiceBoxOpen = true;
+		openBox();
+		textNum = 1;
+		currentlyTalking = true;
+		tempChoiceText = choiceOne + '\n' + choiceTwo;
+	}
+
+	if(textNum == 1)
+	{
+		animateText(tempChoiceText);
+		if(currentCompleted)
+		{
+			makeChoice();
+		}
+		if(nextText())
+		{
+			textNum = -1;
+		}
+	}
+
+	if(textNum == -1)
+	{
+		closeBox();
+		currentChoice = 0;
+		choiceBoxOpen = false;
+		textNum = 0;
+		currentlyTalking = false;
+	}
+}
+
+void Textbox::makeChoice()
+{
+	bool sPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::S);
+	bool wPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::W);
+
+	time = clock.getElapsedTime();
+	currentTime = time.asMilliseconds();
+
+	//To change current sellection
+	if(sPressed && currentChoice == 0)
+	{
+		currentChoice = 1;
+	}
+	else if(wPressed && currentChoice == 1)
+	{
+		currentChoice = 0;
+	}
+
 }
 
 //************* POST TEXT *****************
@@ -343,10 +416,22 @@ void Textbox::closeBox()
 //Wait for button press to continue to next text (sub text at bottom that blinks. Asks for player to click to continue)
 bool Textbox::nextText()
 {
+	int textDelay;
+	if(choiceBoxOpen)
+	{
+		//Choice text
+		textDelay = 500;
+	}
+	else
+	{
+		//Reg text
+		textDelay = 200;
+	}
+
 	time = clock.getElapsedTime();
 	currentTime = time.asMilliseconds();
 
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && currentCompleted && (lastTimeSkip + 200 < currentTime))
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && currentCompleted && (lastTimeSkip + textDelay < currentTime))
 	{
 		nextPrompt.setCharacterSize(0);
 		lastNotPressed = false;
