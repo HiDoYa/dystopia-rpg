@@ -1,22 +1,41 @@
-PrevZ 0
-PrevM 0
+EncRate 500
+EnemList enemyList0
+
+PrevZM 0 1
 NewPos 5 10
 
-Npc 1
+Npc
 ImagePos 0 0
 ImageSize 64 64
 Pos 5 10
 Name TestNpc
-CondTrue 5 Lorem ipusm harhar
-SetCondFalse 5
-CondFalse 4 Lorem ipsum xdxd
-SetCondTrue 4
-CondTrue 0 Lorem ipsum dolor amet
 
-Npc 2
+start
+CondTrue 5 Text Lorem ipusm harhar
+SetCondFalse 5
+end
+
+start
+CondFalse 4 Text Lorem ipsum xdxd
+SetCondTrue 4
+end
+
+start
+CondTrue 0 Text Lorem ipsum dolor amet
+end
+
+Npc
 Image Pos 0 64
 ImageSize 64 64
 Pos 15 3
 Name this is a test
-CondTrue 3 Lorem ipsumss
-CondTrue 0 I hae nothing to say
+
+start
+CondTrue 3 Text Lorem ipsumss
+CondTrue 0 Text I hae nothing to say
+CondTrue 0 Choice
+ChoiceOne SetCondTrue 4 Check
+ChoiceTwo SetCondFalse 4 Don't Check
+CondTrue 4 wtf stop checking
+CondFalse 4 ty for not checking
+end
