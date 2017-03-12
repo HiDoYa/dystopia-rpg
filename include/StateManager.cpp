@@ -93,83 +93,6 @@ void StateManager::loadMap(sf::RenderWindow& win)
 	{
 		mapLoaded = true;
 
-		//TODO Get enemy list
-		std::string enemyList = "data/enemies/enemyList0";
-
-		//Temp variables
-		std::string strInp;
-		int tempCounter = -1;
-
-		//Read from enemyFile to create enemies purely for storing enemy info
-		enemyListStore.clear();
-		std::ifstream enemyFile(enemyList);
-		while(!enemyFile.eof())
-		{
-			enemyFile >> strInp;
-			if(strInp == "Enemy")
-			{
-				//Increments counter and creates new enemy
-				tempCounter++;
-				enemyListStore.push_back(tempEnemy);
-				enemyListStore[tempCounter].setAlive(true);
-				enemyFile >> strInp;
-			}
-			if(strInp == "Name")
-			{
-				std::string nameAdding;
-				strInp = "";
-				do
-				{
-					enemyFile >> nameAdding;
-					strInp += nameAdding + ' ';
-				} while(enemyFile.peek() != '\n');
-				strInp.pop_back();
-				enemyListStore[tempCounter].setName(strInp);
-			}
-			if(strInp == "Chance")
-			{
-				enemyFile >> strInp;
-				enemyListStore[tempCounter].setChance(atoi(strInp.c_str()));
-			}
-			if(strInp == "Level")
-			{
-				enemyFile >> strInp;
-				enemyListStore[tempCounter].setLevel(atoi(strInp.c_str()));
-			}
-			if(strInp == "Hp")
-			{
-				enemyFile >> strInp;
-				enemyListStore[tempCounter].setMaxHp(atoi(strInp.c_str()));
-				enemyListStore[tempCounter].setCurrentHp(atoi(strInp.c_str()));
-			}
-			if(strInp == "Mana")
-			{
-				enemyFile >> strInp;
-				enemyListStore[tempCounter].setMaxMana(atoi(strInp.c_str()));
-				enemyListStore[tempCounter].setCurrentMana(atoi(strInp.c_str()));
-			}
-			if(strInp == "Agility")
-			{
-				enemyFile >> strInp;
-				enemyListStore[tempCounter].setAgility(atoi(strInp.c_str()));
-			}
-			if(strInp == "Atk")
-			{
-				enemyFile >> strInp;
-				enemyListStore[tempCounter].setAtk(atoi(strInp.c_str()));
-			}
-			if(strInp == "Image")
-			{
-				enemyFile >> strInp;
-				enemyListStore[tempCounter].setTextureSprite(strInp);
-				enemyFile >> strInp;
-				//TODO enemy sizes variance
-				enemyListStore[tempCounter].setTextureRect(0, atoi(strInp.c_str()));
-			}
-		}
-
-		enemyFile.close();
-
 		//TODO Set overlay based on player stats
 		//Set player stats
 		player.setLevel(player.getLevel(), overlay);
@@ -190,10 +113,66 @@ void StateManager::loadMap(sf::RenderWindow& win)
 		ground.reset(new Map);
 		collision.reset(new Map);
 		background.reset(new Map);
+
 		ground->setupBitmap(mapFileString1 + "ground" + mapFileString2, win);
 		collision->setupBitmap(mapFileString1 + "collision" + mapFileString2, win);
 		background->setupStatic("images/background.jpg");
 
+		//Temp var
+		std::string strInp;
+
+		std::ifstream mainMapFile(mapFileString1 + "main" + mapFileString2);
+		do
+		{
+			mainMapFile >> strInp;
+			if(strInp == "EncRate")
+			{
+				mainMapFile >> strInp;
+				encounterRate = atoi(strInp.c_str());
+			}
+			if(strInp == "EnemList")
+			{
+				mainMapFile >> strInp;
+				std::string tempEnemyList = "data/enemies/" + strInp;
+				loadMapEnemies(tempEnemyList);
+			}
+			if(strInp == "PrevZM")
+			{
+				mainMapFile >> strInp;
+				int potenPrevZ = atoi(strInp.c_str());
+				mainMapFile >> strInp;
+				int potenPrevM = atoi(strInp.c_str());
+
+				//Gets "NewPos"
+				mainMapFile >> strInp;
+
+				mainMapFile >> strInp;
+				startPosX = atoi(strInp.c_str()) * 64;
+				mainMapFile >> strInp;
+				startPosY = atoi(strInp.c_str()) * 64;
+			}
+			if(strInp == "Npc")
+			{
+				//TODO add new npc (pushback)
+			}
+			if(strInp == "ImagePos")
+			{
+			}
+			if(strInp == "ImageSize")
+			{
+			}
+			if(strInp == "Pos")
+			{
+			}
+			if(strInp == "Name")
+			{
+			}
+		} while(!mainMapFile.eof());
+		mainMapFile.close();
+
+		//Set prevZ and prevM to the current
+		prevZ = currentZone;
+		prevM = currentMap;
 
 		//TODO Load appropriate npcs w/ dynamic allocation and from files. Use some loop for number of npcs.
 		//TODO When loading another map, pop_back all current npcs
@@ -205,6 +184,82 @@ void StateManager::loadMap(sf::RenderWindow& win)
 		//TODO Set player position based on map or other factors
 		player.setPosition(startPosX, startPosY);
 	}
+}
+
+void StateManager::loadMapEnemies(std::string enemyList)
+{
+	//Temp variables
+	std::string strInp;
+	int tempCounter = -1;
+
+	//Read from enemyFile to create enemies purely for storing enemy info
+	enemyListStore.clear();
+	std::ifstream enemyFile(enemyList);
+	while(!enemyFile.eof())
+	{
+		enemyFile >> strInp;
+		if(strInp == "Enemy")
+		{
+			//Increments counter and creates new enemy
+			tempCounter++;
+			enemyListStore.push_back(tempEnemy);
+			enemyListStore[tempCounter].setAlive(true);
+			enemyFile >> strInp;
+		}
+		if(strInp == "Name")
+		{
+			std::string nameAdding;
+			strInp = "";
+			do
+			{
+				enemyFile >> nameAdding;
+				strInp += nameAdding + ' ';
+			} while(enemyFile.peek() != '\n');
+			strInp.pop_back();
+			enemyListStore[tempCounter].setName(strInp);
+		}
+		if(strInp == "Chance")
+		{
+			enemyFile >> strInp;
+			enemyListStore[tempCounter].setChance(atoi(strInp.c_str()));
+		}
+		if(strInp == "Level")
+		{
+			enemyFile >> strInp;
+			enemyListStore[tempCounter].setLevel(atoi(strInp.c_str()));
+		}
+		if(strInp == "Hp")
+		{
+			enemyFile >> strInp;
+			enemyListStore[tempCounter].setMaxHp(atoi(strInp.c_str()));
+			enemyListStore[tempCounter].setCurrentHp(atoi(strInp.c_str()));
+		}
+		if(strInp == "Mana")
+		{
+			enemyFile >> strInp;
+			enemyListStore[tempCounter].setMaxMana(atoi(strInp.c_str()));
+			enemyListStore[tempCounter].setCurrentMana(atoi(strInp.c_str()));
+		}
+		if(strInp == "Agility")
+		{
+			enemyFile >> strInp;
+			enemyListStore[tempCounter].setAgility(atoi(strInp.c_str()));
+		}
+		if(strInp == "Atk")
+		{
+			enemyFile >> strInp;
+			enemyListStore[tempCounter].setAtk(atoi(strInp.c_str()));
+		}
+		if(strInp == "Image")
+		{
+			enemyFile >> strInp;
+			enemyListStore[tempCounter].setTextureSprite(strInp);
+			enemyFile >> strInp;
+			//TODO enemy sizes variance
+			enemyListStore[tempCounter].setTextureRect(0, atoi(strInp.c_str()));
+		}
+	}
+	enemyFile.close();
 }
 
 void StateManager::updateMap(sf::RenderWindow& win, sf::View& view)
@@ -274,13 +329,11 @@ void StateManager::loadBattle(sf::RenderWindow& win, sf::View& view)
 {
 	if(!battleLoaded)
 	{
-		battle.reset(new Battle);
-		player.setPosition(750, 400);
-
 		battleLoaded = true;
+		battle.reset(new Battle);
 
 		//TODO Load battle data
-		battle->setupBattle(enemyListStore);
+		battle->setupBattle(enemyListStore, player);
 
 		//Set view
 		view.setCenter(sf::Vector2f(512, 384));

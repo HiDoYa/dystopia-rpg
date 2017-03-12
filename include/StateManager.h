@@ -27,6 +27,8 @@ class StateManager
 		Player player;
 
 		//Map specific
+		int prevZ;
+		int prevM;
 		int startPosX;
 		int startPosY;
 		int currentZone;
@@ -51,6 +53,7 @@ class StateManager
 		//Map
 		void allMap(sf::RenderWindow&, sf::View&);
 		void loadMap(sf::RenderWindow&);
+		void loadMapEnemies(std::string);
 		void updateMap(sf::RenderWindow&, sf::View&);
 		void renderMap(sf::RenderWindow&, sf::View&);
 
