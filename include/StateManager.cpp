@@ -3,6 +3,7 @@
 #include <fstream>
 #include <memory>
 
+#include "Ally.h"
 #include "Battle.h"
 #include "MainMenu.h"
 #include "Map.h"
@@ -118,57 +119,7 @@ void StateManager::loadMap(sf::RenderWindow& win)
 		collision->setupBitmap(mapFileString1 + "collision" + mapFileString2, win);
 		background->setupStatic("images/background.jpg");
 
-		//Temp var
-		std::string strInp;
-
-		std::ifstream mainMapFile(mapFileString1 + "main" + mapFileString2);
-		do
-		{
-			mainMapFile >> strInp;
-			if(strInp == "EncRate")
-			{
-				mainMapFile >> strInp;
-				encounterRate = atoi(strInp.c_str());
-			}
-			if(strInp == "EnemList")
-			{
-				mainMapFile >> strInp;
-				std::string tempEnemyList = "data/enemies/" + strInp;
-				loadMapEnemies(tempEnemyList);
-			}
-			if(strInp == "PrevZM")
-			{
-				mainMapFile >> strInp;
-				int potenPrevZ = atoi(strInp.c_str());
-				mainMapFile >> strInp;
-				int potenPrevM = atoi(strInp.c_str());
-
-				//Gets "NewPos"
-				mainMapFile >> strInp;
-
-				mainMapFile >> strInp;
-				startPosX = atoi(strInp.c_str()) * 64;
-				mainMapFile >> strInp;
-				startPosY = atoi(strInp.c_str()) * 64;
-			}
-			if(strInp == "Npc")
-			{
-				//TODO add new npc (pushback)
-			}
-			if(strInp == "ImagePos")
-			{
-			}
-			if(strInp == "ImageSize")
-			{
-			}
-			if(strInp == "Pos")
-			{
-			}
-			if(strInp == "Name")
-			{
-			}
-		} while(!mainMapFile.eof());
-		mainMapFile.close();
+		loadMainMapFile(mapFileString1 + "main" + mapFileString2);
 
 		//Set prevZ and prevM to the current
 		prevZ = currentZone;
@@ -260,6 +211,61 @@ void StateManager::loadMapEnemies(std::string enemyList)
 		}
 	}
 	enemyFile.close();
+}
+
+void StateManager::loadMainMapFile(std::string fileNm)
+{
+	//Temp var
+	std::string strInp;
+
+	std::ifstream mainMapFile(fileNm);
+	do
+	{
+		mainMapFile >> strInp;
+		if(strInp == "EncRate")
+		{
+			mainMapFile >> strInp;
+			encounterRate = atoi(strInp.c_str());
+		}
+		if(strInp == "EnemList")
+		{
+			mainMapFile >> strInp;
+			std::string tempEnemyList = "data/enemies/" + strInp;
+			loadMapEnemies(tempEnemyList);
+		}
+		if(strInp == "PrevZM")
+		{
+			mainMapFile >> strInp;
+			int potenPrevZ = atoi(strInp.c_str());
+			mainMapFile >> strInp;
+			int potenPrevM = atoi(strInp.c_str());
+
+			//Gets "NewPos"
+			mainMapFile >> strInp;
+
+			mainMapFile >> strInp;
+			startPosX = atoi(strInp.c_str()) * 64;
+			mainMapFile >> strInp;
+			startPosY = atoi(strInp.c_str()) * 64;
+		}
+		if(strInp == "Npc")
+		{
+			//TODO add new npc (pushback)
+		}
+		if(strInp == "ImagePos")
+		{
+		}
+		if(strInp == "ImageSize")
+		{
+		}
+		if(strInp == "Pos")
+		{
+		}
+		if(strInp == "Name")
+		{
+		}
+	} while(!mainMapFile.eof());
+	mainMapFile.close();
 }
 
 void StateManager::updateMap(sf::RenderWindow& win, sf::View& view)

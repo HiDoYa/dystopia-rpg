@@ -24,6 +24,7 @@ class StateManager
 		//TODO Map foreground;
 
 		std::vector<Npc> npc;
+		std::vector<Ally> ally;
 		Player player;
 
 		//Map specific
@@ -54,6 +55,7 @@ class StateManager
 		void allMap(sf::RenderWindow&, sf::View&);
 		void loadMap(sf::RenderWindow&);
 		void loadMapEnemies(std::string);
+		void loadMainMapFile(std::string);
 		void updateMap(sf::RenderWindow&, sf::View&);
 		void renderMap(sf::RenderWindow&, sf::View&);
 
