@@ -18,13 +18,13 @@ void Battle::setupBattle(std::vector<Enemy> enemyList, Player& player)
 	//enemyPlaces.push_back(sf::Vector2f(400, 450));
 	//enemyPlaces.push_back(sf::Vector2f(200, 600));
 
-	std::vector<sf::Vector2f> skillsPlaces;
-	skillsPlaces.push_back(sf::Vector2f(610, 300));
-	skillsPlaces.push_back(sf::Vector2f(600, 400));
-	skillsPlaces.push_back(sf::Vector2f(610, 500));
-	skillsPlaces.push_back(sf::Vector2f(890, 300));
-	skillsPlaces.push_back(sf::Vector2f(900, 400));
-	skillsPlaces.push_back(sf::Vector2f(890, 500));
+	//std::vector<sf::Vector2f> skillsPlaces;
+	//skillsPlaces.push_back(sf::Vector2f(610, 300));
+	//skillsPlaces.push_back(sf::Vector2f(600, 400));
+	//skillsPlaces.push_back(sf::Vector2f(610, 500));
+	//skillsPlaces.push_back(sf::Vector2f(890, 300));
+	//skillsPlaces.push_back(sf::Vector2f(900, 400));
+	//skillsPlaces.push_back(sf::Vector2f(890, 500));
 
 	//Ally positions
 	allyPos.push_back(sf::Vector2f(750, 200));
@@ -62,6 +62,7 @@ void Battle::setupBattle(std::vector<Enemy> enemyList, Player& player)
 	//TODO Player and ally positions
 	player.setPosition(allyPos[player.getBattlePos()].x, allyPos[player.getBattlePos()].y);
 
+
 	//Initialize circle shape
 	//TODO Get player optins from file and get numSkills from file
 	for(int i = 0; i < numSkills; i++)
@@ -77,6 +78,10 @@ void Battle::setupBattle(std::vector<Enemy> enemyList, Player& player)
 	srand(time(NULL));
 	numEnemies = rand() % 6 + 1;
 	
+	numEnemies = 1;
+	//Make sure enemy is cleared
+	enemies.clear();
+
 	//Initialize enemies
 	for(int i = 0; i < numEnemies; i++)
 	{
@@ -280,6 +285,8 @@ void Battle::attackManager(int& currentBattleState, Player& player)
 			break;
 		//Player Attacks
 		case -1:
+			//TODO playerTurnHandle();
+			//TODO Add ally
 			playerAttackAnimation(currentBattleState, player);
 			break;
 		//Enemy Attacks
@@ -292,6 +299,29 @@ void Battle::attackManager(int& currentBattleState, Player& player)
 }
 
 //********** BATTLE STATE 1.5 ****************
+//TODO
+void Battle::playerTurnHandle()
+{
+	switch (skillType)
+	{
+		case 0:
+			//basic single target atk
+			break;
+		case 1:
+			//change attributes of enemy
+			break;
+		case 2:
+			//aoe atk all targets
+			break;
+		case 3:
+			//heal ally or self 
+			break;
+		case 4:
+			//change attributes of ally or self
+			break;
+	}
+}
+
 //Player simply moves forward
 void Battle::playerAttackAnimation(int& currentBattleState, Player& player)
 {
@@ -303,6 +333,29 @@ void Battle::playerAttackAnimation(int& currentBattleState, Player& player)
 	{
 		playerCanAttack = false;
 		currentBattleState++;
+	}
+}
+
+//TODO
+void Battle::enemyTurnHandle()
+{
+	switch (skillType)
+	{
+		case 0:
+			//basic single target atk
+			break;
+		case 1:
+			//change attributes of enemy
+			break;
+		case 2:
+			//aoe atk all targets
+			break;
+		case 3:
+			//heal ally or self 
+			break;
+		case 4:
+			//change attributes of ally or self
+			break;
 	}
 }
 

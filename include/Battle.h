@@ -18,6 +18,9 @@ class Battle
 		bool playerCanAttack;
 		int initHp;
 
+		//Skill type
+		int skillType;
+
 		//Skill Pressed
 		bool qNotPressed;
 		bool wNotPressed;
@@ -57,7 +60,9 @@ class Battle
 		void attackManager(int&, Player&);
 
 		//Battle state 1.5
+		void playerTurnHandle();
 		void playerAttackAnimation(int&, Player&);
+		void enemyTurnHandle();
 		void enemyAttackAnimation(int&);
 		
 		//Battle state 2
