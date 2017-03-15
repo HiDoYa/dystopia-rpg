@@ -29,6 +29,7 @@ StateManager::StateManager()
 	mapLoaded = false;
 	battleLoaded = false;
 
+	battle.reset(new Battle);
 }
 
 //********* MENU *************
@@ -44,7 +45,7 @@ void StateManager::loadMenu()
 	if(!menuLoaded)
 	{
 		menuLoaded = true;
-		mainMenu.setTextureSprite("images/background.jpg");
+		mainMenu.setTextureSprite("images/background.png");
 	}
 }
 
@@ -117,7 +118,7 @@ void StateManager::loadMap(sf::RenderWindow& win)
 
 		ground->setupBitmap(mapFileString1 + "ground" + mapFileString2, win);
 		collision->setupBitmap(mapFileString1 + "collision" + mapFileString2, win);
-		background->setupStatic("images/background.jpg");
+		background->setupStatic("images/background.png");
 
 		loadMainMapFile(mapFileString1 + "main" + mapFileString2);
 
@@ -336,7 +337,6 @@ void StateManager::loadBattle(sf::RenderWindow& win, sf::View& view)
 	if(!battleLoaded)
 	{
 		battleLoaded = true;
-		battle.reset(new Battle);
 
 		//TODO Load battle data
 		battle->setupBattle(enemyListStore, player);

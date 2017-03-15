@@ -8,24 +8,6 @@
 
 Battle::Battle()
 {
-}
-
-void Battle::setupBattle(std::vector<Enemy> enemyList, Player& player)
-{
-	//Lists off the possible area that the enemy can be spawned in
-	//std::vector<sf::Vector2f> enemyPlaces;
-	//enemyPlaces.push_back(sf::Vector2f(200, 300));
-	//enemyPlaces.push_back(sf::Vector2f(400, 450));
-	//enemyPlaces.push_back(sf::Vector2f(200, 600));
-
-	//std::vector<sf::Vector2f> skillsPlaces;
-	//skillsPlaces.push_back(sf::Vector2f(610, 300));
-	//skillsPlaces.push_back(sf::Vector2f(600, 400));
-	//skillsPlaces.push_back(sf::Vector2f(610, 500));
-	//skillsPlaces.push_back(sf::Vector2f(890, 300));
-	//skillsPlaces.push_back(sf::Vector2f(900, 400));
-	//skillsPlaces.push_back(sf::Vector2f(890, 500));
-
 	//Ally positions
 	allyPos.push_back(sf::Vector2f(750, 200));
 	allyPos.push_back(sf::Vector2f(750, 400));
@@ -49,38 +31,45 @@ void Battle::setupBattle(std::vector<Enemy> enemyList, Player& player)
 	optionsPos.push_back(sf::Vector2f(100, -100));
 	optionsPos.push_back(sf::Vector2f(100, 0));
 	optionsPos.push_back(sf::Vector2f(100, 100));
-
-	//TODO Open file and get ally attacks 
 	
-	//Initialize
-	currentSkill = 0;
-	playerCanAttack = true;
+	//TODO Grid rect
+
 	numSkills = 6;
-	currentEnemySelected = 0;
-	animComplete = hpComplete = false;
-
-	//TODO Player and ally positions
-	player.setPosition(allyPos[player.getBattlePos()].x, allyPos[player.getBattlePos()].y);
-
-
-	//Initialize circle shape
-	//TODO Get player optins from file and get numSkills from file
+	//TODO Create all circles for all possible positions
 	for(int i = 0; i < numSkills; i++)
 	{
+		//Creates circles for all allies
 		sf::CircleShape tempCircle;
 		allyOptions.push_back(tempCircle);
 		allyOptions[i].setRadius(25);
 		allyOptions[i].setPosition(optionsPos[i]);
 		allyOptions[i].setFillColor(sf::Color(160, 196, 255));
 	}
+}
+
+void Battle::setupBattle(std::vector<Enemy> enemyList, Player& player)
+{
+	//TODO Open file and get ally attacks 
+	//TODO Get player optins from file and get numSkills from file
+	//TODO Create function that updates the textures of circles (for skills) for when the ally moves to a different grid place
+	
+	//Initialize for clearing all previous battle data
+	qNotPressed = wNotPressed = aNotPressed = sNotPressed = dNotPressed = false;
+	enemies.clear();
+
+	//Initialize for req default data
+	currentSkill = 0;
+	playerCanAttack = true;
+	currentEnemySelected = 0;
+	animComplete = hpComplete = false;
+
+	//TODO Player and ally positions
+	player.setPosition(allyPos[player.getBattlePos()].x, allyPos[player.getBattlePos()].y);
 
 	//Get number of enemies
 	srand(time(NULL));
 	numEnemies = rand() % 6 + 1;
-	
-	numEnemies = 1;
-	//Make sure enemy is cleared
-	enemies.clear();
+	numEnemies = 2;
 
 	//Initialize enemies
 	for(int i = 0; i < numEnemies; i++)
