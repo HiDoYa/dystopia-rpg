@@ -78,7 +78,6 @@ void Battle::setupBattle(std::vector<Enemy> enemyList, Player& player)
 	srand(time(NULL));
 	numEnemies = rand() % 6 + 1;
 	
-	numEnemies = 1;
 	//Make sure enemy is cleared
 	enemies.clear();
 
@@ -293,6 +292,9 @@ void Battle::attackManager(int& currentBattleState, Player& player)
 		case 0:
 		case 1:
 		case 2:
+		case 3:
+		case 4:
+		case 5:
 			enemyAttackAnimation(currentBattleState);
 			break;
 	}
@@ -318,6 +320,9 @@ void Battle::playerTurnHandle()
 			break;
 		case 4:
 			//change attributes of ally or self
+			break;
+		case 5:
+			//change current position
 			break;
 	}
 }
@@ -355,6 +360,9 @@ void Battle::enemyTurnHandle()
 			break;
 		case 4:
 			//change attributes of ally or self
+			break;
+		case 5:
+			//change current position
 			break;
 	}
 }

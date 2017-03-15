@@ -18,8 +18,16 @@ class Battle
 		bool playerCanAttack;
 		int initHp;
 
+		//TO keep track of battles
+		std::vector<bool> currentCanAtk;
+		std::vector<int> enemySelected
+		int totalAlly;
+
+		int nextAttack;
+
 		//Skill type
 		int skillType;
+		int enemySelected;
 
 		//Skill Pressed
 		bool qNotPressed;
@@ -32,8 +40,6 @@ class Battle
 		Enemy temp;
 		std::vector<Enemy> enemies;
 		int numEnemies;
-		int currentEnemySelected;
-		int nextAttack;
 
 		//Check for competion
 		bool hpComplete;
