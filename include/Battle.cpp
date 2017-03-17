@@ -8,13 +8,16 @@
 
 Battle::Battle()
 {
+	//Displacement during character turn
+	attackXDisp = 125;
+
 	//Ally positions
-	allyPos.push_back(sf::Vector2f(750, 200));
-	allyPos.push_back(sf::Vector2f(750, 400));
-	allyPos.push_back(sf::Vector2f(750, 600));
-	allyPos.push_back(sf::Vector2f(950, 200));
-	allyPos.push_back(sf::Vector2f(950, 400));
-	allyPos.push_back(sf::Vector2f(950, 600));
+	allyPos.push_back(sf::Vector2f(650, 200));
+	allyPos.push_back(sf::Vector2f(650, 400));
+	allyPos.push_back(sf::Vector2f(650, 600));
+	allyPos.push_back(sf::Vector2f(850, 200));
+	allyPos.push_back(sf::Vector2f(850, 400));
+	allyPos.push_back(sf::Vector2f(850, 600));
 
 	//Enemy Positions
 	enemyPos.push_back(sf::Vector2f(150, 200));
@@ -35,19 +38,9 @@ Battle::Battle()
 	//TODO Grid rect
 
 	numSkills = 6;
-	//TODO Create all circles for all possible positions
-	for(int i = 0; i < numSkills; i++)
-	{
-		//Creates circles for all allies
-		sf::CircleShape tempCircle;
-		allyOptions.push_back(tempCircle);
-		allyOptions[i].setRadius(25);
-		allyOptions[i].setPosition(optionsPos[i]);
-		allyOptions[i].setFillColor(sf::Color(160, 196, 255));
-	}
 }
 
-void Battle::setupBattle(std::vector<Enemy> enemyList, Player& player)
+void Battle::setupBattle(std::vector<Enemy> enemyList, Player& player, std::vector<bool> allyInParty)
 {
 	//TODO Open file and get ally attacks 
 	//TODO Get player optins from file and get numSkills from file
@@ -73,6 +66,34 @@ void Battle::setupBattle(std::vector<Enemy> enemyList, Player& player)
 	
 	//Make sure enemy is cleared
 	enemies.clear();
+
+
+	//Gets ally number
+	totalAlly = 1;
+	for(int idx = 0; idx < allyInParty.size(); idx++)
+	{
+		if(allyInParty[idx])
+		{
+			totalAlly++;
+		}
+	}
+
+	totalAlly = 3;
+
+	//TODO Create all circles for all possible positions
+	for(int allyCounter = 0; allyCounter < totalAlly; allyCounter++)
+	{
+		allyOptions.push_back(tempCircleStore);
+		for(int i = 0; i < numSkills; i++)
+		{
+			//Creates circles for all allies
+			sf::CircleShape tempCircle;
+			allyOptions[allyCounter].push_back(tempCircle);
+			allyOptions[allyCounter][i].setRadius(25);
+			allyOptions[allyCounter][i].setPosition(optionsPos[i] + allyPos[allyCounter]);
+			allyOptions[allyCounter][i].setFillColor(sf::Color(150, 196, 255));
+		}
+	}
 
 	//Initialize enemies
 	for(int i = 0; i < numEnemies; i++)
@@ -223,14 +244,14 @@ void Battle::changeCurrentSkill()
 		}
 	}
 	
-	//Reset all colors
+	//TODO Reset all colors
 	for(int i = 0; i < numSkills; i++)
 	{
-		allyOptions[i].setFillColor(sf::Color(160, 196, 255));
+		allyOptions[0][i].setFillColor(sf::Color(160, 196, 255));
 	}
 
-	//Highlight current
-	allyOptions[currentSkill].setFillColor(sf::Color::Blue);
+	//TODO Highlight current
+	allyOptions[0][currentSkill].setFillColor(sf::Color::Blue);
 }
 
 int Battle::chooseCurrentSkill()
@@ -289,6 +310,12 @@ void Battle::attackManager(int& currentBattleState, Player& player)
 		case 4:
 		case 5:
 			enemyAttackAnimation(currentBattleState);
+			break;
+		//Ally Attacks
+		case 6:
+		case 7:
+		case 8:
+			currentOptionsShow = ally[nextAttack - 6].battlePos;
 			break;
 	}
 }
@@ -366,15 +393,8 @@ void Battle::enemyAttackAnimation(int& currentBattleState)
 	sf::Vector2f current = enemies[nextAttack].getPosition();
 	
 	//Sets the area to stop
-	int goalPlace;
-	if(nextAttack == 1)
-	{
-		goalPlace = 500;
-	}
-	else
-	{
-		goalPlace = 300;
-	}
+	goalPlace = enemyPos[nextAttack].x + attackXDisp;
+
 	
 	//Moves the enemy, otherwise increments battle state
 	if(current.x < goalPlace)
@@ -496,15 +516,7 @@ void Battle::enemyPostAttackAnimation()
 	sf::Vector2f current = enemies[nextAttack].getPosition();
 	
 	//Sets the area to stop
-	int goalPlace;
-	if(nextAttack == 1)
-	{
-		goalPlace = 400;
-	}
-	else
-	{
-		goalPlace = 200;
-	}
+	goalPlace = enemyPos[nextAttack].x;
 	
 	//Moves the enemy, otherwise increments battle state
 	if(current.x > goalPlace)
@@ -627,9 +639,10 @@ void Battle::drawAll(sf::RenderWindow& win, int currentBattleState)
 	drawEnemies(win);
 	if(currentBattleState == 0)
 	{
-		for(int i = 0; i < allyOptions.size(); i++)
+		for(int i = 0; i < numSkills; i++)
 		{
-			win.draw(allyOptions[i]);
+			//TODO
+			win.draw(allyOptions[currentOptionsShow][i]);
 		}
 	}
 }

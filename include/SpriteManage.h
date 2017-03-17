@@ -11,6 +11,7 @@ class SpriteManage
 		void setTextureSprite(sf::String);
 		void setTextureRect(int, int);
 		void setTextureRect(int, int, int);
+		void setScale(float, float);
 		void setPosition(int, int);
 
 		//Accessors

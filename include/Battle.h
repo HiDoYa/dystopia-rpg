@@ -11,23 +11,26 @@ class Battle
 {
 	private:
 		//Player options
-		std::vector<sf::CircleShape> allyOptions;
+		std::vector<sf::CircleShape> tempCircleStore;
+		std::vector<std::vector<sf::CircleShape>> allyOptions;
 		std::vector<sf::RectangleShape> gridRect;
 		int numSkills;
 		int currentSkill;
+		int currentOptionsShow;
 		bool playerCanAttack;
 		int initHp;
 
 		//TO keep track of battles
 		std::vector<bool> currentCanAtk;
-		std::vector<int> enemySelected
+		std::vector<int> enemySelected;
 		int totalAlly;
 
+		int attackXDisp;
 		int nextAttack;
 
 		//Skill type
 		int skillType;
-		int enemySelected;
+		int currentEnemySelected;
 
 		//Skill Pressed
 		bool qNotPressed;
@@ -39,6 +42,7 @@ class Battle
 		//For enemies
 		Enemy temp;
 		std::vector<Enemy> enemies;
+		int goalPlace;
 		int numEnemies;
 
 		//Check for competion
@@ -52,7 +56,7 @@ class Battle
 	public:
 		Battle();
 
-		void setupBattle(std::vector<Enemy>, Player&);
+		void setupBattle(std::vector<Enemy>, Player&, std::vector<bool>);
 		void startBattle();
 		void endBattle(int&);
 

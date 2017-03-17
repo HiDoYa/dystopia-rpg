@@ -13,7 +13,7 @@ Player::Player()
 
 	//A character
 	setTextureSprite("images/character/char1.png");
-	setTextureRect(0, 0);
+	setTextureRect(64, 0);
 
 	//Sound
 	step1.openFromFile("sound/step1.ogg");

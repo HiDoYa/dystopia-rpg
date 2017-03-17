@@ -20,6 +20,11 @@ void SpriteManage::setTextureRect(int x, int y, int dimension)
 	sprite.setTextureRect(sf::IntRect(x, y, dimension, dimension));
 }
 
+void SpriteManage::setScale(float x, float y)
+{
+	sprite.setScale(sf::Vector2f(x, y));
+}
+
 void SpriteManage::setPosition(int x, int y)
 {
 	sprite.setPosition(sf::Vector2f(x, y));

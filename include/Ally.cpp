@@ -90,6 +90,7 @@ int Ally::getExp()
 	return exp;
 }
 
+//BattlePos is 0-5 corresponding to battle grid pos
 int Ally::getBattlePos()
 {
 	return battlePos;

@@ -25,6 +25,8 @@ class StateManager
 
 		std::vector<Npc> npc;
 		std::vector<Ally> ally;
+		std::vector<bool> allyFound;
+		std::vector<bool> allyInParty;
 		Player player;
 
 		//Map specific

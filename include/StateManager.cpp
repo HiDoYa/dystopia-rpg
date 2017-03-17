@@ -339,7 +339,7 @@ void StateManager::loadBattle(sf::RenderWindow& win, sf::View& view)
 		battleLoaded = true;
 
 		//TODO Load battle data
-		battle->setupBattle(enemyListStore, player);
+		battle->setupBattle(enemyListStore, player, allyInParty);
 
 		//Set view
 		view.setCenter(sf::Vector2f(512, 384));
