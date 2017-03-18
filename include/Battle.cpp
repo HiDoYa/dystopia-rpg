@@ -2,6 +2,7 @@
 #include <fstream>
 #include <iostream>
 
+#include "Ally.h"
 #include "Player.h"
 
 #include "Battle.h"
@@ -35,12 +36,11 @@ Battle::Battle()
 	optionsPos.push_back(sf::Vector2f(100, 0));
 	optionsPos.push_back(sf::Vector2f(100, 100));
 	
-	//TODO Grid rect
-
+	//6 Skills
 	numSkills = 6;
 }
 
-void Battle::setupBattle(std::vector<Enemy> enemyList, Player& player, std::vector<bool> allyInParty)
+void Battle::setupBattle(std::vector<Enemy> enemyList, Player& player, std::vector<Ally> ally)
 {
 	//TODO Open file and get ally attacks 
 	//TODO Get player optins from file and get numSkills from file
@@ -67,12 +67,11 @@ void Battle::setupBattle(std::vector<Enemy> enemyList, Player& player, std::vect
 	//Make sure enemy is cleared
 	enemies.clear();
 
-
 	//Gets ally number
 	totalAlly = 1;
-	for(int idx = 0; idx < allyInParty.size(); idx++)
+	for(int idx = 0; idx < ally.size(); idx++)
 	{
-		if(allyInParty[idx])
+		if(ally[idx].getAllyInParty())
 		{
 			totalAlly++;
 		}
@@ -287,7 +286,7 @@ void Battle::findFastestChar(Player& player)
 	}
 }
 
-void Battle::attackManager(int& currentBattleState, Player& player)
+void Battle::attackManager(int& currentBattleState, Player& player, std::vector<Ally>& ally)
 {
 	findFastestChar(player);
 
@@ -315,7 +314,7 @@ void Battle::attackManager(int& currentBattleState, Player& player)
 		case 6:
 		case 7:
 		case 8:
-			currentOptionsShow = ally[nextAttack - 6].battlePos;
+			currentOptionsShow = ally[nextAttack - 6].getBattlePos();
 			break;
 	}
 }
@@ -350,7 +349,8 @@ void Battle::playerTurnHandle()
 //Player simply moves forward
 void Battle::playerAttackAnimation(int& currentBattleState, Player& player)
 {
-	if(player.getPosition().x > 700)
+	goalPlace = allyPos[player.getBattlePos()].x - attackXDisp;
+	if(player.getPosition().x > goalPlace)
 	{
 		player.setPosition(player.getPosition().x - 10, player.getPosition().y);
 	}
@@ -501,7 +501,8 @@ void Battle::enemyHpChange(int hpFinal, int& currentBattleState)
 
 void Battle::playerPostAttackAnimation(Player& player)
 {
-	if(player.getPosition().x < 750)
+	goalPlace = allyPos[player.getBattlePos()].x;
+	if(player.getPosition().x < goalPlace)
 	{
 		player.setPosition(player.getPosition().x + 10, player.getPosition().y);
 	}

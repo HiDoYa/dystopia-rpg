@@ -46,6 +46,103 @@ void StateManager::loadMenu()
 	{
 		menuLoaded = true;
 		mainMenu.setTextureSprite("images/background.png");
+
+
+		//Loads persistent player info
+		//TODO Set overlay based on player stats
+		//Set player stats
+		player.setLevel(player.getLevel(), overlay);
+		player.setMaxHp(player.getMaxHp(), overlay);
+		player.setCurrentHp(player.getCurrentHp(), overlay);
+		player.setMaxMana(player.getMaxMana(), overlay);
+		player.setCurrentMana(player.getCurrentMana(), overlay);
+		player.setAgility(player.getAgility());
+		player.setAtk(player.getAtk());
+		player.setExp(player.getExp(), overlay);
+		player.setCurrency(player.getCurrency(), overlay);
+
+		//Loads ally
+		loadAlly();
+	}
+}
+
+void StateManager::loadAlly()
+{
+	std::ifstream allyFile;
+	allyFile.open("data/ally/allyList");
+
+	std::string inp;
+	int allyCounter = -1;
+
+	allyFile >> inp;
+
+	do 
+	{
+		if(inp == "Ally")
+		{
+			ally.push_back(tempAlly);
+			allyCounter++;
+			allyFile >> inp;
+		}
+		if(inp == "Name")
+		{
+			std::string tempName;
+			do
+			{
+				allyFile >> inp;
+				tempName += inp + ' ';
+			}while(allyFile.peek() != '\n');
+			tempName.push_back();
+			ally[allyCounter].setName(tempName);
+		}
+		if(inp == "Hp")
+		{
+			allyFile >> inp;
+			ally[allyCounter].setDefaultHp(atoi(inp.c_str()));
+
+			allyFile >> inp;
+			ally[allyCounter].setHpInc(atoi(inp.c_str()));
+		}
+		if(inp == "Mana")
+		{
+			allyFile >> inp;
+			ally[allyCounter].setDefaultMana(atoi(inp.c_str()));
+
+			allyFile >> inp;
+			ally[allyCounter].setManaInc(atoi(inp.c_str()));
+		}
+		if(inp == "Agility")
+		{
+			allyFile >> inp;
+			ally[allyCounter].setDefaultAgility(atoi(inp.c_str()));
+
+			allyFile >> inp;
+			ally[allyCounter].setAgilityInc(atoi(inp.c_str()));
+		}
+		if(inp == "Atk")
+		{
+			allyFile >> inp;
+			ally[allyCounter].setDefaultAtk(atoi(inp.c_str()));
+
+			allyFile >> inp;
+			ally[allyCounter].setAtkInc(atoi(inp.c_str()));
+		}
+		if(inp == "Image")
+		{
+			allyFile >> inp;
+			ally[allyCounter].setTextureSprite(inp);
+
+			allyFile >> inp;
+			ally[allyCounter].setTextureRect(0, atoi(inp.c_str()));
+
+		}
+		allyFile >> inp;
+	} while(!allyFile.eof());
+
+	//Initializes contents of ally assuming player is level 1
+	for(int i = 0; i < ally.size(); i++)
+	{
+		ally[i].levelUp(1);
 	}
 }
 
@@ -65,6 +162,7 @@ void StateManager::updateMenu(sf::RenderWindow& win)
 			break;
 		case 1:
 			//TODO Load game
+			//TODO get ally current hp/mana. call levelUp(playerLevel) first, then call loadingAlly(3xint)
 			break;
 		case 2:
 			//Exits game
@@ -95,19 +193,7 @@ void StateManager::loadMap(sf::RenderWindow& win)
 	{
 		mapLoaded = true;
 
-		//TODO Set overlay based on player stats
-		//Set player stats
-		player.setLevel(player.getLevel(), overlay);
-		player.setMaxHp(player.getMaxHp(), overlay);
-		player.setCurrentHp(player.getCurrentHp(), overlay);
-		player.setMaxMana(player.getMaxMana(), overlay);
-		player.setCurrentMana(player.getCurrentMana(), overlay);
-		player.setAgility(player.getAgility());
-		player.setAtk(player.getAtk());
-		player.setExp(player.getExp(), overlay);
-		player.setCurrency(player.getCurrency(), overlay);
 
-		//TODO Load file that contains names of all three of these ground/collision/background files for loading
 		std::string mapFileString1 = "data/maps/z" + std::to_string(currentZone) + "/";
 		std::string mapFileString2 = "/m" + std::to_string(currentMap);
 
@@ -120,6 +206,7 @@ void StateManager::loadMap(sf::RenderWindow& win)
 		collision->setupBitmap(mapFileString1 + "collision" + mapFileString2, win);
 		background->setupStatic("images/background.png");
 
+		//Loads npcs from main map file
 		loadMainMapFile(mapFileString1 + "main" + mapFileString2);
 
 		//Set prevZ and prevM to the current
@@ -207,7 +294,7 @@ void StateManager::loadMapEnemies(std::string enemyList)
 			enemyFile >> strInp;
 			enemyListStore[tempCounter].setTextureSprite(strInp);
 			enemyFile >> strInp;
-			//TODO enemy sizes variance
+			//TODO where the enemy is located in the file (y loc)
 			enemyListStore[tempCounter].setTextureRect(0, atoi(strInp.c_str()));
 		}
 	}
@@ -339,7 +426,7 @@ void StateManager::loadBattle(sf::RenderWindow& win, sf::View& view)
 		battleLoaded = true;
 
 		//TODO Load battle data
-		battle->setupBattle(enemyListStore, player, allyInParty);
+		battle->setupBattle(enemyListStore, player, ally);
 
 		//Set view
 		view.setCenter(sf::Vector2f(512, 384));
@@ -369,7 +456,7 @@ void StateManager::updateBattle(sf::RenderWindow& win, sf::View& view)
 			break;
 		//Battle state 1 (find enemies that should attack, start animating, and go to 2 OR go to 0)
 		case 1:
-			battle->attackManager(currentBattleState, player);
+			battle->attackManager(currentBattleState, player, ally);
 			break;
 		//Battle state 2 (calculate damage, animate hp going down, ending animation)
 		case 2:

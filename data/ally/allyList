@@ -1,0 +1,15 @@
+Ally 1
+Name Test Ally
+Hp 100 15
+Mana 100 15
+Agility 10 3
+Atk 20 10
+Image images/ally/test4.png 0
+
+Ally 2
+Name Test Ally2
+Hp 50 10
+Mana 150 15
+Agility 15 5
+Atk 35 13
+Image images/ally/test4.png 64

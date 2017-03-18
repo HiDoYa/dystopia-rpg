@@ -27,6 +27,7 @@ class Battle
 
 		int attackXDisp;
 		int nextAttack;
+		int goalPlace;
 
 		//Skill type
 		int skillType;
@@ -42,7 +43,6 @@ class Battle
 		//For enemies
 		Enemy temp;
 		std::vector<Enemy> enemies;
-		int goalPlace;
 		int numEnemies;
 
 		//Check for competion
@@ -67,7 +67,7 @@ class Battle
 
 		//Battle state 1
 		void findFastestChar(Player&);
-		void attackManager(int&, Player&);
+		void attackManager(int&, Player&, std::vector<Ally>&);
 
 		//Battle state 1.5
 		void playerTurnHandle();

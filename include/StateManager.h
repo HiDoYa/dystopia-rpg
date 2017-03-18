@@ -24,9 +24,8 @@ class StateManager
 		//TODO Map foreground;
 
 		std::vector<Npc> npc;
+		Ally tempAlly;
 		std::vector<Ally> ally;
-		std::vector<bool> allyFound;
-		std::vector<bool> allyInParty;
 		Player player;
 
 		//Map specific
@@ -51,6 +50,7 @@ class StateManager
 		//Menu
 		void allMenu(sf::RenderWindow&);
 		void loadMenu();
+		void loadAlly();
 		void updateMenu(sf::RenderWindow&);
 
 		//Map
