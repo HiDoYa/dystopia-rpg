@@ -82,6 +82,7 @@ void StateManager::loadAlly()
 		{
 			ally.push_back(tempAlly);
 			allyCounter++;
+			ally[allyCounter].setAllyInParty(false);
 			allyFile >> inp;
 		}
 		if(inp == "Name")
@@ -134,7 +135,6 @@ void StateManager::loadAlly()
 
 			allyFile >> inp;
 			ally[allyCounter].setTextureRect(0, atoi(inp.c_str()));
-
 		}
 		allyFile >> inp;
 	} while(!allyFile.eof());
@@ -215,10 +215,6 @@ void StateManager::loadMap(sf::RenderWindow& win)
 
 		//TODO Load appropriate npcs w/ dynamic allocation and from files. Use some loop for number of npcs.
 		//TODO When loading another map, pop_back all current npcs
-		Npc temp;
-		temp.setPosition(128, 128);
-		npc.push_back(temp);
-		npc[0].setTextureSprite("images/test4.png");
 
 		//TODO Set player position based on map or other factors
 		player.setPosition(startPosX, startPosY);
@@ -305,6 +301,11 @@ void StateManager::loadMainMapFile(std::string fileNm)
 {
 	//Temp var
 	std::string strInp;
+	int numOne, numTwo, numThree;
+	numOne = numTwo = numThree = 0;
+
+	int npcCounter = -1;
+	npc.clear();
 
 	std::ifstream mainMapFile(fileNm);
 	do
@@ -338,19 +339,31 @@ void StateManager::loadMainMapFile(std::string fileNm)
 		}
 		if(strInp == "Npc")
 		{
-			//TODO add new npc (pushback)
+			npcCounter++;
+			npc.push_back(tempNpc);
+		}
+		if(strInp == "Image")
+		{
+			mainMapFile >> strInp;
+			npc[npcCounter].setTextureSprite("images/test4.png");
 		}
 		if(strInp == "ImagePos")
 		{
-		}
-		if(strInp == "ImageSize")
-		{
+			mainMapFile >> numOne;
+			mainMapFile >> numTwo;
+			mainMapFile >> numThree;
+			npc[npcCounter].setTextureRect(numOne, numTwo, numThree);
 		}
 		if(strInp == "Pos")
 		{
+			mainMapFile >> numOne;
+			mainMapFile >> numTwo;
+			npc[npcCounter].setPosition(numOne * 64, numTwo * 64);
 		}
 		if(strInp == "Name")
 		{
+			mainMapFile >> strInp;
+			npc[npcCounter].setName(strInp);
 		}
 	} while(!mainMapFile.eof());
 	mainMapFile.close();

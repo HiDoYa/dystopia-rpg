@@ -23,9 +23,12 @@ class StateManager
 		std::unique_ptr<Map> collision;
 		//TODO Map foreground;
 
+		Npc tempNpc;
 		std::vector<Npc> npc;
+
 		Ally tempAlly;
 		std::vector<Ally> ally;
+
 		Player player;
 
 		//Map specific

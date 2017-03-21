@@ -5,8 +5,8 @@ PrevZM 0 1
 NewPos 5 10
 
 Npc
-ImagePos 0 0
-ImageSize 64 64
+Image images/character/test4.png
+ImagePos 0 0 64
 Pos 5 10
 Name TestNpc
 
@@ -25,8 +25,8 @@ CondTrue 0 Text Lorem ipsum dolor amet
 end
 
 Npc
-Image Pos 0 64
-ImageSize 64 64
+Image images/character/test4.png
+ImagePos 0 64 64
 Pos 15 3
 Name this is a test
 

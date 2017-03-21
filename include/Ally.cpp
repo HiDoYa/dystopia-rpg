@@ -44,7 +44,7 @@ void Ally::setAtk(int inp)
 }
 
 //Default attributes
-void Ally::setdefaultHp(int inp)
+void Ally::setDefaultHp(int inp)
 {
 	defaultHp = inp;
 }
