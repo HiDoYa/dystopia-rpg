@@ -21,7 +21,6 @@ class StateManager
 		std::unique_ptr<Map> ground;
 		std::unique_ptr<Map> background;
 		std::unique_ptr<Map> collision;
-		//TODO Map foreground;
 
 		Npc tempNpc;
 		std::vector<Npc> npc;
@@ -44,7 +43,6 @@ class StateManager
 
 		//Battle (state 2)
 		bool battleLoaded;
-		//TODO Think of how Battle class will be used for different battles (deleted vector?)
 		std::unique_ptr<Battle> battle;
 
 	public:

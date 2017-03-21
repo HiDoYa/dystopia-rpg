@@ -93,7 +93,7 @@ void StateManager::loadAlly()
 				allyFile >> inp;
 				tempName += inp + ' ';
 			}while(allyFile.peek() != '\n');
-			tempName.push_back();
+			tempName.pop_back();
 			ally[allyCounter].setName(tempName);
 		}
 		if(inp == "Hp")

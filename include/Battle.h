@@ -56,7 +56,7 @@ class Battle
 	public:
 		Battle();
 
-		void setupBattle(std::vector<Enemy>, Player&, std::vector<bool>);
+		void setupBattle(std::vector<Enemy>, Player&, std::vector<Ally>);
 		void startBattle();
 		void endBattle(int&);
 
