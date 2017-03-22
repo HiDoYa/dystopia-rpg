@@ -30,6 +30,8 @@ int main()
 	//State Manager
 	StateManager state;
 
+	std::cout << "Running";
+
 	//Main loop - ends when window is closed
 	while(window.isOpen())
 	{
