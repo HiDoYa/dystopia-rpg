@@ -148,7 +148,7 @@ int Ally::getDefaultAgility()
 	return defaultAgility;
 }
 
-int Ally:;getDefaultAtk()
+int Ally::getDefaultAtk()
 {
 	return defaultAtk;
 }
@@ -190,7 +190,7 @@ bool Ally::getAllyInParty()
 void Ally::levelUp(int playerLevel)
 {
 	maxHp = currentHp = (playerLevel - 1) * hpInc + defaultHp;
-	maxMana = currentMana = (playerLevel - 1) * maanInc + defaultMana;
+	maxMana = currentMana = (playerLevel - 1) * manaInc + defaultMana;
 	agility = (playerLevel - 1) * agilityInc + defaultAgility;
 	atk = (playerLevel - 1) * atkInc + defaultAtk;
 }
@@ -198,7 +198,7 @@ void Ally::levelUp(int playerLevel)
 void Ally::loadingAlly(int playerLevel, int currentHpInp, int currentManaInp)
 {
 	maxHp = playerLevel * hpInc + defaultHp;
-	maxMana = playerLevel * maanInc + defaultMana;
+	maxMana = playerLevel * manaInc + defaultMana;
 	agility = playerLevel * agilityInc + defaultAgility;
 	atk = playerLevel * atkInc + defaultAtk;
 

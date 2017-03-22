@@ -18,7 +18,7 @@ StateManager::StateManager()
 {
 	//Placeholder defaults
 	startPosX = startPosY = 64;
-	encounterRate = 20;
+	encounterRate = 0;
 	currentZone = currentMap = 0;
 
 	//Defaults
@@ -363,7 +363,7 @@ void StateManager::loadMainMapFile(std::string fileNm)
 		if(strInp == "Name")
 		{
 			mainMapFile >> strInp;
-			npc[npcCounter].setName(strInp);
+			//TODO npc[npcCounter].setName(strInp);
 		}
 	} while(!mainMapFile.eof());
 	mainMapFile.close();
