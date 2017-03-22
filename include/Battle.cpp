@@ -9,6 +9,20 @@
 
 Battle::Battle()
 {
+	//Default initializations
+	currentSkill = 0;
+	currentOptionsShow = 0;
+	playerCanAttack = true;
+	initHp = 100;
+	totalAlly = 0;
+	nextAttack = 0;
+	goalPlace = 0;
+	skillType = 0;
+	currentEnemySelected = 0;
+	qNotPressed = wNotPressed = aNotPressed = sNotPressed = dNotPressed = false;
+	numEnemies = 1;
+	hpComplete = animComplete = false;
+	
 	//Displacement during character turn
 	attackXDisp = 125;
 

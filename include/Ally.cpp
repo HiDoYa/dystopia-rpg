@@ -5,6 +5,17 @@
 
 Ally::Ally()
 {
+	//Initialization default
+	name = "default";
+	maxHp = currentHp = 100;
+	maxMana = currentMana = 100;
+	agility = atk = 10;
+	defaultHp = defaultMana = 100;
+	defaultAgility = defaultAtk = 100;
+	hpInc = manaInc = 10;
+	agilityInc = atkInc = 5;
+	allyInParty = false;
+	battlePos = 0;
 }
 
 //********* MUTATORS *************

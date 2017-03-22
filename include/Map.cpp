@@ -8,6 +8,9 @@
 
 Map::Map()
 {
+	//Default initialization
+	yDisp = 0;
+
 	newMapCounter = 0;
 }
 

@@ -23,11 +23,13 @@ Player::Player()
 	//Used for tme management
 	lastTimeAnim = 0;
 	lastTimeMu = 0;
+	currentTime = 0;
 	spriteAnimationDelay = 90;
 	stepSoundDelay = 300;
 
 	//Movement default
 	speed = 8;
+	xSpeed = ySpeed = 0;
 	lastDirection = 0;
 	moving = false;
 	movingNum = 0;

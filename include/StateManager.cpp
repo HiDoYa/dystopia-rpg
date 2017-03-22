@@ -24,6 +24,7 @@ StateManager::StateManager()
 	//Defaults
 	currentState = 0;
 	currentBattleState = 0;
+	prevZ = prevM = 0;
 
 	menuLoaded = false;
 	mapLoaded = false;
@@ -138,6 +139,7 @@ void StateManager::loadAlly()
 		}
 		allyFile >> inp;
 	} while(!allyFile.eof());
+	allyFile.close();
 
 	//Initializes contents of ally assuming player is level 1
 	for(int i = 0; i < ally.size(); i++)
@@ -148,8 +150,6 @@ void StateManager::loadAlly()
 
 void StateManager::updateMenu(sf::RenderWindow& win)
 {
-	//Activate window for OpenGL rendering
-	win.clear();
 
 	mainMenu.scroll();
 	mainMenu.currentlySelectedIndicate();
@@ -324,11 +324,13 @@ void StateManager::loadMainMapFile(std::string fileNm)
 		}
 		if(strInp == "PrevZM")
 		{
+			//TODO 
 			mainMapFile >> strInp;
 			int potenPrevZ = atoi(strInp.c_str());
 			mainMapFile >> strInp;
 			int potenPrevM = atoi(strInp.c_str());
 
+			//TODO
 			//Gets "NewPos"
 			mainMapFile >> strInp;
 

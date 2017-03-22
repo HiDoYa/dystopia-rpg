@@ -7,6 +7,9 @@
 //Default constructor
 Textbox::Textbox()
 {
+	//Default initialization
+	posX = posY = 0;
+	
 	//Gets box parameters
 	height = 150;
 
@@ -46,6 +49,7 @@ Textbox::Textbox()
 
 	//Time management for opening/closing box
 	delayBoxSetup = 30;
+	currentTime = 0;
 	lastTimeBox = 0;
 
 	//To skip text

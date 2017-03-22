@@ -4,6 +4,9 @@
 
 MainMenu::MainMenu()
 {
+	//Default initialization
+	wNotPressed = sNotPressed = false;
+	
 	//TODO Add bgm
 	
 	//Defaults for button
