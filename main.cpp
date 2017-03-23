@@ -30,7 +30,7 @@ int main()
 	//State Manager
 	StateManager state;
 
-	std::cout << "Running";
+	std::cout << "\nLoading in main.cpp\n";
 
 	//Main loop - ends when window is closed
 	while(window.isOpen())
@@ -43,7 +43,7 @@ int main()
 			if(event.type == sf::Event::Closed)
 			{
 				//Somehow this line fixes a bunch of errors??
-				std::cout << "Closing event\n";
+				std::cout << "Closing event in main.cpp\n";
 				window.close();
 			}
 		}
@@ -66,6 +66,7 @@ int main()
 		window.display();
 	}
 
+	std::cout << "Exiting in main.cpp\n";
 	return 0;
 }
 

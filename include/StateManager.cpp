@@ -334,10 +334,20 @@ void StateManager::loadMainMapFile(std::string fileNm)
 			//Gets "NewPos"
 			mainMapFile >> strInp;
 
-			mainMapFile >> strInp;
-			startPosX = atoi(strInp.c_str()) * 64;
-			mainMapFile >> strInp;
-			startPosY = atoi(strInp.c_str()) * 64;
+			if(potenPrevZ == prevZ && potenPrevM == prevM)
+			{
+				mainMapFile >> strInp;
+				startPosX = atoi(strInp.c_str()) * 64;
+				mainMapFile >> strInp;
+				startPosY = atoi(strInp.c_str()) * 64;
+			}
+			else
+			{
+				mainMapFile >> strInp;
+				mainMapFile >> strInp;
+			}
+			
+
 		}
 		if(strInp == "Npc")
 		{
@@ -365,7 +375,11 @@ void StateManager::loadMainMapFile(std::string fileNm)
 		if(strInp == "Name")
 		{
 			mainMapFile >> strInp;
-			//TODO npc[npcCounter].setName(strInp);
+			npc[npcCounter].setName(strInp);
+		}
+		if(strInp == "start")
+		{
+			mainMapFile >> strInp;
 		}
 	} while(!mainMapFile.eof());
 	mainMapFile.close();

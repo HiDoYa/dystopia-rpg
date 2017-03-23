@@ -8,6 +8,7 @@ class Textbox;
 class Npc: public SpriteManage
 {
 	private:
+		std::string name;
 		//Stores whether npc is speaking or not
 		bool speaking;
 		
@@ -16,8 +17,14 @@ class Npc: public SpriteManage
 	public:
 		Npc();
 		void speak(sf::String, sf::String, Textbox&, Player&);
-		bool getSpeaking();
 		void collision(Player&);
+
+		//****** MUTATORS **********
+		void setName(std::string);
+
+		//***** ACCESSORS ********
+		bool getSpeaking();
+		std::string getName();
 };
 
 #endif

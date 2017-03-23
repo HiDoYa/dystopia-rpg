@@ -9,6 +9,8 @@
 
 Npc::Npc()
 {
+	name = "default name";
+
 	//Gets texture of sprite
 	setTextureRect(0, 0);
 
@@ -26,12 +28,24 @@ void Npc::speak(sf::String nm, sf::String str, Textbox& box, Player& player)
 	box.choiceBoxDisp("Hello", "Not Hello", cond, speaking);
 }
 
+void Npc::collision(Player& player)
+{
+	colliding = player.collisionZones(getPosition().x / 64, getPosition().y / 64);
+}
+
+//********* MUTATORS  *********
+void Npc::setName(std::string inp)
+{
+	name = inp;
+}
+
+//********* ACCESSORS *********
 bool Npc::getSpeaking()
 {
 	return speaking;
 }
 
-void Npc::collision(Player& player)
+std::string Npc::getName()
 {
-	colliding = player.collisionZones(getPosition().x / 64, getPosition().y / 64);
+	return name;
 }
