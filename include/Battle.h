@@ -13,12 +13,20 @@ class Battle
 		//Player options
 		std::vector<sf::CircleShape> tempCircleStore;
 		std::vector<std::vector<sf::CircleShape>> allyOptions;
-		std::vector<sf::RectangleShape> gridRect;
 		int numSkills;
 		int currentSkill;
 		int currentOptionsShow;
 		bool playerCanAttack;
 		int initHp;
+
+		//For changing position of char
+		sf::Clock clk;
+		sf::Time tme;
+		float currentTime;
+		float lastTime;
+		std::vector<sf::RectangleShape> gridRect;
+		int newPos;
+		bool blinkTurn;
 
 		//TO keep track of battles
 		std::vector<bool> currentCanAtk;
@@ -70,7 +78,10 @@ class Battle
 		void attackManager(int&, Player&, std::vector<Ally>&);
 
 		//Battle state 1.5
-		void playerTurnHandle();
+		void playerAllyTurnHandle();
+		void playerAllyAttackHandle();
+		void playerAllyItem();
+		void playerAllyChangePos();
 		void playerAttackAnimation(int&, Player&);
 		void enemyTurnHandle();
 		void enemyAttackAnimation(int&);

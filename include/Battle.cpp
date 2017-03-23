@@ -13,9 +13,12 @@ Battle::Battle()
 	currentSkill = 0;
 	currentOptionsShow = 0;
 	playerCanAttack = true;
+	blinkTurn = true;
+	currentTime = lastTime = 0;
 	initHp = 100;
 	totalAlly = 0;
 	nextAttack = 0;
+	newPos = 0;
 	goalPlace = 0;
 	skillType = 0;
 	currentEnemySelected = 0;
@@ -285,6 +288,9 @@ void Battle::findFastestChar(Player& player)
 	int highestAgil = -1;
 	nextAttack = -2;
 
+	//Reset the position of rectangle (for changing position)
+	newPos = 0;
+
 	for(int i = 0; i < numEnemies; i++)
 	{
 		if(enemies[i].getCanAtk() && highestAgil < enemies[i].getAgility())
@@ -311,7 +317,7 @@ void Battle::attackManager(int& currentBattleState, Player& player, std::vector<
 			break;
 		//Player Attacks
 		case -1:
-			//TODO playerTurnHandle();
+			//TODO playerAllyTurnHandle();
 			//TODO Add ally
 			playerAttackAnimation(currentBattleState, player);
 			break;
@@ -328,6 +334,7 @@ void Battle::attackManager(int& currentBattleState, Player& player, std::vector<
 		case 6:
 		case 7:
 		case 8:
+			//TODO playerAllyTurnHandle();
 			currentOptionsShow = ally[nextAttack - 6].getBattlePos();
 			break;
 	}
@@ -335,8 +342,29 @@ void Battle::attackManager(int& currentBattleState, Player& player, std::vector<
 
 //********** BATTLE STATE 1.5 ****************
 //TODO
-void Battle::playerTurnHandle()
+void Battle::playerAllyTurnHandle()
 {
+	switch(currentSkill)
+	{
+		case 0:
+		case 1:
+		case 2:
+			playerAllyAttackHandle();
+			break;
+		case 3:
+			//TODO Items?
+			break;
+		case 4:
+			//TODO Change pos
+			break;
+		case 5:
+			//TODO Attempt flee
+			break;
+	}
+}
+
+void Battle::playerAllyAttackHandle()
+{	
 	switch (skillType)
 	{
 		case 0:
@@ -357,6 +385,33 @@ void Battle::playerTurnHandle()
 		case 5:
 			//change current position
 			break;
+	}
+}
+
+void Battle::playerAllyItem()
+{
+	//TODO
+}
+
+void Battle::playerAllyChangePos()
+{
+	//TODO
+	blinkTurn = !blinkTurn;
+
+	tme = clk.getElapsedTime();
+	currentTime = tme.asMilliseconds();
+
+	if(lastTime + 300 > currentTime)
+	{
+		lastTime = currentTime;
+		if(blinkTurn && lastTime + 300 > currentTime)
+		{
+			gridRect[newPos].setFillColor(sf::Color::Red);
+		}
+		else if(!blinkTurn && lastTime + 300 > currentTime)
+		{
+			gridRect[newPos].setFillColor(sf::Color::Blue);
+		}
 	}
 }
 
