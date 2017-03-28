@@ -22,7 +22,7 @@ class Textbox
 
 		//Stores text split up
 		std::vector<std::string>sVec;
-		int textNum = 0;
+		int textNum;
 
 		//Music
 		sf::Music mu;

@@ -6,7 +6,7 @@ NewPos 5 10
 
 Npc
 Image images/character/char1.png
-ImagePos 0 0 64
+ImagePos 64 0 64
 Pos 3 2
 Name TestNpc
 
@@ -26,8 +26,8 @@ end
 
 Npc
 Image images/character/char1.png
-ImagePos 0 64 64
-Pos 15 3
+ImagePos 64 0 64
+Pos 3 8
 Name this is a test
 
 start

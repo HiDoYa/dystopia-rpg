@@ -357,7 +357,7 @@ void StateManager::loadMainMapFile(std::string fileNm)
 		if(strInp == "Image")
 		{
 			mainMapFile >> strInp;
-			npc[npcCounter].setTextureSprite("images/test4.png");
+			npc[npcCounter].setTextureSprite(strInp);
 		}
 		if(strInp == "ImagePos")
 		{
@@ -395,10 +395,22 @@ void StateManager::updateMap(sf::RenderWindow& win, sf::View& view)
 	win.clear();
 
 	//TODO NPC speak
-	npc[0].speak("That One Guy", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean eu diam eget magna ullamcorper", textbox, player);
+	speaking = false;
 
+	npc[0].speak("That One Guy", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean eu diam eget magna ullamcorper", textbox, player);
+	npc[1].speak("hi", "hii there", textbox, player);
+
+	for(int i = 0; i < npc.size(); i++)
+	{
+		if(npc[i].getSpeaking())
+		{
+			speaking = true;
+		}
+	}
+
+	
 	//TODO Loop so all npcs are checked
-	if(!npc[0].getSpeaking())
+	if(!speaking)
 	{
 		player.movePos();
 		startPosX = player.getPosition().x;
@@ -429,8 +441,11 @@ void StateManager::renderMap(sf::RenderWindow& win, sf::View& view)
 	player.drawSprite(win);
 	
 	//TODO Loop for npcs
-	win.draw(npc[0].getSprite());
-	npc[0].collision(player);
+	for(int i = 0; i < npc.size(); i++)
+	{
+		win.draw(npc[i].getSprite());
+		npc[i].collision(player);
+	}
 
 	//TODO High ground
 	
