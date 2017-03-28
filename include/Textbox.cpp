@@ -326,6 +326,7 @@ void Textbox::textHandler(sf::String nm, sf::String str, bool condition, bool& c
 		{
 			setName(nm);
 			animateText(sVec[i]);
+
 			if(nextText())
 			{
 				if(sVec.size() == textNum)

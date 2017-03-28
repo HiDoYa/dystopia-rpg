@@ -347,35 +347,34 @@ void StateManager::loadMainMapFile(std::string fileNm)
 				mainMapFile >> strInp;
 			}
 			
-
 		}
 		if(strInp == "Npc")
 		{
 			npcCounter++;
-			npc.push_back(tempNpc);
+			npc.push_back(new Npc());
 		}
 		if(strInp == "Image")
 		{
 			mainMapFile >> strInp;
-			npc[npcCounter].setTextureSprite(strInp);
+			npc[npcCounter]->setTextureSprite(strInp);
 		}
 		if(strInp == "ImagePos")
 		{
 			mainMapFile >> numOne;
 			mainMapFile >> numTwo;
 			mainMapFile >> numThree;
-			npc[npcCounter].setTextureRect(numOne, numTwo, numThree);
+			npc[npcCounter]->setTextureRect(numOne, numTwo, numThree);
 		}
 		if(strInp == "Pos")
 		{
 			mainMapFile >> numOne;
 			mainMapFile >> numTwo;
-			npc[npcCounter].setPosition(numOne * 64, numTwo * 64);
+			npc[npcCounter]->setPosition(numOne * 64, numTwo * 64);
 		}
 		if(strInp == "Name")
 		{
 			mainMapFile >> strInp;
-			npc[npcCounter].setName(strInp);
+			npc[npcCounter]->setName(strInp);
 		}
 		if(strInp == "start")
 		{
@@ -397,12 +396,12 @@ void StateManager::updateMap(sf::RenderWindow& win, sf::View& view)
 	//TODO NPC speak
 	speaking = false;
 
-	npc[0].speak("That One Guy", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean eu diam eget magna ullamcorper", textbox, player);
-	npc[1].speak("hi", "hii there", textbox, player);
+	npc[0]->speak("That One Guy", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean eu diam eget magna ullamcorper", textbox, player);
+	npc[1]->speak("Testing", "hii there", textbox, player);
 
 	for(int i = 0; i < npc.size(); i++)
 	{
-		if(npc[i].getSpeaking())
+		if(npc[i]->getSpeaking())
 		{
 			speaking = true;
 		}
@@ -443,10 +442,13 @@ void StateManager::renderMap(sf::RenderWindow& win, sf::View& view)
 	//TODO Loop for npcs
 	for(int i = 0; i < npc.size(); i++)
 	{
-		win.draw(npc[i].getSprite());
-		npc[i].collision(player);
+		win.draw(npc[i]->getSprite());
 	}
 
+	for(int i = 0; i < npc.size(); i++)
+	{
+		npc[i]->collision(player);
+	}
 	//TODO High ground
 	
 	//Always on top

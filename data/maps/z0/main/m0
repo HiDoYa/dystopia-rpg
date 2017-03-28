@@ -39,3 +39,9 @@ ChoiceTwo SetCondFalse 4 Don't Check
 CondTrue 4 wtf stop checking
 CondFalse 4 ty for not checking
 end
+
+Npc
+Image images/character/char1.png
+ImagePos 64 0 64
+Pos 3 4
+Name TestNpc

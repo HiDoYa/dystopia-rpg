@@ -23,7 +23,8 @@ class StateManager
 		std::unique_ptr<Map> collision;
 
 		Npc tempNpc;
-		std::vector<Npc> npc;
+		//TODO DO THIS FOR ALL OTHER TEMP OBJECTS. ALSO MAKE DECONSTRUCTOR TO SAFELY DELETE THESE NPCS
+		std::vector<Npc*> npc;
 		bool speaking;
 
 		Ally tempAlly;
