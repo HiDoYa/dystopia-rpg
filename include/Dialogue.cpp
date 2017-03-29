@@ -3,6 +3,8 @@
 
 #include "Dialogue.h"
 
+//Flag 0 is always false and flag 1 is always true
+
 Dialogue::Dialogue()
 {
 }

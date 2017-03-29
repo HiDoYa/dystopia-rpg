@@ -6,6 +6,7 @@ class Dialogue
 {
 	private:
 		//!!!! NOTE !!!!! check for condition FIRST and then checks for choiceCheck
+		//Text checks sequentially; Most latest text for npc must come FIRST
 		
 		//**** TRAD TEXT *****
 		//Stores all texts
@@ -14,15 +15,13 @@ class Dialogue
 		std::vector<int> condition;
 		//Stores whether the condition is looking for a true or false
 		std::vector<bool> conditionNeg;
-		//Stores whether to change state after displaying the text
-		std::vector<bool> chgCheck;
-
-		//Stores whether the change of the state will be to a true or to a false
-		std::vector<bool> chgNeg;
+		//Stores whether to change state after displaying the text, and whether it will be a true or a false
+		std::vector<int> chgCheck;
 		//Stores what number to change
 		std::vector<int> chgNum;
 		
 
+		//TODO Work under progress VVVVVV
 		//******* CHOICES TEXT *******
 		//Stores whether the next text will be a choice box
 		std::vector<bool> choiceCheck;

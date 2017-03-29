@@ -64,7 +64,7 @@ class Battle
 	public:
 		Battle();
 
-		void setupBattle(std::vector<Enemy>, Player&, std::vector<Ally>);
+		void setupBattle(std::vector<Enemy>, Player&, std::vector<Ally*>);
 		void startBattle();
 		void endBattle(int&);
 
@@ -75,7 +75,7 @@ class Battle
 
 		//Battle state 1
 		void findFastestChar(Player&);
-		void attackManager(int&, Player&, std::vector<Ally>&);
+		void attackManager(int&, Player&, std::vector<Ally*>&);
 
 		//Battle state 1.5
 		void playerAllyTurnHandle();

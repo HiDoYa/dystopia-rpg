@@ -6,39 +6,36 @@ NewPos 5 10
 
 Npc
 Image images/character/char1.png
-ImagePos 64 0 64
+ImagePos 128 0 64
 Pos 3 2
 Name TestNpc
 
-start
-CondTrue 5 Text Lorem ipusm harhar
+Start CondTrue 5
+Text Lorem ipusm harhar
 SetCondFalse 5
-end
+End
 
-start
-CondFalse 4 Text Lorem ipsum xdxd
+Start CondFalse 4
+Text Lorem ipsum xdxd
 SetCondTrue 4
-end
+End
 
-start
-CondTrue 0 Text Lorem ipsum dolor amet
-end
+Start CondTrue 1
+Text Lorem ipsum dolor amet
+End
 
 Npc
 Image images/character/char1.png
-ImagePos 64 0 64
+ImagePos 0 0 64
 Pos 3 8
 Name this is a test
 
-start
-CondTrue 3 Text Lorem ipsumss
-CondTrue 0 Text I hae nothing to say
-CondTrue 0 Choice
-ChoiceOne SetCondTrue 4 Check
-ChoiceTwo SetCondFalse 4 Don't Check
-CondTrue 4 wtf stop checking
-CondFalse 4 ty for not checking
-end
+Start CondTrue 3
+Lorem ipsumss. Ihave nothing to say.
+Choice This is some choice question/Check/Don't Check
+ChoiceOne SetCondTrue 4 Text You chcked?? How is that possible?
+ChoiceTwo Text YOU didn't check?? Wel okay.
+End
 
 Npc
 Image images/character/char1.png

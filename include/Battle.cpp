@@ -57,7 +57,7 @@ Battle::Battle()
 	numSkills = 6;
 }
 
-void Battle::setupBattle(std::vector<Enemy> enemyList, Player& player, std::vector<Ally> ally)
+void Battle::setupBattle(std::vector<Enemy> enemyList, Player& player, std::vector<Ally*> ally)
 {
 	//TODO Open file and get ally attacks 
 	//TODO Get player optins from file and get numSkills from file
@@ -88,7 +88,7 @@ void Battle::setupBattle(std::vector<Enemy> enemyList, Player& player, std::vect
 	totalAlly = 1;
 	for(int idx = 0; idx < ally.size(); idx++)
 	{
-		if(ally[idx].getAllyInParty())
+		if(ally[idx]->getAllyInParty())
 		{
 			totalAlly++;
 		}
@@ -306,7 +306,7 @@ void Battle::findFastestChar(Player& player)
 	}
 }
 
-void Battle::attackManager(int& currentBattleState, Player& player, std::vector<Ally>& ally)
+void Battle::attackManager(int& currentBattleState, Player& player, std::vector<Ally*>& ally)
 {
 	findFastestChar(player);
 
@@ -335,7 +335,7 @@ void Battle::attackManager(int& currentBattleState, Player& player, std::vector<
 		case 7:
 		case 8:
 			//TODO playerAllyTurnHandle();
-			currentOptionsShow = ally[nextAttack - 6].getBattlePos();
+			currentOptionsShow = ally[nextAttack - 6]->getBattlePos();
 			break;
 	}
 }

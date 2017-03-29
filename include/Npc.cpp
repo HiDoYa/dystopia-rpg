@@ -20,11 +20,17 @@ Npc::Npc()
 }
 
 //Gets the converted vector, deals with animation/textbox calls, and deals with multiple textboxes
+//TODO Only allow speak when the player is facing TOWARDS the npc instead of just collision
 void Npc::speak(sf::String nm, sf::String str, Textbox& box, Player& player)
 {
-	bool cond = colliding && !player.getMoving() && sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
-	box.textHandler(nm, str, cond, speaking);
-	//test
+	bool cond = !player.getMoving() && sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
+
+	if(colliding)
+	{
+		box.textHandler(nm, str, cond, speaking);
+	}
+
+	//TODO test
 	//box.choiceBoxDisp("Hello", "Not Hello", cond, speaking);
 }
 

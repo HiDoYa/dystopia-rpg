@@ -27,8 +27,7 @@ class StateManager
 		std::vector<Npc*> npc;
 		bool speaking;
 
-		Ally tempAlly;
-		std::vector<Ally> ally;
+		std::vector<Ally*> ally;
 
 		Player player;
 

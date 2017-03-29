@@ -81,9 +81,9 @@ void StateManager::loadAlly()
 	{
 		if(inp == "Ally")
 		{
-			ally.push_back(tempAlly);
+			ally.push_back(new Ally());
 			allyCounter++;
-			ally[allyCounter].setAllyInParty(false);
+			ally[allyCounter]->setAllyInParty(false);
 			allyFile >> inp;
 		}
 		if(inp == "Name")
@@ -95,47 +95,47 @@ void StateManager::loadAlly()
 				tempName += inp + ' ';
 			}while(allyFile.peek() != '\n');
 			tempName.pop_back();
-			ally[allyCounter].setName(tempName);
+			ally[allyCounter]->setName(tempName);
 		}
 		if(inp == "Hp")
 		{
 			allyFile >> inp;
-			ally[allyCounter].setDefaultHp(atoi(inp.c_str()));
+			ally[allyCounter]->setDefaultHp(atoi(inp.c_str()));
 
 			allyFile >> inp;
-			ally[allyCounter].setHpInc(atoi(inp.c_str()));
+			ally[allyCounter]->setHpInc(atoi(inp.c_str()));
 		}
 		if(inp == "Mana")
 		{
 			allyFile >> inp;
-			ally[allyCounter].setDefaultMana(atoi(inp.c_str()));
+			ally[allyCounter]->setDefaultMana(atoi(inp.c_str()));
 
 			allyFile >> inp;
-			ally[allyCounter].setManaInc(atoi(inp.c_str()));
+			ally[allyCounter]->setManaInc(atoi(inp.c_str()));
 		}
 		if(inp == "Agility")
 		{
 			allyFile >> inp;
-			ally[allyCounter].setDefaultAgility(atoi(inp.c_str()));
+			ally[allyCounter]->setDefaultAgility(atoi(inp.c_str()));
 
 			allyFile >> inp;
-			ally[allyCounter].setAgilityInc(atoi(inp.c_str()));
+			ally[allyCounter]->setAgilityInc(atoi(inp.c_str()));
 		}
 		if(inp == "Atk")
 		{
 			allyFile >> inp;
-			ally[allyCounter].setDefaultAtk(atoi(inp.c_str()));
+			ally[allyCounter]->setDefaultAtk(atoi(inp.c_str()));
 
 			allyFile >> inp;
-			ally[allyCounter].setAtkInc(atoi(inp.c_str()));
+			ally[allyCounter]->setAtkInc(atoi(inp.c_str()));
 		}
 		if(inp == "Image")
 		{
 			allyFile >> inp;
-			ally[allyCounter].setTextureSprite(inp);
+			ally[allyCounter]->setTextureSprite(inp);
 
 			allyFile >> inp;
-			ally[allyCounter].setTextureRect(0, atoi(inp.c_str()));
+			ally[allyCounter]->setTextureRect(0, atoi(inp.c_str()));
 		}
 		allyFile >> inp;
 	} while(!allyFile.eof());
@@ -144,7 +144,7 @@ void StateManager::loadAlly()
 	//Initializes contents of ally assuming player is level 1
 	for(int i = 0; i < ally.size(); i++)
 	{
-		ally[i].levelUp(1);
+		ally[i]->levelUp(1);
 	}
 }
 
@@ -406,6 +406,8 @@ void StateManager::updateMap(sf::RenderWindow& win, sf::View& view)
 			speaking = true;
 		}
 	}
+	std::cout << "Npc 0: " << npc[0]->getSpeaking() << '\n';
+	std::cout << "Npc 1: " << npc[1]->getSpeaking() << '\n';
 
 	
 	//TODO Loop so all npcs are checked
