@@ -21,7 +21,7 @@ class Textbox
 		int currentChoice;
 
 		//Stores text split up
-		std::vector<std::string>sVec;
+		std::vector<std::string> sVec;
 		int textNum;
 
 		//Music
@@ -76,7 +76,7 @@ class Textbox
 
 		//**** DURING TEXT *********
 		void animateText(std::string);
-		void textHandler(sf::String, sf::String, bool, bool&);
+		bool textHandler(sf::String, sf::String, bool, bool&);
 		void choiceBoxDisp(std::string, std::string, bool, bool&);
 		void makeChoice();
 

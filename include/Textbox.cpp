@@ -308,7 +308,7 @@ void Textbox::animateText(std::string str)
 	}
 }
 
-void Textbox::textHandler(sf::String nm, sf::String str, bool condition, bool& currentlyTalking)
+bool Textbox::textHandler(sf::String nm, sf::String str, bool condition, bool& currentlyTalking)
 {
 	time = clock.getElapsedTime();
 	currentTime = time.asMilliseconds();
@@ -346,7 +346,10 @@ void Textbox::textHandler(sf::String nm, sf::String str, bool condition, bool& c
 		closeBox();
 		textNum = 0;
 		currentlyTalking = false;
+		//Used to change event vector at end of text
+		return true;
 	}
+	return false;
 }
 
 void Textbox::choiceBoxDisp(std::string choiceOne, std::string choiceTwo, bool condition, bool& currentlyTalking)

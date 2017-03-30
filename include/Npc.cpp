@@ -41,7 +41,13 @@ void Npc::speak(std::vector<bool>& event, Textbox& box, Player& player)
 
 			if(allowText)
 			{
-				box.textHandler(name, getText()[i], cond, speaking);
+				if(box.textHandler(name, getText()[i], cond, speaking))
+				{
+					for(int chgCounter = 0; chgCounter < getChgNum()[i].size(); chgCounter++)
+					{
+						event[getChgNum()[chgCounter][i]] = getChgCheck()[chgCounter][i];
+					}
+				}
 				break;
 			}
 		}

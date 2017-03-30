@@ -15,7 +15,7 @@ Text Lorem ipusm harhar
 SetCondFalse 0
 
 Start CondFalse 0
-Text Lorem ipsum xdxd
+Text This is different text get scammed
 SetCondTrue 0
 
 Start CondTrue 1
