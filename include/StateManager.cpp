@@ -5,6 +5,7 @@
 
 #include "Ally.h"
 #include "Battle.h"
+#include "Dialogue.h"
 #include "MainMenu.h"
 #include "Map.h"
 #include "Npc.h"
@@ -31,6 +32,10 @@ StateManager::StateManager()
 	battleLoaded = false;
 
 	battle.reset(new Battle);
+
+	//Event has false and true by default
+	event.push_back(false);
+	event.push_back(true);
 }
 
 //********* MENU *************
@@ -88,14 +93,18 @@ void StateManager::loadAlly()
 		}
 		if(inp == "Name")
 		{
-			std::string tempName;
-			do
+			char tempChar;
+			inp = "";
+			
+			while(allyFile.peek() != '\n')
 			{
-				allyFile >> inp;
-				tempName += inp + ' ';
-			}while(allyFile.peek() != '\n');
-			tempName.pop_back();
-			ally[allyCounter]->setName(tempName);
+				allyFile.get(tempChar);
+				inp += tempChar;
+			}
+			ally[allyCounter]->setName(inp);
+
+			//Just in case the npc name overlaps with keywords below
+			inp = "";
 		}
 		if(inp == "Hp")
 		{
@@ -193,7 +202,6 @@ void StateManager::loadMap(sf::RenderWindow& win)
 	{
 		mapLoaded = true;
 
-
 		std::string mapFileString1 = "data/maps/z" + std::to_string(currentZone) + "/";
 		std::string mapFileString2 = "/m" + std::to_string(currentMap);
 
@@ -243,15 +251,16 @@ void StateManager::loadMapEnemies(std::string enemyList)
 		}
 		if(strInp == "Name")
 		{
-			std::string nameAdding;
+			char nameChar;
 			strInp = "";
-			do
+			while(enemyFile.peek() != '\n')
 			{
-				enemyFile >> nameAdding;
-				strInp += nameAdding + ' ';
-			} while(enemyFile.peek() != '\n');
-			strInp.pop_back();
+				enemyFile.get(nameChar);
+				strInp += nameChar;
+			}
 			enemyListStore[tempCounter].setName(strInp);
+
+			strInp = "";
 		}
 		if(strInp == "Chance")
 		{
@@ -305,6 +314,7 @@ void StateManager::loadMainMapFile(std::string fileNm)
 	numOne = numTwo = numThree = 0;
 
 	int npcCounter = -1;
+	int currentTextNum = -1;
 	npc.clear();
 
 	std::ifstream mainMapFile(fileNm);
@@ -350,6 +360,10 @@ void StateManager::loadMainMapFile(std::string fileNm)
 		}
 		if(strInp == "Npc")
 		{
+			//Resets text number
+			currentTextNum = -1;
+
+			//Increments and makes new npc
 			npcCounter++;
 			npc.push_back(new Npc());
 		}
@@ -373,12 +387,67 @@ void StateManager::loadMainMapFile(std::string fileNm)
 		}
 		if(strInp == "Name")
 		{
-			mainMapFile >> strInp;
+			char nameChar;
+			strInp = "";
+			
+			//Gets the whole text (including whitespace)
+			while(mainMapFile.peek() != '\n')
+			{
+				mainMapFile.get(nameChar);
+				strInp += nameChar;
+			}
+
 			npc[npcCounter]->setName(strInp);
+
+			//Just in case the text overlaps with keywords below
+			strInp = "";
 		}
-		if(strInp == "start")
+		if(strInp == "Start")
+		{
+			//The beginning of new text for a npc
+			currentTextNum++;
+			npc[npcCounter]->pushNextText();
+		}
+		if(strInp == "CondTrue")
 		{
 			mainMapFile >> strInp;
+			npc[npcCounter]->pushCondition(atoi(strInp.c_str()));
+			npc[npcCounter]->pushConditionCheck(true);
+		}
+		if(strInp == "CondFalse")
+		{
+			mainMapFile >> strInp;
+			npc[npcCounter]->pushCondition(atoi(strInp.c_str()));
+			npc[npcCounter]->pushConditionCheck(false);
+		}
+		if(strInp == "Text")
+		{
+			char readText;
+			strInp = "";
+			
+			//Gets the whole text (including whitespace)
+			while(mainMapFile.peek() != '\n')
+			{
+				mainMapFile.get(readText);
+				strInp += readText;
+			}
+
+			npc[npcCounter]->pushText(strInp);
+			//Just in case the text overlaps with keywords below
+			strInp = "";
+
+		}
+		if(strInp == "SetCondTrue")
+		{
+			mainMapFile >> strInp;
+			npc[npcCounter]->pushChgCheck(true);
+			npc[npcCounter]->pushChgNum(atoi(strInp.c_str()));
+		}
+		if(strInp == "SetCondFalse")
+		{
+			mainMapFile >> strInp;
+			npc[npcCounter]->pushChgCheck(false);
+			npc[npcCounter]->pushChgNum(atoi(strInp.c_str()));
 		}
 	} while(!mainMapFile.eof());
 	mainMapFile.close();
@@ -396,8 +465,13 @@ void StateManager::updateMap(sf::RenderWindow& win, sf::View& view)
 	//TODO NPC speak
 	speaking = false;
 
-	npc[0]->speak("That One Guy", "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean eu diam eget magna ullamcorper", textbox, player);
-	npc[1]->speak("Testing", "hii there", textbox, player);
+//	npc[0]->speak("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean eu diam eget magna ullamcorper", textbox, player);
+//	npc[1]->speak("hii there", textbox, player);
+	for(int i = 0; i < npc.size(); i++)
+	{
+		npc[i]->speak(event, textbox, player);
+	}
+
 
 	for(int i = 0; i < npc.size(); i++)
 	{
@@ -406,9 +480,6 @@ void StateManager::updateMap(sf::RenderWindow& win, sf::View& view)
 			speaking = true;
 		}
 	}
-	std::cout << "Npc 0: " << npc[0]->getSpeaking() << '\n';
-	std::cout << "Npc 1: " << npc[1]->getSpeaking() << '\n';
-
 	
 	//TODO Loop so all npcs are checked
 	if(!speaking)

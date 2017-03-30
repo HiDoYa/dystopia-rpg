@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
+#include "Dialogue.h"
 #include "Player.h"
 #include "Textbox.h"
 #include "UIOverlay.h"
@@ -21,14 +22,35 @@ Npc::Npc()
 
 //Gets the converted vector, deals with animation/textbox calls, and deals with multiple textboxes
 //TODO Only allow speak when the player is facing TOWARDS the npc instead of just collision
-void Npc::speak(sf::String nm, sf::String str, Textbox& box, Player& player)
+void Npc::speak(std::vector<bool>& event, Textbox& box, Player& player)
 {
 	bool cond = !player.getMoving() && sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
 
 	if(colliding)
 	{
-		box.textHandler(nm, str, cond, speaking);
+		for(int i = 0; i < getCondition().size(); i++)
+		{
+			bool allowText = true;
+			for(int j = 0; j < getCondition()[i].size(); j++)
+			{
+				if(event[getCondition()[j][i]] != getConditionCheck()[j][i])
+				{
+					allowText = false;
+				}
+			}
+
+			if(allowText)
+			{
+				box.textHandler(name, getText()[i], cond, speaking);
+				break;
+			}
+		}
 	}
+
+//	if(colliding)
+//	{
+//		//box.textHandler(name, str, cond, speaking);
+//	}
 
 	//TODO test
 	//box.choiceBoxDisp("Hello", "Not Hello", cond, speaking);

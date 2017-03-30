@@ -5,6 +5,7 @@
 //Game classes
 #include "include/Ally.h"
 #include "include/Battle.h"
+#include "include/Dialogue.h"
 #include "include/MainMenu.h"
 #include "include/Map.h"
 #include "include/Npc.h"

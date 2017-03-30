@@ -1,4 +1,4 @@
-OBJ = main.o Textbox.o SpriteManage.o Map.o Npc.o Player.o Enemy.o  Battle.o UIOverlay.o MainMenu.o StateManager.o Ally.o
+OBJ = main.o Textbox.o SpriteManage.o Map.o Npc.o Player.o Enemy.o  Battle.o UIOverlay.o MainMenu.o StateManager.o Ally.o Dialogue.o
 all: game
 
 game: $(OBJ)
@@ -12,6 +12,9 @@ Ally.o: include/Ally.cpp
 	g++ -std=c++11 -c $<
 
 Battle.o: include/Battle.cpp
+	g++ -std=c++11 -c $<
+
+Dialogue.o: include/Dialogue.cpp
 	g++ -std=c++11 -c $<
 
 Enemy.o: include/Enemy.cpp

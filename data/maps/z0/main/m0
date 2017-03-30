@@ -10,19 +10,16 @@ ImagePos 128 0 64
 Pos 3 2
 Name TestNpc
 
-Start CondTrue 5
+Start CondTrue 1
 Text Lorem ipusm harhar
-SetCondFalse 5
-End
+SetCondFalse 0
 
-Start CondFalse 4
+Start CondFalse 0
 Text Lorem ipsum xdxd
-SetCondTrue 4
-End
+SetCondTrue 0
 
 Start CondTrue 1
 Text Lorem ipsum dolor amet
-End
 
 Npc
 Image images/character/char1.png
@@ -30,12 +27,11 @@ ImagePos 0 0 64
 Pos 3 8
 Name this is a test
 
-Start CondTrue 3
-Lorem ipsumss. Ihave nothing to say.
+Start CondTru 1
+Text Lorem ipsumss. Ihave nothing to say.
 Choice This is some choice question/Check/Don't Check
 ChoiceOne SetCondTrue 4 Text You chcked?? How is that possible?
 ChoiceTwo Text YOU didn't check?? Wel okay.
-End
 
 Npc
 Image images/character/char1.png

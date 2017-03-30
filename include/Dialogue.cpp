@@ -9,6 +9,17 @@ Dialogue::Dialogue()
 {
 }
 
+void Dialogue::pushNextText()
+{
+	std::vector<int> newIntVec;
+	std::vector<bool> newBoolVec;
+
+	condition.push_back(newIntVec);
+	conditionCheck.push_back(newBoolVec);
+	chgNum.push_back(newIntVec);
+	chgCheck.push_back(newBoolVec);
+}
+
 void Dialogue::pushText(std::string textInp)
 {
 	text.push_back(textInp);
@@ -16,42 +27,46 @@ void Dialogue::pushText(std::string textInp)
 
 void Dialogue::pushCondition(int condInp)
 {
-	condition.push_back(condInp);
+	condition[condition.size() - 1].push_back(condInp);
 }
 
-void Dialogue::pushConditionNeg(bool condNegInp)
+void Dialogue::pushConditionCheck(bool condCheckInp)
 {
-	conditionNeg.push_back(condNegInp);
-}
-
-void Dialogue::pushChgCheck(bool chgChkInp)
-{
-	chgCheck.push_back(chgChkInp);
-}
-
-void Dialogue::pushChgNeg(bool chgNegInp)
-{
-	chgNeg.push_back(chgNegInp);
+	conditionCheck[conditionCheck.size() - 1].push_back(condCheckInp);
 }
 
 void Dialogue::pushChgNum(int chgNumInp)
 {
-	chgNum.push_back(chgNumInp);
+	chgNum[chgNum.size() - 1].push_back(chgNumInp);
 }
 
-void Dialogue::pushChoiceCheck(bool choiceChkInp)
+void Dialogue::pushChgCheck(bool chgChkInp)
 {
-	choiceCheck.push_back(choiceChkInp);
+	chgCheck[chgCheck.size() - 1].push_back(chgChkInp);
 }
 
-void Dialogue::pushChoiceOne(std::string choiceOneInp)
+//******** ACCESSORS **********
+std::vector<std::string> Dialogue::getText()
 {
-	choiceOne.push_back(choiceOneInp);
+	return text;
 }
 
-void Dialogue::pushChoiceTwo(std::string choiceTwoInp)
+std::vector<std::vector<int>> Dialogue::getCondition()
 {
-	choiceTwo.push_back(choiceTwoInp);
+	return condition;
 }
 
-void Dialogue::pushChgChoice(
+std::vector<std::vector<bool>> Dialogue::getConditionCheck()
+{
+	return conditionCheck;
+}
+
+std::vector<std::vector<int>> Dialogue::getChgNum()
+{
+	return chgNum;
+}
+
+std::vector<std::vector<bool>> Dialogue::getChgCheck()
+{
+	return chgCheck;
+}

@@ -7,6 +7,7 @@ class StateManager
 		//State control
 		int currentState;
 		int currentBattleState;
+		std::vector<bool> event;
 	
 		//Menu (state 0)
 		bool menuLoaded;
@@ -22,8 +23,6 @@ class StateManager
 		std::unique_ptr<Map> background;
 		std::unique_ptr<Map> collision;
 
-		Npc tempNpc;
-		//TODO DO THIS FOR ALL OTHER TEMP OBJECTS. ALSO MAKE DECONSTRUCTOR TO SAFELY DELETE THESE NPCS
 		std::vector<Npc*> npc;
 		bool speaking;
 
