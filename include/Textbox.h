@@ -15,10 +15,15 @@ class Textbox
 		bool currentCompleted;
 
 		//Choices
-		std::string tempChoiceText;
-		sf::RectangleShape choiceRect;
+		sf::RectangleShape choiceBox;
+		sf::RectangleShape curChoice;
+		sf::Text choiceInstruct;
+		sf::Text choiceOne;
+		sf::Text choiceTwo;
 		bool choiceBoxOpen;
+		bool displayChoiceBoxes;
 		int currentChoice;
+		int oldTextSize;
 
 		//Stores text split up
 		std::vector<std::string> sVec;
@@ -59,7 +64,6 @@ class Textbox
 		void setFont(sf::String);
 		void setName(sf::String);
 		void setText(sf::String);
-		void setTextSpeed(int);
 		
 		//****** MUTATORS *********
 		sf::Text getName();
@@ -77,7 +81,7 @@ class Textbox
 		//**** DURING TEXT *********
 		void animateText(std::string);
 		bool textHandler(sf::String, sf::String, bool, bool&);
-		void choiceBoxDisp(std::string, std::string, bool, bool&);
+		int choiceBoxDisp(std::string, std::string, std::string, std::string, std::string, std::string, std::string, bool, bool&);
 		void makeChoice();
 
 		//****** POST TEXT *********

@@ -310,8 +310,10 @@ void StateManager::loadMainMapFile(std::string fileNm)
 {
 	//Temp var
 	std::string strInp;
+	int intInp = 0;
 	int numOne, numTwo, numThree;
 	numOne = numTwo = numThree = 0;
+	int curChoice = 1;
 
 	int npcCounter = -1;
 	int currentTextNum = -1;
@@ -448,6 +450,111 @@ void StateManager::loadMainMapFile(std::string fileNm)
 			mainMapFile >> strInp;
 			npc[npcCounter]->pushChgCheck(false);
 			npc[npcCounter]->pushChgNum(atoi(strInp.c_str()));
+		}
+		if(strInp == "Choice")
+		{
+			npc[npcCounter]->curChoiceTrue();
+
+			char readText;
+			strInp = "";
+			
+			//Gets the whole text (including whitespace)
+			while(mainMapFile.peek() != '\n')
+			{
+				mainMapFile.get(readText);
+				strInp += readText;
+			}
+
+			npc[npcCounter]->pushChoice(strInp);
+			//Just in case the text overlaps with keywords below
+			strInp = ""; 
+		}
+		if(strInp == "ChoiceOne")
+		{
+			curChoice = 1;
+			char readText;
+			strInp = "";
+			
+			//Gets the whole text (including whitespace)
+			while(mainMapFile.peek() != '\n')
+			{
+				mainMapFile.get(readText);
+				strInp += readText;
+			}
+
+			npc[npcCounter]->pushChoiceOne(strInp);
+			//Just in case the text overlaps with keywords below
+			strInp = ""; 
+
+		}
+		if(strInp == "ChoiceTwo")
+		{
+			curChoice = 2;
+			char readText;
+			strInp = "";
+			
+			//Gets the whole text (including whitespace)
+			while(mainMapFile.peek() != '\n')
+			{
+				mainMapFile.get(readText);
+				strInp += readText;
+			}
+
+			npc[npcCounter]->pushChoiceTwo(strInp);
+			//Just in case the text overlaps with keywords below
+			strInp = ""; 
+		}
+		if(strInp == "*SetCondTrue")
+		{
+			mainMapFile >> intInp;
+			if(curChoice == 1)
+			{
+				npc[npcCounter]->pushChgOneNum(intInp);
+				npc[npcCounter]->pushChgOneBool(true);
+			}
+			else if(curChoice == 2)
+			{
+				npc[npcCounter]->pushChgTwoNum(intInp);
+				npc[npcCounter]->pushChgTwoBool(true);
+			}
+		}
+		if(strInp == "*SetCondFalse")
+		{
+			mainMapFile >> intInp;
+			if(curChoice == 1)
+			{
+				npc[npcCounter]->pushChgOneNum(intInp);
+				npc[npcCounter]->pushChgOneBool(false);
+			}
+			else if(curChoice == 2)
+			{
+				npc[npcCounter]->pushChgTwoNum(intInp);
+				npc[npcCounter]->pushChgTwoBool(false);
+			}
+
+		}
+		if(strInp == "*Text")
+		{
+			char readText;
+			strInp = "";
+			
+			//Gets the whole text (including whitespace)
+			while(mainMapFile.peek() != '\n')
+			{
+				mainMapFile.get(readText);
+				strInp += readText;
+			}
+
+			if(curChoice == 1)
+			{
+				npc[npcCounter]->pushChoiceOneDisp(strInp);
+			}
+			else if(curChoice == 2)
+			{
+				npc[npcCounter]->pushChoiceTwoDisp(strInp);
+			}
+			//Just in case the text overlaps with keywords below
+			strInp = ""; 
 		}
 	} while(!mainMapFile.eof());
 	mainMapFile.close();

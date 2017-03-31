@@ -17,6 +17,16 @@ Textbox::Textbox()
 	sf::Color bxColor(242, 242, 242);
 	rec.setFillColor(bxColor);
 	rec.setSize(sf::Vector2f(0, height));
+
+	choiceBox.setFillColor(bxColor);
+	choiceBox.setSize(sf::Vector2f(800, 200));
+	curChoice.setFillColor(sf::Color::Green);
+	curChoice.setSize(sf::Vector2f(800, 75));
+
+	currentChoice = 0;
+	choiceBoxOpen = false;
+	oldTextSize = 0;
+	displayChoiceBoxes= false;
 	open = false;
 	currentCompleted = false;
 
@@ -24,19 +34,24 @@ Textbox::Textbox()
 	font.loadFromFile("font/Ubuntu.ttf");
 	text.setFont(font);
 	name.setFont(font);
-	nextPrompt.setFont(font);
 	name.setStyle(sf::Text::Underlined);
+	nextPrompt.setFont(font);
+
+	choiceInstruct.setFont(font);
+	choiceInstruct.setStyle(sf::Text::Underlined);
+	choiceOne.setFont(font);
+	choiceTwo.setFont(font);
+
 
 	//Sets character sizes
 	text.setCharacterSize(35);
 	name.setCharacterSize(25);
 	nextPrompt.setCharacterSize(0);
 
-	//TODO Choices
-	choiceRect.setFillColor(sf::Color::Green);
-	choiceRect.setSize(sf::Vector2f(800, 45));
-	currentChoice = 0;
-	choiceBoxOpen = false;
+	choiceInstruct.setCharacterSize(25);
+	choiceOne.setCharacterSize(30);
+	choiceTwo.setCharacterSize(30);
+
 
 	//Load Music
 	mu.openFromFile("sound/textNoise.wav");
@@ -45,6 +60,11 @@ Textbox::Textbox()
 	sf::Color txtColor(109, 109, 109);
 	text.setColor(txtColor);
 	name.setColor(txtColor);
+
+	choiceInstruct.setColor(txtColor);
+	choiceOne.setColor(txtColor);
+	choiceTwo.setColor(txtColor);
+
 	nextPrompt.setColor(txtColor);
 
 	//Time management for opening/closing box
@@ -61,6 +81,10 @@ Textbox::Textbox()
 	textNum = 0;
 	textSpeed = 20;
 	lastTimeLetter = 0;
+
+	//Choice Instruction is always the same
+	choiceInstruct.setString("Choose an option.");
+	nextPrompt.setString("Press spacebar to continue...");
 }
 
 //*********** ACCESSORS *************
@@ -85,12 +109,6 @@ void Textbox::setText(sf::String str)
 	text.setString(str);
 }
 
-//Sets textspeed
-void Textbox::setTextSpeed(int num)
-{
-	textSpeed = num;
-}
-
 //********* MUTATORS *********
 //Returns name
 sf::Text Textbox::getName()
@@ -112,28 +130,27 @@ void Textbox::updatePosition(sf::View view)
 
 	text.setPosition(sf::Vector2f(posX + 50, posY + 40));
 	name.setPosition(sf::Vector2f(posX + 20, posY + 10));
-	if(choiceBoxOpen)
-	{
-		nextPrompt.setPosition(sf::Vector2f(posX + 700, posY + 120));
-	}
-	else
-	{
-		nextPrompt.setPosition(sf::Vector2f(posX + 650, posY + 120));
-	}
+	nextPrompt.setPosition(sf::Vector2f(posX + 650, posY + 120));
+
+	//TODO 
+	choiceBox.setPosition(sf::Vector2f(posX + 150, posY - 300));
+	choiceOne.setPosition(sf::Vector2f(posX + 150, posY - 250));
+	choiceTwo.setPosition(sf::Vector2f(posX + 150, posY - 150));
 
 	rec.setPosition(sf::Vector2f(posX, posY));
 
-	//Sets the position of box 
+	//TODO Sets the position of box 
 	if(currentChoice == 0)
 	{
-		choiceRect.setPosition(sf::Vector2f(posX + 35, posY + 38));
+		curChoice.setPosition(sf::Vector2f(posX + 150, posY - 225));
 	}
 	else if(currentChoice == 1)
 	{
-		choiceRect.setPosition(sf::Vector2f(posX + 35, posY + 83));
+		curChoice.setPosition(sf::Vector2f(posX + 150, posY - 175));
 	}
 }
 
+//TODO
 void Textbox::readFromScript(std::string inpFile)
 {
 	std::ifstream scriptFile(inpFile);
@@ -144,9 +161,13 @@ void Textbox::readFromScript(std::string inpFile)
 void Textbox::drawAll(sf::RenderWindow& win)
 {
 	win.draw(rec);
-	if(choiceBoxOpen)
+	if(displayChoiceBoxes)
 	{
-		win.draw(choiceRect);
+		win.draw(choiceBox);
+		win.draw(curChoice);
+		win.draw(choiceInstruct);
+		win.draw(choiceOne);
+		win.draw(choiceTwo);
 	}
 	win.draw(text);
 	win.draw(name);
@@ -291,18 +312,6 @@ void Textbox::animateText(std::string str)
 		//Resets temp string, and index
 		nextPrompt.setCharacterSize(25);
 
-		if(choiceBoxOpen)
-		{
-			//Choice text
-			nextPrompt.setString("Make a decision...");
-		}
-		else
-		{
-			//Reg text
-			nextPrompt.setString("Press spacebar to continue...");
-		}
-
-
 		animText = "";
 		textIndex = 0;
 	}
@@ -352,7 +361,9 @@ bool Textbox::textHandler(sf::String nm, sf::String str, bool condition, bool& c
 	return false;
 }
 
-void Textbox::choiceBoxDisp(std::string choiceOne, std::string choiceTwo, bool condition, bool& currentlyTalking)
+//Return 0 if choiceBox isn't done yet.
+//Returns 1 or 2 if choiceBox is done and indicates which choice the user chose
+int Textbox::choiceBoxDisp(std::string nm, std::string textStr, std::string regInp, std::string strOne, std::string strTwo, std::string choiceOneDisp, std::string choiceTwoDisp, bool condition, bool& currentlyTalking)
 {
 	time = clock.getElapsedTime();
 	currentTime = time.asMilliseconds();
@@ -363,19 +374,77 @@ void Textbox::choiceBoxDisp(std::string choiceOne, std::string choiceTwo, bool c
 		openBox();
 		textNum = 1;
 		currentlyTalking = true;
-		tempChoiceText = choiceOne + '\n' + choiceTwo;
+		convertText(textStr, sVec);
+		oldTextSize = sVec.size();
 	}
 
-	if(textNum == 1)
+	for(int i = 0; i < sVec.size(); i++)
 	{
-		animateText(tempChoiceText);
+		if(textNum == i + 1)
+		{
+			setName(nm);
+			animateText(sVec[i]);
+
+			if(nextText())
+			{
+				if(sVec.size() == textNum)
+				{
+					textNum++;
+				}
+				else
+				{
+					textNum = i + 2;
+				}
+			}
+		}
+	}
+
+	if(textNum == sVec.size() + 1)
+	{
+		animateText(regInp);
 		if(currentCompleted)
 		{
+			displayChoiceBoxes = true;
+			choiceOne.setString(strOne);
+			choiceTwo.setString(strTwo);
 			makeChoice();
 		}
 		if(nextText())
 		{
-			textNum = -1;
+			displayChoiceBoxes = false;
+			textNum = sVec.size() + 2;
+			if(currentChoice == 0)
+			{
+				convertText(choiceOneDisp, sVec);
+			}
+			else if(currentChoice == 1)
+			{
+				convertText(choiceTwoDisp, sVec);
+			}
+		}
+	}
+
+	//New zero keeps track of what number "textNum" is at 
+	int newZero = oldTextSize + 1;
+
+	for(int i = newZero; i < sVec.size() + newZero; i++)
+	{
+		if(textNum == i + 1)
+		{
+			setName(nm);
+			animateText(sVec[i - newZero]);
+
+			if(nextText())
+			{
+				if(sVec.size() + newZero == textNum)
+				{
+					textNum = -1;
+				}
+				else
+				{
+					textNum = i + 2;
+				}
+			}
 		}
 	}
 
@@ -384,9 +453,11 @@ void Textbox::choiceBoxDisp(std::string choiceOne, std::string choiceTwo, bool c
 		closeBox();
 		currentChoice = 0;
 		choiceBoxOpen = false;
-		textNum = 0;
 		currentlyTalking = false;
+		textNum = 0;
+		return currentChoice;
 	}
+	return 0;
 }
 
 void Textbox::makeChoice()
@@ -394,10 +465,7 @@ void Textbox::makeChoice()
 	bool sPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::S);
 	bool wPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::W);
 
-	time = clock.getElapsedTime();
-	currentTime = time.asMilliseconds();
-
-	//To change current sellection
+	//To change current selection
 	if(sPressed && currentChoice == 0)
 	{
 		currentChoice = 1;
@@ -425,7 +493,7 @@ void Textbox::closeBox()
 bool Textbox::nextText()
 {
 	int textDelay;
-	if(choiceBoxOpen)
+	if(displayChoiceBoxes)
 	{
 		//Choice text
 		textDelay = 500;

@@ -18,6 +18,7 @@ Npc::Npc()
 	//Initializes speaking bool
 	speaking = false;
 	colliding = false;
+	//allowChoice = false;
 }
 
 //Gets the converted vector, deals with animation/textbox calls, and deals with multiple textboxes
@@ -41,25 +42,40 @@ void Npc::speak(std::vector<bool>& event, Textbox& box, Player& player)
 
 			if(allowText)
 			{
-				if(box.textHandler(name, getText()[i], cond, speaking))
+				if(getChoiceFlag()[i])
 				{
-					for(int chgCounter = 0; chgCounter < getChgNum()[i].size(); chgCounter++)
+					switch(box.choiceBoxDisp(name, getText()[i], getChoiceDisp()[i], getChoiceOne()[i], getChoiceTwo()[i], getChoiceOneDisp()[i], getChoiceTwoDisp()[i], cond, speaking))
 					{
-						event[getChgNum()[chgCounter][i]] = getChgCheck()[chgCounter][i];
+						case 0:
+							//Choice box is not completed yet
+							break;
+						case 1:
+							//Change assuming the first choice
+							for(int chgCounter = 0; chgCounter < getChgOneNum()[i].size(); chgCounter++)
+							{
+								event[getChgOneNum()[chgCounter][i]] = getChgOneBool()[chgCounter][i];
+							}
+							break;
+						case 2:
+							//Change assuming the second choice
+							for(int chgCounter = 0; chgCounter < getChgOneNum()[i].size(); chgCounter++)
+							{
+								event[getChgTwoNum()[chgCounter][i]] = getChgTwoBool()[chgCounter][i];
+							}
+							break;
 					}
+				}
+				else if(box.textHandler(name, getText()[i], cond, speaking))
+				{
+						for(int chgCounter = 0; chgCounter < getChgNum()[i].size(); chgCounter++)
+						{
+							event[getChgNum()[chgCounter][i]] = getChgCheck()[chgCounter][i];
+						}
 				}
 				break;
 			}
 		}
 	}
-
-//	if(colliding)
-//	{
-//		//box.textHandler(name, str, cond, speaking);
-//	}
-
-	//TODO test
-	//box.choiceBoxDisp("Hello", "Not Hello", cond, speaking);
 }
 
 void Npc::collision(Player& player)

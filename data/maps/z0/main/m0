@@ -28,10 +28,13 @@ Pos 3 8
 Name this is a test
 
 Start CondTru 1
-Text Lorem ipsumss. Ihave nothing to say.
-Choice This is some choice question/Check/Don't Check
-ChoiceOne SetCondTrue 4 Text You chcked?? How is that possible?
-ChoiceTwo Text YOU didn't check?? Wel okay.
+Text Is this possible?
+Choice This is some choice question
+ChoiceOne Check
+*SetCondTrue 4
+*Text You chcked?? How is that possible?
+ChoiceTwo Don't Check
+*Text YOU didn't check?? Wel okay.
 
 Npc
 Image images/character/char1.png
