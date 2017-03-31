@@ -7,6 +7,7 @@ Mana 80
 Agility 15
 Atk 15
 Image images/enemies/test4.png 0
+Skill 0 1 2 3
 
 Enemy 2
 Name Test two

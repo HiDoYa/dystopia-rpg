@@ -1,6 +1,8 @@
 #include <SFML/Audio.hpp>
 #include "SpriteManage.h"
 
+#include "Skill.h"
+
 class Map;
 class UIOverlay;
 
@@ -10,6 +12,9 @@ class UIOverlay;
 class Player: public SpriteManage
 {
 	private:
+		//Skill
+		std::vector<Skill> skills;
+
 		//Time management for box open/close
 		sf::Clock clock;
 		sf::Time tme;

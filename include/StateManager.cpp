@@ -241,6 +241,7 @@ void StateManager::loadMapEnemies(std::string enemyList)
 	while(!enemyFile.eof())
 	{
 		enemyFile >> strInp;
+		//TODO Enemy file also stores which skills the enemy should use
 		if(strInp == "Enemy")
 		{
 			//Increments counter and creates new enemy

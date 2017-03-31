@@ -11,6 +11,7 @@
 #include "include/Npc.h"
 #include "include/Player.h"
 #include "include/SpriteManage.h"
+#include "include/Skill.h"
 #include "include/Textbox.h"
 #include "include/UIOverlay.h"
 

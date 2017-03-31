@@ -1,13 +1,19 @@
 #include "SpriteManage.h"
 
+#include "Skill.h"
+
 #ifndef ALLY_H
 #define ALLY_H
 
 class Ally: public SpriteManage
 {
 	private:
+		//Skills
+		std::vector<Skill> skills;
+		
 		//Attributes
 		std::string name;
+		int level; //TODO 
 		int maxHp;
 		int currentHp;
 		int maxMana;
