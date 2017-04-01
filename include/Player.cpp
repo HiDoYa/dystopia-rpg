@@ -37,12 +37,9 @@ Player::Player()
 
 	//Default stats
 	level = 1;
-	currentHp = 100;
-	maxHp = 100;
-	currentMana = 80;
-	maxMana = 80;
-	agility = 5;
-	atk = 1500;
+	currentHp = maxHp = 100;
+	currentMana = maxMana = 100;
+	strength = defense = agility = 10;
 	exp = 10;
 	currency = 15;
 	battlePos = 1;
@@ -82,14 +79,19 @@ void Player::setMaxMana(int inp, UIOverlay& overlay)
 	overlay.setMana(currentMana, maxMana);
 }
 
+void Player::setStrength(int inp)
+{
+	strength = inp;
+}
+
+void Player::setDefense(int inp)
+{
+	defense = inp;
+}
+
 void Player::setAgility(int inp)
 {
 	agility = inp;
-}
-
-void Player::setAtk(int inp)
-{
-	atk = inp;
 }
 
 void Player::setExp(int inp, UIOverlay& overlay)
@@ -137,14 +139,19 @@ int Player::getMaxMana()
 	return maxMana;
 }
 
+int Player::getStrength()
+{
+	return strength;
+}
+
+int Player::getDefense()
+{
+	return defense;
+}
+
 int Player::getAgility()
 {
 	return agility;
-}
-
-int Player::getAtk()
-{
-	return atk;
 }
 
 int Player::getExp()

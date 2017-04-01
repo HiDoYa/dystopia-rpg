@@ -15,7 +15,7 @@ class Player: public SpriteManage
 		//Skill
 		std::vector<Skill> skills;
 
-		//Time management for box open/close
+		//Time management for sprite animation
 		sf::Clock clock;
 		sf::Time tme;
 		float lastTimeAnim;
@@ -38,6 +38,12 @@ class Player: public SpriteManage
 		int texturePosY;
 		bool moving;
 		int movingNum;
+		bool canMoveUp;
+		bool canMoveDown;
+		bool canMoveRight;
+		bool canMoveLeft;
+		//To check for enemy
+		bool checkEncounter;
 
 		//Attributes
 		int level;
@@ -45,21 +51,14 @@ class Player: public SpriteManage
 		int currentHp;
 		int maxMana;
 		int currentMana;
+		int strength;
+		int defense;
 		int agility;
-		int atk;
+
+		//Etc
 		int exp;
 		int currency;
-
 		int battlePos;
-
-		//Prohibit movement
-		bool canMoveUp;
-		bool canMoveDown;
-		bool canMoveRight;
-		bool canMoveLeft;
-
-		//To check for enemy
-		bool checkEncounter;
 	public:
 		Player();
 
@@ -69,8 +68,11 @@ class Player: public SpriteManage
 		void setMaxHp(int, UIOverlay&);
 		void setCurrentMana(int, UIOverlay&);
 		void setMaxMana(int, UIOverlay&);
+
+		void setStrength(int);
+		void setDefense(int);
 		void setAgility(int);
-		void setAtk(int);
+
 		void setExp(int, UIOverlay&);
 		void setCurrency(int, UIOverlay&);
 		void setBattlePos(int);
@@ -81,12 +83,15 @@ class Player: public SpriteManage
 		int getMaxHp();
 		int getCurrentMana();
 		int getMaxMana();
+
+		int getStrength();
+		int getDefense();
 		int getAgility();
-		int getAtk();
+
 		int getExp();
 		int getCurrency();
-
 		int getBattlePos();
+
 		bool getMoving();
 
 		//***** Etc *******

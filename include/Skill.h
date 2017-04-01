@@ -4,6 +4,8 @@
 class Skill
 {
 	private:
+		//For enemy, all skills are equipped.
+		//For ally/player, only some skills are equipped
 		bool currentlyEquipped;
 		int manaCost;
 
@@ -37,7 +39,7 @@ class Skill
 	public:
 		Skill();
 		
-		//TODO Formulas based on attacker stats/attacked stats
+		//TODO Formulas based on attacker stats/attacked stats. Return damage amount
 		
 		//****** MUTATORS *********
 		void setMult(int, int);

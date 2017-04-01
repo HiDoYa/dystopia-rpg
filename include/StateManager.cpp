@@ -109,6 +109,7 @@ void StateManager::loadAlly()
 		if(inp == "Hp")
 		{
 			allyFile >> inp;
+			//TODO
 			ally[allyCounter]->setDefaultHp(atoi(inp.c_str()));
 
 			allyFile >> inp;

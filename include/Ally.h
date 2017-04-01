@@ -13,25 +13,15 @@ class Ally: public SpriteManage
 		
 		//Attributes
 		std::string name;
-		int level; //TODO 
-		int maxHp;
+		int level;
 		int currentHp;
-		int maxMana;
+		int maxHp;
 		int currentMana;
+		int maxMana;
+
+		int strength;
+		int defense;
 		int agility;
-		int atk;
-
-		//Default attributes (lvl 1)
-		int defaultHp;
-		int defaultMana;
-		int defaultAgility;
-		int defaultAtk;
-
-		//Attributes increase
-		int hpInc;
-		int manaInc;
-		int agilityInc;
-		int atkInc;
 
 		//Etc
 		bool allyInParty;
@@ -41,24 +31,15 @@ class Ally: public SpriteManage
 
 		//****** Mutators ********
 		void setName(std::string);
+		void setLevel(int);
 		void setCurrentHp(int);
 		void setMaxHp(int);
 		void setCurrentMana(int);
 		void setMaxMana(int);
+
+		void setStrength(int);
+		void setDefense(int);
 		void setAgility(int);
-		void setAtk(int);
-
-		//Default at lvl 1
-		void setDefaultHp(int);
-		void setDefaultMana(int);
-		void setDefaultAgility(int);
-		void setDefaultAtk(int);
-
-		//Stat increase level up
-		void setHpInc(int);
-		void setManaInc(int);
-		void setAgilityInc(int);
-		void setAtkInc(int);
 
 		//Etc
 		void setBattlePos(int);
@@ -66,32 +47,19 @@ class Ally: public SpriteManage
 
 		//****** Mutators ********
 		std::string getName();
+		int getLevel();
 		int getCurrentHp();
 		int getMaxHp();
 		int getCurrentMana();
 		int getMaxMana();
+
+		int getStrength();
+		int getDefense();
 		int getAgility();
-		int getAtk();
-
-		//Default at level 1
-		int getDefaultHp();
-		int getDefaultMana();
-		int getDefaultAgility();
-		int getDefaultAtk();
-
-		//Stat increase level up
-		int getHpInc();
-		int getManaInc();
-		int getAgilityInc();
-		int getAtkInc();
 
 		//Etc
 		int getBattlePos();
 		bool getAllyInParty();
-
-		//******* USED FOR LEVELING UP **********
-		void levelUp(int);
-		void loadingAlly(int, int, int);
 };
 
 #endif

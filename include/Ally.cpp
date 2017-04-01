@@ -7,13 +7,10 @@ Ally::Ally()
 {
 	//Initialization default
 	name = "default";
+	level = 1;
 	maxHp = currentHp = 100;
 	maxMana = currentMana = 100;
-	agility = atk = 10;
-	defaultHp = defaultMana = 100;
-	defaultAgility = defaultAtk = 100;
-	hpInc = manaInc = 10;
-	agilityInc = atkInc = 5;
+	strength = defense = agility = 10;
 	allyInParty = false;
 	battlePos = 0;
 }
@@ -22,6 +19,11 @@ Ally::Ally()
 void Ally::setName(std::string inp)
 {
 	name = inp;
+}
+
+void Ally::setLevel(int inp)
+{
+	level = inp;
 }
 
 void Ally::setCurrentHp(int inp)
@@ -44,56 +46,19 @@ void Ally::setMaxMana(int inp)
 	maxMana = inp;
 }
 
+void Ally::setStrength(int inp)
+{
+	strength = inp;
+}
+
+void Ally::setDefense(int inp)
+{
+	defense = inp;
+}
+
 void Ally::setAgility(int inp)
 {
 	agility = inp;
-}
-
-void Ally::setAtk(int inp)
-{
-	atk = inp;
-}
-
-//Default attributes
-void Ally::setDefaultHp(int inp)
-{
-	defaultHp = inp;
-}
-
-void Ally::setDefaultMana(int inp)
-{
-	defaultMana = inp;
-}
-
-void Ally::setDefaultAgility(int inp)
-{
-	defaultAgility = inp;
-}
-
-void Ally::setDefaultAtk(int inp)
-{
-	defaultAtk = inp;
-}
-
-//Increase in attributes
-void Ally::setHpInc(int inp)
-{
-	hpInc = inp;
-}
-
-void Ally::setManaInc(int inp)
-{
-	manaInc = inp;
-}
-
-void Ally::setAgilityInc(int inp)
-{
-	agilityInc = inp;
-}
-
-void Ally::setAtkInc(int inp)
-{
-	atkInc = inp;
 }
 
 //Etc
@@ -111,6 +76,11 @@ void Ally::setAllyInParty(bool inp)
 std::string Ally::getName()
 {
 	return name;
+}
+
+int Ally::getLevel()
+{
+	return level;
 }
 
 int Ally::getCurrentHp()
@@ -133,56 +103,19 @@ int Ally::getMaxMana()
 	return maxMana;
 }
 
+int Ally::getStrength()
+{
+	return strength;
+}
+
+int Ally::getDefense()
+{
+	return defense;
+}
+
 int Ally::getAgility()
 {
 	return agility;
-}
-
-int Ally::getAtk()
-{
-	return atk;
-}
-
-//Default values
-int Ally::getDefaultHp()
-{
-	return defaultHp;
-}
-
-int Ally::getDefaultMana()
-{
-	return defaultMana;
-}
-
-int Ally::getDefaultAgility()
-{
-	return defaultAgility;
-}
-
-int Ally::getDefaultAtk()
-{
-	return defaultAtk;
-}
-
-//Stats increase
-int Ally::getHpInc()
-{
-	return hpInc;
-}
-
-int Ally::getManaInc()
-{
-	return manaInc;
-}
-
-int Ally::getAgilityInc()
-{
-	return agilityInc;
-}
-
-int Ally::getAtkInc()
-{
-	return atkInc;
 }
 
 //ETC
@@ -197,22 +130,3 @@ bool Ally::getAllyInParty()
 	return allyInParty;
 }
 
-//********** USED FOR LEVELING UP ***********
-void Ally::levelUp(int playerLevel)
-{
-	maxHp = currentHp = (playerLevel - 1) * hpInc + defaultHp;
-	maxMana = currentMana = (playerLevel - 1) * manaInc + defaultMana;
-	agility = (playerLevel - 1) * agilityInc + defaultAgility;
-	atk = (playerLevel - 1) * atkInc + defaultAtk;
-}
-
-void Ally::loadingAlly(int playerLevel, int currentHpInp, int currentManaInp)
-{
-	maxHp = playerLevel * hpInc + defaultHp;
-	maxMana = playerLevel * manaInc + defaultMana;
-	agility = playerLevel * agilityInc + defaultAgility;
-	atk = playerLevel * atkInc + defaultAtk;
-
-	currentHp = currentHpInp;
-	currentMana = currentManaInp;
-}

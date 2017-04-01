@@ -14,8 +14,10 @@ class Enemy: public SpriteManage
 		int initHp;
 		int currentMana;
 		int maxMana;
+
+		int strength;
+		int defense;
 		int agility;
-		int atk;
 
 		int chance;
 		bool alive;
@@ -39,8 +41,11 @@ class Enemy: public SpriteManage
 		void setInitHp(int);
 		void setMaxMana(int);
 		void setCurrentMana(int);
+
+		void setStrength(int);
+		void setDefense(int);
 		void setAgility(int);
-		void setAtk(int);
+
 		void setAlive(bool);
 		void setCanAtk(bool);
 		void setChance(int);
@@ -53,8 +58,11 @@ class Enemy: public SpriteManage
 		int getInitHp();
 		int getMaxMana();
 		int getCurrentMana();
+
+		int getStrength();
+		int getDefense();
 		int getAgility();
-		int getAtk();
+
 		bool getAlive();
 		bool getCanAtk();
 		int getChance();

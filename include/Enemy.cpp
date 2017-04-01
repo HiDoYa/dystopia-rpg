@@ -11,13 +11,10 @@ Enemy::Enemy()
 	//Default attributes of enemy
 	name.setString("Enemy");
 	level = 3;
-	maxHp = 100;
-	currentHp = 100;
+	maxHp = currentHp = 100;
+	maxMana = currentMana = 100;
 	initHp = 100;
-	maxMana = 10;
-	currentMana = 10;
-	agility = 100;
-	atk = 10;
+	strength = defense = agility = 10;
 
 	chance = 50;
 	alive = true;
@@ -77,14 +74,19 @@ void Enemy::setCurrentMana(int inp)
 	currentManaBar.setSize(sf::Vector2f((static_cast<float>(currentMana) / maxMana) * length, 10));
 }
 
+void Enemy::setStrength(int inp)
+{
+	strength = inp;
+}
+
+void Enemy::setDefense(int inp)
+{
+	defense = inp;
+}
+
 void Enemy::setAgility(int inp)
 {
 	agility = inp;
-}
-
-void Enemy::setAtk(int inp)
-{
-	atk = inp;
 }
 
 void Enemy::setAlive(bool inp)
@@ -139,14 +141,19 @@ int Enemy::getCurrentMana()
 	return currentMana;
 }
 
+int Enemy::getStrength()
+{
+	return strength;
+}
+
+int Enemy::getDefense()
+{
+	return defense;
+}
+
 int Enemy::getAgility()
 {
 	return agility;
-}
-
-int Enemy::getAtk()
-{
-	return atk;
 }
 
 bool Enemy::getAlive()
