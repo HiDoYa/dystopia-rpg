@@ -4,6 +4,8 @@ Chance 10
 Level 3
 Hp 100
 Mana 80
+Strength 10
+Defense 10
 Agility 15
 Atk 15
 Image images/enemies/test4.png 0
@@ -15,6 +17,7 @@ Chance 20
 Level 4
 Hp 250
 Mana 50
+Strength 10
+Defense 10
 Agility 25
-Atk 20
 Image images/character/char1.png 128

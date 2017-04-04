@@ -51,6 +51,7 @@ class Player: public SpriteManage
 		int currentHp;
 		int maxMana;
 		int currentMana;
+
 		int strength;
 		int defense;
 		int agility;

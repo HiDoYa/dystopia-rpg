@@ -62,8 +62,11 @@ void StateManager::loadMenu()
 		player.setCurrentHp(player.getCurrentHp(), overlay);
 		player.setMaxMana(player.getMaxMana(), overlay);
 		player.setCurrentMana(player.getCurrentMana(), overlay);
+
+		player.setStrength(player.getStrength());
+		player.setDefense(player.getDefense());
 		player.setAgility(player.getAgility());
-		player.setAtk(player.getAtk());
+
 		player.setExp(player.getExp(), overlay);
 		player.setCurrency(player.getCurrency(), overlay);
 
@@ -109,35 +112,33 @@ void StateManager::loadAlly()
 		if(inp == "Hp")
 		{
 			allyFile >> inp;
-			//TODO
-			ally[allyCounter]->setDefaultHp(atoi(inp.c_str()));
+			ally[allyCounter]->setCurrentHp(atoi(inp.c_str()));
 
 			allyFile >> inp;
-			ally[allyCounter]->setHpInc(atoi(inp.c_str()));
+			ally[allyCounter]->setMaxHp(atoi(inp.c_str()));
 		}
 		if(inp == "Mana")
 		{
 			allyFile >> inp;
-			ally[allyCounter]->setDefaultMana(atoi(inp.c_str()));
+			ally[allyCounter]->setCurrentMana(atoi(inp.c_str()));
 
 			allyFile >> inp;
-			ally[allyCounter]->setManaInc(atoi(inp.c_str()));
+			ally[allyCounter]->setMaxMana(atoi(inp.c_str()));
+		}
+		if(inp == "Strength")
+		{
+			allyFile >> inp;
+			ally[allyCounter]->setStrength(atoi(inp.c_str()));
+		}
+		if(inp == "Defense")
+		{
+			allyFile >> inp;
+			ally[allyCounter]->setDefense(atoi(inp.c_str()));
 		}
 		if(inp == "Agility")
 		{
 			allyFile >> inp;
-			ally[allyCounter]->setDefaultAgility(atoi(inp.c_str()));
-
-			allyFile >> inp;
-			ally[allyCounter]->setAgilityInc(atoi(inp.c_str()));
-		}
-		if(inp == "Atk")
-		{
-			allyFile >> inp;
-			ally[allyCounter]->setDefaultAtk(atoi(inp.c_str()));
-
-			allyFile >> inp;
-			ally[allyCounter]->setAtkInc(atoi(inp.c_str()));
+			ally[allyCounter]->setAgility(atoi(inp.c_str()));
 		}
 		if(inp == "Image")
 		{
@@ -150,12 +151,6 @@ void StateManager::loadAlly()
 		allyFile >> inp;
 	} while(!allyFile.eof());
 	allyFile.close();
-
-	//Initializes contents of ally assuming player is level 1
-	for(int i = 0; i < ally.size(); i++)
-	{
-		ally[i]->levelUp(1);
-	}
 }
 
 void StateManager::updateMenu(sf::RenderWindow& win)
@@ -172,7 +167,6 @@ void StateManager::updateMenu(sf::RenderWindow& win)
 			break;
 		case 1:
 			//TODO Load game
-			//TODO get ally current hp/mana. call levelUp(playerLevel) first, then call loadingAlly(3xint)
 			break;
 		case 2:
 			//Exits game
@@ -286,15 +280,20 @@ void StateManager::loadMapEnemies(std::string enemyList)
 			enemyListStore[tempCounter].setMaxMana(atoi(strInp.c_str()));
 			enemyListStore[tempCounter].setCurrentMana(atoi(strInp.c_str()));
 		}
+		if(strInp == "Strength")
+		{
+			enemyFile >> strInp;
+			enemyListStore[tempCounter].setStrength(atoi(strInp.c_str()));
+		}
+		if(strInp == "Defense")
+		{
+			enemyFile >> strInp;
+			enemyListStore[tempCounter].setDefense(atoi(strInp.c_str()));
+		}
 		if(strInp == "Agility")
 		{
 			enemyFile >> strInp;
 			enemyListStore[tempCounter].setAgility(atoi(strInp.c_str()));
-		}
-		if(strInp == "Atk")
-		{
-			enemyFile >> strInp;
-			enemyListStore[tempCounter].setAtk(atoi(strInp.c_str()));
 		}
 		if(strInp == "Image")
 		{

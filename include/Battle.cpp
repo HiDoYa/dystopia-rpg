@@ -485,7 +485,8 @@ void Battle::hpCalculate(int& currentBattleState, Player& player, UIOverlay& ove
 	switch (nextAttack)
 	{
 		case -1:
-			tempHpFinal = enemies[currentEnemySelected].getInitHp() - player.getAtk();
+			//TODO 
+			tempHpFinal = enemies[currentEnemySelected].getInitHp() - player.getStrength();
 			//Makes sure the lowest hp possible is 0
 			tempHpFinal = getMaxNum(0, tempHpFinal);
 			playerPostAttackAnimation(player);
@@ -498,7 +499,8 @@ void Battle::hpCalculate(int& currentBattleState, Player& player, UIOverlay& ove
 		case 0:
 		case 1:
 		case 2:
-			tempHpFinal = initHp - enemies[nextAttack].getAtk();
+			//TODO
+			tempHpFinal = initHp - enemies[nextAttack].getStrength();
 			//Makes sure the lowest hp possible is 0
 			tempHpFinal = getMaxNum(0, tempHpFinal);
 			enemyPostAttackAnimation();

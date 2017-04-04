@@ -118,3 +118,17 @@ std::vector<bool> Skill::getTargetNum()
 	return targetNum;
 }
 
+//******** DAMAGE CALCULATION *************
+
+int Skill:getDamageCalc(int allyStrength, int enemyDef, int enemyHealth)
+{
+}
+
+int Skill::getNormDamageCalc(int allyStrength, int enemyDef)
+{
+}
+
+int Skill::getPercentDamageCalc(int allyStrength, int enemyDef, int enemyHealth)
+{
+}
+
