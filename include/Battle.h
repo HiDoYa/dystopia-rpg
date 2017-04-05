@@ -11,8 +11,8 @@ class Battle
 {
 	private:
 		//Player options
-		std::vector<sf::CircleShape> tempCircleStore;
-		std::vector<std::vector<sf::CircleShape>> allyOptions;
+		sf::CircleShape tempCircle;
+		std::vector<sf::CircleShape> allyOptions;
 		int numSkills;
 		int currentSkill;
 		int currentOptionsShow;
@@ -29,12 +29,12 @@ class Battle
 		bool blinkTurn;
 
 		//TO keep track of battles
-		std::vector<bool> currentCanAtk;
 		std::vector<int> enemySelected;
 		int totalAlly;
 
 		int attackXDisp;
-		int nextAttack;
+		int nextCharType;
+		int nextCharCounter;
 		int goalPlace;
 
 		//Skill type
@@ -78,7 +78,7 @@ class Battle
 		void attackManager(int&, Player&, std::vector<Ally*>&);
 
 		//Battle state 1.5
-		void playerAllyTurnHandle();
+		void playerTurnHandle();
 		void playerAllyAttackHandle();
 		void playerAllyItem();
 		void playerAllyChangePos();
@@ -103,6 +103,7 @@ class Battle
 		void newTurn();
 		
 		//Drawing
+		void setCirclePos();
 		void drawEnemies(sf::RenderWindow&);
 		void drawAll(sf::RenderWindow&, int);
 
