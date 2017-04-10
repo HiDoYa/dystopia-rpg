@@ -62,6 +62,11 @@ class Skill
 		std::vector<int> getElement();
 		std::vector<int> getTarget();
 		std::vector<bool> getTargetNum();
+		
+		//****** DAMAGE CALC *********
+		int getDamageCalc(int, int, int);
+		int getNormDamageCalc(int, int);
+		int getPercentDamageCalc(int, int, int);
 };
 
 #endif

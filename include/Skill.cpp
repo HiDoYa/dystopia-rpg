@@ -120,7 +120,7 @@ std::vector<bool> Skill::getTargetNum()
 
 //******** DAMAGE CALCULATION *************
 
-int Skill:getDamageCalc(int allyStrength, int enemyDef, int enemyHealth)
+int Skill::getDamageCalc(int allyStrength, int enemyDef, int enemyHealth)
 {
 }
 
