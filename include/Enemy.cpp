@@ -18,6 +18,7 @@ Enemy::Enemy()
 
 	chance = 50;
 	alive = true;
+	battlePos = 0;
 	canAtk = true;
 	
 	//Set bar color
@@ -99,6 +100,11 @@ void Enemy::setCanAtk(bool inp)
 	canAtk = inp;
 }
 
+void Enemy::setBattlePos(int inp)
+{
+	battlePos = inp;
+}
+
 void Enemy::setChance(int inp)
 {
 	chance = inp;
@@ -164,6 +170,11 @@ bool Enemy::getAlive()
 bool Enemy::getCanAtk()
 {
 	return canAtk;
+}
+
+int Enemy::getBattlePos()
+{
+	return battlePos;
 }
 
 int Enemy::getChance()

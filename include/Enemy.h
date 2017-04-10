@@ -21,6 +21,7 @@ class Enemy: public SpriteManage
 
 		int chance;
 		bool alive;
+		int battlePos;
 		bool canAtk;
 
 		int length;
@@ -48,6 +49,7 @@ class Enemy: public SpriteManage
 
 		void setAlive(bool);
 		void setCanAtk(bool);
+		void setBattlePos(int);
 		void setChance(int);
 
 		//Accessors
@@ -65,6 +67,7 @@ class Enemy: public SpriteManage
 
 		bool getAlive();
 		bool getCanAtk();
+		int getBattlePos();
 		int getChance();
 
 		//Draw bars
