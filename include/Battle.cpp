@@ -295,7 +295,7 @@ int Battle::chooseCurrentSkill()
 
 //*********** BATTLE STATE 1 *********************
 //Sets nextAttack based on who is the fastest (-1 for player, -2 if everybody is done)
-void Battle::findFastestChar(Player& player)
+void Battle::findFastestChar(Player& player, Ally& ally)
 {
 	int highestAgil = -1;
 	nextCharType = -1;

@@ -61,6 +61,10 @@ class Battle
 		std::vector<sf::Vector2f> allyPos;
 		std::vector<sf::Vector2f> enemyPos;
 		std::vector<sf::Vector2f> optionsPos;
+
+		//Temp TO DELETE
+		int nextAttack;
+		bool playerCanAtk;
 	public:
 		Battle();
 
