@@ -11,7 +11,7 @@ Pos 3 2
 Name TestNpc
 
 Start CondTrue 1
-Text Lorem ipusm harhar
+Text Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
 SetCondFalse 0
 
 Start CondFalse 0
@@ -19,7 +19,7 @@ Text This is different text get scammed
 SetCondTrue 0
 
 Start CondTrue 1
-Text Lorem ipsum dolor amet
+Text Lorem ipusm harhar
 
 Npc
 Image images/character/char1.png

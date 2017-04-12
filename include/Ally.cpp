@@ -11,6 +11,7 @@ Ally::Ally()
 	maxHp = currentHp = 100;
 	maxMana = currentMana = 100;
 	strength = defense = agility = 10;
+	canAtk = true;
 	allyInParty = false;
 	battlePos = 0;
 }
@@ -62,6 +63,11 @@ void Ally::setAgility(int inp)
 }
 
 //Etc
+void Ally::setCanAtk(bool inp)
+{
+	canAtk = inp;
+}
+
 void Ally::setBattlePos(int inp)
 {
 	battlePos = inp;
@@ -120,9 +126,19 @@ int Ally::getAgility()
 
 //ETC
 //BattlePos is 0-5 corresponding to battle grid pos
+bool Ally::getCanAtk()
+{
+	return canAtk;
+}
+
 int Ally::getBattlePos()
 {
 	return battlePos;
+}
+
+std::vector<Skill> Ally::getSkill()
+{
+	return skill;
 }
 
 bool Ally::getAllyInParty()

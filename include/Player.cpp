@@ -12,7 +12,7 @@ Player::Player()
 	texturePosX = texturePosY = 0;
 
 	//A character
-	setTextureSprite("images/character/char1.png");
+	setTextureSprite("images/character/player2.png");
 	setTextureRect(64, 0);
 
 	//Sound
@@ -24,7 +24,7 @@ Player::Player()
 	lastTimeAnim = 0;
 	lastTimeMu = 0;
 	currentTime = 0;
-	spriteAnimationDelay = 90;
+	spriteAnimationDelay = 60;
 	stepSoundDelay = 300;
 
 	//Movement default
@@ -169,6 +169,11 @@ int Player::getBattlePos()
 	return battlePos;
 }
 
+std::vector<Skill> Player::getSkill()
+{
+	return skill;
+}
+
 bool Player::getMoving()
 {
 	return moving;
@@ -244,6 +249,7 @@ void Player::movePos()
 				break;
 		}
 		movingNum++;
+		spriteAnimation();
 
 		//Stop moving after 8 tmes
 		if(movingNum == 8)
@@ -263,33 +269,33 @@ void Player::movePos()
 	{
 		lastDirection = 0;
 		moving = true;
-		//TODO spriteAnimation();
+		spriteAnimation();
 		stepSound();
 	}
 	else if(sPress && canMoveDown)
 	{
 		lastDirection = 1;
 		moving = true;
-		//spriteAnimation();
+		spriteAnimation();
 		stepSound();
 	}
 	else if(aPress && canMoveLeft)
 	{
 		lastDirection = 2;
 		moving = true;
-		//spriteAnimation();
+		spriteAnimation();
 		stepSound();
 	}
 	else if(dPress && canMoveRight)
 	{
 		lastDirection = 3;
 		moving = true;
-		//spriteAnimation();
+		spriteAnimation();
 		stepSound();
 	}
 	else
 	{
-		//standStill();
+		standStill();
 	}
 
 	canMoveUp = canMoveDown = canMoveLeft = canMoveRight = true;

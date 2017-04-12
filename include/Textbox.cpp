@@ -44,13 +44,13 @@ Textbox::Textbox()
 
 
 	//Sets character sizes
-	text.setCharacterSize(35);
-	name.setCharacterSize(25);
+	text.setCharacterSize(20);
+	name.setCharacterSize(12);
 	nextPrompt.setCharacterSize(0);
 
-	choiceInstruct.setCharacterSize(25);
-	choiceOne.setCharacterSize(30);
-	choiceTwo.setCharacterSize(30);
+	choiceInstruct.setCharacterSize(15);
+	choiceOne.setCharacterSize(20);
+	choiceTwo.setCharacterSize(20);
 
 
 	//Load Music
@@ -128,9 +128,9 @@ void Textbox::updatePosition(sf::View view)
 	posX = view.getCenter().x - (view.getSize().x / 2);
 	posY = view.getCenter().y + (view.getSize().y / 2) - height; 
 
-	text.setPosition(sf::Vector2f(posX + 50, posY + 40));
-	name.setPosition(sf::Vector2f(posX + 20, posY + 10));
-	nextPrompt.setPosition(sf::Vector2f(posX + 650, posY + 120));
+	text.setPosition(sf::Vector2f(posX + 30, posY + 50));
+	name.setPosition(sf::Vector2f(posX + 20, posY + 20));
+	nextPrompt.setPosition(sf::Vector2f(posX + 701, posY + 120));
 
 	//TODO 
 	choiceBox.setPosition(sf::Vector2f(posX + 150, posY - 300));
@@ -310,7 +310,7 @@ void Textbox::animateText(std::string str)
 		currentCompleted = true;
 
 		//Resets temp string, and index
-		nextPrompt.setCharacterSize(25);
+		nextPrompt.setCharacterSize(13);
 
 		animText = "";
 		textIndex = 0;

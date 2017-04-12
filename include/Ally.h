@@ -9,7 +9,7 @@ class Ally: public SpriteManage
 {
 	private:
 		//Skills
-		std::vector<Skill> skills;
+		std::vector<Skill> skill;
 		
 		//Attributes
 		std::string name;
@@ -24,6 +24,7 @@ class Ally: public SpriteManage
 		int agility;
 
 		//Etc
+		bool canAtk;
 		bool allyInParty;
 		int battlePos;
 	public:
@@ -42,6 +43,7 @@ class Ally: public SpriteManage
 		void setAgility(int);
 
 		//Etc
+		void setCanAtk(bool);
 		void setBattlePos(int);
 		void setAllyInParty(bool);
 
@@ -58,7 +60,10 @@ class Ally: public SpriteManage
 		int getAgility();
 
 		//Etc
+		bool getCanAtk();
 		int getBattlePos();
+		std::vector<Skill> getSkill();
+
 		bool getAllyInParty();
 };
 

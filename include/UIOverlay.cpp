@@ -7,7 +7,7 @@ UIOverlay::UIOverlay()
 {
 	//Font
 	font.loadFromFile("font/Ubuntu.ttf");
-	currencyText.setCharacterSize(25);
+	currencyText.setCharacterSize(15);
 
 	//HP
 	maxHpBar.setFillColor(sf::Color::Red);
@@ -30,7 +30,7 @@ UIOverlay::UIOverlay()
 	//level Text
 	levelText.setFont(font);
 	levelText.setColor(sf::Color::Black);
-	levelText.setCharacterSize(35);
+	levelText.setCharacterSize(25);
 }
 
 //********** MUTATORS ************** 
@@ -54,7 +54,7 @@ void UIOverlay::setPosition(sf::View view)
 
 	currencyText.setPosition(sf::Vector2f(x + 900, y + 30));
 
-	levelText.setPosition(sf::Vector2f(x + 30, y + 30));
+	levelText.setPosition(sf::Vector2f(x + 33, y + 40));
 }
 
 void UIOverlay::setCurrency(int cur)

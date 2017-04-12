@@ -13,7 +13,7 @@ class Player: public SpriteManage
 {
 	private:
 		//Skill
-		std::vector<Skill> skills;
+		std::vector<Skill> skill;
 
 		//Time management for sprite animation
 		sf::Clock clock;
@@ -92,6 +92,7 @@ class Player: public SpriteManage
 		int getExp();
 		int getCurrency();
 		int getBattlePos();
+		std::vector<Skill> getSkill();
 
 		bool getMoving();
 

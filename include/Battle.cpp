@@ -89,7 +89,7 @@ void Battle::setupBattle(std::vector<Enemy> enemyList, Player& player, std::vect
 	{
 		if(player.getBattlePos() == ally[i]->getBattlePos())
 		{
-			ally[i]->setBattlePos((ally[i]->getBattlePos()++) % 6);
+			ally[i]->setBattlePos((ally[i]->getBattlePos() + 1) % 6);
 			i = 0;
 		}
 		//totalAlly = 2 because don't need to check ally with itself
@@ -97,7 +97,7 @@ void Battle::setupBattle(std::vector<Enemy> enemyList, Player& player, std::vect
 		{
 			if(ally[i]->getBattlePos() == ally[j]->getBattlePos())
 			{
-				ally[j]->setBattlePos((ally[j]->getBattlePos()++) % 6);
+				ally[j]->setBattlePos((ally[j]->getBattlePos() + 1) % 6);
 				//Set i/j to zero to recheck all
 				i = 0;
 				j = 0;
@@ -108,7 +108,7 @@ void Battle::setupBattle(std::vector<Enemy> enemyList, Player& player, std::vect
 	//Sets enemy and player positions
 	for(int i = 0; i < totalAlly - 1; i++)
 	{
-		ally[i]->setPosition(allyPos[ally->getBattlePos().x], allyPos[ally->getBattlePos().y]);
+		ally[i]->setPosition(allyPos[ally[i]->getBattlePos()].x, allyPos[ally[i]->getBattlePos()].y);
 	}
 	player.setPosition(allyPos[player.getBattlePos()].x, allyPos[player.getBattlePos()].y);
 
@@ -150,27 +150,50 @@ void Battle::setupBattle(std::vector<Enemy> enemyList, Player& player, std::vect
 void Battle::startBattle()
 {
 	//TODO Animation to transition from map to battle
+	//Use shader
 }
 
-void Battle::endBattle(int& scene) 
+
+
+//*********** BATTLE STATE 0 *********************
+//Sets nextAttack based on who is the fastest (-1 for player, -2 if everybody is done)
+void Battle::findFastestChar(Player& player, std::vector<Ally*> ally)
 {
-	bool gameWin = true;
-	for(int i = 0; i < numEnemies; i++)
+	int highestAgil = -1;
+	nextCharType = -1;
+	nextCharCounter = -1;
+
+	//Reset the position of rectangle (for changing position)
+	newPos = 0;
+
+	if(playerCanAtk)
 	{
-		//If some enemies are still alive, you don't win
-		if(enemies[i].getAlive())
+		highestAgil = player.getAgility();
+		nextCharType = 0;
+	}
+
+	//Checks agility for allies
+	for(int i = 0; i < totalAlly - 1; i++)
+	{
+		if(ally[i]->getCanAtk() && ally[i]->getAgility() > highestAgil)
 		{
-			gameWin = false;
+			highestAgil = ally[i]->getAgility();
+			nextCharCounter = i;
+			nextCharType = 1;
 		}
 	}
 
-	if(gameWin)
+	for(int i = 0; i < numEnemies; i++)
 	{
-		scene = 1;
+		if(enemies[i].getCanAtk() && highestAgil < enemies[i].getAgility())
+		{
+			highestAgil = enemies[i].getAgility();
+			nextCharCounter = i;
+			nextCharType = 2;
+		}
 	}
 }
 
-//*********** BATTLE STATE 0 *********************
 void Battle::changeEnemyFocus()
 {
 	bool qPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Q);
@@ -294,47 +317,11 @@ int Battle::chooseCurrentSkill()
 }
 
 //*********** BATTLE STATE 1 *********************
-//Sets nextAttack based on who is the fastest (-1 for player, -2 if everybody is done)
-void Battle::findFastestChar(Player& player, Ally& ally)
-{
-	int highestAgil = -1;
-	nextCharType = -1;
-	nextCharCounter = -1;
 
-	//Reset the position of rectangle (for changing position)
-	newPos = 0;
-
-	if(playerCanAtk)
-	{
-		highestAgil = player.getAgility();
-		nextCharType = 0;
-	}
-
-	//Checks agility for allies
-	for(int i = 0; i < totalAlly - 1; i++)
-	{
-		if(ally[i]->getCanAtk() && ally[i]->getAgility() > highestAgil)
-		{
-			highestAgil = ally[i]->getAgility();
-			nextCharCounter = i;
-			nextCharType = 1;
-		}
-	}
-
-	for(int i = 0; i < numEnemies; i++)
-	{
-		if(enemies[i].getCanAtk() && highestAgil < enemies[i].getAgility())
-		{
-			highestAgil = enemies[i].getAgility();
-			nextCharCounter = i;
-			nextCharType = 2;
-		}
-	}
-}
 
 void Battle::attackManager(int& currentBattleState, Player& player, std::vector<Ally*>& ally)
 {
-	findFastestChar(player);
+	findFastestChar(player, ally);
 
 	switch (nextCharType)
 	{
@@ -659,6 +646,18 @@ bool Battle::checkPlayerDeath(Player& player)
 	return false;
 }
 
+//Just sets ally to dead if less than 0 hp. Doesn't matter in terms of game over
+void Battle::checkAllyDeath(std::vector<Ally*>& ally)
+{
+	for(int i = 0; i < totalyAlly - 1; i++)
+	{
+		if(ally[i]->getCurrentHp() < 1)
+		{
+			ally[i]->setAlive(false);
+		}
+	}
+}
+
 //Returns true if all enemies are dead
 bool Battle::checkEnemyDeaths()
 {
@@ -679,7 +678,7 @@ bool Battle::checkEnemyDeaths()
 	return allDead;
 }
 
-void Battle::checkEndBattle(Player& player, int& currentBattleState, int& currentState)
+void Battle::checkEndBattle(Player& player, std::vector<Ally*>& ally, int& currentBattleState, int& currentState)
 {
 	if(checkPlayerDeath(player))
 	{
@@ -693,6 +692,7 @@ void Battle::checkEndBattle(Player& player, int& currentBattleState, int& curren
 	}
 	else
 	{
+		checkAllyDeath();
 		newTurn();
 		currentEnemyDeath();
 		currentBattleState = 0;
@@ -715,10 +715,17 @@ void Battle::currentEnemyDeath()
 	}
 }
 
-//Sets up for new turn
+//Sets up for new turn by resetting all canAtk flags
 void Battle::newTurn()
 {
 	playerCanAttack = true;
+	for(int i = 0; i < totalAlly - 1; i++)
+	{
+		if(ally[i]->getAlive())
+		{
+			ally[i]->setCanAtk(true);
+		}
+	}
 	for(int i = 0; i < numEnemies; i++)
 	{
 		//Enemies can only attack next turn if they are still alive
@@ -737,7 +744,7 @@ void Battle::setCirclePos()
 	//TODO set circlePosition
 	for(int i = 0; i < numSkills; i++)
 	{
-		//allyOptions[i].setPosition(optionsPos[i] + allyPos[allyCounter]);
+		allyOptions[i].setPosition(optionsPos[i] + allyPos[allyCounter]);
 	}
 }
 
@@ -781,18 +788,6 @@ void Battle::setInitHp(int inp)
 	}
 }
 
-//*************** ACCESSORS ******************
-//Input is which enemy hp you want
-int Battle::getEnemyHp(int enemyNum)
-{
-	return enemies[enemyNum].getCurrentHp();
-}
-
-int Battle::getNumEnemies()
-{
-	return numEnemies;
-}
-
 //*************** UTILITY *******************
 int Battle::getMaxNum(int numOne, int numTwo)
 {
@@ -803,6 +798,18 @@ int Battle::getMaxNum(int numOne, int numTwo)
 	else if(numTwo > numOne)
 	{
 		return numTwo;
+	}
+	else if(numTwo == numOne)
+	{
+		//If both numbers are equal, return one randomly
+		if((rand() % 2) == 0)
+		{
+			return numOne;
+		}
+		else
+		{
+			return numTwo;
+		}
 	}
 }
 

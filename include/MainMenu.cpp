@@ -27,9 +27,9 @@ MainMenu::MainMenu()
 	load.setString("Load");
 	exit.setString("Exit");
 
-	start.setPosition(sf::Vector2f(500, 200));
-	load.setPosition(sf::Vector2f(500, 400));
-	exit.setPosition(sf::Vector2f(500, 600));
+	start.setPosition(sf::Vector2f(450, 220));
+	load.setPosition(sf::Vector2f(460, 420));
+	exit.setPosition(sf::Vector2f(480, 620));
 
 	//Set color
 	unselected = sf::Color(35, 83, 160);

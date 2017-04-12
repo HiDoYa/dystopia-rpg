@@ -70,19 +70,21 @@ class Battle
 
 		void setupBattle(std::vector<Enemy>, Player&, std::vector<Ally*>);
 		void startBattle();
-		void endBattle(int&);
 
 		//Battle state 0
+		void findFastestChar(Player&, std::vector<Ally*>);
+		
+
 		void changeEnemyFocus();
 		void changeCurrentSkill();
 		int chooseCurrentSkill();
 
 		//Battle state 1
-		void findFastestChar(Player&);
 		void attackManager(int&, Player&, std::vector<Ally*>&);
 
 		//Battle state 1.5
 		void playerTurnHandle();
+		void allyTurnHandle();
 		void playerAllyAttackHandle();
 		void playerAllyItem();
 		void playerAllyChangePos();
@@ -101,8 +103,9 @@ class Battle
 		
 		//Battle state 3
 		bool checkPlayerDeath(Player&);
+		void checkAllyDeath(std::vector<Ally*>&);
 		bool checkEnemyDeaths();
-		void checkEndBattle(Player&, int&, int&);
+		void checkEndBattle(Player&, std::vector<Ally*>&, int&, int&);
 		void currentEnemyDeath();
 		void newTurn();
 		
@@ -114,10 +117,6 @@ class Battle
 		//Mutators
 		void setEnemyHp(int, int);
 		void setInitHp(int);
-
-		//Accessors
-		int getEnemyHp(int);
-		int getNumEnemies();
 
 		//Utility
 		int getMaxNum(int, int);

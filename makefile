@@ -46,3 +46,6 @@ Textbox.o: include/Textbox.cpp
 
 UIOverlay.o: include/UIOverlay.cpp
 	g++ -std=c++11 -c $<
+
+clean:
+	rm *.o

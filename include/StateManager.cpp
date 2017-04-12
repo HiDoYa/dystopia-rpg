@@ -155,7 +155,6 @@ void StateManager::loadAlly()
 
 void StateManager::updateMenu(sf::RenderWindow& win)
 {
-
 	mainMenu.scroll();
 	mainMenu.currentlySelectedIndicate();
 
@@ -179,7 +178,6 @@ void StateManager::updateMenu(sf::RenderWindow& win)
 
 	//Draw menu
 	mainMenu.drawAll(win);
-
 }
 
 //********* MAP *************
@@ -691,7 +689,7 @@ void StateManager::updateBattle(sf::RenderWindow& win, sf::View& view)
 			break;
 		//Battle state 3 (check for game over. go back to 0 if not game over)
 		case 3:
-			battle->checkEndBattle(player, currentBattleState, currentState);
+			battle->checkEndBattle(player, ally, currentBattleState, currentState);
 			break;
 	}
 }
