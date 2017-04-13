@@ -68,46 +68,61 @@ class Battle
 	public:
 		Battle();
 
-		void setupBattle(std::vector<Enemy>, Player&, std::vector<Ally*>);
-		void startBattle();
+		void setupBattle(std::vector<Enemy>, Player&, std::vector<Ally*>&);
 
 		//Battle state 0
 		void findFastestChar(Player&, std::vector<Ally*>);
-		
-
-		void changeEnemyFocus();
-		void changeCurrentSkill();
-		int chooseCurrentSkill();
+		void checkForChoice(int&, Player&, std::vector<Ally*>&);
 
 		//Battle state 1
-		void attackManager(int&, Player&, std::vector<Ally*>&);
+		//TODO Different selection types (e.g. attacking all enemies, ally targetting skill)
+		//TODO The focus changes when hovering over different skills
+		void changeEnemyFocus();
+		void changeCurrentSkill();
+		void chooseCurrentSkill(int&);
 
-		//Battle state 1.5
-		void playerTurnHandle();
-		void allyTurnHandle();
-		void playerAllyAttackHandle();
-		void playerAllyItem();
-		void playerAllyChangePos();
-		void playerAttackAnimation(int&, Player&);
+		//Battle state 2
+		void attackManager(int&, Player&, std::vector<Ally*>&, int&);
+
+		void playerTurnHandle(int&);
+		void allyTurnHandle(int&, std::vector<Ally*>&);
 		void enemyTurnHandle();
+
+		//For various damaging of enemies
+		void playerAllyAttackHandle();
+		void attemptFlee(int&);
+
+		void playerItem();
+		void playerChangePos();
+
+		void allyItem(std::vector<Ally*>&);
+		void allyChangePos(std::vector<Ally*>&);
+
+		void playerAttackAnimation(int&, Player&);
+		void allyAttackAnimation(int&, std::vector<Ally*>&);
 		void enemyAttackAnimation(int&);
 		
-		//Battle state 2
+		//Battle state 3
 		void hpCalculate(int&, Player&, UIOverlay&);
 		int findHpChangeSign(int, int);
+
+		//Takes extra integer indicating which enemy will be targeted. Recursion to finish all hp changes.
 		void playerHpChange(int, Player&, UIOverlay&, int&);
+		void allyHpChange(int, std::vector<Ally*>&, int&);
 		void enemyHpChange(int, int&);
+
 		void playerPostAttackAnimation(Player&);
+		void allyPostAttackAnimation(std::vector<Ally*>&);
 		void enemyPostAttackAnimation();
 		void checkForCompletion(int&);
 		
-		//Battle state 3
+		//Battle state 4
 		bool checkPlayerDeath(Player&);
 		void checkAllyDeath(std::vector<Ally*>&);
 		bool checkEnemyDeaths();
 		void checkEndBattle(Player&, std::vector<Ally*>&, int&, int&);
 		void currentEnemyDeath();
-		void newTurn();
+		void newTurn(std::vector<Ally*>&);
 		
 		//Drawing
 		void setCirclePos();

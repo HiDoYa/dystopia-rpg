@@ -26,6 +26,7 @@ class Ally: public SpriteManage
 		//Etc
 		bool canAtk;
 		bool allyInParty;
+		bool alive;
 		int battlePos;
 	public:
 		Ally();
@@ -44,6 +45,7 @@ class Ally: public SpriteManage
 
 		//Etc
 		void setCanAtk(bool);
+		void setAlive(bool);
 		void setBattlePos(int);
 		void setAllyInParty(bool);
 
@@ -61,6 +63,7 @@ class Ally: public SpriteManage
 
 		//Etc
 		bool getCanAtk();
+		bool getAlive();
 		int getBattlePos();
 		std::vector<Skill> getSkill();
 

@@ -650,15 +650,12 @@ void StateManager::loadBattle(sf::RenderWindow& win, sf::View& view)
 	{
 		battleLoaded = true;
 
-		//TODO Load battle data
 		battle->setupBattle(enemyListStore, player, ally);
 
 		//Set view
 		view.setCenter(sf::Vector2f(512, 384));
 		win.setView(view);
 		overlay.setPosition(view);
-
-		//TODO Set background image
 	}
 }
 
@@ -673,22 +670,25 @@ void StateManager::updateBattle(sf::RenderWindow& win, sf::View& view)
 		case 0:
 			//For damage calc
 			battle->setInitHp(player.getCurrentHp());
-
-			//For skill
+			
+			battle->checkForChoice(currentBattleState, player, ally);
+			break;
+		//Battle state 1 (if player or ally is attacking)
+		case 1:
 			battle->changeCurrentSkill();
 			battle->changeEnemyFocus();
-			currentBattleState = battle->chooseCurrentSkill();
+			battle->chooseCurrentSkill(currentBattleState);
 			break;
-		//Battle state 1 (find enemies that should attack, start animating, and go to 2 OR go to 0)
-		case 1:
-			battle->attackManager(currentBattleState, player, ally);
-			break;
-		//Battle state 2 (calculate damage, animate hp going down, ending animation)
+		//Battle state 2 (find enemies that should attack, start animating, and go to 2 OR go to 0)
 		case 2:
+			battle->attackManager(currentBattleState, player, ally, currentState);
+			break;
+		//Battle state 3 (calculate damage, animate hp going down, ending animation)
+		case 3:
 			battle->hpCalculate(currentBattleState, player, overlay);
 			break;
-		//Battle state 3 (check for game over. go back to 0 if not game over)
-		case 3:
+		//Battle state 4 (check for game over. go back to 0 if not game over)
+		case 4:
 			battle->checkEndBattle(player, ally, currentBattleState, currentState);
 			break;
 	}

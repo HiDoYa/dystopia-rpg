@@ -68,6 +68,11 @@ void Ally::setCanAtk(bool inp)
 	canAtk = inp;
 }
 
+void Ally::setAlive(bool inp)
+{
+	alive = true;
+}
+
 void Ally::setBattlePos(int inp)
 {
 	battlePos = inp;
@@ -129,6 +134,11 @@ int Ally::getAgility()
 bool Ally::getCanAtk()
 {
 	return canAtk;
+}
+
+bool Ally::getAlive()
+{
+	return alive;
 }
 
 int Ally::getBattlePos()

@@ -57,7 +57,7 @@ Battle::Battle()
 	numSkills = 6;
 }
 
-void Battle::setupBattle(std::vector<Enemy> enemyList, Player& player, std::vector<Ally*> ally)
+void Battle::setupBattle(std::vector<Enemy> enemyList, Player& player, std::vector<Ally*>& ally)
 {
 	//TODO Open file and get ally attacks 
 	//TODO Create function that updates the textures of circles (for skills) for when the ally moves to a different grid place
@@ -147,14 +147,6 @@ void Battle::setupBattle(std::vector<Enemy> enemyList, Player& player, std::vect
 	}
 }
 
-void Battle::startBattle()
-{
-	//TODO Animation to transition from map to battle
-	//Use shader
-}
-
-
-
 //*********** BATTLE STATE 0 *********************
 //Sets nextAttack based on who is the fastest (-1 for player, -2 if everybody is done)
 void Battle::findFastestChar(Player& player, std::vector<Ally*> ally)
@@ -194,6 +186,29 @@ void Battle::findFastestChar(Player& player, std::vector<Ally*> ally)
 	}
 }
 
+void Battle::checkForChoice(int& currentBattleState, Player& player, std::vector<Ally*>& ally)
+{
+	findFastestChar(player, ally);
+
+	switch (nextCharType)
+	{
+		case -1:
+			//All characters have already attacked
+			currentBattleState = 4;
+			break;
+		case 0:
+		case 1:
+			//Player or ally attack
+			currentBattleState = 1;
+			break;
+		case 2:
+			//Enemy attack
+			currentBattleState = 2;
+			break;
+	}
+}
+
+//********** BATTLE STATE 1 ****************
 void Battle::changeEnemyFocus()
 {
 	bool qPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Q);
@@ -305,49 +320,41 @@ void Battle::changeCurrentSkill()
 	allyOptions[currentSkill].setFillColor(sf::Color::Blue);
 }
 
-int Battle::chooseCurrentSkill()
+void Battle::chooseCurrentSkill(int& currentBattleState)
 {
 	bool spacePressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
 
 	if(spacePressed)
 	{
-		return 1;
+		currentBattleState++;
 	}
-	return 0;
 }
 
 //*********** BATTLE STATE 1 *********************
-
-
-void Battle::attackManager(int& currentBattleState, Player& player, std::vector<Ally*>& ally)
+void Battle::attackManager(int& currentBattleState, Player& player, std::vector<Ally*>& ally, int& currentState)
 {
-	findFastestChar(player, ally);
-
 	switch (nextCharType)
 	{
 		case -1:
 			currentBattleState = 3;
 			break;
 		case 0:
-			//TODO player attacks
-			//playerTurnHandle();
-			//playerAttackAnimation(currentBattleState, player);
+			playerTurnHandle(currentState);
+			playerAttackAnimation(currentBattleState, player);
 			break;
 		case 1:
-			//TODO ally attacks
-			//allyTurnHandle();
+			allyTurnHandle(currentState, ally);
+			allyAttackAnimation(currentBattleState, ally);
 			break;
 		case 2:
-			//TODO enemy attacks
-			//enemyTurnHandle();
-			//enemyAttackAnimation(currentBattleState);
+			enemyTurnHandle();
+			enemyAttackAnimation(currentBattleState);
 			break;
 	}
 }
 
-//********** BATTLE STATE 1.5 ****************
 //TODO
-void Battle::playerTurnHandle()
+void Battle::playerTurnHandle(int& currentState)
 {
 	switch(currentSkill)
 	{
@@ -357,99 +364,36 @@ void Battle::playerTurnHandle()
 			playerAllyAttackHandle();
 			break;
 		case 3:
-			//TODO Items?
+			playerItem();
 			break;
 		case 4:
-			//TODO Change pos
+			playerChangePos();
 			break;
 		case 5:
-			//TODO Attempt flee
+			attemptFlee(currentState);
 			break;
 	}
 }
 
-void Battle::allyTurnHandle()
+//TODO
+void Battle::allyTurnHandle(int& currentState, std::vector<Ally*>& ally)
 {
 	switch(currentSkill)
 	{
 		case 0:
 		case 1:
 		case 2:
-			//Ally attacks
+			playerAllyAttackHandle();
 			break;
 		case 3:
+			allyItem(ally);
 			break;
 		case 4:
+			allyChangePos(ally);
 			break;
 		case 5:
+			attemptFlee(currentState);
 			break;
-	}
-}
-
-void Battle::playerAllyAttackHandle()
-{	
-	switch (skillType)
-	{
-		case 0:
-			//basic single target atk
-			break;
-		case 1:
-			//change attributes of enemy
-			break;
-		case 2:
-			//aoe atk all targets
-			break;
-		case 3:
-			//heal ally or self 
-			break;
-		case 4:
-			//change attributes of ally or self
-			break;
-		case 5:
-			//change current position
-			break;
-	}
-}
-
-void Battle::playerAllyItem()
-{
-	//TODO
-}
-
-void Battle::playerAllyChangePos()
-{
-	//TODO
-	blinkTurn = !blinkTurn;
-
-	tme = clk.getElapsedTime();
-	currentTime = tme.asMilliseconds();
-
-	if(lastTime + 300 > currentTime)
-	{
-		lastTime = currentTime;
-		if(blinkTurn && lastTime + 300 > currentTime)
-		{
-			gridRect[newPos].setFillColor(sf::Color::Red);
-		}
-		else if(!blinkTurn && lastTime + 300 > currentTime)
-		{
-			gridRect[newPos].setFillColor(sf::Color::Blue);
-		}
-	}
-}
-
-//Player simply moves forward
-void Battle::playerAttackAnimation(int& currentBattleState, Player& player)
-{
-	goalPlace = allyPos[player.getBattlePos()].x - attackXDisp;
-	if(player.getPosition().x > goalPlace)
-	{
-		player.setPosition(player.getPosition().x - 10, player.getPosition().y);
-	}
-	else
-	{
-		playerCanAttack = false;
-		currentBattleState++;
 	}
 }
 
@@ -479,23 +423,129 @@ void Battle::enemyTurnHandle()
 	}
 }
 
+void Battle::playerAllyAttackHandle()
+{	
+	switch (skillType)
+	{
+		case 0:
+			//basic single target atk
+			break;
+		case 1:
+			//change attributes of enemy
+			break;
+		case 2:
+			//aoe atk all targets
+			break;
+		case 3:
+			//heal ally or self 
+			break;
+		case 4:
+			//change attributes of ally or self
+			break;
+		case 5:
+			//change current position
+			break;
+	}
+}
+
+//Calculate using the level difference between average of allies and the enemies
+void Battle::attemptFlee(int& currentState)
+{
+	int avgAlly = 0;
+	int avgEnem = 0;
+	if(avgAlly > rand() % 15 + avgEnem)
+	{
+		currentState = 4;
+	}
+}
+
+void Battle::playerItem()
+{
+	//TODO
+}
+
+void Battle::playerChangePos()
+{
+	//TODO
+	blinkTurn = !blinkTurn;
+
+	tme = clk.getElapsedTime();
+	currentTime = tme.asMilliseconds();
+
+	if(lastTime + 300 > currentTime)
+	{
+		lastTime = currentTime;
+		if(blinkTurn && lastTime + 300 > currentTime)
+		{
+			gridRect[newPos].setFillColor(sf::Color::Red);
+		}
+		else if(!blinkTurn && lastTime + 300 > currentTime)
+		{
+			gridRect[newPos].setFillColor(sf::Color::Blue);
+		}
+	}
+}
+
+void Battle::allyItem(std::vector<Ally*>& ally)
+{
+}
+
+void Battle::allyChangePos(std::vector<Ally*>& ally)
+{
+}
+
+//Player simply moves forward
+void Battle::playerAttackAnimation(int& currentBattleState, Player& player)
+{
+	goalPlace = allyPos[player.getBattlePos()].x - attackXDisp;
+	if(player.getPosition().x > goalPlace)
+	{
+		player.setPosition(player.getPosition().x - 10, player.getPosition().y);
+	}
+	else
+	{
+		playerCanAttack = false;
+		currentBattleState++;
+	}
+}
+
+void Battle::allyAttackAnimation(int& currentBattleState, std::vector<Ally*>& ally)
+{
+	sf::Vector2f current = ally[nextCharCounter]->getPosition();
+	
+	//Sets the area to stop
+	goalPlace = allyPos[nextCharCounter].x - attackXDisp;
+
+	
+	//Moves the enemy, otherwise increments battle state
+	if(current.x > goalPlace)
+	{
+		ally[nextCharCounter]->setPosition(current.x - 10, current.y);
+	}
+	else
+	{ 
+		ally[nextCharCounter]->setCanAtk(false);
+		currentBattleState++;
+	}
+}
+
 //Enemy simply moves forward
 void Battle::enemyAttackAnimation(int& currentBattleState)
 {
-	sf::Vector2f current = enemies[nextAttack].getPosition();
+	sf::Vector2f current = enemies[nextCharCounter].getPosition();
 	
 	//Sets the area to stop
-	goalPlace = enemyPos[nextAttack].x + attackXDisp;
+	goalPlace = enemyPos[nextCharCounter].x + attackXDisp;
 
 	
 	//Moves the enemy, otherwise increments battle state
 	if(current.x < goalPlace)
 	{
-		enemies[nextAttack].setPosition(current.x + 10, current.y);
+		enemies[nextCharCounter].setPosition(current.x + 10, current.y);
 	}
 	else
 	{ 
-		enemies[nextAttack].setCanAtk(false);
+		enemies[nextCharCounter].setCanAtk(false);
 		currentBattleState++;
 	}
 }
@@ -505,6 +555,7 @@ void Battle::enemyAttackAnimation(int& currentBattleState)
 void Battle::hpCalculate(int& currentBattleState, Player& player, UIOverlay& overlay)
 {
 	int tempHpFinal;
+	//TODO OLD OLD OLD
 	switch (nextAttack)
 	{
 		case -1:
@@ -575,6 +626,10 @@ void Battle::playerHpChange(int hpFinal, Player& player, UIOverlay& overlay, int
 	}
 }
 
+void Battle::allyHpChange(int hpFinal, std::vector<Ally*>& ally, int& currentBattleState)
+{
+}
+
 void Battle::enemyHpChange(int hpFinal, int& currentBattleState)
 {
 	int currentEnemyHp = enemies[currentEnemySelected].getCurrentHp();
@@ -606,17 +661,21 @@ void Battle::playerPostAttackAnimation(Player& player)
 	}
 }
 
+void Battle::allyPostAttackAnimation(std::vector<Ally*>& ally)
+{
+}
+
 void Battle::enemyPostAttackAnimation()
 {
-	sf::Vector2f current = enemies[nextAttack].getPosition();
+	sf::Vector2f current = enemies[nextCharCounter].getPosition();
 	
 	//Sets the area to stop
-	goalPlace = enemyPos[nextAttack].x;
+	goalPlace = enemyPos[nextCharCounter].x;
 	
 	//Moves the enemy, otherwise increments battle state
 	if(current.x > goalPlace)
 	{
-		enemies[nextAttack].setPosition(current.x - 10, current.y);
+		enemies[nextCharCounter].setPosition(current.x - 10, current.y);
 	}
 	else
 	{
@@ -649,7 +708,7 @@ bool Battle::checkPlayerDeath(Player& player)
 //Just sets ally to dead if less than 0 hp. Doesn't matter in terms of game over
 void Battle::checkAllyDeath(std::vector<Ally*>& ally)
 {
-	for(int i = 0; i < totalyAlly - 1; i++)
+	for(int i = 0; i < totalAlly - 1; i++)
 	{
 		if(ally[i]->getCurrentHp() < 1)
 		{
@@ -692,8 +751,8 @@ void Battle::checkEndBattle(Player& player, std::vector<Ally*>& ally, int& curre
 	}
 	else
 	{
-		checkAllyDeath();
-		newTurn();
+		checkAllyDeath(ally);
+		newTurn(ally);
 		currentEnemyDeath();
 		currentBattleState = 0;
 	}
@@ -716,7 +775,7 @@ void Battle::currentEnemyDeath()
 }
 
 //Sets up for new turn by resetting all canAtk flags
-void Battle::newTurn()
+void Battle::newTurn(std::vector<Ally*>& ally)
 {
 	playerCanAttack = true;
 	for(int i = 0; i < totalAlly - 1; i++)
@@ -744,7 +803,7 @@ void Battle::setCirclePos()
 	//TODO set circlePosition
 	for(int i = 0; i < numSkills; i++)
 	{
-		allyOptions[i].setPosition(optionsPos[i] + allyPos[allyCounter]);
+		allyOptions[i].setPosition(optionsPos[i] + allyPos[totalAlly]);
 	}
 }
 
@@ -762,7 +821,7 @@ void Battle::drawEnemies(sf::RenderWindow& win)
 void Battle::drawAll(sf::RenderWindow& win, int currentBattleState)
 {
 	drawEnemies(win);
-	if(currentBattleState == 0)
+	if(currentBattleState == 1)
 	{
 		for(int i = 0; i < numSkills; i++)
 		{
@@ -812,4 +871,3 @@ int Battle::getMaxNum(int numOne, int numTwo)
 		}
 	}
 }
-
