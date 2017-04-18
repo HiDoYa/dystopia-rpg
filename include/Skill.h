@@ -6,6 +6,7 @@ class Skill
 	private:
 		//For enemy, all skills are equipped.
 		//For ally/player, only some skills are equipped
+		sf::Text text;
 		bool currentlyEquipped;
 		int manaCost;
 
@@ -22,16 +23,16 @@ class Skill
 		std::string attackFail;
 
 		//Element 0 for damage/heal, 1 for buffs/debuffs
-		std::vector<int> mult;
-		std::vector<int> max;
-		std::vector<int> min;
+		int mult;
+		int max;
+		int min;
 		//Accuracy, pierce, crit are percent based (out of 100)
-		//Crit increases the magnitude of effect. Pierce for buffs/debuffs does nothing
-		std::vector<int> crit;
-		std::vector<int> accuracy;
-		std::vector<int> pierce;
+		//Crit increases the magnitude of effect. 
+		int crit;
+		int accuracy;
+		int pierce;
 		//Elements (fire/ice/water/etc). Does nothing for buffs/debuffs
-		std::vector<int> element;
+		int element;
 		//0 for self, 1 for ally, 2 for enemy. If 0/1 and target is multiple, it targets all of allies
 		std::vector<int> target;
 		//true if single target, false if multiple targets
@@ -42,27 +43,30 @@ class Skill
 		//TODO Formulas based on attacker stats/attacked stats. Return damage amount
 		
 		//****** MUTATORS *********
-		void setMult(int, int);
-		void setMax(int, int);
-		void setMin(int, int);
-		void setCrit(int, int);
-		void setAccuracy(int, int);
-		void setPierce(int, int);
-		void setElement(int, int);
+		void setMult(int);
+		void setMax(int);
+		void setMin(int);
+		void setCrit(int);
+		void setAccuracy(int);
+		void setPierce(int);
+		void setElement(int);
 		void setTarget(int, int);
 		void setTargetNum(int, bool);
 
 		//****** ACCESSORS *********
-		std::vector<int> getMult();
-		std::vector<int> getMax();
-		std::vector<int> getMin();
-		std::vector<int> getCrit();
-		std::vector<int> getAccuracy();
-		std::vector<int> getPierce();
-		std::vector<int> getElement();
+		int getMult();
+		int getMax();
+		int getMin();
+		int getCrit();
+		int getAccuracy();
+		int getPierce();
+		int getElement();
 		std::vector<int> getTarget();
 		std::vector<bool> getTargetNum();
 		
+		//***** UTILITY ************
+		int checkForMaxMin(int);
+
 		//****** DAMAGE CALC *********
 		int getDamageCalc(int, int, int);
 		int getNormDamageCalc(int, int);

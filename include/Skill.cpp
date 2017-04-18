@@ -14,52 +14,58 @@ Skill::Skill()
 	//Initializes mult/max/min
 	for(int i = 0; i < 2; i++)
 	{
-		mult.push_back(0);
-		max.push_back(0);
-		min.push_back(0);
-		crit.push_back(0);
-		accuracy.push_back(0);
-		pierce.push_back(0);
-		element.push_back(0);
 		target.push_back(0);
 		targetNum.push_back(true);
 	}
+
+	mult = 0;
+	max = 0;
+	min = 0;
+	crit = 0;
+	accuracy = 0;
+	pierce = 0;
+	element = 0;
 }
 
 //****** MUTATORS *********
-void Skill::setMult(int type, int inp)
+void Skill::setName(string str)
 {
-	mult[type] = inp;
+	text.setString(str);
 }
 
-void Skill::setMax(int type, int inp)
+void Skill::setMult(int inp)
 {
-	max[type] = inp;
+	mult = inp;
 }
 
-void Skill::setMin(int type, int inp)
+void Skill::setMax(int inp)
 {
-	min[type] = inp;
+	max = inp;
 }
 
-void Skill::setCrit(int type, int inp)
+void Skill::setMin(int inp)
 {
-	crit[type] = inp;
+	min = inp;
 }
 
-void Skill::setAccuracy(int type, int inp)
+void Skill::setCrit(int inp)
 {
-	accuracy[type] = inp;
+	crit = inp;
 }
 
-void Skill::setPierce(int type, int inp)
+void Skill::setAccuracy(int inp)
 {
-	pierce[type] = inp;
+	accuracy = inp;
 }
 
-void Skill::setElement(int type, int inp)
+void Skill::setPierce(int inp)
 {
-	element[type] = inp;
+	pierce = inp;
+}
+
+void Skill::setElement(int inp)
+{
+	element = inp;
 }
 
 void Skill::setTarget(int type, int inp)
@@ -73,37 +79,37 @@ void Skill::setTargetNum(int type, bool inp)
 }
 
 //********** ACCESSOR *********
-std::vector<int> Skill::getMult()
+int Skill::getMult()
 {
 	return mult;
 }
 
-std::vector<int> Skill::getMax()
+int Skill::getMax()
 {
 	return max;
 }
 
-std::vector<int> Skill::getMin()
+int Skill::getMin()
 {
 	return min;
 }
 
-std::vector<int> Skill::getCrit()
+int Skill::getCrit()
 {
 	return crit;
 }
 
-std::vector<int> Skill::getAccuracy()
+int Skill::getAccuracy()
 {
 	return accuracy;
 }
 
-std::vector<int> Skill::getPierce()
+int Skill::getPierce()
 {
 	return pierce;
 }
 
-std::vector<int> Skill::getElement()
+int Skill::getElement()
 {
 	return element;
 }
@@ -118,17 +124,65 @@ std::vector<bool> Skill::getTargetNum()
 	return targetNum;
 }
 
-//******** DAMAGE CALCULATION *************
+// ********* UTILITY *************
 
-int Skill::getDamageCalc(int allyStrength, int enemyDef, int enemyHealth)
+int Skill::checkForMaxMin(int tempDmg)
+{
+	if(tempDmg > max)
+	{
+		tempDmg = max;
+	}
+	if(tempDmg < min)
+	{
+		tempDmg = min;
+	}
+
+	return tempDmg;
+}
+
+int Skill::checkForCrit()
 {
 }
+
+int Skill::checkForMiss()
+{
+}
+
+int Skill::addPierceDamage()
+{
+}
+
+int Skill::addForElementDamage()
+{
+}
+
+//******** DAMAGE CALCULATION *************
 
 int Skill::getNormDamageCalc(int allyStrength, int enemyDef)
 {
+	int tempDmg = (allyStrength - enemyDef) * mult;
+
+	checkForMaxMin(tempDmg);
+
+	if((rand() % 100 + 1) < crit)
+	{
+		tempDmg *= 1.5;
+	}
+
+	return tempDmg;
 }
 
 int Skill::getPercentDamageCalc(int allyStrength, int enemyDef, int enemyHealth)
-{
+{	
+	int tempDmg = (allyStrength - enemyDef) / 100 * enemyHealth;
+
+	checkForMaxMin(tempDmg);
+
+	if((rand() % 100 + 1) < crit)
+	{
+		tempDmg *= 1.5;
+	}
+
+	return 
 }
 
