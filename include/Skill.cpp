@@ -1,4 +1,6 @@
 #include <SFML/Graphics.hpp>
+#include <cstdlib>
+#include <ctime>
 #include <iostream>
 
 #include "Skill.h"
@@ -10,6 +12,9 @@ Skill::Skill()
 	manaCost = 0;
 	numTurns = 1;
 	reapplyTurn = false;
+	numAtksPerHit = 1;
+	missed = false;
+	tempDmg = 0;
 
 	//Initializes mult/max/min
 	for(int i = 0; i < 2; i++)
@@ -23,29 +28,31 @@ Skill::Skill()
 	min = 0;
 	crit = 0;
 	accuracy = 0;
-	pierce = 0;
 	element = 0;
+
+	//Seeding
+	srand(time(NULL));
 }
 
 //****** MUTATORS *********
-void Skill::setName(string str)
+void Skill::setName(std::string str)
 {
-	text.setString(str);
+	name = str;
 }
 
-void Skill::setMult(int inp)
+void Skill::setMult(int type, int inp)
 {
-	mult = inp;
+	mult[type] = inp;
 }
 
-void Skill::setMax(int inp)
+void Skill::setMax(int type, int inp)
 {
-	max = inp;
+	max[type] = inp;
 }
 
-void Skill::setMin(int inp)
+void Skill::setMin(int type, int inp)
 {
-	min = inp;
+	min[type] = inp;
 }
 
 void Skill::setCrit(int inp)
@@ -56,11 +63,6 @@ void Skill::setCrit(int inp)
 void Skill::setAccuracy(int inp)
 {
 	accuracy = inp;
-}
-
-void Skill::setPierce(int inp)
-{
-	pierce = inp;
 }
 
 void Skill::setElement(int inp)
@@ -104,11 +106,6 @@ int Skill::getAccuracy()
 	return accuracy;
 }
 
-int Skill::getPierce()
-{
-	return pierce;
-}
-
 int Skill::getElement()
 {
 	return element;
@@ -126,7 +123,7 @@ std::vector<bool> Skill::getTargetNum()
 
 // ********* UTILITY *************
 
-int Skill::checkForMaxMin(int tempDmg)
+int Skill::checkForMaxMin()
 {
 	if(tempDmg > max)
 	{
@@ -142,14 +139,20 @@ int Skill::checkForMaxMin(int tempDmg)
 
 int Skill::checkForCrit()
 {
+	if((rand() % 100 + 1) < crit)
+	{
+		tempDmg *= 1.5;
+	}
+	return tempDmg;
 }
 
-int Skill::checkForMiss()
+void Skill::checkForMiss()
 {
-}
-
-int Skill::addPierceDamage()
-{
+	missed = false;
+	if((rand() % 100 + 1) < (100 - accuracy))
+	{
+		missed = true;
+	}
 }
 
 int Skill::addForElementDamage()
@@ -160,7 +163,7 @@ int Skill::addForElementDamage()
 
 int Skill::getNormDamageCalc(int allyStrength, int enemyDef)
 {
-	int tempDmg = (allyStrength - enemyDef) * mult;
+	tempDmg = (allyStrength - enemyDef) * mult;
 
 	checkForMaxMin(tempDmg);
 
@@ -174,15 +177,24 @@ int Skill::getNormDamageCalc(int allyStrength, int enemyDef)
 
 int Skill::getPercentDamageCalc(int allyStrength, int enemyDef, int enemyHealth)
 {	
-	int tempDmg = (allyStrength - enemyDef) / 100 * enemyHealth;
+	tempDmg = (allyStrength - enemyDef) / 100 * enemyHealth;
 
 	checkForMaxMin(tempDmg);
-
-	if((rand() % 100 + 1) < crit)
-	{
-		tempDmg *= 1.5;
-	}
-
-	return 
+	checkForMiss();
+	return tempDmg;
 }
 
+//******** DAMAGE CALCULATION *************
+std::string Skill::dispText(std::string chrName)
+{
+	int returnText;
+	if(missed)
+	{
+		returnText = chrName + " missed the attack!";
+	}
+	//TODO
+	else if(true)
+	{
+		returnText = chrName + " hit the enemy for " + tempDmg + " damage!";
+	}
+}

@@ -6,7 +6,7 @@ class Skill
 	private:
 		//For enemy, all skills are equipped.
 		//For ally/player, only some skills are equipped
-		sf::Text text;
+		std::string name;
 		bool currentlyEquipped;
 		int manaCost;
 
@@ -18,20 +18,21 @@ class Skill
 		//Shows multiple damage nums for one attack (think trip strike)
 		int numAtksPerHit;
 
-		//How the attack will be displayed as text
-		std::string attackSuccess;
-		std::string attackFail;
+		//If attack misses
+		bool missed;
 
-		//Element 0 for damage/heal, 1 for buffs/debuffs
-		int mult;
-		int max;
-		int min;
+		//Used to calculate damage
+		int tempDmg;
+
+		//Element 0 for damage, 1 for heals, 2 for buffs, 3 for debuffs
+		std::vector<int> mult;
+		std::vector<int> max;
+		std::vector<int> min;
 		//Accuracy, pierce, crit are percent based (out of 100)
-		//Crit increases the magnitude of effect. 
+		//Crit increases the magnitude of effect. Only applies for attacks
 		int crit;
 		int accuracy;
-		int pierce;
-		//Elements (fire/ice/water/etc). Does nothing for buffs/debuffs
+		//Elements (fire/ice/water/etc). Only applies for attacks
 		int element;
 		//0 for self, 1 for ally, 2 for enemy. If 0/1 and target is multiple, it targets all of allies
 		std::vector<int> target;
@@ -48,10 +49,15 @@ class Skill
 		void setMin(int);
 		void setCrit(int);
 		void setAccuracy(int);
-		void setPierce(int);
 		void setElement(int);
 		void setTarget(int, int);
 		void setTargetNum(int, bool);
+
+		//****** UTILITY *********
+		int checkForMaxMin();
+		int checkForCrit();
+		void checkForMiss();
+		int addForElementDamage();
 
 		//****** ACCESSORS *********
 		int getMult();
@@ -59,7 +65,6 @@ class Skill
 		int getMin();
 		int getCrit();
 		int getAccuracy();
-		int getPierce();
 		int getElement();
 		std::vector<int> getTarget();
 		std::vector<bool> getTargetNum();

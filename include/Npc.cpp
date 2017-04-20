@@ -2,7 +2,7 @@
 #include <iostream>
 
 #include "Dialogue.h"
-#include "Player.h"
+#include "MapPlayer.h"
 #include "Textbox.h"
 #include "UIOverlay.h"
 
@@ -23,7 +23,7 @@ Npc::Npc()
 
 //Gets the converted vector, deals with animation/textbox calls, and deals with multiple textboxes
 //TODO Only allow speak when the player is facing TOWARDS the npc instead of just collision
-void Npc::speak(std::vector<bool>& event, Textbox& box, Player& player)
+void Npc::speak(std::vector<bool>& event, Textbox& box, MapPlayer& player)
 {
 	bool cond = !player.getMoving() && sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
 
@@ -78,7 +78,7 @@ void Npc::speak(std::vector<bool>& event, Textbox& box, Player& player)
 	}
 }
 
-void Npc::collision(Player& player)
+void Npc::collision(MapPlayer& player)
 {
 	colliding = player.collisionZones(getPosition().x / 64, getPosition().y / 64);
 }

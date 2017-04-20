@@ -9,7 +9,7 @@
 #include "MainMenu.h"
 #include "Map.h"
 #include "Npc.h"
-#include "Player.h"
+#include "MapPlayer.h"
 #include "Textbox.h"
 #include "UIOverlay.h"
 
@@ -53,24 +53,7 @@ void StateManager::loadMenu()
 		menuLoaded = true;
 		mainMenu.setTextureSprite("images/background.png");
 
-
-		//Loads persistent player info
-		//TODO Set overlay based on player stats
-		//Set player stats
-		player.setLevel(player.getLevel(), overlay);
-		player.setMaxHp(player.getMaxHp(), overlay);
-		player.setCurrentHp(player.getCurrentHp(), overlay);
-		player.setMaxMana(player.getMaxMana(), overlay);
-		player.setCurrentMana(player.getCurrentMana(), overlay);
-
-		player.setStrength(player.getStrength());
-		player.setDefense(player.getDefense());
-		player.setAgility(player.getAgility());
-
-		player.setExp(player.getExp(), overlay);
-		player.setCurrency(player.getCurrency(), overlay);
-
-		//Loads ally
+		//Loads allies
 		loadAlly();
 	}
 }
@@ -650,7 +633,7 @@ void StateManager::loadBattle(sf::RenderWindow& win, sf::View& view)
 	{
 		battleLoaded = true;
 
-		battle->setupBattle(enemyListStore, player, ally);
+		battle->setupBattle(enemyListStore, ally);
 
 		//Set view
 		view.setCenter(sf::Vector2f(512, 384));
@@ -664,6 +647,7 @@ void StateManager::updateBattle(sf::RenderWindow& win, sf::View& view)
 	//Activate window for OpenGL rendering
 	win.clear();
 
+	//TODO Maybe move currentBattleState into battle class
 	switch (currentBattleState)
 	{
 		//Battle state 0 Menu shows and player can make decision

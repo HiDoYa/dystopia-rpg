@@ -8,6 +8,7 @@ class Enemy: public SpriteManage
 	private:
 		sf::Font font;
 		sf::Text name;
+		std::string name;
 		int level;
 		int currentHp;
 		int maxHp;
@@ -19,10 +20,10 @@ class Enemy: public SpriteManage
 		int defense;
 		int agility;
 
-		int chance;
 		bool alive;
-		int battlePos;
 		bool canAtk;
+		int battlePos;
+		int chance;
 
 		int length;
 

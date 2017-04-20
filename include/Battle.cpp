@@ -3,7 +3,6 @@
 #include <iostream>
 
 #include "Ally.h"
-#include "Player.h"
 
 #include "Battle.h"
 
@@ -12,11 +11,9 @@ Battle::Battle()
 	//Default initializations
 	currentSkill = 0;
 	currentOptionsShow = 0;
-	playerCanAttack = true;
 	blinkTurn = true;
 	currentTime = lastTime = 0;
 	initHp = 100;
-	totalAlly = 0;
 	nextAttack = 0;
 	newPos = 0;
 	goalPlace = 0;
@@ -52,12 +49,12 @@ Battle::Battle()
 	optionsPos.push_back(sf::Vector2f(100, -100));
 	optionsPos.push_back(sf::Vector2f(100, 0));
 	optionsPos.push_back(sf::Vector2f(100, 100));
-	
-	//6 Skills
-	numSkills = 6;
+
+	//Seeding
+	srand(time(NULL));
 }
 
-void Battle::setupBattle(std::vector<Enemy> enemyList, Player& player, std::vector<Ally*>& ally)
+void Battle::setupBattle(std::vector<Enemy> enemyList, std::vector<Ally*>& ally)
 {
 	//TODO Open file and get ally attacks 
 	//TODO Create function that updates the textures of circles (for skills) for when the ally moves to a different grid place
@@ -72,20 +69,10 @@ void Battle::setupBattle(std::vector<Enemy> enemyList, Player& player, std::vect
 	currentEnemySelected = 0;
 	animComplete = hpComplete = false;
 
-	//Gets ally number
-	totalAlly = 1;
-	for(int idx = 0; idx < ally.size(); idx++)
-	{
-		if(ally[idx]->getAllyInParty())
-		{
-			totalAlly++;
-		}
-	}
-
 	//NOTE: THIS IS JUST TO MAKE SURE. BATTLEPOS MUST BE SET DIFFERENTLY AT DEFAULT WHEN ALLIES ARE ADDED TO PARTY
 	//Checks for player and ally position overlap. If overlapped, then change the position
 	//totalAlly - 1 because I'm checking the player separately
-	for(int i = 0; i < totalAlly - 1; i++)
+	for(int i = 0; i < ally.size() - 1; i++)
 	{
 		if(player.getBattlePos() == ally[i]->getBattlePos())
 		{
@@ -93,7 +80,7 @@ void Battle::setupBattle(std::vector<Enemy> enemyList, Player& player, std::vect
 			i = 0;
 		}
 		//totalAlly = 2 because don't need to check ally with itself
-		for(int j = 0; j < totalAlly - 2; j++)
+		for(int j = 0; j < ally.size() - 1; j++)
 		{
 			if(ally[i]->getBattlePos() == ally[j]->getBattlePos())
 			{
@@ -105,25 +92,23 @@ void Battle::setupBattle(std::vector<Enemy> enemyList, Player& player, std::vect
 		}
 	}
 	
-	//Sets enemy and player positions
-	for(int i = 0; i < totalAlly - 1; i++)
+	//Sets ally positions
+	for(int i = 0; i < ally.size(); i++)
 	{
 		ally[i]->setPosition(allyPos[ally[i]->getBattlePos()].x, allyPos[ally[i]->getBattlePos()].y);
 	}
-	player.setPosition(allyPos[player.getBattlePos()].x, allyPos[player.getBattlePos()].y);
 
-	//Get number of enemies
-	srand(time(NULL));
-	numEnemies = rand() % 4 + 1;
-	
 	//Creates 6 circles for skills
-	for(int i = 0; i < numSkills; i++)
+	for(int i = 0; i < 6; i++)
 	{
 		allyOptions.push_back(tempCircle);
 		allyOptions[i].setRadius(25);
 		allyOptions[i].setFillColor(sf::Color(150, 196, 255));
 	}
 
+	//Get number of enemies
+	int numEnemies = rand() % 4 + 1;
+	
 	//Initialize enemies
 	for(int i = 0; i < numEnemies; i++)
 	{
@@ -142,6 +127,7 @@ void Battle::setupBattle(std::vector<Enemy> enemyList, Player& player, std::vect
 
 		//Adds enemy
 		enemies.push_back(enemyList[index]);
+		//TODO random set position
 		enemies[i].setPosition(enemyPos[i].x, enemyPos[i].y);
 		enemies[i].updatePosition();
 	}
@@ -152,20 +138,15 @@ void Battle::setupBattle(std::vector<Enemy> enemyList, Player& player, std::vect
 void Battle::findFastestChar(Player& player, std::vector<Ally*> ally)
 {
 	int highestAgil = -1;
+	//TODO Refactor chartype and all the types
 	nextCharType = -1;
 	nextCharCounter = -1;
 
 	//Reset the position of rectangle (for changing position)
 	newPos = 0;
 
-	if(playerCanAtk)
-	{
-		highestAgil = player.getAgility();
-		nextCharType = 0;
-	}
-
 	//Checks agility for allies
-	for(int i = 0; i < totalAlly - 1; i++)
+	for(int i = 0; i < ally.size(); i++)
 	{
 		if(ally[i]->getCanAtk() && ally[i]->getAgility() > highestAgil)
 		{
@@ -311,7 +292,7 @@ void Battle::changeCurrentSkill()
 	}
 	
 	//Reset all colors
-	for(int i = 0; i < numSkills; i++)
+	for(int i = 0; i < allyOptions.size(); i++)
 	{
 		allyOptions[i].setFillColor(sf::Color(160, 196, 255));
 	}
@@ -694,27 +675,22 @@ void Battle::checkForCompletion(int& currentBattleState)
 }
 
 //*************** BATTLE STATE 3 *********************
-//Returns true if player is dead
-bool Battle::checkPlayerDeath(Player& player)
+//Sets ally to dead if less than 0 hp. Returns true if all allies are dead
+bool Battle::checkAllyDeath(std::vector<Ally*>& ally)
 {
-	if(player.getCurrentHp() < 1)
-	{
-		//Player dies, game over
-		return true;
-	}
-	return false;
-}
-
-//Just sets ally to dead if less than 0 hp. Doesn't matter in terms of game over
-void Battle::checkAllyDeath(std::vector<Ally*>& ally)
-{
-	for(int i = 0; i < totalAlly - 1; i++)
+	bool allDead = true;
+	for(int i = 0; i < ally.size(); i++)
 	{
 		if(ally[i]->getCurrentHp() < 1)
 		{
 			ally[i]->setAlive(false);
 		}
+		else
+		{
+			allDead = false;
+		}
 	}
+	return allDead;
 }
 
 //Returns true if all enemies are dead
@@ -739,7 +715,7 @@ bool Battle::checkEnemyDeaths()
 
 void Battle::checkEndBattle(Player& player, std::vector<Ally*>& ally, int& currentBattleState, int& currentState)
 {
-	if(checkPlayerDeath(player))
+	if(checkAllyDeath(ally))
 	{
 		//TODO Gameover
 		currentState = 0;
@@ -751,7 +727,6 @@ void Battle::checkEndBattle(Player& player, std::vector<Ally*>& ally, int& curre
 	}
 	else
 	{
-		checkAllyDeath(ally);
 		newTurn(ally);
 		currentEnemyDeath();
 		currentBattleState = 0;
@@ -774,11 +749,10 @@ void Battle::currentEnemyDeath()
 	}
 }
 
-//Sets up for new turn by resetting all canAtk flags
+//Sets up for new turn by resetting all canAtk flags for those who are still alive
 void Battle::newTurn(std::vector<Ally*>& ally)
 {
-	playerCanAttack = true;
-	for(int i = 0; i < totalAlly - 1; i++)
+	for(int i = 0; i < ally.size(); i++)
 	{
 		if(ally[i]->getAlive())
 		{
@@ -787,7 +761,6 @@ void Battle::newTurn(std::vector<Ally*>& ally)
 	}
 	for(int i = 0; i < numEnemies; i++)
 	{
-		//Enemies can only attack next turn if they are still alive
 		if(enemies[i].getAlive())
 		{
 			enemies[i].setCanAtk(true);
@@ -801,15 +774,26 @@ void Battle::newTurn(std::vector<Ally*>& ally)
 void Battle::setCirclePos()
 {
 	//TODO set circlePosition
-	for(int i = 0; i < numSkills; i++)
+	for(int i = 0; i < allyOptions.size(); i++)
 	{
-		allyOptions[i].setPosition(optionsPos[i] + allyPos[totalAlly]);
+		allyOptions[i].setPosition(optionsPos[i] + allyPos[ally.size()]);
+	}
+}
+
+void Battle::drawAlly(sf::RenderWindow& win, std::vector<Ally*>& ally)
+{
+	for(int i = 0; i < ally.size(); i++)
+	{
+		if(ally[i]->getAlive())
+		{
+			ally[i].drawAll(win);
+		}
 	}
 }
 
 void Battle::drawEnemies(sf::RenderWindow& win)
 {
-	for(int i = 0; i < numEnemies; i++)
+	for(int i = 0; i < enemies.size(); i++)
 	{
 		if(enemies[i].getAlive())
 		{
@@ -820,10 +804,12 @@ void Battle::drawEnemies(sf::RenderWindow& win)
 
 void Battle::drawAll(sf::RenderWindow& win, int currentBattleState)
 {
+	drawAlly(win);
 	drawEnemies(win);
+
 	if(currentBattleState == 1)
 	{
-		for(int i = 0; i < numSkills; i++)
+		for(int i = 0; i < allyOptions.size(); i++)
 		{
 			win.draw(allyOptions[i]);
 		}
@@ -837,7 +823,7 @@ void Battle::setEnemyHp(int enemyNum, int newHp)
 	enemies[enemyNum].setCurrentHp(newHp);
 }
 
-//For both enemy and player
+//TODO For both enemy and player
 void Battle::setInitHp(int inp)
 {
 	initHp = inp;

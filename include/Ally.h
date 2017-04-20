@@ -24,6 +24,9 @@ class Ally: public SpriteManage
 		int agility;
 
 		//Etc
+		int currentExp;
+		int requiredExp;
+
 		bool canAtk;
 		bool allyInParty;
 		bool alive;
@@ -44,6 +47,9 @@ class Ally: public SpriteManage
 		void setAgility(int);
 
 		//Etc
+		void setCurrentExp(int);
+		void setRequiredExp(int);
+
 		void setCanAtk(bool);
 		void setAlive(bool);
 		void setBattlePos(int);
@@ -62,12 +68,16 @@ class Ally: public SpriteManage
 		int getAgility();
 
 		//Etc
+		int getCurrentExp();
+		int getRequiredExp();
+
+		//TODO CREATE HEALTH BARS/MANA BARS FOR ALLIES LIKE FOR ENEMIES
 		bool getCanAtk();
 		bool getAlive();
 		int getBattlePos();
-		std::vector<Skill> getSkill();
-
 		bool getAllyInParty();
+
+		std::vector<Skill> getSkill();
 };
 
 #endif

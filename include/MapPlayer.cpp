@@ -4,9 +4,9 @@
 #include "Map.h"
 #include "UIOverlay.h"
 
-#include "Player.h"
+#include "MapPlayer.h"
 
-Player::Player()
+MapPlayer::MapPlayer()
 {
 	//Sets texture and position of sprite
 	texturePosX = texturePosY = 0;
@@ -34,154 +34,20 @@ Player::Player()
 	moving = false;
 	movingNum = 0;
 	canMoveUp = canMoveDown = canMoveLeft = canMoveRight = true;
-
-	//Default stats
-	level = 1;
-	currentHp = maxHp = 100;
-	currentMana = maxMana = 100;
-	strength = defense = agility = 10;
-	exp = 10;
-	currency = 15;
-	battlePos = 1;
-
 	checkEncounter = false;
 }
 
 //*********** MUTATORS ************
 
-void Player::setLevel(int inp, UIOverlay& overlay)
-{
-	level = inp;
-	overlay.setLevel(level);
-}
-
-void Player::setCurrentHp(int inp, UIOverlay& overlay)
-{
-	currentHp = inp;
-	overlay.setHealth(currentHp, maxHp);
-}
-
-void Player::setMaxHp(int inp, UIOverlay& overlay)
-{
-	maxHp = inp;
-	overlay.setHealth(currentHp, maxHp);
-}
-
-void Player::setCurrentMana(int inp, UIOverlay& overlay)
-{
-	currentMana = inp;
-	overlay.setMana(currentMana, maxMana);
-}
-
-void Player::setMaxMana(int inp, UIOverlay& overlay)
-{
-	maxMana = inp;
-	overlay.setMana(currentMana, maxMana);
-}
-
-void Player::setStrength(int inp)
-{
-	strength = inp;
-}
-
-void Player::setDefense(int inp)
-{
-	defense = inp;
-}
-
-void Player::setAgility(int inp)
-{
-	agility = inp;
-}
-
-void Player::setExp(int inp, UIOverlay& overlay)
-{
-	exp = inp;
-	//TODO This formula right?
-	overlay.setExp(exp, level * 100);
-}
-
-void Player::setCurrency(int inp, UIOverlay& overlay)
-{
-	currency = inp;
-	overlay.setCurrency(currency);
-}
-
-void Player::setBattlePos(int inp)
-{
-	battlePos = inp;
-}
-
 //*********** ACCESSORS ************
-
-int Player::getLevel()
-{
-	return level;
-}
-
-int Player::getCurrentHp()
-{
-	return currentHp;
-}
-
-int Player::getMaxHp()
-{
-	return maxHp;
-}
-
-int Player::getCurrentMana()
-{
-	return currentMana;
-}
-
-int Player::getMaxMana()
-{
-	return maxMana;
-}
-
-int Player::getStrength()
-{
-	return strength;
-}
-
-int Player::getDefense()
-{
-	return defense;
-}
-
-int Player::getAgility()
-{
-	return agility;
-}
-
-int Player::getExp()
-{
-	return exp;
-}
-
-int Player::getCurrency()
-{
-	return currency;
-}
-
-int Player::getBattlePos()
-{
-	return battlePos;
-}
-
-std::vector<Skill> Player::getSkill()
-{
-	return skill;
-}
-
-bool Player::getMoving()
+bool MapPlayer::getMoving()
 {
 	return moving;
 }
 
 //*********** ETC ************
 
-void Player::stepSound()
+void MapPlayer::stepSound()
 {
 	tme = clock.getElapsedTime(); 
 	currentTime = tme.asMilliseconds();
@@ -203,7 +69,7 @@ void Player::stepSound()
 	}
 }
 
-void Player::standStill()
+void MapPlayer::standStill()
 {
 	switch(lastDirection)
 	{
@@ -222,7 +88,7 @@ void Player::standStill()
 	}
 }
 
-void Player::movePos()
+void MapPlayer::movePos()
 {
 	bool wPress = sf::Keyboard::isKeyPressed(sf::Keyboard::W);
 	bool sPress = sf::Keyboard::isKeyPressed(sf::Keyboard::S);
@@ -302,7 +168,7 @@ void Player::movePos()
 }
 
 //Calculates whether player should encounter enemy. Encounter chance is from 0-100
-void Player::encounter(int encounterChance, int& scene)
+void MapPlayer::encounter(int encounterChance, int& scene)
 {
 	if(checkEncounter)
 	{
@@ -316,7 +182,7 @@ void Player::encounter(int encounterChance, int& scene)
 }
 
 //Direction is 0 when top, 1 when right, 2 when down, 3 when left
-void Player::spriteAnimation()
+void MapPlayer::spriteAnimation()
 {
 	tme = clock.getElapsedTime();
 	currentTime = tme.asMilliseconds();
@@ -335,7 +201,7 @@ void Player::spriteAnimation()
 }
 
 //Checks for collision
-bool Player::collisionZones(int i, int j)
+bool MapPlayer::collisionZones(int i, int j)
 {
 	//Checks if player is colliding
 	bool colliding = false;

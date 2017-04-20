@@ -7,6 +7,7 @@ class SpriteManage
 		sf::Sprite sprite;
 		sf::Texture texture;
 	public:
+		//TODO If battle sprite (rather than map sprite), then draw health and mana bars above as well as name
 		//Mutators
 		void setTextureSprite(sf::String);
 		void setTextureRect(int, int);

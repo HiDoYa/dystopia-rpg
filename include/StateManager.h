@@ -28,7 +28,7 @@ class StateManager
 
 		std::vector<Ally*> ally;
 
-		Player player;
+		MapPlayer player;
 
 		//Map specific
 		int prevZ;

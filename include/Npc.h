@@ -15,8 +15,8 @@ class Npc: public SpriteManage, public Dialogue
 		bool colliding;
 	public:
 		Npc();
-		void speak(std::vector<bool>&, Textbox&, Player&);
-		void collision(Player&);
+		void speak(std::vector<bool>&, Textbox&, MapPlayer&);
+		void collision(MapPlayer&);
 
 		//****** MUTATORS **********
 		void setName(std::string);

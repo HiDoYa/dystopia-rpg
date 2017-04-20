@@ -1,4 +1,4 @@
-class Player;
+class MapPlayer;
 
 #ifndef MAP_H
 #define MAP_H
@@ -29,9 +29,9 @@ class Map
 		void drawStatic(sf::RenderWindow&, sf::View, int);
 		void setupBitmap(std::string, sf::RenderWindow&);
 		void drawBitmap(sf::RenderWindow&);
-		void drawCollision(sf::RenderWindow&, Player&);
-		bool newMap(Player&, int&, int&);
-		void newMapCheck(Player&, int&, int&, int&, int&, bool&, int&);
+		void drawCollision(sf::RenderWindow&, MapPlayer&);
+		bool newMap(MapPlayer&, int&, int&);
+		void newMapCheck(MapPlayer&, int&, int&, int&, int&, bool&, int&);
 
 		//Accessors for new map
 		std::vector<sf::Vector2i> getNewMapCords();

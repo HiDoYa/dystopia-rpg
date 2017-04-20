@@ -2,7 +2,7 @@
 #include <fstream>
 #include <iostream>
 
-#include "Player.h"
+#include "MapPlayer.h"
 
 #include "Map.h"
 
@@ -149,7 +149,7 @@ void Map::drawBitmap(sf::RenderWindow& win)
 	}
 }
 
-void Map::drawCollision(sf::RenderWindow& win, Player& player)
+void Map::drawCollision(sf::RenderWindow& win, MapPlayer& player)
 {
 	for(int j = 0; j < maxCords.y; j++)
 	{
@@ -171,7 +171,7 @@ void Map::drawCollision(sf::RenderWindow& win, Player& player)
 }
 
 //TODO Add foreground
-bool Map::newMap(Player& player, int& zone, int& map)
+bool Map::newMap(MapPlayer& player, int& zone, int& map)
 {
 	sf::Vector2i playerPos = sf::Vector2i(player.getPosition());
 
