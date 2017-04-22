@@ -3,13 +3,13 @@
 #include <fstream>
 #include <memory>
 
-#include "Ally.h"
 #include "Battle.h"
+#include "Character.h"
 #include "Dialogue.h"
 #include "MainMenu.h"
 #include "Map.h"
-#include "Npc.h"
 #include "MapPlayer.h"
+#include "Npc.h"
 #include "Textbox.h"
 #include "UIOverlay.h"
 

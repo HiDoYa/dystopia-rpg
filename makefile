@@ -1,4 +1,4 @@
-OBJ = main.o Textbox.o SpriteManage.o Map.o Npc.o MapPlayer.o Enemy.o  Battle.o UIOverlay.o MainMenu.o StateManager.o Ally.o Dialogue.o Skill.o
+OBJ = main.o Textbox.o SpriteManager.o Map.o Npc.o MapPlayer.o Battle.o UIOverlay.o MainMenu.o StateManager.o Character.o Dialogue.o Skill.o
 all: game
 
 game: $(OBJ)
@@ -8,19 +8,13 @@ game: $(OBJ)
 main.o: main.cpp
 	g++ -std=c++11 -c $<
 
-Ally.o: include/Ally.cpp
-	g++ -std=c++11 -c $<
-
 Battle.o: include/Battle.cpp
 	g++ -std=c++11 -c $<
 
+Character.o: include/Character.cpp
+	g++ -std=c++11 -c $<
+
 Dialogue.o: include/Dialogue.cpp
-	g++ -std=c++11 -c $<
-
-Enemy.o: include/Enemy.cpp
-	g++ -std=c++11 -c $<
-
-MapPlayer.o: include/MapPlayer.cpp
 	g++ -std=c++11 -c $<
 
 MainMenu.o: include/MainMenu.cpp
@@ -29,10 +23,13 @@ MainMenu.o: include/MainMenu.cpp
 Map.o: include/Map.cpp
 	g++ -std=c++11 -c $<
 
+MapPlayer.o: include/MapPlayer.cpp
+	g++ -std=c++11 -c $<
+
 Npc.o: include/Npc.cpp
 	g++ -std=c++11 -c $<
 
-SpriteManage.o: include/SpriteManage.cpp
+SpriteManager.o: include/SpriteManager.cpp
 	g++ -std=c++11 -c $<
 
 StateManager.o: include/StateManager.cpp

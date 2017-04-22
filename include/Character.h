@@ -1,18 +1,14 @@
-#include "SpriteManage.h"
+#include "SpriteManager.h"
 
 #include "Skill.h"
 
-#ifndef ALLY_H
-#define ALLY_H
+#ifndef CHARACTER_H
+#define CHARACTER_H
 
-class Ally: public SpriteManage
+class Character: public SpriteManager
 {
 	private:
-		//Skills
-		std::vector<Skill> skill;
-		
 		//Attributes
-		std::string name;
 		int level;
 		int currentHp;
 		int maxHp;
@@ -23,19 +19,23 @@ class Ally: public SpriteManage
 		int defense;
 		int agility;
 
-		//Etc
+		std::vector<Skill> skill;
+
+		bool alive;
+		bool canAtk;
+		int battlePos;
+
+		//For allies
+		bool allyInParty;
 		int currentExp;
 		int requiredExp;
-
-		bool canAtk;
-		bool allyInParty;
-		bool alive;
-		int battlePos;
+		
+		//For enemies
+		int chance;
 	public:
-		Ally();
+		Character();
 
 		//****** Mutators ********
-		void setName(std::string);
 		void setLevel(int);
 		void setCurrentHp(int);
 		void setMaxHp(int);
@@ -46,17 +46,17 @@ class Ally: public SpriteManage
 		void setDefense(int);
 		void setAgility(int);
 
-		//Etc
+		void setAlive(bool);
+		void setCanAtk(bool);
+		void setBattlePos(int);
+
+		void setAllyInParty(bool);
 		void setCurrentExp(int);
 		void setRequiredExp(int);
 
-		void setCanAtk(bool);
-		void setAlive(bool);
-		void setBattlePos(int);
-		void setAllyInParty(bool);
+		void setChance(int):
 
-		//****** Mutators ********
-		std::string getName();
+		//****** Accessors ********
 		int getLevel();
 		int getCurrentHp();
 		int getMaxHp();
@@ -67,15 +67,15 @@ class Ally: public SpriteManage
 		int getDefense();
 		int getAgility();
 
-		//Etc
+		bool getAlive();
+		bool getCanAtk();
+		int getBattlePos();
+
+		bool getAllyInParty();
 		int getCurrentExp();
 		int getRequiredExp();
 
-		//TODO CREATE HEALTH BARS/MANA BARS FOR ALLIES LIKE FOR ENEMIES
-		bool getCanAtk();
-		bool getAlive();
-		int getBattlePos();
-		bool getAllyInParty();
+		int getChance();
 
 		std::vector<Skill> getSkill();
 };

@@ -3,14 +3,14 @@
 #include <iostream>
 
 //Game classes
-#include "include/Ally.h"
 #include "include/Battle.h"
+#include "include/Character.h"
 #include "include/Dialogue.h"
 #include "include/MainMenu.h"
 #include "include/Map.h"
+#include "include/MapPlayer.h"
 #include "include/Npc.h"
-#include "include/Player.h"
-#include "include/SpriteManage.h"
+#include "include/SpriteManager.h"
 #include "include/Skill.h"
 #include "include/Textbox.h"
 #include "include/UIOverlay.h"

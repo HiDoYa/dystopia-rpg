@@ -1,4 +1,4 @@
-#include "Enemy.h"
+#include "Character.h"
 #include "UIOverlay.h"
 
 #ifndef BATTLE_H

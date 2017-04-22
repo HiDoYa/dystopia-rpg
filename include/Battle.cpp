@@ -2,8 +2,6 @@
 #include <fstream>
 #include <iostream>
 
-#include "Ally.h"
-
 #include "Battle.h"
 
 Battle::Battle()
