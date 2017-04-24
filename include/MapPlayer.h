@@ -1,10 +1,10 @@
 #include <SFML/Audio.hpp>
-#include "SpriteManage.h"
+#include "SpriteManager.h"
 
 #ifndef MAPPLAYER_H
 #define MAPPLAYER_H
 
-class MapPlayer: public SpriteManage
+class MapPlayer: public SpriteManager
 {
 	private:
 		//Time management for sprite animation
@@ -39,8 +39,6 @@ class MapPlayer: public SpriteManage
 		bool checkEncounter;
 	public:
 		MapPlayer();
-
-		//***** Mutators *******
 
 		//***** Accessor *******
 		bool getMoving();

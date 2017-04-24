@@ -1,11 +1,11 @@
 #include <SFML/Audio.hpp>
 
-#include "SpriteManage.h"
+#include "SpriteManager.h"
 
 #ifndef MAINMENU_H
 #define MAINMENU_H
 
-class MainMenu: public SpriteManage
+class MainMenu: public SpriteManager
 {
 	private:
 		int currentlySelected;

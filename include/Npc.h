@@ -1,11 +1,11 @@
-#include "SpriteManage.h"
+#include "SpriteManager.h"
 
 class Textbox;
 
 #ifndef NPC_H
 #define NPC_H
 
-class Npc: public SpriteManage, public Dialogue
+class Npc: public SpriteManager, public Dialogue
 {
 	private:
 		std::string name;
