@@ -26,7 +26,7 @@ class StateManager
 		std::vector<Npc*> npc;
 		bool speaking;
 
-		std::vector<Ally*> ally;
+		std::vector<Character*> ally;
 
 		MapPlayer player;
 
@@ -38,8 +38,8 @@ class StateManager
 		int currentZone;
 		int currentMap;
 		int encounterRate;
-		Enemy tempEnemy;
-		std::vector<Enemy> enemyListStore;
+		Character tempEnemy;
+		std::vector<Character> enemyListStore;
 
 		//Battle (state 2)
 		bool battleLoaded;

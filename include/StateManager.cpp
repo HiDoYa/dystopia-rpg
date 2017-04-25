@@ -92,6 +92,11 @@ void StateManager::loadAlly()
 			//Just in case the npc name overlaps with keywords below
 			inp = "";
 		}
+		if(inp == "Level")
+		{
+			allyFile >> inp;
+			ally[allyCounter]->setLevel(atoi(inp.c_str()));
+		}
 		if(inp == "Hp")
 		{
 			allyFile >> inp;
@@ -131,6 +136,7 @@ void StateManager::loadAlly()
 			allyFile >> inp;
 			ally[allyCounter]->setTextureRect(0, atoi(inp.c_str()));
 		}
+		//TODO EXP and AllyInParty
 		allyFile >> inp;
 	} while(!allyFile.eof());
 	allyFile.close();
@@ -197,10 +203,7 @@ void StateManager::loadMap(sf::RenderWindow& win)
 		prevZ = currentZone;
 		prevM = currentMap;
 
-		//TODO Load appropriate npcs w/ dynamic allocation and from files. Use some loop for number of npcs.
-		//TODO When loading another map, pop_back all current npcs
-
-		//TODO Set player position based on map or other factors
+		//Set player position based on map or other factors
 		player.setPosition(startPosX, startPosY);
 	}
 }
@@ -239,11 +242,6 @@ void StateManager::loadMapEnemies(std::string enemyList)
 
 			strInp = "";
 		}
-		if(strInp == "Chance")
-		{
-			enemyFile >> strInp;
-			enemyListStore[tempCounter].setChance(atoi(strInp.c_str()));
-		}
 		if(strInp == "Level")
 		{
 			enemyFile >> strInp;
@@ -275,6 +273,11 @@ void StateManager::loadMapEnemies(std::string enemyList)
 		{
 			enemyFile >> strInp;
 			enemyListStore[tempCounter].setAgility(atoi(strInp.c_str()));
+		}
+		if(strInp == "Chance")
+		{
+			enemyFile >> strInp;
+			enemyListStore[tempCounter].setChance(atoi(strInp.c_str()));
 		}
 		if(strInp == "Image")
 		{
@@ -551,11 +554,8 @@ void StateManager::updateMap(sf::RenderWindow& win, sf::View& view)
 	//Activate window for OpenGL rendering
 	win.clear();
 
-	//TODO NPC speak
 	speaking = false;
 
-//	npc[0]->speak("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean eu diam eget magna ullamcorper", textbox, player);
-//	npc[1]->speak("hii there", textbox, player);
 	for(int i = 0; i < npc.size(); i++)
 	{
 		npc[i]->speak(event, textbox, player);
@@ -570,14 +570,12 @@ void StateManager::updateMap(sf::RenderWindow& win, sf::View& view)
 		}
 	}
 	
-	//TODO Loop so all npcs are checked
 	if(!speaking)
 	{
 		player.movePos();
 		startPosX = player.getPosition().x;
 		startPosY = player.getPosition().y;
 	} 
-	//TODO Set encounter rate based on map
 	player.encounter(encounterRate, currentState);
 
 	ground->newMapCheck(player, startPosX, startPosY, currentZone, currentMap, mapLoaded, encounterRate);
@@ -601,7 +599,6 @@ void StateManager::renderMap(sf::RenderWindow& win, sf::View& view)
 	collision->drawCollision(win, player);
 	player.drawSprite(win);
 	
-	//TODO Loop for npcs
 	for(int i = 0; i < npc.size(); i++)
 	{
 		win.draw(npc[i]->getSprite());
@@ -653,9 +650,9 @@ void StateManager::updateBattle(sf::RenderWindow& win, sf::View& view)
 		//Battle state 0 Menu shows and player can make decision
 		case 0:
 			//For damage calc
-			battle->setInitHp(player.getCurrentHp());
+			battle->setInitHp();
 			
-			battle->checkForChoice(currentBattleState, player, ally);
+			battle->checkForChoice(currentBattleState, ally);
 			break;
 		//Battle state 1 (if player or ally is attacking)
 		case 1:
@@ -665,15 +662,15 @@ void StateManager::updateBattle(sf::RenderWindow& win, sf::View& view)
 			break;
 		//Battle state 2 (find enemies that should attack, start animating, and go to 2 OR go to 0)
 		case 2:
-			battle->attackManager(currentBattleState, player, ally, currentState);
+			battle->attackManager(currentBattleState, ally, currentState);
 			break;
 		//Battle state 3 (calculate damage, animate hp going down, ending animation)
 		case 3:
-			battle->hpCalculate(currentBattleState, player, overlay);
+			battle->hpCalculate(currentBattleState, overlay);
 			break;
 		//Battle state 4 (check for game over. go back to 0 if not game over)
 		case 4:
-			battle->checkEndBattle(player, ally, currentBattleState, currentState);
+			battle->checkEndBattle(ally, currentBattleState, currentState);
 			break;
 	}
 }
@@ -683,8 +680,7 @@ void StateManager::renderBattle(sf::RenderWindow& win, sf::View& view)
 	//Background image
 	background->drawStatic(win, view);
 
-	//TODO Mid ground
-	player.drawSprite(win);
+	//Mid ground
 	battle->drawAll(win, currentBattleState);
 
 	//TODO On top

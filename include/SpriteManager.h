@@ -33,6 +33,8 @@ class SpriteManager
 
 		//Etc
 		void drawSprite(sf::RenderWindow&);
+		void updatePositionBattle();
+		void drawSpriteBattle(sf::RenderWindow&);
 		void moveSprite(int, int);
 };
 
