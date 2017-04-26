@@ -652,7 +652,7 @@ void StateManager::updateBattle(sf::RenderWindow& win, sf::View& view)
 			//For damage calc
 			battle->setInitHp();
 			
-			battle->checkForChoice(currentBattleState, ally);
+			battle->checkForChoice(currentBattleState);
 			break;
 		//Battle state 1 (if player or ally is attacking)
 		case 1:
@@ -662,7 +662,7 @@ void StateManager::updateBattle(sf::RenderWindow& win, sf::View& view)
 			break;
 		//Battle state 2 (find enemies that should attack, start animating, and go to 2 OR go to 0)
 		case 2:
-			battle->attackManager(currentBattleState, ally, currentState);
+			battle->attackManager(currentBattleState, currentState);
 			break;
 		//Battle state 3 (calculate damage, animate hp going down, ending animation)
 		case 3:
@@ -670,7 +670,7 @@ void StateManager::updateBattle(sf::RenderWindow& win, sf::View& view)
 			break;
 		//Battle state 4 (check for game over. go back to 0 if not game over)
 		case 4:
-			battle->checkEndBattle(ally, currentBattleState, currentState);
+			battle->checkEndBattle(currentBattleState, currentState);
 			break;
 	}
 }
