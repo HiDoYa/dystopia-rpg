@@ -21,9 +21,6 @@ class Skill
 		//If attack misses
 		bool missed;
 
-		//Used to calculate damage
-		int tempDmg;
-
 		//Element 0 for damage, 1 for heals, 2 for buffs, 3 for debuffs
 		std::vector<int> mult;
 		std::vector<int> max;
@@ -44,9 +41,10 @@ class Skill
 		//TODO Formulas based on attacker stats/attacked stats. Return damage amount
 		
 		//****** MUTATORS *********
-		void setMult(int);
-		void setMax(int);
-		void setMin(int);
+		void setName(std::string);
+		void setMult(int, int);
+		void setMax(int, int);
+		void setMin(int, int);
 		void setCrit(int);
 		void setAccuracy(int);
 		void setElement(int);
@@ -60,9 +58,9 @@ class Skill
 		int addForElementDamage();
 
 		//****** ACCESSORS *********
-		int getMult();
-		int getMax();
-		int getMin();
+		std::vector<int> getMult();
+		std::vector<int> getMax();
+		std::vector<int> getMin();
 		int getCrit();
 		int getAccuracy();
 		int getElement();
@@ -70,12 +68,17 @@ class Skill
 		std::vector<bool> getTargetNum();
 		
 		//***** UTILITY ************
-		int checkForMaxMin(int);
+		int checkForMaxMin(int, int);
+		int checkForCrit(int);
+		int checkForMiss(int);
 
 		//****** DAMAGE CALC *********
 		int getDamageCalc(int, int, int);
-		int getNormDamageCalc(int, int);
-		int getPercentDamageCalc(int, int, int);
+		int getNormDamageCalc(int, int, int);
+		int getPercentDamageCalc(int, int, int, int);
+
+		//****** TEXT *********
+		std::string dispText(std::string, int);
 };
 
 #endif

@@ -14,18 +14,16 @@ Skill::Skill()
 	reapplyTurn = false;
 	numAtksPerHit = 1;
 	missed = false;
-	tempDmg = 0;
 
-	//Initializes mult/max/min
-	for(int i = 0; i < 2; i++)
+	for(int i = 0; i < 4; i++)
 	{
+		max.push_back(0);
+		max.push_back(0);
+		min.push_back(0);
 		target.push_back(0);
 		targetNum.push_back(true);
 	}
 
-	mult = 0;
-	max = 0;
-	min = 0;
 	crit = 0;
 	accuracy = 0;
 	element = 0;
@@ -81,17 +79,17 @@ void Skill::setTargetNum(int type, bool inp)
 }
 
 //********** ACCESSOR *********
-int Skill::getMult()
+std::vector<int> Skill::getMult()
 {
 	return mult;
 }
 
-int Skill::getMax()
+std::vector<int> Skill::getMax()
 {
 	return max;
 }
 
-int Skill::getMin()
+std::vector<int> Skill::getMin()
 {
 	return min;
 }
@@ -123,21 +121,21 @@ std::vector<bool> Skill::getTargetNum()
 
 // ********* UTILITY *************
 
-int Skill::checkForMaxMin()
+int Skill::checkForMaxMin(int tempDmg, int type)
 {
-	if(tempDmg > max)
+	if(tempDmg > max[type])
 	{
-		tempDmg = max;
+		tempDmg = max[type];
 	}
-	if(tempDmg < min)
+	if(tempDmg < min[type])
 	{
-		tempDmg = min;
+		tempDmg = min[type];
 	}
 
 	return tempDmg;
 }
 
-int Skill::checkForCrit()
+int Skill::checkForCrit(int tempDmg)
 {
 	if((rand() % 100 + 1) < crit)
 	{
@@ -161,11 +159,13 @@ int Skill::addForElementDamage()
 
 //******** DAMAGE CALCULATION *************
 
-int Skill::getNormDamageCalc(int allyStrength, int enemyDef)
+int Skill::getNormDamageCalc(int allyStrength, int enemyDef, int type)
 {
-	tempDmg = (allyStrength - enemyDef) * mult;
+	int tempDmg = 0;
+	tempDmg = (allyStrength - enemyDef) * mult[type];
 
-	checkForMaxMin(tempDmg);
+	//TODO Type
+	checkForMaxMin(tempDmg, type);
 
 	if((rand() % 100 + 1) < crit)
 	{
@@ -175,19 +175,20 @@ int Skill::getNormDamageCalc(int allyStrength, int enemyDef)
 	return tempDmg;
 }
 
-int Skill::getPercentDamageCalc(int allyStrength, int enemyDef, int enemyHealth)
+int Skill::getPercentDamageCalc(int allyStrength, int enemyDef, int enemyHealth, int type)
 {	
+	int tempDmg = 0;
 	tempDmg = (allyStrength - enemyDef) / 100 * enemyHealth;
 
-	checkForMaxMin(tempDmg);
+	checkForMaxMin(tempDmg, type);
 	checkForMiss();
 	return tempDmg;
 }
 
-//******** DAMAGE CALCULATION *************
-std::string Skill::dispText(std::string chrName)
+//******** TEXT *************
+std::string Skill::dispText(std::string chrName, int tempDmg)
 {
-	int returnText;
+	std::string returnText = "";
 	if(missed)
 	{
 		returnText = chrName + " missed the attack!";
@@ -195,6 +196,7 @@ std::string Skill::dispText(std::string chrName)
 	//TODO
 	else if(true)
 	{
-		returnText = chrName + " hit the enemy for " + tempDmg + " damage!";
+		returnText = chrName + " hit the enemy for " + std::to_string(tempDmg) + " damage!";
 	}
+	return returnText;
 }

@@ -171,6 +171,11 @@ int Character::getRequiredExp()
 	return requiredExp;
 }
 
+int Character::getChance()
+{
+	return chance;
+}
+
 std::vector<Skill> Character::getSkill()
 {
 	return skill;
