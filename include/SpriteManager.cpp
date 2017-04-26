@@ -29,7 +29,7 @@ void SpriteManager::setName(std::string inp)
 
 void SpriteManager::setHpBar(int currentHp, int maxHp)
 {
-	maxHpbar.setSize(sf::Vector2f(length, 10));
+	maxHpBar.setSize(sf::Vector2f(length, 10));
 	currentHpBar.setSize(sf::Vector2f((static_cast<float>(currentHp) / maxHp) * length, 10));
 }
 
@@ -37,10 +37,6 @@ void SpriteManager::setManaBar(int currentMana, int maxMana)
 {
 	maxManaBar.setSize(sf::Vector2f(length, 10));
 	currentManaBar.setSize(sf::Vector2f((static_cast<float>(currentMana) / maxMana) * length, 10));
-}
-
-void SpriteManager::setManaBar(int currentMana, int maxMana)
-{
 }
 
 void SpriteManager::setTextureSprite(std::string inp)

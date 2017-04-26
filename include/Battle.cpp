@@ -7,18 +7,16 @@
 Battle::Battle()
 {
 	//Default initializations
-	currentSkill = 0;
+	currentOption = 0;
 	currentOptionsShow = 0;
 	blinkTurn = true;
 	currentTime = lastTime = 0;
 	initHp = 100;
-	nextAttack = 0;
 	newPos = 0;
 	goalPlace = 0;
 	skillType = 0;
 	currentEnemySelected = 0;
 	qNotPressed = wNotPressed = aNotPressed = sNotPressed = dNotPressed = false;
-	numEnemies = 1;
 	hpComplete = animComplete = false;
 	
 	//Displacement during character turn
@@ -62,7 +60,7 @@ void Battle::setupBattle(std::vector<Character> enemyList, std::vector<Character
 	enemies.clear();
 
 	//Initialize for req default data
-	currentSkill = 0;
+	currentOption = 0;
 	currentEnemySelected = 0;
 	animComplete = hpComplete = false;
 
@@ -82,10 +80,8 @@ void Battle::setupBattle(std::vector<Character> enemyList, std::vector<Character
 		allyOptions[i].setFillColor(sf::Color(150, 196, 255));
 	}
 
-	//Get number of enemies
-	int numEnemies = rand() % 4 + 1;
-	
 	//Initialize enemies
+	int numEnemies = rand() % 4 + 1;
 	for(int i = 0; i < numEnemies; i++)
 	{
 		//Chooses enemy from list
@@ -105,13 +101,13 @@ void Battle::setupBattle(std::vector<Character> enemyList, std::vector<Character
 		enemies.push_back(enemyList[index]);
 		//TODO random set position
 		enemies[i].setPosition(enemyPos[i].x, enemyPos[i].y);
-		enemies[i].updatePosition();
+		enemies[i].updatePositionBattle();
 	}
 	ally = allyList;
 }
 
 //*********** BATTLE STATE 0 *********************
-//Sets nextAttack based on who is the fastest
+//Finds fastest character and stores in nextCharType and nextCharCounter
 void Battle::findFastestChar()
 {
 	int highestAgil = -1;
@@ -216,53 +212,53 @@ void Battle::changeCurrentSkill()
 	if(wPressed && wNotPressed)
 	{
 		wNotPressed = false;
-		currentSkill--;
+		currentOption--;
 		
 		//Special exceptions
-		if(currentSkill == -1)
+		if(currentOption == -1)
 		{
-			currentSkill = 0;
+			currentOption = 0;
 		}
-		else if(currentSkill == 2)
+		else if(currentOption == 2)
 		{
-			currentSkill = 3;
+			currentOption = 3;
 		}
 	}
 	if(aPressed && aNotPressed)
 	{
 		aNotPressed = false;
-		currentSkill -= 3;
+		currentOption -= 3;
 
 		//Special exceptions
-		if(currentSkill < 0)
+		if(currentOption < 0)
 		{
-			currentSkill += 3;
+			currentOption += 3;
 		}
 	}
 	if(sPressed && sNotPressed)
 	{
 		sNotPressed = false;
-		currentSkill++;
+		currentOption++;
 		
 		//Special exceptions
-		if(currentSkill == 6)
+		if(currentOption == 6)
 		{
-			currentSkill = 5;
+			currentOption = 5;
 		}
-		else if(currentSkill == 3)
+		else if(currentOption == 3)
 		{
-			currentSkill = 2;
+			currentOption = 2;
 		}
 	}
 	if(dPressed && dNotPressed)
 	{
 		dNotPressed = false;
-		currentSkill += 3;
+		currentOption += 3;
 
 		//Special exceptions
-		if(currentSkill > 5)
+		if(currentOption > 5)
 		{
-			currentSkill -= 3;
+			currentOption -= 3;
 		}
 	}
 	
@@ -273,7 +269,7 @@ void Battle::changeCurrentSkill()
 	}
 
 	//Highlight current
-	allyOptions[currentSkill].setFillColor(sf::Color::Blue);
+	allyOptions[currentOption].setFillColor(sf::Color::Blue);
 }
 
 void Battle::chooseCurrentSkill(int& currentBattleState)
@@ -292,8 +288,8 @@ void Battle::attackManager(int& currentBattleState, int& currentState)
 	switch (nextCharType)
 	{
 		case 0:
-			allyTurnHandle(currentState, ally);
-			allyAttackAnimation(currentBattleState, ally);
+			allyTurnHandle(currentState);
+			allyAttackAnimation(currentBattleState);
 			break;
 		case 1:
 			enemyTurnHandle();
@@ -304,7 +300,7 @@ void Battle::attackManager(int& currentBattleState, int& currentState)
 
 void Battle::allyTurnHandle(int& currentState)
 {
-	switch(currentSkill)
+	switch(currentOption)
 	{
 		case 0:
 		case 1:
@@ -411,10 +407,6 @@ void Battle::allyItem()
 {
 }
 
-void Battle::allyChangePos()
-{
-}
-
 void Battle::allyAttackAnimation(int& currentBattleState)
 {
 	sf::Vector2f current = ally[nextCharCounter]->getPosition();
@@ -458,44 +450,44 @@ void Battle::enemyAttackAnimation(int& currentBattleState)
 
 //******** BATTLE STATE 2 **************
 //Calculates hp change for enemy and ally
-void Battle::hpCalculate(int& currentBattleState, UIOverlay& overlay)
-{
-	int tempHpFinal;
-	//TODO OLD OLD OLD
-	//TODO PREMESOZOIC CODE
-	switch (nextAttack)
-	{
-		case -1:
-			//TODO 
-			tempHpFinal = enemies[currentEnemySelected].getInitHp() - player.getStrength();
-			//Makes sure the lowest hp possible is 0
-			tempHpFinal = getMaxNum(0, tempHpFinal);
-			playerPostAttackAnimation(player);
-			if(animComplete)
-			{
-				enemyHpChange(tempHpFinal, currentBattleState);
-			}
-			//Animate enemy hp decrease with new hp and old hp and currentselectedenemy
-			break;
-		case 0:
-		case 1:
-		case 2:
-			//TODO
-			tempHpFinal = initHp - enemies[nextAttack].getStrength();
-			//Makes sure the lowest hp possible is 0
-			tempHpFinal = getMaxNum(0, tempHpFinal);
-			enemyPostAttackAnimation();
-			if(animComplete)
-			{
-				playerHpChange(tempHpFinal, player, overlay, currentBattleState);
-			}
-			//Animate player hp with new hp and old hp
-			break;
-	}
-
-	//For incrementing currentBattleState
-	checkForCompletion(currentBattleState);
-}
+//void Battle::hpCalculate(int& currentBattleState, UIOverlay& overlay)
+//{
+//	int tempHpFinal;
+//	//TODO OLD OLD OLD
+//	//TODO PREMESOZOIC CODE
+//	switch (nextAttack)
+//	{
+//		case -1:
+//			//TODO 
+//			tempHpFinal = enemies[currentEnemySelected].getInitHp() - player.getStrength();
+//			//Makes sure the lowest hp possible is 0
+//			tempHpFinal = getMaxNum(0, tempHpFinal);
+//			playerPostAttackAnimation(player);
+//			if(animComplete)
+//			{
+//				enemyHpChange(tempHpFinal, currentBattleState);
+//			}
+//			//Animate enemy hp decrease with new hp and old hp and currentselectedenemy
+//			break;
+//		case 0:
+//		case 1:
+//		case 2:
+//			//TODO
+//			tempHpFinal = initHp - enemies[nextAttack].getStrength();
+//			//Makes sure the lowest hp possible is 0
+//			tempHpFinal = getMaxNum(0, tempHpFinal);
+//			enemyPostAttackAnimation();
+//			if(animComplete)
+//			{
+//				playerHpChange(tempHpFinal, player, overlay, currentBattleState);
+//			}
+//			//Animate player hp with new hp and old hp
+//			break;
+//	}
+//
+//	//For incrementing currentBattleState
+//	checkForCompletion(currentBattleState);
+//}
 
 int Battle::findHpChangeSign(int hpFinal, int hpInit)
 {
@@ -515,22 +507,22 @@ int Battle::findHpChangeSign(int hpFinal, int hpInit)
 	return sign;
 }
 
-void Battle::allyHpChange(int hpFinal, int& currentBattleState)
-{
-	int sign = findHpChangeSign(hpFinal, ally[currentAllySelected].getCurrentHp());
-	if(ally[currentAllySelected].getCurrentHp() > hpFinal + 3 || ally[currentAllySelected].getCurrentHp() < hpFinal - 3)
-	{
-		ally[currentAllySelected].setCurrentHp(ally[currentAllySelected].getCurrentHp() + (3 * sign), overlay);
-	}
-	else if (ally[currentAllySelected].getCurrentHp() != hpFinal)
-	{
-		ally[currentAllySelected].setCurrentHp(hpFinal, overlay);
-	}
-	else
-	{
-		hpComplete = true;
-	}
-}
+//void Battle::allyHpChange(int hpFinal, int& currentBattleState)
+//{
+//	int sign = findHpChangeSign(hpFinal, ally[currentAllySelected].getCurrentHp());
+//	if(ally[currentAllySelected].getCurrentHp() > hpFinal + 3 || ally[currentAllySelected].getCurrentHp() < hpFinal - 3)
+//	{
+//		ally[currentAllySelected].setCurrentHp(ally[currentAllySelected].getCurrentHp() + (3 * sign), overlay);
+//	}
+//	else if (ally[currentAllySelected].getCurrentHp() != hpFinal)
+//	{
+//		ally[currentAllySelected].setCurrentHp(hpFinal, overlay);
+//	}
+//	else
+//	{
+//		hpComplete = true;
+//	}
+//}
 
 void Battle::enemyHpChange(int hpFinal, int& currentBattleState)
 {
@@ -552,10 +544,10 @@ void Battle::enemyHpChange(int hpFinal, int& currentBattleState)
 
 void Battle::allyPostAttackAnimation()
 {
-	goalPlace = allyPos[ally[nextCharCounter].getBattlePos()].x;
-	if(ally[nextCharCounter].getPosition().x < goalPlace)
+	goalPlace = allyPos[ally[nextCharCounter]->getBattlePos()].x;
+	if(ally[nextCharCounter]->getPosition().x < goalPlace)
 	{
-		ally[nextCharCounter].setPosition(ally[nextCharCounter].getPosition().x + 10, ally[nextCharCounter].getPosition().y);
+		ally[nextCharCounter]->setPosition(ally[nextCharCounter]->getPosition().x + 10, ally[nextCharCounter]->getPosition().y);
 	}
 	else
 	{
@@ -615,7 +607,7 @@ bool Battle::checkEnemyDeaths()
 {
 	bool allDead = true;
 
-	for(int i = 0 ; i < numEnemies; i++)
+	for(int i = 0 ; i < enemies.size(); i++)
 	{
 		if(enemies[i].getCurrentHp() > 1)
 		{
@@ -658,7 +650,7 @@ void Battle::currentEnemyDeath()
 		do
 		{
 			currentEnemySelected++;
-			if(currentEnemySelected >= numEnemies)
+			if(currentEnemySelected >= enemies.size())
 			{
 				currentEnemySelected = 0;
 			}
@@ -676,7 +668,7 @@ void Battle::newTurn()
 			ally[i]->setCanAtk(true);
 		}
 	}
-	for(int i = 0; i < numEnemies; i++)
+	for(int i = 0; i < enemies.size(); i++)
 	{
 		if(enemies[i].getAlive())
 		{
@@ -697,32 +689,23 @@ void Battle::setCirclePos()
 	}
 }
 
-void Battle::drawAlly(sf::RenderWindow& win)
+void Battle::drawAll(sf::RenderWindow& win, int currentBattleState)
 {
 	for(int i = 0; i < ally.size(); i++)
 	{
 		if(ally[i]->getAlive())
 		{
-			ally[i].drawAll(win);
+			ally[i]->drawSpriteBattle(win);
 		}
 	}
-}
 
-void Battle::drawEnemies(sf::RenderWindow& win)
-{
 	for(int i = 0; i < enemies.size(); i++)
 	{
 		if(enemies[i].getAlive())
 		{
-			enemies[i].drawAll(win);
+			enemies[i].drawSpriteBattle(win);
 		}
 	}
-}
-
-void Battle::drawAll(sf::RenderWindow& win, int currentBattleState)
-{
-	drawAlly(win);
-	drawEnemies(win);
 
 	if(currentBattleState == 1)
 	{
@@ -741,12 +724,11 @@ void Battle::setEnemyHp(int enemyNum, int newHp)
 }
 
 //TODO For both enemy and ally
-void Battle::setInitHp(int inp)
+void Battle::setInitHp()
 {
-	initHp = inp;
-	for(int i = 0; i < numEnemies; i++)
+	for(int i = 0; i < enemies.size(); i++)
 	{
-		enemies[i].setInitHp(enemies[i].getCurrentHp());
+		//enemies[i].setInitHp(enemies[i].getCurrentHp());
 	}
 }
 

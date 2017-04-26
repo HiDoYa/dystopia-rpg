@@ -72,7 +72,7 @@ void StateManager::loadAlly()
 	{
 		if(inp == "Ally")
 		{
-			ally.push_back(new Ally());
+			ally.push_back(new Character());
 			allyCounter++;
 			ally[allyCounter]->setAllyInParty(false);
 			allyFile >> inp;

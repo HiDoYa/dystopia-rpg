@@ -21,6 +21,9 @@ class SpriteManager
 
 		//Mutators
 		void setName(std::string);
+		void setHpBar(int, int);
+		void setManaBar(int, int);
+
 		void setTextureSprite(std::string);
 		void setTextureRect(int, int);
 		void setTextureRect(int, int, int);

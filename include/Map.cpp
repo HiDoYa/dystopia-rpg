@@ -187,7 +187,7 @@ bool Map::newMap(MapPlayer& player, int& zone, int& map)
 	return false;
 }
 
-void Map::newMapCheck(Player& player, int& startPosX, int& startPosY, int& currentZone, int& currentMap, bool& mapLoaded, int& encounterRate)
+void Map::newMapCheck(MapPlayer& player, int& startPosX, int& startPosY, int& currentZone, int& currentMap, bool& mapLoaded, int& encounterRate)
 {
 	if(newMap(player, currentZone, currentMap))
 	{

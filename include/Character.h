@@ -54,7 +54,7 @@ class Character: public SpriteManager
 		void setCurrentExp(int);
 		void setRequiredExp(int);
 
-		void setChance(int):
+		void setChance(int);
 
 		//****** Accessors ********
 		int getLevel();

@@ -13,7 +13,7 @@ class Battle
 		//Ally options
 		sf::CircleShape tempCircle;
 		std::vector<sf::CircleShape> allyOptions;
-		int currentSkill;
+		int currentOption;
 		int currentOptionsShow;
 		//TODO take care of inithp (final hp calculation NOT JUST DAMAGE) in skill class
 		int initHp;
@@ -88,12 +88,8 @@ class Battle
 		//For various damaging of enemies
 		void allyAttackHandle();
 		void attemptFlee(int&);
-
 		void allyChangePos();
-
 		void allyItem();
-		void allyChangePos();
-
 		void allyAttackAnimation(int&);
 		void enemyAttackAnimation(int&);
 		
@@ -118,13 +114,11 @@ class Battle
 		
 		//Drawing
 		void setCirclePos();
-		void drawAlly(sf::RenderWindow&);
-		void drawEnemies(sf::RenderWindow&);
 		void drawAll(sf::RenderWindow&, int);
 
 		//Mutators
 		void setEnemyHp(int, int);
-		void setInitHp(int);
+		void setInitHp();
 
 		//Utility
 		int getMaxNum(int, int);
