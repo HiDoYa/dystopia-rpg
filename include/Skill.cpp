@@ -17,9 +17,10 @@ Skill::Skill()
 
 	for(int i = 0; i < 4; i++)
 	{
-		max.push_back(0);
+		mult.push_back(0);
 		max.push_back(0);
 		min.push_back(0);
+		percent.push_back(false);
 		target.push_back(0);
 		targetNum.push_back(true);
 	}
@@ -51,6 +52,11 @@ void Skill::setMax(int type, int inp)
 void Skill::setMin(int type, int inp)
 {
 	min[type] = inp;
+}
+
+void Skill:setPercent(int type, bool inp)
+{
+	percent[type] = inp;
 }
 
 void Skill::setCrit(int inp)
@@ -92,6 +98,11 @@ std::vector<int> Skill::getMax()
 std::vector<int> Skill::getMin()
 {
 	return min;
+}
+
+std::vector<bool> getPercent()
+{
+	return percent;
 }
 
 int Skill::getCrit()

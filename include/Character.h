@@ -23,6 +23,7 @@ class Character: public SpriteManager
 
 		bool alive;
 		bool canAtk;
+		int finalHp; //For calculations
 		int battlePos;
 
 		//For allies
@@ -48,6 +49,7 @@ class Character: public SpriteManager
 
 		void setAlive(bool);
 		void setCanAtk(bool);
+		void setFinalHp(int):
 		void setBattlePos(int);
 
 		void setAllyInParty(bool);
@@ -69,6 +71,7 @@ class Character: public SpriteManager
 
 		bool getAlive();
 		bool getCanAtk();
+		int getFinalHp();
 		int getBattlePos();
 
 		bool getAllyInParty();
@@ -78,6 +81,8 @@ class Character: public SpriteManager
 		int getChance();
 
 		std::vector<Skill> getSkill();
+
+		//TODO Calculate requiredExp based on level and slight randomization
 };
 
 #endif

@@ -14,6 +14,7 @@ Character::Character()
 
 	alive = true;
 	canAtk = true;
+	finalHp = 100;
 	battlePos = 0;
 
 	allyInParty = false;
@@ -72,6 +73,11 @@ void Character::setAlive(bool inp)
 void Character::setCanAtk(bool inp)
 {
 	canAtk = inp;
+}
+
+void Character::setFinalHp(int inp)
+{
+	finalHp = inp;
 }
 
 void Character::setBattlePos(int inp)
@@ -148,6 +154,11 @@ bool Character::getAlive()
 bool Character::getCanAtk()
 {
 	return canAtk;
+}
+
+int Character::getFinalHp()
+{
+	return finalHp;
 }
 
 //BattlePos is 0-5 corresponding to battle grid pos

@@ -101,6 +101,7 @@ void StateManager::loadAlly()
 		{
 			allyFile >> inp;
 			ally[allyCounter]->setCurrentHp(atoi(inp.c_str()));
+			ally[allyCounter]->setFinalHp(atoi(inp.c_str()));
 
 			allyFile >> inp;
 			ally[allyCounter]->setMaxHp(atoi(inp.c_str()));
@@ -252,6 +253,7 @@ void StateManager::loadMapEnemies(std::string enemyList)
 			enemyFile >> strInp;
 			enemyListStore[tempCounter].setMaxHp(atoi(strInp.c_str()));
 			enemyListStore[tempCounter].setCurrentHp(atoi(strInp.c_str()));
+			enemyListStore[tempCounter].setFinalHp(atoi(strInp.c_str()));
 		}
 		if(strInp == "Mana")
 		{
@@ -649,9 +651,6 @@ void StateManager::updateBattle(sf::RenderWindow& win, sf::View& view)
 	{
 		//Battle state 0 Menu shows and player can make decision
 		case 0:
-			//For damage calc
-			battle->setInitHp();
-			
 			battle->checkForChoice(currentBattleState);
 			break;
 		//Battle state 1 (if player or ally is attacking)

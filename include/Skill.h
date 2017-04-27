@@ -25,6 +25,9 @@ class Skill
 		std::vector<int> mult;
 		std::vector<int> max;
 		std::vector<int> min;
+		//Percent is for percent damage, heals, buffs, debuffs
+		//Still uses mult, max, min for percent, max dmg possible, min dmg possible
+		std::vector<int> percent;
 		//Accuracy, pierce, crit are percent based (out of 100)
 		//Crit increases the magnitude of effect. Only applies for attacks
 		int crit;
@@ -45,6 +48,7 @@ class Skill
 		void setMult(int, int);
 		void setMax(int, int);
 		void setMin(int, int);
+		void setPercent(int, bool);
 		void setCrit(int);
 		void setAccuracy(int);
 		void setElement(int);
@@ -61,6 +65,7 @@ class Skill
 		std::vector<int> getMult();
 		std::vector<int> getMax();
 		std::vector<int> getMin();
+		std::vector<bool> getPercent();
 		int getCrit();
 		int getAccuracy();
 		int getElement();

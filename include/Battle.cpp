@@ -11,10 +11,8 @@ Battle::Battle()
 	currentOptionsShow = 0;
 	blinkTurn = true;
 	currentTime = lastTime = 0;
-	initHp = 100;
 	newPos = 0;
 	goalPlace = 0;
-	skillType = 0;
 	currentEnemySelected = 0;
 	qNotPressed = wNotPressed = aNotPressed = sNotPressed = dNotPressed = false;
 	hpComplete = animComplete = false;
@@ -111,7 +109,6 @@ void Battle::setupBattle(std::vector<Character> enemyList, std::vector<Character
 void Battle::findFastestChar()
 {
 	int highestAgil = -1;
-	//TODO Refactor chartype and all the types
 	nextCharType = -1;
 	nextCharCounter = -1;
 
@@ -289,10 +286,9 @@ void Battle::attackManager(int& currentBattleState, int& currentState)
 	{
 		case 0:
 			allyTurnHandle(currentState);
-			allyAttackAnimation(currentBattleState);
 			break;
 		case 1:
-			enemyTurnHandle();
+			enemyChooseTarget();
 			enemyAttackAnimation(currentBattleState);
 			break;
 	}
@@ -305,7 +301,7 @@ void Battle::allyTurnHandle(int& currentState)
 		case 0:
 		case 1:
 		case 2:
-			allyAttackHandle();
+			allyAttackAnimation(currentBattleState);
 			break;
 		case 3:
 			allyItem();
@@ -319,54 +315,42 @@ void Battle::allyTurnHandle(int& currentState)
 	}
 }
 
-//TODO
-void Battle::enemyTurnHandle()
+void Battle::enemyChooseTarget()
 {
-	switch (skillType)
-	{
-		case 0:
-			//basic single target atk
-			break;
-		case 1:
-			//change attributes of enemy
-			break;
-		case 2:
-			//aoe atk all targets
-			break;
-		case 3:
-			//heal ally or self 
-			break;
-		case 4:
-			//change attributes of ally or self
-			break;
-		case 5:
-			//change current position
-			break;
-	}
-}
+	std::vector<int> allyInFront;
+	std::vector<int> allyInBack;
 
-void Battle::allyAttackHandle()
-{	
-	switch (skillType)
+	for(int i = 0; i < ally.length(); i++)
 	{
-		case 0:
-			//basic single target atk
-			break;
-		case 1:
-			//change attributes of enemy
-			break;
-		case 2:
-			//aoe atk all targets
-			break;
-		case 3:
-			//heal ally or self 
-			break;
-		case 4:
-			//change attributes of ally or self
-			break;
-		case 5:
-			//change current position
-			break;
+		if(ally[i].getAlive())
+		{
+			if(ally[i].getBattlePos <= 2)
+			{
+				allyInFront.push_back(i);
+			}
+			else
+			{
+				allyInBack.push_back(i);
+			}
+		}
+	}
+
+	//If there are allies in the front row, there is a 2/3 chance of the ally being selected from the front and 1/3 chance of the ally being selected from the back
+	if(allyInFront.size() > 0)
+	{
+		if(rand % 3 <= 1)
+		{
+			currentAllySelected = allyInFront[rand % allyInFront.size()];
+		}
+		else
+		{
+			currentAllySelected = allyInBack[rand % allyInBack.size()];
+		}
+	}
+	//Just choose a character randomly
+	else
+	{
+		currentAllySelected = allyInBack[rand() % allyInBack.length()];
 	}
 }
 
@@ -450,7 +434,7 @@ void Battle::enemyAttackAnimation(int& currentBattleState)
 
 //******** BATTLE STATE 2 **************
 //Calculates hp change for enemy and ally
-//void Battle::hpCalculate(int& currentBattleState, UIOverlay& overlay)
+//void Battle::hpCalculate(int& currentBattleState)
 //{
 //	int tempHpFinal;
 //	//TODO OLD OLD OLD
@@ -721,15 +705,6 @@ void Battle::drawAll(sf::RenderWindow& win, int currentBattleState)
 void Battle::setEnemyHp(int enemyNum, int newHp)
 {
 	enemies[enemyNum].setCurrentHp(newHp);
-}
-
-//TODO For both enemy and ally
-void Battle::setInitHp()
-{
-	for(int i = 0; i < enemies.size(); i++)
-	{
-		//enemies[i].setInitHp(enemies[i].getCurrentHp());
-	}
 }
 
 //*************** UTILITY *******************

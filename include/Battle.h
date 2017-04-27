@@ -15,8 +15,6 @@ class Battle
 		std::vector<sf::CircleShape> allyOptions;
 		int currentOption;
 		int currentOptionsShow;
-		//TODO take care of inithp (final hp calculation NOT JUST DAMAGE) in skill class
-		int initHp;
 
 		//For changing position of char
 		sf::Clock clk;
@@ -35,10 +33,8 @@ class Battle
 		int nextCharCounter;
 		int goalPlace;
 
-		//Skill type
-		int skillType;
 		int currentEnemySelected;
-		//TODO Choosing of currentAllySelected
+		//Allies in front more likely to be chosen, otherwise randomized
 		int currentAllySelected;
 
 		//Skill Pressed
@@ -83,7 +79,7 @@ class Battle
 		void attackManager(int&, int&);
 
 		void allyTurnHandle(int&);
-		void enemyTurnHandle();
+		void enemyChooseTarget();
 
 		//For various damaging of enemies
 		void allyAttackHandle();
@@ -118,7 +114,6 @@ class Battle
 
 		//Mutators
 		void setEnemyHp(int, int);
-		void setInitHp();
 
 		//Utility
 		int getMaxNum(int, int);
