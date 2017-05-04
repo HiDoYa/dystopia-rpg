@@ -90,7 +90,8 @@ class Battle
 		void enemyAttackAnimation(int&);
 		
 		//Battle state 3
-		void hpCalculate(int&, UIOverlay&);
+		//TODO void hpCalculate(int&, UIOverlay&);
+		//TODO Do I need?
 		int findHpChangeSign(int, int);
 
 		//Takes extra integer indicating which enemy will be targeted. Recursion to finish all hp changes.

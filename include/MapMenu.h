@@ -4,6 +4,13 @@
 class MapMenu
 {
 	private:
+		sf::Texture bgTexture;
+		sf::RectangleShape bgSprite;
+
+		std::vector<sf::Text> menuChoice;
+		std::Vector<sf::RectangleSHape> menuChoiceBoxes;
+
+		sf::RectangleShape currentSelection;
 	public:
 };
 
