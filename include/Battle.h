@@ -78,7 +78,7 @@ class Battle
 		//Battle state 2
 		void attackManager(int&, int&);
 
-		void allyTurnHandle(int&);
+		void allyTurnHandle(int&, int&);
 		void enemyChooseTarget();
 
 		//For various damaging of enemies

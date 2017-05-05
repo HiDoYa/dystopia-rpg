@@ -285,7 +285,7 @@ void Battle::attackManager(int& currentBattleState, int& currentState)
 	switch (nextCharType)
 	{
 		case 0:
-			allyTurnHandle(currentState);
+			allyTurnHandle(currentState, currentBattleState);
 			break;
 		case 1:
 			enemyChooseTarget();
@@ -294,7 +294,7 @@ void Battle::attackManager(int& currentBattleState, int& currentState)
 	}
 }
 
-void Battle::allyTurnHandle(int& currentState)
+void Battle::allyTurnHandle(int& currentState, int& currentBattleState)
 {
 	switch(currentOption)
 	{
@@ -320,11 +320,11 @@ void Battle::enemyChooseTarget()
 	std::vector<int> allyInFront;
 	std::vector<int> allyInBack;
 
-	for(int i = 0; i < ally.length(); i++)
+	for(int i = 0; i < ally.size(); i++)
 	{
-		if(ally[i].getAlive())
+		if(ally[i]->getAlive())
 		{
-			if(ally[i].getBattlePos <= 2)
+			if((ally[i]->getBattlePos()) <= 2)
 			{
 				allyInFront.push_back(i);
 			}
@@ -338,19 +338,19 @@ void Battle::enemyChooseTarget()
 	//If there are allies in the front row, there is a 2/3 chance of the ally being selected from the front and 1/3 chance of the ally being selected from the back
 	if(allyInFront.size() > 0)
 	{
-		if(rand % 3 <= 1)
+		if((rand() % 3) <= 1)
 		{
-			currentAllySelected = allyInFront[rand % allyInFront.size()];
+			currentAllySelected = allyInFront[rand() % allyInFront.size()];
 		}
 		else
 		{
-			currentAllySelected = allyInBack[rand % allyInBack.size()];
+			currentAllySelected = allyInBack[rand() % allyInBack.size()];
 		}
 	}
 	//Just choose a character randomly
 	else
 	{
-		currentAllySelected = allyInBack[rand() % allyInBack.length()];
+		currentAllySelected = allyInBack[rand() % allyInBack.size()];
 	}
 }
 

@@ -54,7 +54,7 @@ void Skill::setMin(int type, int inp)
 	min[type] = inp;
 }
 
-void Skill:setPercent(int type, bool inp)
+void Skill::setPercent(int type, bool inp)
 {
 	percent[type] = inp;
 }
@@ -100,7 +100,7 @@ std::vector<int> Skill::getMin()
 	return min;
 }
 
-std::vector<bool> getPercent()
+std::vector<bool> Skill::getPercent()
 {
 	return percent;
 }
@@ -170,7 +170,17 @@ int Skill::addForElementDamage()
 
 //******** DAMAGE CALCULATION *************
 
-int Skill::getNormDamageCalc(int allyStrength, int enemyDef, int type)
+int damageCalcHandle(int, allyStrength, int enemyDef, int enemyHealth, int type)
+{
+	if(percent[type] > 0)
+	{
+	}
+	else
+	{
+	}
+}
+
+int Skill::normDamageCalc(int allyStrength, int enemyDef, int type)
 {
 	int tempDmg = 0;
 	tempDmg = (allyStrength - enemyDef) * mult[type];
@@ -186,7 +196,7 @@ int Skill::getNormDamageCalc(int allyStrength, int enemyDef, int type)
 	return tempDmg;
 }
 
-int Skill::getPercentDamageCalc(int allyStrength, int enemyDef, int enemyHealth, int type)
+int Skill::percentDamageCalc(int allyStrength, int enemyDef, int enemyHealth, int type)
 {	
 	int tempDmg = 0;
 	tempDmg = (allyStrength - enemyDef) / 100 * enemyHealth;
@@ -197,17 +207,21 @@ int Skill::getPercentDamageCalc(int allyStrength, int enemyDef, int enemyHealth,
 }
 
 //******** TEXT *************
-std::string Skill::dispText(std::string chrName, int tempDmg)
+//Target argument is 0 if enemy, 1 if enemies, 2 if ally, 3 if allies
+std::string Skill::dispText(std::string chrName, std::string target, int tempDmg)
 {
 	std::string returnText = "";
+
 	if(missed)
 	{
-		returnText = chrName + " missed the attack!";
+		returnText = chrName + " missed the attack";
 	}
 	//TODO
 	else if(true)
 	{
-		returnText = chrName + " hit the enemy for " + std::to_string(tempDmg) + " damage!";
+		returnText = chrName + " hit " + target + " for " + std::to_string(tempDmg);
 	}
+
+	returnText += '!';
 	return returnText;
 }

@@ -49,7 +49,7 @@ class Character: public SpriteManager
 
 		void setAlive(bool);
 		void setCanAtk(bool);
-		void setFinalHp(int):
+		void setFinalHp(int);
 		void setBattlePos(int);
 
 		void setAllyInParty(bool);

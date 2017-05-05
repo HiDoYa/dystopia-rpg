@@ -27,7 +27,8 @@ class Skill
 		std::vector<int> min;
 		//Percent is for percent damage, heals, buffs, debuffs
 		//Still uses mult, max, min for percent, max dmg possible, min dmg possible
-		std::vector<int> percent;
+		//If percent is true, multiplier becomes percent (out of 100)
+		std::vector<bool> percent;
 		//Accuracy, pierce, crit are percent based (out of 100)
 		//Crit increases the magnitude of effect. Only applies for attacks
 		int crit;
@@ -78,9 +79,9 @@ class Skill
 		int checkForMiss(int);
 
 		//****** DAMAGE CALC *********
-		int getDamageCalc(int, int, int);
-		int getNormDamageCalc(int, int, int);
-		int getPercentDamageCalc(int, int, int, int);
+		int damageCalcHandle(int, int, int);
+		int normDamageCalc(int, int, int);
+		int percentDamageCalc(int, int, int, int);
 
 		//****** TEXT *********
 		std::string dispText(std::string, int);
