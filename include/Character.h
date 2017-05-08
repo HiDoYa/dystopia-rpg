@@ -1,7 +1,5 @@
 #include "SpriteManager.h"
 
-#include "Skill.h"
-
 #ifndef CHARACTER_H
 #define CHARACTER_H
 
@@ -15,14 +13,21 @@ class Character: public SpriteManager
 		int currentMana;
 		int maxMana;
 
+		//Strength, defense, agility can be changed through battle, but resets after battle
 		int strength;
+		int currentStrength;
 		int defense;
+		int currentDefense;
 		int agility;
+		int currentAgility;
 
-		std::vector<Skill> skill;
+		std::vector<int> skillNum;
+		std::vector<int> persistentSkillNum;
+		int numTurnsSkill;
 
 		bool alive;
 		bool canAtk;
+		//TODO need?
 		int finalHp; //For calculations
 		int battlePos;
 
@@ -44,8 +49,15 @@ class Character: public SpriteManager
 		void setMaxMana(int);
 
 		void setStrength(int);
+		void setCurrentStrength(int);
 		void setDefense(int);
+		void setCurrentDefense(int);
 		void setAgility(int);
+		void setCurrentAgility(int);
+
+		void setSkillNum(std::vector<int>);
+		void setPersistentSkillNum(std::vector<int>);
+		void setNumTurnsSkill(int);
 
 		void setAlive(bool);
 		void setCanAtk(bool);
@@ -54,7 +66,7 @@ class Character: public SpriteManager
 
 		void setAllyInParty(bool);
 		void setCurrentExp(int);
-		void setRequiredExp(int);
+		void setRequiredExp();
 
 		void setChance(int);
 
@@ -66,8 +78,15 @@ class Character: public SpriteManager
 		int getMaxMana();
 
 		int getStrength();
+		int getCurrentStrength();
 		int getDefense();
+		int getCurrentDefense();
 		int getAgility();
+		int getCurrentAgility();
+
+		std::vector<int> getSkillNum();
+		std::vector<int> getPersistentSkillNum();
+		int getNumTurnsSkill();
 
 		bool getAlive();
 		bool getCanAtk();
@@ -80,9 +99,9 @@ class Character: public SpriteManager
 
 		int getChance();
 
-		std::vector<Skill> getSkill();
-
 		//TODO Calculate requiredExp based on level and slight randomization
+		//********* ETC ***********
+		void levelUp();
 };
 
 #endif

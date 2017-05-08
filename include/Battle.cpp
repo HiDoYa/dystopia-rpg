@@ -59,7 +59,6 @@ void Battle::setupBattle(std::vector<Character> enemyList, std::vector<Character
 
 	//Initialize for req default data
 	currentOption = 0;
-	currentEnemySelected = 0;
 	animComplete = hpComplete = false;
 
 	//BATTLEPOS MUST BE SET DIFFERENTLY AT DEFAULT WHEN ALLIES ARE ADDED TO PARTY
@@ -315,6 +314,16 @@ void Battle::allyTurnHandle(int& currentState, int& currentBattleState)
 	}
 }
 
+void Battle::enemyChooseSkill()
+{
+	//TODO COME back
+	int totalSkill = 0;
+	for(int i = 0; i < enemies[nextCharCounter].getSkill().size(); i++)
+	{
+		totalSkill += enemies[nextCharCounter].getSkill().getChance();
+	}
+}
+
 void Battle::enemyChooseTarget()
 {
 	std::vector<int> allyInFront;
@@ -397,7 +406,6 @@ void Battle::allyAttackAnimation(int& currentBattleState)
 	
 	//Sets the area to stop
 	goalPlace = allyPos[nextCharCounter].x - attackXDisp;
-
 	
 	//Moves the enemy, otherwise increments battle state
 	if(current.x > goalPlace)
@@ -419,7 +427,6 @@ void Battle::enemyAttackAnimation(int& currentBattleState)
 	//Sets the area to stop
 	goalPlace = enemyPos[nextCharCounter].x + attackXDisp;
 
-	
 	//Moves the enemy, otherwise increments battle state
 	if(current.x < goalPlace)
 	{
@@ -434,6 +441,48 @@ void Battle::enemyAttackAnimation(int& currentBattleState)
 
 //******** BATTLE STATE 2 **************
 //Calculates hp change for enemy and ally
+void Battle::effectCalc(int& currentBattleState)
+{
+	//TODO Unfinished
+	int allyHpCh = 0;
+	int enemyHpCh = 0;
+
+	for(int i = 0; i < currentAllySelected.size(); i++)
+	{
+
+		if(nextCharType == 0)
+		{
+			int allyStrength = allies[nextCharCounter]->getStrength();
+			int targetHp = allies[currentAllySelected[i]]->getCurrentHp();
+			//Skill checks for both type 0 and type 1 (healing and damaging) for enemies and allies
+			allyHpCh = healthChangeHandle(allyStrength, 0, targetHp);
+		}
+		else if(nextCharType == 1)
+		{
+			int enemyStrength = enemies[nextCharCounter].getStrength();
+			int tagetDef = allies[currentAllySelected[i]]->getDefense();
+			int targetHp = allies[currentAllySelected[i]]->getCurrentHp();
+			allyHpCh = healthChangeHandle(enemyStrength, targetDef, targetHp);
+		}
+	}
+
+	for(int i = 0; i < currenyEnemySelected.size(); i++)
+	{
+		if(nextCharType == 0)
+		{
+			int allyStrength = enemies[nextCharCounter]->getStrength();
+			int targetDef = allies[currentEnemySelected[i]]->getDefense();
+			int targetHp = allies[currentEnemySelected[i]]->getCurrentHp();
+			enemyHpCh = healthChangeHandle(allyStrength, targetDef, targetHp);
+		}
+		if(nextCharType == 1)
+		{
+			int enemyStrength = enemies[nextCharCounter].getStrength();
+			int targetHp = enemies[currentEnemySelected[i]]->getCurrentHp();
+			enemyHpCh = healthChangeHandle(enemyStrength, 0, targetHp);
+		}
+	}
+}
 //void Battle::hpCalculate(int& currentBattleState)
 //{
 //	int tempHpFinal;

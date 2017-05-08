@@ -9,6 +9,7 @@ class Battle
 {
 	private:
 		//TODO REMOVE TOTALALLY AND NUMENEMIES
+		//TODO Keep "skills" in file for enemy, file for ally. When accessing skill, only use the number (id number associated with skill)
 
 		//Ally options
 		sf::CircleShape tempCircle;
@@ -29,13 +30,21 @@ class Battle
 		std::vector<int> enemySelected;
 
 		int attackXDisp;
+		//nextCharType is 0 if ally, 1 if enemy, -1 if nobody
 		int nextCharType;
+		//nextCharCounter is the index in the array (for ally and enemies)
 		int nextCharCounter;
 		int goalPlace;
 
-		int currentEnemySelected;
+		//TODO If all players or all enemies are to be targeted, don't need to SELECT which target
+		
+		//int currentEnemySelected;
+		//TODO Change currenyEnemySelected and currenyAllySelected to vector in cpp file
+		std::vector<int> currentEnemySelected;
 		//Allies in front more likely to be chosen, otherwise randomized
-		int currentAllySelected;
+		//TODO Allow player to choose allies (for healing abilities)
+		std::vector<int> currentAllySelected;
+		//int currentAllySelected;
 
 		//Skill Pressed
 		bool qNotPressed;
@@ -49,7 +58,8 @@ class Battle
 		std::vector<Character> enemies;
 
 		//Check for competion
-		bool hpComplete;
+		//TODO Think of an alternative or complete hpComplete change
+		std::vector<bool> hpComplete;
 		bool animComplete;
 
 		//Grid battle

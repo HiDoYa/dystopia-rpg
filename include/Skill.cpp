@@ -10,7 +10,7 @@ Skill::Skill()
 	//Default
 	currentlyEquipped = false;
 	manaCost = 0;
-	numTurns = 1;
+	maxNumTurns = 1;
 	reapplyTurn = false;
 	numAtksPerHit = 1;
 	missed = false;
@@ -22,7 +22,6 @@ Skill::Skill()
 		min.push_back(0);
 		percent.push_back(false);
 		target.push_back(0);
-		targetNum.push_back(true);
 	}
 
 	crit = 0;
@@ -39,7 +38,26 @@ void Skill::setName(std::string str)
 	name = str;
 }
 
-void Skill::setMult(int type, int inp)
+void Skill::setChance(int inp)
+{
+	chance = inp;
+}
+
+void Skill::setCurrentlyEquipped(bool inp)
+{
+	currentlyEquipped = true;
+}
+
+void Skill::setManaCost(int inp)
+{
+	manaCost = inp;
+}
+
+void Skill::setNumTurns(int inp)
+{
+}
+
+void Skill::setMult(int type, float inp)
 {
 	mult[type] = inp;
 }
@@ -79,13 +97,8 @@ void Skill::setTarget(int type, int inp)
 	target[type] = inp;
 }
 
-void Skill::setTargetNum(int type, bool inp)
-{
-	targetNum[type] = inp;
-}
-
 //********** ACCESSOR *********
-std::vector<int> Skill::getMult()
+std::vector<float> Skill::getMult()
 {
 	return mult;
 }
@@ -123,11 +136,6 @@ int Skill::getElement()
 std::vector<int> Skill::getTarget()
 {
 	return target;
-}
-
-std::vector<bool> Skill::getTargetNum()
-{
-	return targetNum;
 }
 
 // ********* UTILITY *************
@@ -170,40 +178,81 @@ int Skill::addForElementDamage()
 
 //******** DAMAGE CALCULATION *************
 
-int damageCalcHandle(int, allyStrength, int enemyDef, int enemyHealth, int type)
+int healthChangeHandle(int posMult, int negMult, int percentMax)
 {
-	if(percent[type] > 0)
+	//Type 0 for health loss, type 2 for health gain
+	for(int type = 0; type < 2; type++)
 	{
+		int healthCh;
+
+		//Decide whether to use percent or normal calculation
+		if(percent[type] > 0)
+		{
+			healthCh = percentCalc(posMult, negMult, percentMax, type);
+		}
+		else
+		{
+			healthCh = normCalc(posMult, negMult, type);
+		}
+
+		//If type 0, the health change is negative
+		if(type == 0)
+		{
+			healthCh *= -1;
+		}
 	}
-	else
-	{
-	}
+	return healthCh;
 }
 
-int Skill::normDamageCalc(int allyStrength, int enemyDef, int type)
+int healthGainHandle()
 {
-	int tempDmg = 0;
-	tempDmg = (allyStrength - enemyDef) * mult[type];
+}
+
+int Skill::normCalc(int posMult, int negMult, int type)
+{
+	int val = 0;
+	val = (posMult - negMult) * mult[type];
 
 	//TODO Type
-	checkForMaxMin(tempDmg, type);
+	checkForMaxMin(val, type);
 
 	if((rand() % 100 + 1) < crit)
 	{
-		tempDmg *= 1.5;
+		val *= 1.5;
 	}
 
-	return tempDmg;
+	return val;
 }
 
-int Skill::percentDamageCalc(int allyStrength, int enemyDef, int enemyHealth, int type)
+//Percent max is usually health
+int Skill::percentCalc(int posMult, int negMult, int percentMax, int type)
 {	
-	int tempDmg = 0;
-	tempDmg = (allyStrength - enemyDef) / 100 * enemyHealth;
+	int val = 0;
+	val = (posMult - negMult) / 100.0 * percentMax;
 
-	checkForMaxMin(tempDmg, type);
+	checkForMaxMin(val, type);
 	checkForMiss();
-	return tempDmg;
+	return val;
+}
+
+int statChangeHandle(int posMult, int negMult, int percentMax)
+{
+	int statCh = 0;
+	for(int type = 2; type < 4; type++)
+	{
+		if(percent[type] > 0)
+		{
+			//percent
+		}
+		else
+		{
+			//norm
+		}
+
+		if(type == 2)
+		{
+		}
+	}
 }
 
 //******** TEXT *************

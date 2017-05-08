@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <cmath>
 #include <iostream>
 
 #include "Character.h"
@@ -55,14 +56,44 @@ void Character::setStrength(int inp)
 	strength = inp;
 }
 
+void Character::setCurrentStrength(int inp)
+{
+	currentStrength = inp;
+}
+
 void Character::setDefense(int inp)
 {
 	defense = inp;
 }
 
+void Character::setCurrentDefense(int inp)
+{
+	currentDefense = inp;
+}
+
 void Character::setAgility(int inp)
 {
 	agility = inp;
+}
+
+void Character::setCurrentAgility(int inp)
+{
+	currentAgility = inp;
+}
+
+void Character::setSkillNum(std::vector<int> inp)
+{
+	skillNum = inp;
+}
+
+void Character::setPersistentSkillNum(std::vector<int> inp)
+{
+	persistentSkillNum = inp;
+}
+
+void setNumTurnsSkill(int inp)
+{
+	numTurnsSkill = inp;
 }
 
 void Character::setAlive(bool inp)
@@ -95,9 +126,10 @@ void Character::setCurrentExp(int inp)
 	currentExp = inp;
 }
 
-void Character::setRequiredExp(int inp)
+void Character::setRequiredExp()
 {
-	requiredExp = inp;
+	int numToPow = 1.05;
+	requiredExp = pow(numToPow, level);
 }
 
 void Character::setChance(int inp)
@@ -136,14 +168,44 @@ int Character::getStrength()
 	return strength;
 }
 
+int Character::getCurrentStrength()
+{
+	return currentStrength;
+}
+
 int Character::getDefense()
 {
 	return defense;
 }
 
+int Character::getCurrentDefense()
+{
+	return currentDefense;
+}
+
 int Character::getAgility()
 {
 	return agility;
+}
+
+int Character::getCurrentAgility()
+{
+	return currentAgility;
+}	
+
+std::vector<int> Character::getSkillNum()
+{
+	return skillNum;
+}
+
+std::vector<int> Character::getPersistentSkillNum()
+{
+	return persistentSkillNum;
+}
+
+int Character::getNumTurnsSkill()
+{
+	return numTurnsSkill;
 }
 
 bool Character::getAlive()
@@ -187,7 +249,15 @@ int Character::getChance()
 	return chance;
 }
 
-std::vector<Skill> Character::getSkill()
+//ETC
+//Recalculates required exp and increments level
+//TODO Need indication of level up
+void Character::levelUp()
 {
-	return skill;
+	if(currentExp > requiredExp)
+	{
+		level++;
+		currentExp -= requiredExp;
+		setRequiredExp();
+	}
 }

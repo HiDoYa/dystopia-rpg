@@ -10,6 +10,7 @@
 #include "Map.h"
 #include "MapPlayer.h"
 #include "Npc.h"
+#include "Skill.h"
 #include "Textbox.h"
 #include "UIOverlay.h"
 
@@ -55,6 +56,7 @@ void StateManager::loadMenu()
 
 		//Loads allies
 		loadAlly();
+		loadSkill();
 	}
 }
 
@@ -141,6 +143,11 @@ void StateManager::loadAlly()
 		allyFile >> inp;
 	} while(!allyFile.eof());
 	allyFile.close();
+}
+
+void StateManager::loadSkill()
+{
+	//TODO
 }
 
 void StateManager::updateMenu(sf::RenderWindow& win)
