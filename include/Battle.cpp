@@ -13,7 +13,7 @@ Battle::Battle()
 	currentTime = lastTime = 0;
 	newPos = 0;
 	goalPlace = 0;
-	currentEnemySelected = 0;
+	currentTarget = 0;
 	qNotPressed = wNotPressed = aNotPressed = sNotPressed = dNotPressed = false;
 	hpComplete = animComplete = false;
 	
@@ -44,6 +44,14 @@ Battle::Battle()
 	optionsPos.push_back(sf::Vector2f(100, 0));
 	optionsPos.push_back(sf::Vector2f(100, 100));
 
+	//Creates 6 circles for skills
+	for(int i = 0; i < 6; i++)
+	{
+		allyOptions.push_back(tempCircle);
+		allyOptions[i].setRadius(25);
+		allyOptions[i].setFillColor(sf::Color(150, 196, 255));
+	}
+
 	//Seeding
 	srand(time(NULL));
 }
@@ -67,14 +75,6 @@ void Battle::setupBattle(std::vector<Character> enemyList, std::vector<Character
 	for(int i = 0; i < ally.size(); i++)
 	{
 		ally[i]->setPosition(allyPos[ally[i]->getBattlePos()].x, allyPos[ally[i]->getBattlePos()].y);
-	}
-
-	//Creates 6 circles for skills
-	for(int i = 0; i < 6; i++)
-	{
-		allyOptions.push_back(tempCircle);
-		allyOptions[i].setRadius(25);
-		allyOptions[i].setFillColor(sf::Color(150, 196, 255));
 	}
 
 	//Initialize enemies
@@ -171,12 +171,12 @@ void Battle::changeEnemyFocus()
 	{
 		do
 		{
-			currentEnemySelected++;
-			if(currentEnemySelected >= enemies.size())
+			currentTarget++;
+			if(currentTarget >= enemies.size())
 			{
-				currentEnemySelected = 0;
+				currentTarget = 0;
 			}
-		}while(!(enemies[currentEnemySelected].getAlive()));
+		}while(!(enemies[currentTarget].getAlive()));
 	}
 }
 
