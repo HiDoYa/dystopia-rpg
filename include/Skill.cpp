@@ -11,12 +11,13 @@ Skill::Skill()
 	currentlyEquipped = false;
 	manaCost = 0;
 	maxNumTurns = 1;
-	reapplyTurn = false;
 	numAtksPerHit = 1;
 	missed = false;
 
 	for(int i = 0; i < 4; i++)
 	{
+		reapplyTurn.push_back(false);
+		oldVal.push_back(-1);
 		mult.push_back(0);
 		max.push_back(0);
 		min.push_back(0);
@@ -26,7 +27,6 @@ Skill::Skill()
 
 	crit = 0;
 	accuracy = 0;
-	element = 0;
 
 	//Seeding
 	srand(time(NULL));
@@ -36,11 +36,6 @@ Skill::Skill()
 void Skill::setName(std::string str)
 {
 	name = str;
-}
-
-void Skill::setChance(int inp)
-{
-	chance = inp;
 }
 
 void Skill::setCurrentlyEquipped(bool inp)
@@ -87,11 +82,6 @@ void Skill::setAccuracy(int inp)
 	accuracy = inp;
 }
 
-void Skill::setElement(int inp)
-{
-	element = inp;
-}
-
 void Skill::setTarget(int type, int inp)
 {
 	target[type] = inp;
@@ -126,11 +116,6 @@ int Skill::getCrit()
 int Skill::getAccuracy()
 {
 	return accuracy;
-}
-
-int Skill::getElement()
-{
-	return element;
 }
 
 std::vector<int> Skill::getTarget()
@@ -170,10 +155,6 @@ void Skill::checkForMiss()
 	{
 		missed = true;
 	}
-}
-
-int Skill::addForElementDamage()
-{
 }
 
 //******** DAMAGE CALCULATION *************

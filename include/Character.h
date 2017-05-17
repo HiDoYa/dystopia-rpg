@@ -21,9 +21,12 @@ class Character: public SpriteManager
 		int agility;
 		int currentAgility;
 
+		//Stores ID for each skill
 		std::vector<int> skillNum;
+
+		//For continuous/status effects. Can be damaging/debuff
 		std::vector<int> persistentSkillNum;
-		int numTurnsSkill;
+		std::vector<int> numTurnsSkill;
 
 		bool alive;
 		bool canAtk;
