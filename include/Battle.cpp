@@ -125,6 +125,7 @@ void Battle::findFastestChar()
 		}
 	}
 
+	//Checks agility for enemies
 	for(int i = 0; i < enemies.size(); i++)
 	{
 		if(enemies[i].getCanAtk() && highestAgil < enemies[i].getAgility())
@@ -205,6 +206,7 @@ void Battle::changeCurrentSkill()
 		dNotPressed = true;
 	}
 
+	//If key was released before being typed again
 	if(wPressed && wNotPressed)
 	{
 		wNotPressed = false;
@@ -272,13 +274,14 @@ void Battle::chooseCurrentSkill(int& currentBattleState)
 {
 	bool spacePressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
 
+	//Go to next battle state with currentOption storing the skill to use
 	if(spacePressed)
 	{
 		currentBattleState++;
 	}
 }
 
-//*********** BATTLE STATE 1 *********************
+//*********** BATTLE STATE 2 *********************
 void Battle::attackManager(int& currentBattleState, int& currentState)
 {
 	switch (nextCharType)

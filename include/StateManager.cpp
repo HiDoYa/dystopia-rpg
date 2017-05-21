@@ -656,25 +656,25 @@ void StateManager::updateBattle(sf::RenderWindow& win, sf::View& view)
 	//TODO Maybe move currentBattleState into battle class
 	switch (currentBattleState)
 	{
-		//Battle state 0 Menu shows and player can make decision
+		//Battle state 0. Fastest character is calculated
 		case 0:
 			battle->checkForChoice(currentBattleState);
 			break;
-		//Battle state 1 (if player or ally is attacking)
+		//Battle state 1. (if player or ally is attacking) User chooses next course of action
 		case 1:
 			battle->changeCurrentSkill();
 			battle->changeEnemyFocus();
 			battle->chooseCurrentSkill(currentBattleState);
 			break;
-		//Battle state 2 (find enemies that should attack, start animating, and go to 2 OR go to 0)
+		//Battle state 2. Move forward and attack (both enemies and allies)
 		case 2:
 			battle->attackManager(currentBattleState, currentState);
 			break;
-		//Battle state 3 (calculate damage, animate hp going down, ending animation)
+		//Battle state 3. (calculate damage, animate hp going down, ending animation)
 		case 3:
 			//battle->hpCalculate(currentBattleState, overlay);
 			break;
-		//Battle state 4 (check for game over. go back to 0 if not game over)
+		//Battle state 4. (check for game over. go back to 0 if not game over)
 		case 4:
 			battle->checkEndBattle(currentBattleState, currentState);
 			break;
