@@ -7,22 +7,22 @@ class Skill
 		//For enemy, all skills are equipped.
 		//For ally/player, only some skills are equipped
 		std::string name;
-		int chance;
 		bool currentlyEquipped;
 		int manaCost;
 
 		//Number of turns for effect
 		int maxNumTurns;
-		//Whether to reapply effect each turn. Uses oldVal and adds newVal on top for the new change.
-		bool reapplyTurn;
-		//Old value stores the past health change and buff amounts. Used because buff/debuff amounts are constant for the duration in which they act, and health changes can increase each turn 
-		std::vector<int> oldVal;
 
 		//Shows multiple damage nums for one attack (think trip strike)
 		int numAtksPerHit;
 
 		//If attack misses
 		bool missed;
+
+		//Whether to reapply effect each turn. Uses oldVal and adds newVal on top for the new change.
+		std::vector<bool> reapplyTurn;
+		//Old value stores the past health change and buff amounts. Used because buff/debuff amounts are constant for the duration in which they act, and health changes can increase each turn 
+		std::vector<int> oldVal;
 
 		//Element 0 for damage, 1 for heals, 2 for debuffs, 3 for buffs
 		std::vector<float> mult;
@@ -36,8 +36,6 @@ class Skill
 		//Crit increases the magnitude of effect. Only applies for attacks
 		int crit;
 		int accuracy;
-		//Elements (fire/ice/water/etc). Only applies for attacks
-		int element;
 		//0 for selected ally, 1 for selected enemy, 2 for all allies, 4 for all enemies
 		std::vector<int> target;
 	public:
@@ -50,21 +48,21 @@ class Skill
 		void setChance(int);
 		void setCurrentlyEquipped(bool);
 		void setManaCost(int);
+		void setMaxNumTurns(int);
+		void setNumAtksPerHit(int);
+		void setReapplyTurn(int, int);
 		void setMult(int, int);
 		void setMax(int, int);
 		void setMin(int, int);
 		void setPercent(int, bool);
 		void setCrit(int);
 		void setAccuracy(int);
-		void setElement(int);
 		void setTarget(int, int);
-		void setTargetNum(int, bool);
 
 		//****** UTILITY *********
 		int checkForMaxMin();
 		int checkForCrit();
 		void checkForMiss();
-		int addForElementDamage();
 
 		//****** ACCESSORS *********
 		std::vector<int> getMult();
@@ -73,7 +71,6 @@ class Skill
 		std::vector<bool> getPercent();
 		int getCrit();
 		int getAccuracy();
-		int getElement();
 		std::vector<int> getTarget();
 		std::vector<bool> getTargetNum();
 		

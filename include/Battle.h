@@ -40,6 +40,7 @@ class Battle
 		
 		//int currentEnemySelected;
 		//TODO Change currenyEnemySelected and currenyAllySelected to vector in cpp file
+		int currentTarget;
 		std::vector<int> currentEnemySelected;
 		//Allies in front more likely to be chosen, otherwise randomized
 		//TODO Allow player to choose allies (for healing abilities)
