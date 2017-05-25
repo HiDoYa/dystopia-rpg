@@ -4,6 +4,9 @@
 class StateManager
 {
 	private:
+		//For reading data
+		FileReader fileReader;
+
 		//State control
 		int currentState;
 		int currentBattleState;
@@ -27,6 +30,7 @@ class StateManager
 		bool speaking;
 
 		std::vector<Character*> ally;
+		std::vector<int> allyInParty;
 
 		MapPlayer player;
 
@@ -38,7 +42,6 @@ class StateManager
 		int currentZone;
 		int currentMap;
 		int encounterRate;
-		Character tempEnemy;
 		std::vector<Character> enemyListStore;
 
 		//Battle (state 2)
@@ -52,15 +55,11 @@ class StateManager
 
 		//Menu
 		void allMenu(sf::RenderWindow&);
-		void loadMenu();
-		void loadAlly();
 		void updateMenu(sf::RenderWindow&);
 
 		//Map
 		void allMap(sf::RenderWindow&, sf::View&);
 		void loadMap(sf::RenderWindow&);
-		void loadMapEnemies(std::string);
-		void loadMainMapFile(std::string);
 		void updateMap(sf::RenderWindow&, sf::View&);
 		void renderMap(sf::RenderWindow&, sf::View&);
 
