@@ -16,6 +16,8 @@ Battle::Battle()
 	currentTarget = 0;
 	qNotPressed = wNotPressed = aNotPressed = sNotPressed = dNotPressed = false;
 	hpComplete = animComplete = false;
+	singularAllyFocus = false;
+	singularEnemyFocus = false;
 	
 	//Displacement during character turn
 	attackXDisp = 125;
@@ -137,52 +139,36 @@ void Battle::findFastestChar()
 	}
 }
 
-void Battle::checkForChoice(int& currentBattleState)
+void Battle::checkForNextChar(int& currentBattleState)
 {
 	findFastestChar();
 
 	switch (nextCharType)
 	{
-		case -1:
-			//All characters have already attacked
-			currentBattleState = 4;
-			break;
 		case 0:
-			//Ally attacks
+			//Ally attack
 			currentBattleState = 1;
 		case 1:
 			//Enemy attack
-			currentBattleState = 2;
+			currentBattleState = 3;
 			break;
 	}
 }
 
 //********** BATTLE STATE 1 ****************
-void Battle::changeEnemyFocus()
+void Battle::setCirclePos()
 {
-	bool qPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Q);
-	
-	if(!qPressed)
+	for(int i = 0; i < allyOptions.size(); i++)
 	{
-		qNotPressed = true;
-	}
-
-	//If q pressed, swap to next enemy that is not dead
-	if(qPressed && qNotPressed)
-	{
-		do
-		{
-			currentTarget++;
-			if(currentTarget >= enemies.size())
-			{
-				currentTarget = 0;
-			}
-		}while(!(enemies[currentTarget].getAlive()));
+		allyOptions[i].setPosition(optionsPos[i] + allyPos[nextCharCounter]);
 	}
 }
 
 void Battle::changeCurrentSkill()
 {
+	//Moves circle to the current ally
+	setCirclePos();
+
 	bool wPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::W);
 	bool aPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::A);
 	bool sPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::S);
@@ -282,6 +268,100 @@ void Battle::chooseCurrentSkill(int& currentBattleState)
 }
 
 //*********** BATTLE STATE 2 *********************
+void Battle::attackEnemyType(Skill allySkill)
+{
+	if(singularAllyFocus)
+	{
+		changeAllyFocus();
+	}
+	else if (singularEnemyFocus)
+	{
+		changeEnemyFocus();
+	}
+	else
+	{
+		int skillNum = ally[nextCharCounter]->getSkillNum()[currentOption];
+		int targetType = allySkill[skillNum].checkForSelection(i);
+		switch(targetType)
+		{
+			case 0:
+				singularAllyFocus = true;
+				break;
+			case 1:
+				singularEnemyFocus = true;
+				break;
+		}
+	}
+}
+
+void Battle::changeAllyFocus()
+{
+	//TODO change from qPressed and qNotPressed to wasd (if there is no enemy alive in the location, can't move there)
+	bool qPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Q);
+	
+	if(!qPressed)
+	{
+		qNotPressed = true;
+	}
+
+	//Initialize current target
+	do
+	{
+		currentTarget++;
+		if(currentTarget >= ally.size())
+		{
+			currentTarget = 0;
+		}
+	}while(!(ally[currentTarget]->getAlive()));
+
+
+	//If q pressed, swap to next enemy that is not dead
+	if(qPressed && qNotPressed)
+	{
+		do
+		{
+			currentTarget++;
+			if(currentTarget >= ally.size())
+			{
+				currentTarget = 0;
+			}
+		}while(!(enemies[currentTarget].getAlive()));
+	}
+}
+
+void Battle::changeEnemyFocus()
+{
+	bool qPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Q);
+	
+	if(!qPressed)
+	{
+		qNotPressed = true;
+	}
+
+	//Initialize current target
+	do
+	{
+		currentTarget++;
+		if(currentTarget >= enemies.size())
+		{
+			currentTarget = 0;
+		}
+	}while(!(enemies[currentTarget].getAlive()));
+
+	//If q pressed, swap to next enemy that is not dead
+	if(qPressed && qNotPressed)
+	{
+		do
+		{
+			currentTarget++;
+			if(currentTarget >= enemies.size())
+			{
+				currentTarget = 0;
+			}
+		}while(!(enemies[currentTarget].getAlive()));
+	}
+}
+//*********** BATTLE STATE 3 *********************
 void Battle::attackManager(int& currentBattleState, int& currentState)
 {
 	switch (nextCharType)
@@ -319,11 +399,20 @@ void Battle::allyTurnHandle(int& currentState, int& currentBattleState)
 
 void Battle::enemyChooseSkill()
 {
-	//TODO COME back
+	//TODO come back
 	int totalSkill = 0;
-	for(int i = 0; i < enemies[nextCharCounter].getSkill().size(); i++)
+	for(int i = 0; i < enemies[nextCharCounter].getSkillNum().size(); i++)
 	{
-		totalSkill += enemies[nextCharCounter].getSkill().getChance();
+		totalSkill += enemySkill[enemies[nextCharCounter].getSkillNum()[i]].getChance();
+	}
+	int chanceRoll = rand() % totalSkill;
+	
+	for(int i = 0; i < enemies[nextCharcounter].getSkillNum().size(); i++)
+	{
+		int currentChance = allySkill[enemies[nextCharCounter].getSkillNum()[i]].getChance();
+		if(currentChance < chanceRoll)
+		{
+		}
 	}
 }
 
@@ -442,7 +531,7 @@ void Battle::enemyAttackAnimation(int& currentBattleState)
 	}
 }
 
-//******** BATTLE STATE 2 **************
+//******** BATTLE STATE 4 **************
 //Calculates hp change for enemy and ally
 void Battle::effectCalc(int& currentBattleState)
 {
@@ -619,7 +708,7 @@ void Battle::checkForCompletion(int& currentBattleState)
 	
 }
 
-//*************** BATTLE STATE 3 *********************
+//*************** BATTLE STATE 5 *********************
 //Sets ally to dead if less than 0 hp. Returns true if all allies are dead
 bool Battle::checkAllyDeath()
 {
@@ -715,15 +804,6 @@ void Battle::newTurn()
 
 //************ DRAWING ***************
 
-//TODO has to be called
-void Battle::setCirclePos()
-{
-	//TODO set circlePosition
-	for(int i = 0; i < allyOptions.size(); i++)
-	{
-		allyOptions[i].setPosition(optionsPos[i] + allyPos[ally.size()]);
-	}
-}
 
 void Battle::drawAll(sf::RenderWindow& win, int currentBattleState)
 {

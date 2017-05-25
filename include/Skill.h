@@ -7,7 +7,6 @@ class Skill
 		//For enemy, all skills are equipped.
 		//For ally/player, only some skills are equipped
 		std::string name;
-		bool currentlyEquipped;
 		int manaCost;
 
 		//Number of turns for effect
@@ -30,13 +29,15 @@ class Skill
 		std::vector<int> min;
 		//Percent is for percent damage, heals, debuffs, buffs
 		//Still uses mult, max, min for percent, max dmg possible, min dmg possible
+		//If mult is 0, effect is nothing
 		//If percent is true, multiplier becomes percent (out of 100)
 		std::vector<bool> percent;
 		//Accuracy, pierce, crit are percent based (out of 100)
 		//Crit increases the magnitude of effect. Only applies for attacks
 		int crit;
 		int accuracy;
-		//0 for selected ally, 1 for selected enemy, 2 for all allies, 4 for all enemies
+		//0 for selected ally, 1 for selected enemy, 2 for all allies, 3 for all enemies
+		//There can only be one (0 or 1) in the "target" vector because can only choose the target once
 		std::vector<int> target;
 	public:
 		Skill();
@@ -46,7 +47,6 @@ class Skill
 		//****** MUTATORS *********
 		void setName(std::string);
 		void setChance(int);
-		void setCurrentlyEquipped(bool);
 		void setManaCost(int);
 		void setMaxNumTurns(int);
 		void setNumAtksPerHit(int);
@@ -59,12 +59,13 @@ class Skill
 		void setAccuracy(int);
 		void setTarget(int, int);
 
-		//****** UTILITY *********
-		int checkForMaxMin();
-		int checkForCrit();
-		void checkForMiss();
-
 		//****** ACCESSORS *********
+		std::string getName();
+		int getChance();
+		int getManaCost();
+		int getMaxNumTurns();
+		int getNumAtksPerHit();
+		std::vector<bool> getReapplyTurn();
 		std::vector<int> getMult();
 		std::vector<int> getMax();
 		std::vector<int> getMin();
@@ -72,9 +73,11 @@ class Skill
 		int getCrit();
 		int getAccuracy();
 		std::vector<int> getTarget();
-		std::vector<bool> getTargetNum();
 		
 		//***** UTILITY ************
+		int checkForSelection();
+		
+		//***** DAMAGE UTILITY ************
 		int checkForMaxMin(int, int);
 		int checkForCrit(int);
 		int checkForMiss(int);

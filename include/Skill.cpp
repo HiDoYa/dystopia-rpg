@@ -8,7 +8,6 @@
 Skill::Skill()
 {
 	//Default
-	currentlyEquipped = false;
 	manaCost = 0;
 	maxNumTurns = 1;
 	numAtksPerHit = 1;
@@ -36,11 +35,6 @@ Skill::Skill()
 void Skill::setName(std::string str)
 {
 	name = str;
-}
-
-void Skill::setCurrentlyEquipped(bool inp)
-{
-	currentlyEquipped = true;
 }
 
 void Skill::setManaCost(int inp)
@@ -88,6 +82,36 @@ void Skill::setTarget(int type, int inp)
 }
 
 //********** ACCESSOR *********
+std::string Skill::getName()
+{
+	return name;
+}
+
+int Skill::getChance()
+{
+	return chance;
+}
+
+int Skill::getManaCost()
+{
+	return manaCost;
+}
+
+int Skill::getMaxNumTurns()
+{
+	return maxNumTurns;
+}
+
+int Skill::getNumAtksPerHit()
+{
+	return numAtksPerHit;
+}
+
+std::vector<bool> Skill::getReapplyTurn()
+{
+	return reapplyTurn;
+}
+
 std::vector<float> Skill::getMult()
 {
 	return mult;
@@ -124,6 +148,20 @@ std::vector<int> Skill::getTarget()
 }
 
 // ********* UTILITY *************
+int Skill::checkForSelection()
+{
+	for(int i = 0; i < 2; i++)
+	{
+		//If this skill is active and the target is singular, return true
+		if(mult[i] > 0)
+		{
+			return target[i];
+		}
+	}
+	return -1;
+}
+
+// ********* DAMAGE UTILITY *************
 
 int Skill::checkForMaxMin(int tempDmg, int type)
 {

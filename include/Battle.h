@@ -8,7 +8,6 @@
 class Battle
 {
 	private:
-		//TODO REMOVE TOTALALLY AND NUMENEMIES
 		//TODO Keep "skills" in file for enemy, file for ally. When accessing skill, only use the number (id number associated with skill)
 
 		//Ally options
@@ -45,7 +44,10 @@ class Battle
 		//Allies in front more likely to be chosen, otherwise randomized
 		//TODO Allow player to choose allies (for healing abilities)
 		std::vector<int> currentAllySelected;
-		//int currentAllySelected;
+
+		//For keeping track of whether the user can target enemy or ally (only for singular)
+		bool singularAllyFocus;
+		bool singularEnemyFocus;
 
 		//Skill Pressed
 		bool qNotPressed;
@@ -67,9 +69,6 @@ class Battle
 		std::vector<sf::Vector2f> allyPos;
 		std::vector<sf::Vector2f> enemyPos;
 		std::vector<sf::Vector2f> optionsPos;
-
-		//Temp TO DELETE
-		int nextAttack;
 	public:
 		Battle();
 
@@ -77,18 +76,20 @@ class Battle
 
 		//Battle state 0
 		void findFastestChar();
-		void checkForChoice(int&);
+		void checkForNextChar(int&);
 
 		//Battle state 1
-		//TODO Different selection types (e.g. attacking all enemies, ally targetting skill)
-		//TODO The focus changes when hovering over different skills
-		void changeEnemyFocus();
+		void setCirclePos();
 		void changeCurrentSkill();
 		void chooseCurrentSkill(int&);
 
 		//Battle state 2
-		void attackManager(int&, int&);
+		void attackEnemyType(Skill);
+		void changeAllyFocus();
+		void changeEnemyFocus();
 
+		//Battle state 3
+		void attackManager(int&, int&);
 		void allyTurnHandle(int&, int&);
 		void enemyChooseTarget();
 
@@ -100,7 +101,7 @@ class Battle
 		void allyAttackAnimation(int&);
 		void enemyAttackAnimation(int&);
 		
-		//Battle state 3
+		//Battle state 4
 		//TODO void hpCalculate(int&, UIOverlay&);
 		//TODO Do I need?
 		int findHpChangeSign(int, int);
@@ -113,7 +114,7 @@ class Battle
 		void enemyPostAttackAnimation();
 		void checkForCompletion(int&);
 		
-		//Battle state 4
+		//Battle state 5
 		bool checkAllyDeath();
 		bool checkEnemyDeaths();
 		void checkEndBattle(int&, int&);
@@ -121,7 +122,6 @@ class Battle
 		void newTurn();
 		
 		//Drawing
-		void setCirclePos();
 		void drawAll(sf::RenderWindow&, int);
 
 		//Mutators

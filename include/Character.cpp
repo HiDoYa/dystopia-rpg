@@ -18,7 +18,6 @@ Character::Character()
 	finalHp = 100;
 	battlePos = 0;
 
-	allyInParty = false;
 	currentExp = 0;
 	requiredExp = 1;
 
@@ -114,11 +113,6 @@ void Character::setFinalHp(int inp)
 void Character::setBattlePos(int inp)
 {
 	battlePos = inp;
-}
-
-void Character::setAllyInParty(bool inp)
-{
-	allyInParty = inp;
 }
 
 void Character::setCurrentExp(int inp)
@@ -227,11 +221,6 @@ int Character::getFinalHp()
 int Character::getBattlePos()
 {
 	return battlePos;
-}
-
-bool Character::getAllyInParty()
-{
-	return allyInParty;
 }
 
 int Character::getCurrentExp()

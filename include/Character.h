@@ -35,7 +35,6 @@ class Character: public SpriteManager
 		int battlePos;
 
 		//For allies
-		bool allyInParty;
 		int currentExp;
 		int requiredExp;
 		
@@ -67,7 +66,6 @@ class Character: public SpriteManager
 		void setFinalHp(int);
 		void setBattlePos(int);
 
-		void setAllyInParty(bool);
 		void setCurrentExp(int);
 		void setRequiredExp();
 
@@ -96,7 +94,6 @@ class Character: public SpriteManager
 		int getFinalHp();
 		int getBattlePos();
 
-		bool getAllyInParty();
 		int getCurrentExp();
 		int getRequiredExp();
 

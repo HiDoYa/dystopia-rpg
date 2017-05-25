@@ -1,4 +1,4 @@
-OBJ = main.o Textbox.o SpriteManager.o Map.o Npc.o MapPlayer.o Battle.o UIOverlay.o MainMenu.o StateManager.o Character.o Dialogue.o Skill.o
+OBJ = main.o Textbox.o SpriteManager.o Map.o Npc.o MapPlayer.o Battle.o UIOverlay.o MainMenu.o StateManager.o Character.o Dialogue.o Skill.o FileReader.o
 all: game
 
 game: $(OBJ)
@@ -15,6 +15,9 @@ Character.o: include/Character.cpp
 	g++ -std=c++11 -c $<
 
 Dialogue.o: include/Dialogue.cpp
+	g++ -std=c++11 -c $<
+
+Dialogue.o: include/FileReader.cpp
 	g++ -std=c++11 -c $<
 
 MainMenu.o: include/MainMenu.cpp
