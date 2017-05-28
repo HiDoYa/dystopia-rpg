@@ -253,10 +253,10 @@ void StateManager::updateBattle(sf::RenderWindow& win, sf::View& view)
 		//Battle state 4
 		//calculate damage, animate hp going down, end animation
 		case 4:
-			//battle->hpCalculate(currentBattleState, overlay);
+			battle->effectCalc(currentBattleState);
 			break;
 		//Battle state 5
-		//check for game over. Go back to beginning if not game over. If all enemies/allies have attacked, reset their flags.
+		//check for game over. go back to beginning if not game over. if all enemies/allies have attacked, reset their flags.
 		case 5:
 			battle->checkEndBattle(currentBattleState, currentState);
 			break;

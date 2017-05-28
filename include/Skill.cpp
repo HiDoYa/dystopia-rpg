@@ -223,7 +223,7 @@ int healthChangeHandle(int posMult, int negMult, int percentMax)
 	return healthCh;
 }
 
-int healthGainHandle()
+int Skill::healthGainHandle()
 {
 }
 

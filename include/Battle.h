@@ -13,8 +13,11 @@ class Battle
 		//Ally options
 		sf::CircleShape tempCircle;
 		std::vector<sf::CircleShape> allyOptions;
-		int currentOption;
-		int currentOptionsShow;
+		int currentOptionAlly;
+		int currentOptionShow;
+
+		//Enemy optiosn
+		int currentOptionEnem;
 
 		//For changing position of char
 		sf::Clock clk;
@@ -91,10 +94,10 @@ class Battle
 		//Battle state 3
 		void attackManager(int&, int&);
 		void allyTurnHandle(int&, int&);
+		void enemyChooseSkill();
 		void enemyChooseTarget();
 
 		//For various damaging of enemies
-		void allyAttackHandle();
 		void attemptFlee(int&);
 		void allyChangePos();
 		void allyItem();
@@ -102,7 +105,7 @@ class Battle
 		void enemyAttackAnimation(int&);
 		
 		//Battle state 4
-		//TODO void hpCalculate(int&, UIOverlay&);
+		void effectCalc(int&);
 		//TODO Do I need?
 		int findHpChangeSign(int, int);
 
