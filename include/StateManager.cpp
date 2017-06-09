@@ -243,7 +243,8 @@ void StateManager::updateBattle(sf::RenderWindow& win, sf::View& view)
 		//Battle state 2
 		//if player chose a targetable skill, choose an enemy to attack
 		case 2:
-			battle->changeEnemyFocus();
+			battle->attackEnemyType();
+			battle->chooseEnemyFocus(currentBattleState);
 			break;
 		//Battle state 3
 		//Move forward and attack (both enemies and allies)
@@ -271,7 +272,7 @@ void StateManager::renderBattle(sf::RenderWindow& win, sf::View& view)
 	//Mid ground
 	battle->drawAll(win, currentBattleState);
 
-	//TODO On top
+	//On top
 	overlay.drawAll(win);
 }
 

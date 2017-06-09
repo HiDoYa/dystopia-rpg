@@ -1,4 +1,5 @@
 #include "Character.h"
+#include "Skill.h"
 #include "UIOverlay.h"
 
 #ifndef BATTLE_H
@@ -11,13 +12,12 @@ class Battle
 		//TODO Keep "skills" in file for enemy, file for ally. When accessing skill, only use the number (id number associated with skill)
 
 		//Ally options
-		sf::CircleShape tempCircle;
-		std::vector<sf::CircleShape> allyOptions;
-		int currentOptionAlly;
-		int currentOptionShow;
+		std::vector<sf::CircleShape> allyOptions; //Stores actual option shapes
+		int currentOptionShow;                    //Stores which character to show the options around
+		int currentOptionAlly;                    //Stores the option chosen
 
 		//Enemy optiosn
-		int currentOptionEnem;
+		int currentOptionEnem;                    //Stores the skill the enemy chooses
 
 		//For changing position of char
 		sf::Clock clk;
@@ -40,12 +40,9 @@ class Battle
 
 		//TODO If all players or all enemies are to be targeted, don't need to SELECT which target
 		
-		//int currentEnemySelected;
-		//TODO Change currenyEnemySelected and currenyAllySelected to vector in cpp file
 		int currentTarget;
 		std::vector<int> currentEnemySelected;
 		//Allies in front more likely to be chosen, otherwise randomized
-		//TODO Allow player to choose allies (for healing abilities)
 		std::vector<int> currentAllySelected;
 
 		//For keeping track of whether the user can target enemy or ally (only for singular)
@@ -62,10 +59,10 @@ class Battle
 		//For enemies
 		std::vector<Character*> ally;
 		std::vector<Character> enemies;
+		std::vector<Skill> allySkill;
+		std::vector<Skill> enemySkill;
 
 		//Check for competion
-		//TODO Think of an alternative or complete hpComplete change
-		std::vector<bool> hpComplete;
 		bool animComplete;
 
 		//Grid battle
@@ -79,6 +76,7 @@ class Battle
 
 		//Battle state 0
 		void findFastestChar();
+		void checkForStatus(int);
 		void checkForNextChar(int&);
 
 		//Battle state 1
@@ -87,9 +85,10 @@ class Battle
 		void chooseCurrentSkill(int&);
 
 		//Battle state 2
-		void attackEnemyType(Skill);
+		void attackEnemyType();
 		void changeAllyFocus();
 		void changeEnemyFocus();
+		void chooseEnemyFocus(int&);
 
 		//Battle state 3
 		void attackManager(int&, int&);
@@ -103,7 +102,7 @@ class Battle
 		void allyItem();
 		void allyAttackAnimation(int&);
 		void enemyAttackAnimation(int&);
-		
+
 		//Battle state 4
 		void effectCalc(int&);
 		//TODO Do I need?

@@ -31,7 +31,8 @@ class Character: public SpriteManager
 		bool alive;
 		bool canAtk;
 		//TODO need?
-		int finalHp; //For calculations
+		int hpChange;   //Stores target value after change
+		int manaChange; //Stores target value after change
 		int battlePos;
 
 		//For allies
@@ -71,6 +72,9 @@ class Character: public SpriteManager
 
 		void setChance(int);
 
+		void setHpChange(int);
+		void setManaChange(int);
+
 		//****** Accessors ********
 		int getLevel();
 		int getCurrentHp();
@@ -98,6 +102,9 @@ class Character: public SpriteManager
 		int getRequiredExp();
 
 		int getChance();
+
+		int getHpChange();
+		int getManaChange();
 
 		//TODO Calculate requiredExp based on level and slight randomization
 		//********* ETC ***********

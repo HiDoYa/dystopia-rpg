@@ -90,7 +90,7 @@ void Character::setPersistentSkillNum(std::vector<int> inp)
 	persistentSkillNum = inp;
 }
 
-void setNumTurnsSkill(int inp)
+void Character::setNumTurnsSkill(int inp)
 {
 	numTurnsSkill = inp;
 }
@@ -131,6 +131,15 @@ void Character::setChance(int inp)
 	chance = inp;
 }
 
+void Character::setHpChange(int inp)
+{
+	hpChange = inp;
+}
+
+void Character::setManaChnage(int inp)
+{
+	manaChange = inp;
+}
 //********* ACCESSORS ***********
 int Character::getLevel()
 {
@@ -236,6 +245,16 @@ int Character::getRequiredExp()
 int Character::getChance()
 {
 	return chance;
+}
+
+int Character::getHpChange()
+{
+	return hpChange;
+}
+
+int Character::getManaChange()
+{
+	return manaChange;
 }
 
 //ETC
