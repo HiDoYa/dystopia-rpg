@@ -7,12 +7,13 @@
 Battle::Battle()
 {
 	//Default initializations
+	currentOptionShow = 0;
 	currentOptionAlly = 0;
 	currentOptionEnem = 0;
-	currentOptionShow = 0;
-	blinkTurn = true;
+
 	currentTime = lastTime = 0;
 	newPos = 0;
+	blinkTurn = true;
 	goalPlace = 0;
 	currentTarget = 0;
 	qNotPressed = wNotPressed = aNotPressed = sNotPressed = dNotPressed = false;
@@ -50,8 +51,8 @@ Battle::Battle()
 	for(int i = 0; i < 6; i++)
 	{
 		allyOptions.push_back(new sf::CircleShape);
-		allyOptions[i].setRadius(25);
-		allyOptions[i].setFillColor(sf::Color(150, 196, 255));
+		allyOptions[i]->setRadius(25);
+		allyOptions[i]->setFillColor(sf::Color(150, 196, 255));
 	}
 
 	//Seeding
@@ -170,7 +171,7 @@ void Battle::setCirclePos()
 {
 	for(int i = 0; i < allyOptions.size(); i++)
 	{
-		allyOptions[i].setPosition(optionsPos[i] + allyPos[nextCharCounter]);
+		allyOptions[i]->setPosition(optionsPos[i] + allyPos[nextCharCounter]);
 	}
 }
 
@@ -259,20 +260,27 @@ void Battle::changeCurrentSkill()
 	//Reset all colors
 	for(int i = 0; i < allyOptions.size(); i++)
 	{
-		allyOptions[i].setFillColor(sf::Color(160, 196, 255));
+		allyOptions[i]->setFillColor(sf::Color(160, 196, 255));
 	}
 
 	//Highlight current
-	allyOptions[currentOptionAlly].setFillColor(sf::Color::Blue);
+	allyOptions[currentOptionAlly]->setFillColor(sf::Color::Blue);
 }
 
 void Battle::chooseCurrentSkill(int& currentBattleState)
 {
 	bool spacePressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
 
-	//Go to next battle state with currentOptionAlly storing the skill to use
-	if(spacePressed)
+	if(!spacePressed)
 	{
+		spaceNotPressed = true;
+	}
+
+
+	//Go to next battle state with currentOptionAlly storing the skill to use
+	if(spacePressed && spaceNotPressed)
+	{
+		spaceNotPressed = false;
 		currentBattleState++;
 	}
 }
@@ -306,7 +314,7 @@ void Battle::attackEnemyType()
 
 void Battle::changeAllyFocus()
 {
-	//TODO change from qPressed and qNotPressed to wasd (if there is no enemy alive in the location, can't move there)
+	//TODO Change from q press to WASD pressing
 	bool qPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Q);
 	
 	if(!qPressed)
@@ -328,6 +336,7 @@ void Battle::changeAllyFocus()
 	//If q pressed, swap to next enemy that is not dead
 	if(qPressed && qNotPressed)
 	{
+		qNotPressed = false;
 		do
 		{
 			currentTarget++;
@@ -361,6 +370,7 @@ void Battle::changeEnemyFocus()
 	//If q pressed, swap to next enemy that is not dead
 	if(qPressed && qNotPressed)
 	{
+		qNotPressed = false;
 		do
 		{
 			currentTarget++;
@@ -374,7 +384,20 @@ void Battle::changeEnemyFocus()
 
 void Battle::chooseEnemyFocus(int& currentBattleState)
 {
+	bool spacePressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
+
+	if(!spacePressed)
+	{
+		spaceNotPressed = true;
+	}
+
+	if(spacePressed && spaceNotPressed)
+	{
+		spaceNotPressed = false;
+		currentBattleState++;
+	}
 }
+
 //*********** BATTLE STATE 3 *********************
 void Battle::attackManager(int& currentBattleState, int& currentState)
 {
@@ -398,17 +421,87 @@ void Battle::allyTurnHandle(int& currentState, int& currentBattleState)
 		case 0:
 		case 1:
 		case 2:
-			allyAttackAnimation(currentBattleState);
 			break;
 		case 3:
-			allyItem();
 			break;
 		case 4:
-			allyChangePos();
+			allyAttackAnimation(currentBattleState);
 			break;
 		case 5:
 			attemptFlee(currentState);
 			break;
+	}
+			allyChangePos();
+			allyItem();
+}
+
+//Calculate using the level difference between average of allies and the enemies
+void Battle::attemptFlee(int& currentState)
+{
+	int avgAlly = 0;
+	int avgEnem = 0;
+	for(int i = 0; i < ally.size(); i++)
+	{
+		avgAlly += ally[i]->getLevel();
+	}
+	avgAlly /= (ally.size() + 1);
+
+	for(int i = 0; i < enemies.size(); i++)
+	{
+		avgEnem += enemies[i].getLevel();
+	}
+	avgEnem  /= (enemies.size() + 1);
+
+	int randChance = rand() % 15 + 85;
+	if(avgAlly * randChance > avgEnem)
+	{
+		//TODO end the game properly
+		currentState = 5;
+	}
+}
+
+void Battle::allyChangePos()
+{
+	//TODO make the grid blink to display where to move to
+	blinkTurn = !blinkTurn;
+
+	tme = clk.getElapsedTime();
+	currentTime = tme.asMilliseconds();
+
+	if(lastTime + 300 > currentTime)
+	{
+		lastTime = currentTime;
+		if(blinkTurn && lastTime + 300 > currentTime)
+		{
+			gridRect[newPos].setFillColor(sf::Color::Red);
+		}
+		else if(!blinkTurn && lastTime + 300 > currentTime)
+		{
+			gridRect[newPos].setFillColor(sf::Color::Blue);
+		}
+	}
+}
+
+void Battle::allyItem()
+{
+}
+
+void Battle::allyAttackAnimation(int& currentBattleState)
+{
+	sf::Vector2f current = ally[nextCharCounter]->getPosition();
+	
+	//Sets the area to stop
+	goalPlace = allyPos[nextCharCounter].x - attackXDisp;
+	
+	//Moves the enemy, otherwise increments battle state
+	if(current.x > goalPlace)
+	{
+		ally[nextCharCounter]->setPosition(current.x - 10, current.y);
+	}
+	else
+	{ 
+		ally[nextCharCounter]->setCanAtk(false);
+		currentBattleState++;
 	}
 }
 
@@ -477,77 +570,6 @@ void Battle::enemyChooseTarget()
 	}
 }
 
-//Calculate using the level difference between average of allies and the enemies
-void Battle::attemptFlee(int& currentState)
-{
-	int avgAlly = 0;
-	int avgEnem = 0;
-	//TODO Calculate the average level for ally and enemy
-	for(int i = 0; i < ally.size(); i++)
-	{
-		avgAlly += ally[i]->getLevel();
-	}
-	avgAlly /= (ally.size() + 1);
-
-	for(int i = 0; i < enemies.size(); i++)
-	{
-		avgEnemy += enemies[i].getLevel();
-	}
-	avgEnem  /= (enemies.size() + 1);
-
-	int randChance = rand() % 15 + 85;
-	if(avgAlly * randChance > avgEnem)
-	{
-		//TODO end the game properly
-		currentState = 5;
-	}
-}
-
-void Battle::allyChangePos()
-{
-	//TODO
-	blinkTurn = !blinkTurn;
-
-	tme = clk.getElapsedTime();
-	currentTime = tme.asMilliseconds();
-
-	if(lastTime + 300 > currentTime)
-	{
-		lastTime = currentTime;
-		if(blinkTurn && lastTime + 300 > currentTime)
-		{
-			gridRect[newPos].setFillColor(sf::Color::Red);
-		}
-		else if(!blinkTurn && lastTime + 300 > currentTime)
-		{
-			gridRect[newPos].setFillColor(sf::Color::Blue);
-		}
-	}
-}
-
-void Battle::allyItem()
-{
-}
-
-void Battle::allyAttackAnimation(int& currentBattleState)
-{
-	sf::Vector2f current = ally[nextCharCounter]->getPosition();
-	
-	//Sets the area to stop
-	goalPlace = allyPos[nextCharCounter].x - attackXDisp;
-	
-	//Moves the enemy, otherwise increments battle state
-	if(current.x > goalPlace)
-	{
-		ally[nextCharCounter]->setPosition(current.x - 10, current.y);
-	}
-	else
-	{ 
-		ally[nextCharCounter]->setCanAtk(false);
-		currentBattleState++;
-	}
-}
-
 //Enemy simply moves forward
 void Battle::enemyAttackAnimation(int& currentBattleState)
 {
@@ -572,7 +594,6 @@ void Battle::enemyAttackAnimation(int& currentBattleState)
 //Calculates hp/mana change for enemy and ally
 void Battle::effectCalc(int& currentBattleState)
 {
-	//TODO Unfinished
 	//TODO Apply effect for both enemies AND allies
 	//TODO get mana change as well
 
@@ -601,13 +622,13 @@ void Battle::effectCalc(int& currentBattleState)
 			int allyStrength = enemies[nextCharCounter].getStrength();
 			int targetDef = ally[currentEnemySelected[i]]->getDefense();
 			int targetHp = ally[currentEnemySelected[i]]->getCurrentHp();
-			enemy[i].setHpChange(allySkill[currentOptionAlly].healthChangeHandle(allyStrength, targetDef, targetHp));
+			enemies[i].setHpChange(allySkill[currentOptionAlly].healthChangeHandle(allyStrength, targetDef, targetHp));
 		}
 		if(nextCharType == 1)
 		{
 			int enemyStrength = enemies[nextCharCounter].getStrength();
 			int targetHp = enemies[currentEnemySelected[i]].getCurrentHp();
-			enemy[i].setHpChange(enemySkill[currentOptionEnem].healthChangeHandle(enemyStrength, 0, targetHp));
+			enemies[i].setHpChange(enemySkill[currentOptionEnem].healthChangeHandle(enemyStrength, 0, targetHp));
 		}
 	}
 }
@@ -648,7 +669,7 @@ void Battle::enemyHpChange(int& currentBattleState)
 {
 	for(int i = 0; i < currentEnemySelected.size(); i++)
 	{
-		int hpFinal = enemy[currentEnemySelected[i]].getHpChange();
+		int hpFinal = enemies[currentEnemySelected[i]].getHpChange();
 		int currentEnemyHp = enemies[currentEnemySelected[i]].getCurrentHp();
 		if(hpFinal != currentEnemyHp)
 		{
@@ -846,7 +867,7 @@ void Battle::drawAll(sf::RenderWindow& win, int currentBattleState)
 	{
 		for(int i = 0; i < allyOptions.size(); i++)
 		{
-			win.draw(allyOptions[i]);
+			win.draw(*allyOptions[i]);
 		}
 	}
 }

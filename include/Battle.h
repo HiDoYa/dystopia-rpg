@@ -12,7 +12,7 @@ class Battle
 		//TODO Keep "skills" in file for enemy, file for ally. When accessing skill, only use the number (id number associated with skill)
 
 		//Ally options
-		std::vector<sf::CircleShape> allyOptions; //Stores actual option shapes
+		std::vector<sf::CircleShape*> allyOptions; //Stores actual option shapes
 		int currentOptionShow;                    //Stores which character to show the options around
 		int currentOptionAlly;                    //Stores the option chosen
 
@@ -50,6 +50,7 @@ class Battle
 		bool singularEnemyFocus;
 
 		//Skill Pressed
+		bool spaceNotPressed;
 		bool qNotPressed;
 		bool wNotPressed;
 		bool aNotPressed;
@@ -72,7 +73,7 @@ class Battle
 	public:
 		Battle();
 
-		void setupBattle(std::vector<Character>, std::vector<Character*>&);
+		void setupBattle(std::vector<Character>, std::vector<Character*>&, std::vector<Skill>, std::vector<Skill>);
 
 		//Battle state 0
 		void findFastestChar();
@@ -93,14 +94,15 @@ class Battle
 		//Battle state 3
 		void attackManager(int&, int&);
 		void allyTurnHandle(int&, int&);
-		void enemyChooseSkill();
-		void enemyChooseTarget();
 
 		//For various damaging of enemies
 		void attemptFlee(int&);
 		void allyChangePos();
 		void allyItem();
 		void allyAttackAnimation(int&);
+
+		void enemyChooseSkill();
+		void enemyChooseTarget();
 		void enemyAttackAnimation(int&);
 
 		//Battle state 4
@@ -108,9 +110,9 @@ class Battle
 		//TODO Do I need?
 		int findHpChangeSign(int, int);
 
-		//Takes extra integer indicating which enemy will be targeted. Recursion to finish all hp changes.
-		void allyHpChange(int, int&);
-		void enemyHpChange(int, int&);
+		//TODO Takes extra integer indicating which enemy will be targeted. Recursion to finish all hp changes.
+		void allyHpChange(int&);
+		void enemyHpChange(int&);
 
 		void allyPostAttackAnimation();
 		void enemyPostAttackAnimation();

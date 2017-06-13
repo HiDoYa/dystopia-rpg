@@ -241,6 +241,7 @@ void StateManager::updateBattle(sf::RenderWindow& win, sf::View& view)
 			battle->chooseCurrentSkill(currentBattleState);
 			break;
 		//Battle state 2
+		//ONLY FOR PLAYER, NOT ENEMY
 		//if player chose a targetable skill, choose an enemy to attack
 		case 2:
 			battle->attackEnemyType();
