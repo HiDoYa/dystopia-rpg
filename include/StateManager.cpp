@@ -229,40 +229,42 @@ void StateManager::updateBattle(sf::RenderWindow& win, sf::View& view)
 	//TODO Maybe move currentBattleState into battle class
 	switch (currentBattleState)
 	{
-		//Battle state 0
 		//Fastest character is calculated and checks whether it is an ally, enemy, or nobody.
+		//Checks whether the current fastest character needs to have a persistent skill reapplied or removed
 		case 0:
-			battle->checkForNextChar(currentBattleState);
+			battle->findFastestChar(currentBattleState);
 			break;
-		//Battle state 1
-		//if player or ally is attacking, user chooses next course of action
+		//Checks whether a persistent skill needs to be reapplied or removed
 		case 1:
-			battle->changeCurrentSkill();
-			battle->chooseCurrentSkill(currentBattleState);
-			break;
-		//Battle state 2
-		//ONLY FOR PLAYER, NOT ENEMY
-		//if player chose a targetable skill, choose an enemy to attack
+			battle->statusHandle(currentBattleState);
+		//if player or ally is attacking, options display and user chooses next course of action
 		case 2:
-			battle->attackEnemyType();
+			battle->allySkillChoiceHandler(currentBattleState);
+			break;
+		//if player chose a targetable skill, choose an enemy to attack. else, go straight to state 3
+		case 3:
 			battle->chooseEnemyFocus(currentBattleState);
 			break;
-		//Battle state 3
-		//Move forward and attack (both enemies and allies)
-		case 3:
-			battle->attackManager(currentBattleState, currentState);
-			break;
-		//Battle state 4
-		//calculate damage, animate hp going down, end animation
+		//If enemy, choose who to attack and what skill to attack with
 		case 4:
+			battle->enemyDecision(currentBattleState);
+			break;
+		//Move forward and attack (both enemies and allies)
+		case 5:
+			battle->moveForwardAnimation(currentBattleState);
+		//calculate damage, animate hp going down
+		case 6:
 			battle->effectCalc(currentBattleState);
 			break;
-		//Battle state 5
+		//Ending animation
+		case 7:
+			battle->moveBackwardAnimation(currentBattleState);
 		//check for game over. go back to beginning if not game over. if all enemies/allies have attacked, reset their flags.
-		case 5:
+		case 8:
 			battle->checkEndBattle(currentBattleState, currentState);
 			break;
 	}
+	//TODO Update battle log here
 }
 
 void StateManager::renderBattle(sf::RenderWindow& win, sf::View& view)

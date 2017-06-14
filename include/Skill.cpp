@@ -150,9 +150,9 @@ std::vector<int> Skill::getTarget()
 // ********* UTILITY *************
 int Skill::checkForSelection()
 {
-	for(int i = 0; i < 2; i++)
+	for(int i = 0; i < 4; i++)
 	{
-		//If this skill is active and the target is singular, return true
+		//If this skill is active, return who the skill targets
 		if(mult[i] > 0)
 		{
 			return target[i];

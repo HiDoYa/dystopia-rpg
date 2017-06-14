@@ -112,7 +112,7 @@ void Battle::setupBattle(std::vector<Character> enemyList, std::vector<Character
 
 //*********** BATTLE STATE 0 *********************
 //Finds fastest character and stores in nextCharType and nextCharCounter
-void Battle::findFastestChar()
+void Battle::findFastestChar(int& currentBattleState)
 {
 	int highestAgil = -1;
 	nextCharType = -1;
@@ -142,31 +142,65 @@ void Battle::findFastestChar()
 			nextCharType = 1;
 		}
 	}
+
+	//Current state is done
+	currentBattleState++;
 }
 
-void Battle::checkForStatus(int nextCharType)
+//********** BATTLE STATE 1 ****************
+void Battle::statusHandle(int& currentBattleState)
 {
-}
-
-void Battle::checkForNextChar(int& currentBattleState)
-{
-	findFastestChar();
+	checkForStatus();
 
 	switch (nextCharType)
 	{
 		case 0:
 			//Ally attack
-			//TODO Check for status here
-			currentBattleState = 1;
+			currentBattleState = 2;
 		case 1:
 			//Enemy attack
-			//TODO Check for status here
-			currentBattleState = 3;
+			currentBattleState = 4;
 			break;
 	}
 }
 
-//********** BATTLE STATE 1 ****************
+void Battle::checkForStatus()
+{
+	//TODO Finish this
+	switch (nextCharType)
+	{
+		case 0:
+			if(ally[nextCharCounter]->getPersistentSkillNum().size() > 0)
+			{
+				allyStatusEffect();
+			}
+			break;
+		case 1:
+			if(enemies[nextCharCounter].getPersistentSkillNum().size() > 0)
+			{
+				enemyStatusEffect();
+			}
+			break;
+	}
+}
+
+void Battle::allyStatusEffect()
+{
+}
+
+void Battle::enemyStatusEffect()
+{
+}
+//********** BATTLE STATE 2 ****************
+void Battle::allySkillChoiceHandler(int& currentBattleState)
+{
+	changeCurrentSkill();
+	if(chooseCurrentSkill())
+	{
+		currentBattleState++;
+	}
+}
+
 void Battle::setCirclePos()
 {
 	for(int i = 0; i < allyOptions.size(); i++)
@@ -267,7 +301,7 @@ void Battle::changeCurrentSkill()
 	allyOptions[currentOptionAlly]->setFillColor(sf::Color::Blue);
 }
 
-void Battle::chooseCurrentSkill(int& currentBattleState)
+bool Battle::chooseCurrentSkill()
 {
 	bool spacePressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
 
@@ -281,11 +315,30 @@ void Battle::chooseCurrentSkill(int& currentBattleState)
 	if(spacePressed && spaceNotPressed)
 	{
 		spaceNotPressed = false;
+		return true;
+	}
+	return false;
+}
+
+//*********** BATTLE STATE 3 *********************
+void Battle::chooseEnemyFocus(int& currentBattleState)
+{
+	attackEnemyType();
+
+	bool spacePressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
+
+	if(!spacePressed)
+	{
+		spaceNotPressed = true;
+	}
+
+	if(spacePressed && spaceNotPressed)
+	{
+		spaceNotPressed = false;
 		currentBattleState++;
 	}
 }
 
-//*********** BATTLE STATE 2 *********************
 void Battle::attackEnemyType()
 {
 	if(singularAllyFocus)
@@ -382,127 +435,12 @@ void Battle::changeEnemyFocus()
 	}
 }
 
-void Battle::chooseEnemyFocus(int& currentBattleState)
+//*********** BATTLE STATE 4 *********************
+void Battle::enemyDecisions(int& currentBattleState)
 {
-	bool spacePressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
-
-	if(!spacePressed)
-	{
-		spaceNotPressed = true;
-	}
-
-	if(spacePressed && spaceNotPressed)
-	{
-		spaceNotPressed = false;
-		currentBattleState++;
-	}
-}
-
-//*********** BATTLE STATE 3 *********************
-void Battle::attackManager(int& currentBattleState, int& currentState)
-{
-	switch (nextCharType)
-	{
-		case 0:
-			allyTurnHandle(currentState, currentBattleState);
-			break;
-		case 1:
-			enemyChooseSkill();
-			enemyChooseTarget();
-			enemyAttackAnimation(currentBattleState);
-			break;
-	}
-}
-
-void Battle::allyTurnHandle(int& currentState, int& currentBattleState)
-{
-	switch(currentOptionAlly)
-	{
-		case 0:
-		case 1:
-		case 2:
-			break;
-		case 3:
-			break;
-		case 4:
-			allyAttackAnimation(currentBattleState);
-			break;
-		case 5:
-			attemptFlee(currentState);
-			break;
-	}
-			allyChangePos();
-			allyItem();
-}
-
-//Calculate using the level difference between average of allies and the enemies
-void Battle::attemptFlee(int& currentState)
-{
-	int avgAlly = 0;
-	int avgEnem = 0;
-	for(int i = 0; i < ally.size(); i++)
-	{
-		avgAlly += ally[i]->getLevel();
-	}
-	avgAlly /= (ally.size() + 1);
-
-	for(int i = 0; i < enemies.size(); i++)
-	{
-		avgEnem += enemies[i].getLevel();
-	}
-	avgEnem  /= (enemies.size() + 1);
-
-	int randChance = rand() % 15 + 85;
-	if(avgAlly * randChance > avgEnem)
-	{
-		//TODO end the game properly
-		currentState = 5;
-	}
-}
-
-void Battle::allyChangePos()
-{
-	//TODO make the grid blink to display where to move to
-	blinkTurn = !blinkTurn;
-
-	tme = clk.getElapsedTime();
-	currentTime = tme.asMilliseconds();
-
-	if(lastTime + 300 > currentTime)
-	{
-		lastTime = currentTime;
-		if(blinkTurn && lastTime + 300 > currentTime)
-		{
-			gridRect[newPos].setFillColor(sf::Color::Red);
-		}
-		else if(!blinkTurn && lastTime + 300 > currentTime)
-		{
-			gridRect[newPos].setFillColor(sf::Color::Blue);
-		}
-	}
-}
-
-void Battle::allyItem()
-{
-}
-
-void Battle::allyAttackAnimation(int& currentBattleState)
-{
-	sf::Vector2f current = ally[nextCharCounter]->getPosition();
-	
-	//Sets the area to stop
-	goalPlace = allyPos[nextCharCounter].x - attackXDisp;
-	
-	//Moves the enemy, otherwise increments battle state
-	if(current.x > goalPlace)
-	{
-		ally[nextCharCounter]->setPosition(current.x - 10, current.y);
-	}
-	else
-	{ 
-		ally[nextCharCounter]->setCanAtk(false);
-		currentBattleState++;
-	}
+	enemyChooseSkill();
+	enemyChooseTarget();
+	currentBattleState++;
 }
 
 void Battle::enemyChooseSkill()
@@ -570,6 +508,38 @@ void Battle::enemyChooseTarget()
 	}
 }
 
+//*********** BATTLE STATE 5 *********************
+void Battle::moveForwardAnimation(int& currentBattleState)
+{
+	switch (nextCharType)
+	{
+		case 0:
+			allyAttackAnimation(currentBattleState);
+			break;
+		case 1:
+			enemyAttackAnimation(currentBattleState);
+			break;
+	}
+}
+void Battle::allyAttackAnimation(int& currentBattleState)
+{
+	sf::Vector2f current = ally[nextCharCounter]->getPosition();
+	
+	//Sets the area to stop
+	goalPlace = allyPos[nextCharCounter].x - attackXDisp;
+	
+	//Moves the enemy, otherwise increments battle state
+	if(current.x > goalPlace)
+	{
+		ally[nextCharCounter]->setPosition(current.x - 10, current.y);
+	}
+	else
+	{ 
+		ally[nextCharCounter]->setCanAtk(false);
+		currentBattleState++;
+	}
+}
+
 //Enemy simply moves forward
 void Battle::enemyAttackAnimation(int& currentBattleState)
 {
@@ -590,47 +560,21 @@ void Battle::enemyAttackAnimation(int& currentBattleState)
 	}
 }
 
-//******** BATTLE STATE 4 **************
+//******** BATTLE STATE 6 **************
 //Calculates hp/mana change for enemy and ally
 void Battle::effectCalc(int& currentBattleState)
 {
-	//TODO Apply effect for both enemies AND allies
-	//TODO get mana change as well
-
-	for(int i = 0; i < currentAllySelected.size(); i++)
+	switch(nextCharType)
 	{
-		if(nextCharType == 0)
-		{
-			int allyStrength = ally[nextCharCounter]->getStrength();
-			int targetHp = ally[currentAllySelected[i]]->getCurrentHp();
-			//Skill checks for both type 0 and type 1 (healing and damaging) for enemies and allies
-			ally[i]->setHpChange(allySkill[currentOptionAlly].healthChangeHandle(allyStrength, 0, targetHp));
-		}
-		else if(nextCharType == 1)
-		{
-			int enemyStrength = enemies[nextCharCounter].getStrength();
-			int targetDef = ally[currentAllySelected[i]]->getDefense();
-			int targetHp = ally[currentAllySelected[i]]->getCurrentHp();
-			ally[i]->setHpChange(enemySkill[currentOptionEnem].healthChangeHandle(enemyStrength, targetDef, targetHp));
-		}
+		case 0:
+			allyTurnHandle();
+			break;
+		case 1:
+			enemyTurnHandle();
+			break;
 	}
 
-	for(int i = 0; i < currentEnemySelected.size(); i++)
-	{
-		if(nextCharType == 0)
-		{
-			int allyStrength = enemies[nextCharCounter].getStrength();
-			int targetDef = ally[currentEnemySelected[i]]->getDefense();
-			int targetHp = ally[currentEnemySelected[i]]->getCurrentHp();
-			enemies[i].setHpChange(allySkill[currentOptionAlly].healthChangeHandle(allyStrength, targetDef, targetHp));
-		}
-		if(nextCharType == 1)
-		{
-			int enemyStrength = enemies[nextCharCounter].getStrength();
-			int targetHp = enemies[currentEnemySelected[i]].getCurrentHp();
-			enemies[i].setHpChange(enemySkill[currentOptionEnem].healthChangeHandle(enemyStrength, 0, targetHp));
-		}
-	}
+	checkForCompletion(currentBattleState);
 }
 
 int Battle::findHpChangeSign(int hpFinal, int hpInit)
@@ -651,9 +595,124 @@ int Battle::findHpChangeSign(int hpFinal, int hpInit)
 	return sign;
 }
 
+void Battle::regularSkillCalc()
+{
+	//TODO Apply effect for both enemies AND allies
+	//TODO get mana change as well
+
+//	for(int i = 0; i < currentAllySelected.size(); i++)
+//	{
+//		if(nextCharType == 0)
+//		{
+//			int allyStrength = ally[nextCharCounter]->getStrength();
+//			int targetHp = ally[currentAllySelected[i]]->getCurrentHp();
+//			//Skill checks for both type 0 and type 1 (healing and damaging) for enemies and allies
+//			ally[i]->setHpChange(allySkill[currentOptionAlly].healthChangeHandle(allyStrength, 0, targetHp));
+//		}
+//		else if(nextCharType == 1)
+//		{
+//			int enemyStrength = enemies[nextCharCounter].getStrength();
+//			int targetDef = ally[currentAllySelected[i]]->getDefense();
+//			int targetHp = ally[currentAllySelected[i]]->getCurrentHp();
+//			ally[i]->setHpChange(enemySkill[currentOptionEnem].healthChangeHandle(enemyStrength, targetDef, targetHp));
+//		}
+//	}
+//
+//	for(int i = 0; i < currentEnemySelected.size(); i++)
+//	{
+//		if(nextCharType == 0)
+//		{
+//			int allyStrength = enemies[nextCharCounter].getStrength();
+//			int targetDef = ally[currentEnemySelected[i]]->getDefense();
+//			int targetHp = ally[currentEnemySelected[i]]->getCurrentHp();
+//			enemies[i].setHpChange(allySkill[currentOptionAlly].healthChangeHandle(allyStrength, targetDef, targetHp));
+//		}
+//		if(nextCharType == 1)
+//		{
+//			int enemyStrength = enemies[nextCharCounter].getStrength();
+//			int targetHp = enemies[currentEnemySelected[i]].getCurrentHp();
+//			enemies[i].setHpChange(enemySkill[currentOptionEnem].healthChangeHandle(enemyStrength, 0, targetHp));
+//		}
+//	}
+}
+
+void Battle::allyTurnHandle(int& currentBattleState)
+{
+	switch(currentOptionAlly)
+	{
+		case 0:
+		case 1:
+		case 2:
+			regularSkillCalc();
+			break;
+		case 3:
+			allyItem();
+			break;
+		case 4:
+			allyChangePos();
+			break;
+		case 5:
+			attemptFlee(currentBattleState);
+			break;
+	}
+}
+
+void Battle::allyItem()
+{
+	//TODO Access item vector to find effect
+}
+
+void Battle::allyChangePos()
+{
+	//TODO make the grid blink to display where to move to
+	blinkTurn = !blinkTurn;
+
+	tme = clk.getElapsedTime();
+	currentTime = tme.asMilliseconds();
+
+	if(lastTime + 300 > currentTime)
+	{
+		lastTime = currentTime;
+		if(blinkTurn && lastTime + 300 > currentTime)
+		{
+			gridRect[newPos].setFillColor(sf::Color::Red);
+		}
+		else if(!blinkTurn && lastTime + 300 > currentTime)
+		{
+			gridRect[newPos].setFillColor(sf::Color::Blue);
+		}
+	}
+}
+
+//Calculate using the level difference between average of allies and the enemies
+void Battle::attemptFlee(int& currentBattleState)
+{
+	int avgAlly = 0;
+	int avgEnem = 0;
+	for(int i = 0; i < ally.size(); i++)
+	{
+		avgAlly += ally[i]->getLevel();
+	}
+	avgAlly /= (ally.size() + 1);
+
+	for(int i = 0; i < enemies.size(); i++)
+	{
+		avgEnem += enemies[i].getLevel();
+	}
+	avgEnem  /= (enemies.size() + 1);
+
+	int randChance = rand() % 15 + 85;
+	if(avgAlly * randChance > avgEnem)
+	{
+		//TODO end the game properly
+		currentBattleState = 10;
+	}
+}
+
 void Battle::allyHpChange(int& currentBattleState)
 {
 	int hpFinal = ally[i]->getHpChange();
+	//Replace hpFinal with hpFinal of specific character
 	int sign = findHpChangeSign(hpFinal, ally[currentAllySelected].getCurrentHp());
 	if(ally[currentAllySelected].getCurrentHp() > hpFinal + 3 || ally[currentAllySelected].getCurrentHp() < hpFinal - 3)
 	{
@@ -683,6 +742,57 @@ void Battle::enemyHpChange(int& currentBattleState)
 				enemies[currentEnemySelected].setCurrentHp(hpFinal);
 			}
 		}
+	}
+}
+
+void Battle::checkForCompletion(int& currentBattleState)
+{
+	bool allDone = true;
+
+	for(int i = 0; i < currentAllySelected.size(); i++)
+	{
+		int currentHp = ally[currentAllySelected[i]].getCurrentHp();
+		int targetHp = ally[currentAllySelected[i]].getHpChange();
+		if(currentHp != targetHp)
+		{
+			allDone = false;
+		}
+	}
+
+	for(int i = 0; i < currentEnemySelected.size(); i++)
+	{
+		int currentHp = enemy[currentEnemySelected[i]].getCurrentHp();
+		int targetHp = enemy[currentEnemySelected[i]].getHpChange();
+		if(currentHp != targetHp)
+		{
+			allDone = false;
+		}
+	}
+
+	if(allDone)
+	{
+		currentBattleState++;
+	}
+	
+}
+
+//*************** BATTLE STATE 7 *********************
+void Battle::moveBackwardAnimation(int& currentBattleState)
+{
+	switch(nextCharCounter)
+	{
+		case 0:
+			allyPostAttackAnimation();
+			break;
+		case 1:
+			enemyPostAttackAnimation();
+			break;
+	}
+
+	if(animComplete)
+	{
+		animComplete = false;
+		currentBattleState++;
 	}
 }
 
@@ -717,39 +827,7 @@ void Battle::enemyPostAttackAnimation()
 	}
 }
 
-void Battle::checkForCompletion(int& currentBattleState)
-{
-	bool allDone = true;
-
-	for(int i = 0; i < currentAllySelected.size(); i++)
-	{
-		int currentHp = ally[currentAllySelected[i]].getCurrentHp();
-		int targetHp = ally[currentAllySelected[i]].getHpChange();
-		if(currentHp != targetHp)
-		{
-			allDone = false;
-		}
-	}
-
-	for(int i = 0; i < currentEnemySelected.size(); i++)
-	{
-		int currentHp = enemy[currentEnemySelected[i]].getCurrentHp();
-		int targetHp = enemy[currentEnemySelected[i]].getHpChange();
-		if(currentHp != targetHp)
-		{
-			allDone = false;
-		}
-	}
-
-	if(allDone && animComplete)
-	{
-		animComplete = false;
-		currentBattleState = 1;
-	}
-	
-}
-
-//*************** BATTLE STATE 5 *********************
+//*************** BATTLE STATE 8 *********************
 //Sets ally to dead if less than 0 hp. Returns true if all allies are dead
 bool Battle::checkAllyDeath()
 {

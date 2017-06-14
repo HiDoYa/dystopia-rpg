@@ -36,7 +36,7 @@ class Skill
 		//Crit increases the magnitude of effect. Only applies for attacks
 		int crit;
 		int accuracy;
-		//0 for selected ally, 1 for selected enemy, 2 for all allies, 3 for all enemies
+		//0 for selected ally, 1 for selected enemy, 2 for all allies, 3 for all enemies, 4 for self
 		//There can only be one (0 or 1) in the "target" vector because can only choose the target once
 		std::vector<int> target;
 	public:

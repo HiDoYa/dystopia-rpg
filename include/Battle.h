@@ -76,49 +76,56 @@ class Battle
 		void setupBattle(std::vector<Character>, std::vector<Character*>&, std::vector<Skill>, std::vector<Skill>);
 
 		//Battle state 0
-		void findFastestChar();
-		void checkForStatus(int);
-		void checkForNextChar(int&);
+		void findFastestChar(int&);
 
 		//Battle state 1
+		void statusHandle(int&);
+		void checkForStatus();
+		void allyStatusEffect();
+		void enemyStatusEffect();
+		
+		//Battle state 2
+		void allySkillChoiceHandler(int&);
 		void setCirclePos();
 		void changeCurrentSkill();
-		void chooseCurrentSkill(int&);
+		bool chooseCurrentSkill();
 
-		//Battle state 2
+		//Battle state 3
+		void chooseEnemyFocus(int&);
 		void attackEnemyType();
 		void changeAllyFocus();
 		void changeEnemyFocus();
-		void chooseEnemyFocus(int&);
-
-		//Battle state 3
-		void attackManager(int&, int&);
-		void allyTurnHandle(int&, int&);
-
-		//For various damaging of enemies
-		void attemptFlee(int&);
-		void allyChangePos();
-		void allyItem();
-		void allyAttackAnimation(int&);
-
-		void enemyChooseSkill();
-		void enemyChooseTarget();
-		void enemyAttackAnimation(int&);
 
 		//Battle state 4
-		void effectCalc(int&);
-		//TODO Do I need?
-		int findHpChangeSign(int, int);
+		void enemyDecision(int&);
+		void enemyChooseSkill();
+		void enemyChooseTarget();
 
-		//TODO Takes extra integer indicating which enemy will be targeted. Recursion to finish all hp changes.
+		//Battle state 5
+		void moveForwardAnimation(int&);
+		void allyAttackAnimation(int&);
+		void enemyAttackAnimation(int&);
+
+		//Battle state 6
+		void effectCalc(int&);
+		int findHpChangeSign(int, int);
+		void regularSkillCalc();
+
+		void allyTurnHandle(int&, int&);
+		void allyItem();
+		void allyChangePos();
+		void attemptFlee(int&);
+
 		void allyHpChange(int&);
 		void enemyHpChange(int&);
+		void checkForCompletion(int&);
 
+		//Battle state 7
+		void moveBackwardAnimation(int&);
 		void allyPostAttackAnimation();
 		void enemyPostAttackAnimation();
-		void checkForCompletion(int&);
 		
-		//Battle state 5
+		//Battle state 8
 		bool checkAllyDeath();
 		bool checkEnemyDeaths();
 		void checkEndBattle(int&, int&);
