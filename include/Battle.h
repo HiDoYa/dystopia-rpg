@@ -5,7 +5,7 @@
 #ifndef BATTLE_H
 #define BATTLE_H
 
-//Handles enemies and battles class Battle
+//Handles enemy and battles class Battle
 class Battle
 {
 	private:
@@ -29,16 +29,18 @@ class Battle
 		bool blinkTurn;
 
 		//TO keep track of battles
+		//TODO do i need?
 		std::vector<int> enemySelected;
+		bool finishedEnemyFocus;
 
 		int attackXDisp;
 		//nextCharType is 0 if ally, 1 if enemy, -1 if nobody
 		int nextCharType;
-		//nextCharCounter is the index in the array (for ally and enemies)
+		//nextCharCounter is the index in the array (for ally and enemy)
 		int nextCharCounter;
 		int goalPlace;
 
-		//TODO If all players or all enemies are to be targeted, don't need to SELECT which target
+		//TODO If all players or all enemy are to be targeted, don't need to SELECT which target
 		
 		int currentTarget;
 		std::vector<int> currentEnemySelected;
@@ -57,9 +59,9 @@ class Battle
 		bool sNotPressed;
 		bool dNotPressed;
 		
-		//For enemies
+		//For enemy
 		std::vector<Character*> ally;
-		std::vector<Character> enemies;
+		std::vector<Character> enemy;
 		std::vector<Skill> allySkill;
 		std::vector<Skill> enemySkill;
 
@@ -92,6 +94,7 @@ class Battle
 
 		//Battle state 3
 		void chooseEnemyFocus(int&);
+		void processSkillTargetting();
 		void attackEnemyType();
 		void changeAllyFocus();
 		void changeEnemyFocus();

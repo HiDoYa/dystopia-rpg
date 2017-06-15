@@ -249,7 +249,7 @@ void StateManager::updateBattle(sf::RenderWindow& win, sf::View& view)
 		case 4:
 			battle->enemyDecision(currentBattleState);
 			break;
-		//Move forward and attack (both enemies and allies)
+		//Move forward and attack animations (both enemies and allies)
 		case 5:
 			battle->moveForwardAnimation(currentBattleState);
 		//calculate damage, animate hp going down
