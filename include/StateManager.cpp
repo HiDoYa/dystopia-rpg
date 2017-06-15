@@ -226,7 +226,6 @@ void StateManager::updateBattle(sf::RenderWindow& win, sf::View& view)
 	//Activate window for OpenGL rendering
 	win.clear();
 
-	//TODO Maybe move currentBattleState into battle class
 	switch (currentBattleState)
 	{
 		//Fastest character is calculated and checks whether it is an ally, enemy, or nobody.
@@ -254,7 +253,7 @@ void StateManager::updateBattle(sf::RenderWindow& win, sf::View& view)
 			battle->moveForwardAnimation(currentBattleState);
 		//calculate damage, animate hp going down
 		case 6:
-			battle->effectCalc(currentBattleState);
+			battle->handleEffect(currentBattleState);
 			break;
 		//Ending animation
 		case 7:

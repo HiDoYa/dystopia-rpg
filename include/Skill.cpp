@@ -197,7 +197,7 @@ void Skill::checkForMiss()
 
 //******** DAMAGE CALCULATION *************
 
-int healthChangeHandle(int posMult, int negMult, int percentMax)
+int Skill::healthChangeHandle(int posMult, int negMult, int percentMax)
 {
 	//Type 0 for health loss, type 2 for health gain
 	for(int type = 0; type < 2; type++)

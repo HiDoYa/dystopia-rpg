@@ -17,35 +17,32 @@ class Battle
 		int currentOptionAlly;                     //Stores the option chosen by ally
 		int currentOptionEnemy;                    //Stores the skill the enemy chooses
 
-		//For changing position of char
+		//Time management
 		sf::Clock clk;
 		sf::Time tme;
 		float currentTime;
 		float lastTime;
+
+		//For changing position
 		std::vector<sf::RectangleShape> gridRect;
 		int newPos;
 		bool blinkTurn;
+
+		//For animation
+		int attackXDisp;
+		int goalPlace;
 
 		//Flags
 		bool finishedEnemyFocus;
 		bool processTargetting;
 		bool animComplete;
-
-		int attackXDisp;
-		int nextCharType;    //0 if ally, 1 if enemy, -1 if nobody
-		int nextCharCounter; //The index in the array (ally and enemy)
-		int goalPlace;
-
-		//TODO If all players or all enemy are to be targeted, don't need to SELECT which target
-		
-		int currentTarget;
-		std::vector<int> currentEnemySelected;
-		//Allies in front more likely to be chosen, otherwise randomized
-		std::vector<int> currentAllySelected;
-
-		//For keeping track of whether the user can target enemy or ally (only for singular)
 		bool singularAllyFocus;
 		bool singularEnemyFocus;
+
+		int currentSkillCheck; //To iterate through skills to check for effects
+		int currentTarget;
+		std::vector<int> currentEnemySelected;
+		std::vector<int> currentAllySelected;
 
 		//Skill Pressed
 		bool spaceNotPressed;
@@ -60,6 +57,8 @@ class Battle
 		std::vector<Character> enemy;
 		std::vector<Skill> allySkill;
 		std::vector<Skill> enemySkill;
+		int nextCharType;    //0 if ally, 1 if enemy, -1 if nobody
+		int nextCharCounter; //The index in the array (ally and enemy)
 
 		//Grid battle
 		std::vector<sf::Vector2f> allyPos;
@@ -87,6 +86,7 @@ class Battle
 
 		//Battle state 3
 		void chooseEnemyFocus(int&);
+		int findNextTarget();
 		void processSkillTargetting();
 		void attackEnemyType();
 		void changeAllyFocus();
@@ -103,17 +103,21 @@ class Battle
 		void enemyAttackAnimation(int&);
 
 		//Battle state 6
-		void effectCalc(int&);
+		void handleEffect(int&);
 		int findHpChangeSign(int, int);
-		void regularSkillCalc();
 
-		void allyTurnHandle(int&, int&);
+		void allyTurnHandle(int&);
+		void allySkillCalc();
 		void allyItem();
 		void allyChangePos();
-		void attemptFlee(int&);
+		void allyAttemptFlee(int&);
+
+		void enemyTurnHandle(int&);
+		void enemySkillCalc();
 
 		void allyHpChange(int&);
 		void enemyHpChange(int&);
+
 		void checkForCompletion(int&);
 
 		//Battle state 7

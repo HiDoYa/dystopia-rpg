@@ -30,7 +30,7 @@ class Character: public SpriteManager
 
 		bool alive;
 		bool canAtk;
-		//TODO need?
+
 		int hpChange;   //Stores target value after change
 		int manaChange; //Stores target value after change
 		int battlePos;
