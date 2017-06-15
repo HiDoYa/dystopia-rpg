@@ -7,9 +7,9 @@
 Battle::Battle()
 {
 	//Default initializations
-	currentOptionShow = 0;
+	currentPlayerForOption = 0;
 	currentOptionAlly = 0;
-	currentOptionEnem = 0;
+	currentOptionEnemy = 0;
 
 	currentTime = lastTime = 0;
 	newPos = 0;
@@ -20,6 +20,7 @@ Battle::Battle()
 	singularAllyFocus = false;
 	singularEnemyFocus = false;
 	finishedEnemyFocus = false;
+	processTargetting = false;
 	
 	//Displacement during character turn
 	attackXDisp = 125;
@@ -92,13 +93,13 @@ void Battle::setupBattle(std::vector<Character> enemyList, std::vector<Character
 		//Chooses enemy from list
 		int maxRandChance = 0;
 		int index = 0;
-		for(int potentialEnem = 0; potentialEnem < enemyList.size(); potentialEnem++)
+		for(int potentialEnemy = 0; potentialEnemy < enemyList.size(); potentialEnemy++)
 		{
-			int tempNum = ((rand() % 100) + 1) * enemyList[potentialEnem].getChance();
+			int tempNum = ((rand() % 100) + 1) * enemyList[potentialEnemy].getChance();
 			if(tempNum > maxRandChance)
 			{
 				maxRandChance = tempNum;
-				index = potentialEnem;
+				index = potentialEnemy;
 			}
 		}
 
@@ -324,7 +325,11 @@ bool Battle::chooseCurrentSkill()
 //*********** BATTLE STATE 3 *********************
 void Battle::chooseEnemyFocus(int& currentBattleState)
 {
-	processSkillTargetting();
+	if(!processTargetting)
+	{
+		processSkillTargetting();
+	}
+
 	if(!finishedEnemyFocus)
 	{
 		attackEnemyType();
@@ -339,8 +344,13 @@ void Battle::chooseEnemyFocus(int& currentBattleState)
 		if(spacePressed && spaceNotPressed)
 		{
 			spaceNotPressed = false;
-			currentBattleState++;
+			processTargetting = false;
+			finishedEnemyFocus = false;
 		}
+	}
+	else
+	{
+		currentBattleState++;
 	}
 }
 
@@ -402,6 +412,9 @@ void Battle::processSkillTargetting()
 			finishedEnemyFocus = true;
 			break;
 	}
+
+	//Flag to prevent this code being run again
+	processTargetting = true;
 }
 
 void Battle::attackEnemyType()
@@ -514,7 +527,7 @@ void Battle::enemyChooseSkill()
 		pastSkills += currentChance;
 		if(pastSkills < chanceRoll)
 		{
-			currentOptionEnem = i;
+			currentOptionEnemy = i;
 		}
 	}
 }
@@ -665,7 +678,7 @@ void Battle::regularSkillCalc()
 			int enemyStrength = enemy[nextCharCounter].getStrength();
 			int targetDef = ally[currentAllySelected[i]]->getDefense();
 			int targetHp = ally[currentAllySelected[i]]->getCurrentHp();
-			ally[i]->setHpChange(enemySkill[currentOptionEnem].healthChangeHandle(enemyStrength, targetDef, targetHp));
+			ally[i]->setHpChange(enemySkill[currentOptionEnemy].healthChangeHandle(enemyStrength, targetDef, targetHp));
 		}
 	}
 
@@ -682,7 +695,7 @@ void Battle::regularSkillCalc()
 		{
 			int enemyStrength = enemy[nextCharCounter].getStrength();
 			int targetHp = enemy[currentEnemySelected[i]].getCurrentHp();
-			enemy[i].setHpChange(enemySkill[currentOptionEnem].healthChangeHandle(enemyStrength, 0, targetHp));
+			enemy[i].setHpChange(enemySkill[currentOptionEnemy].healthChangeHandle(enemyStrength, 0, targetHp));
 		}
 	}
 }
@@ -739,7 +752,7 @@ void Battle::allyChangePos()
 void Battle::attemptFlee(int& currentBattleState)
 {
 	int avgAlly = 0;
-	int avgEnem = 0;
+	int avgEnemy = 0;
 	for(int i = 0; i < ally.size(); i++)
 	{
 		avgAlly += ally[i]->getLevel();
@@ -748,12 +761,12 @@ void Battle::attemptFlee(int& currentBattleState)
 
 	for(int i = 0; i < enemy.size(); i++)
 	{
-		avgEnem += enemy[i].getLevel();
+		avgEnemy += enemy[i].getLevel();
 	}
-	avgEnem  /= (enemy.size() + 1);
+	avgEnemy  /= (enemy.size() + 1);
 
 	int randChance = rand() % 15 + 85;
-	if(avgAlly * randChance > avgEnem)
+	if(avgAlly * randChance > avgEnemy)
 	{
 		//TODO end the game properly
 		currentBattleState = 10;
@@ -957,7 +970,6 @@ void Battle::currentEnemyDeath()
 //Also resets flag for finishing enemy focus
 void Battle::newTurn()
 {
-	finishedEnemyFocus = false;
 	for(int i = 0; i < ally.size(); i++)
 	{
 		if(ally[i]->getAlive())

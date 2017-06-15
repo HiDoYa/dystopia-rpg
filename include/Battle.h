@@ -13,11 +13,9 @@ class Battle
 
 		//Ally options
 		std::vector<sf::CircleShape*> allyOptions; //Stores actual option shapes
-		int currentOptionShow;                    //Stores which character to show the options around
-		int currentOptionAlly;                    //Stores the option chosen
-
-		//Enemy optiosn
-		int currentOptionEnem;                    //Stores the skill the enemy chooses
+		int currentPlayerForOption;                //Stores which character to show the options around
+		int currentOptionAlly;                     //Stores the option chosen by ally
+		int currentOptionEnemy;                    //Stores the skill the enemy chooses
 
 		//For changing position of char
 		sf::Clock clk;
@@ -28,16 +26,14 @@ class Battle
 		int newPos;
 		bool blinkTurn;
 
-		//TO keep track of battles
-		//TODO do i need?
-		std::vector<int> enemySelected;
+		//Flags
 		bool finishedEnemyFocus;
+		bool processTargetting;
+		bool animComplete;
 
 		int attackXDisp;
-		//nextCharType is 0 if ally, 1 if enemy, -1 if nobody
-		int nextCharType;
-		//nextCharCounter is the index in the array (for ally and enemy)
-		int nextCharCounter;
+		int nextCharType;    //0 if ally, 1 if enemy, -1 if nobody
+		int nextCharCounter; //The index in the array (ally and enemy)
 		int goalPlace;
 
 		//TODO If all players or all enemy are to be targeted, don't need to SELECT which target
@@ -59,14 +55,11 @@ class Battle
 		bool sNotPressed;
 		bool dNotPressed;
 		
-		//For enemy
+		//Characters and skills
 		std::vector<Character*> ally;
 		std::vector<Character> enemy;
 		std::vector<Skill> allySkill;
 		std::vector<Skill> enemySkill;
-
-		//Check for competion
-		bool animComplete;
 
 		//Grid battle
 		std::vector<sf::Vector2f> allyPos;
