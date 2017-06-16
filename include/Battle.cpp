@@ -354,7 +354,7 @@ void Battle::chooseEnemyFocus(int& currentBattleState)
 	}
 }
 
-int Battle::findNextTarget()
+int Battle::findNextTarget(int skillNum)
 {
 	while(currentSkillCheck < 4)
 	{
@@ -379,12 +379,12 @@ void Battle::processSkillTargetting()
 	if(nextCharType == 0)
 	{
 		skillNum = ally[nextCharCounter]->getSkillNum()[currentOptionAlly];
-		targetType = findNextTarget();
+		targetType = findNextTarget(skillNum);
 	}
 	else if(nextCharType == 1)
 	{
 		skillNum = enemy[nextCharCounter].getSkillNum()[currentOptionAlly];
-		targetType = findNextTarget();
+		targetType = findNextTarget(skillNum);
 	}
 
 	switch(targetType)
@@ -405,7 +405,7 @@ void Battle::processSkillTargetting()
 			{
 				if(ally[i]->getAlive())
 				{
-					currentAllyFocus.push_back();
+					currentAllySelected.push_back(i);
 				}
 			}
 			finishedEnemyFocus = true;
@@ -414,9 +414,9 @@ void Battle::processSkillTargetting()
 			singularAllyFocus = singularEnemyFocus = false;
 			for(int i = 0; i < enemy.size(); i++)
 			{
-				if(enemy[i]->getAlive())
+				if(enemy[i].getAlive())
 				{
-					currentEnemyFocus.push_back();
+					currentEnemySelected.push_back(i);
 				}
 			}
 			finishedEnemyFocus = true;
@@ -425,11 +425,11 @@ void Battle::processSkillTargetting()
 			singularAllyFocus = singularEnemyFocus = false;
 			if(nextCharType == 0)
 			{
-				currentAllyFocus.push_back(nextCharCounter);
+				currentAllySelected.push_back(nextCharCounter);
 			}
 			else if(nextCharType == 1)
 			{
-				currentEnemyFocus.push_back(nextCharCounter);
+				currentEnemySelected.push_back(nextCharCounter);
 			}
 			finishedEnemyFocus = true;
 			break;
@@ -522,7 +522,7 @@ void Battle::changeEnemyFocus()
 }
 
 //*********** BATTLE STATE 4 *********************
-void Battle::enemyDecisions(int& currentBattleState)
+void Battle::enemyDecision(int& currentBattleState)
 {
 	enemyChooseSkill();
 	enemyChooseTarget();
@@ -801,6 +801,7 @@ void Battle::enemySkillCalc()
 }
 void Battle::allyHpChange(int& currentBattleState)
 {
+	//TODO Helppp
 	int hpFinal = ally[i]->getHpChange();
 	//Replace hpFinal with hpFinal of specific character
 	int sign = findHpChangeSign(hpFinal, ally[currentAllySelected].getCurrentHp());

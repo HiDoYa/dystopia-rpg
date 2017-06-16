@@ -15,5 +15,7 @@ class FileReader
 		void loadMainMapFile(std::string, std::vector<Character>&, std::vector<Character>&, int&, int&, int&, int&, int&, int&, int&);
 
 		//Utility
-		std::string getWholeText(ifstream&);
-}
+		std::string getWholeText(std::ifstream&);
+};
+
+#endif

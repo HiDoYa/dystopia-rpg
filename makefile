@@ -17,7 +17,7 @@ Character.o: include/Character.cpp
 Dialogue.o: include/Dialogue.cpp
 	g++ -std=c++11 -c $<
 
-Dialogue.o: include/FileReader.cpp
+FileReader.o: include/FileReader.cpp
 	g++ -std=c++11 -c $<
 
 MainMenu.o: include/MainMenu.cpp

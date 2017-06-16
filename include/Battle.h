@@ -86,7 +86,7 @@ class Battle
 
 		//Battle state 3
 		void chooseEnemyFocus(int&);
-		int findNextTarget();
+		int findNextTarget(int);
 		void processSkillTargetting();
 		void attackEnemyType();
 		void changeAllyFocus();

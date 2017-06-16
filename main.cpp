@@ -6,6 +6,7 @@
 #include "include/Battle.h"
 #include "include/Character.h"
 #include "include/Dialogue.h"
+#include "include/FileReader.h"
 #include "include/MainMenu.h"
 #include "include/Map.h"
 #include "include/MapPlayer.h"
