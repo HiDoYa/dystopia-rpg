@@ -41,7 +41,7 @@ void FileReader::loadAlly(std::vector<Character*>& ally)
 		{
 			allyFile >> inp;
 			ally[allyCounter]->setCurrentHp(atoi(inp.c_str()));
-			ally[allyCounter]->setFinalHp(atoi(inp.c_str()));
+			ally[allyCounter]->setHpFinal(atoi(inp.c_str()));
 
 			allyFile >> inp;
 			ally[allyCounter]->setMaxHp(atoi(inp.c_str()));
@@ -50,6 +50,7 @@ void FileReader::loadAlly(std::vector<Character*>& ally)
 		{
 			allyFile >> inp;
 			ally[allyCounter]->setCurrentMana(atoi(inp.c_str()));
+			ally[allyCounter]->setManaFinal(atoi(inp.c_str()));
 
 			allyFile >> inp;
 			ally[allyCounter]->setMaxMana(atoi(inp.c_str()));
@@ -57,24 +58,24 @@ void FileReader::loadAlly(std::vector<Character*>& ally)
 		if(inp == "Strength")
 		{
 			allyFile >> inp;
-			ally[allyCounter]->setStrength(atoi(in.c_str()));
+			ally[allyCounter]->setStrength(atoi(inp.c_str()));
 		}
 		if(inp == "Defense")
 		{
 			allyFile >> inp;
-			ally[allyCounter]->setDefense(atoi(in.c_str()));
+			ally[allyCounter]->setDefense(atoi(inp.c_str()));
 		}
 		if(inp == "Agility")
 		{
 			allyFile >> inp;
-			ally[allyCounter]->setAgility(atoi(in.c_str()));
+			ally[allyCounter]->setAgility(atoi(inp.c_str()));
 		}
 		if(inp == "Image")
 		{
 			allyFile >> inp;
 			ally[allyCounter]->setTextureSprite(inp);
 
-			allFile >> inp;
+			allyFile >> inp;
 			ally[allyCounter]->setTextureRect(0, atoi(inp.c_str()));
 		}
 		//TODO Exp and ally is in party?
@@ -88,7 +89,6 @@ void FileReader::loadSkill(std::vector<Skill>& skill)
 {
 }
 
-//Per each map
 void FileReader::loadMapEnemies(std::vector<Character>& enemyListStore, std::string enemyList)
 {
 	//Temp variables
@@ -105,7 +105,7 @@ void FileReader::loadMapEnemies(std::vector<Character>& enemyListStore, std::str
 		if(strInp == "Enemy")
 		{
 			tempCounter++;
-			enemyListStore.push_back(new Character());
+			enemyListStore.push_back(*new Character());
 			enemyListStore[tempCounter].setAlive(true);
 			enemyFile >> strInp;
 		}
@@ -123,13 +123,14 @@ void FileReader::loadMapEnemies(std::vector<Character>& enemyListStore, std::str
 			enemyFile >> strInp;
 			enemyListStore[tempCounter].setMaxHp(atoi(strInp.c_str()));
 			enemyListStore[tempCounter].setCurrentHp(atoi(strInp.c_str()));
-			enemyListStore[tempCounter].setFinalHp(atoi(strInp.c_str()));
+			enemyListStore[tempCounter].setHpFinal(atoi(strInp.c_str()));
 		}
 		if(strInp == "Mana")
 		{
 			enemyFile >> strInp;
 			enemyListStore[tempCounter].setMaxMana(atoi(strInp.c_str()));
 			enemyListStore[tempCounter].setCurrentMana(atoi(strInp.c_str()));
+			enemyListStore[tempCounter].setManaFinal(atoi(strInp.c_str()));
 		}
 		if(strInp == "Strength")
 		{
@@ -163,7 +164,7 @@ void FileReader::loadMapEnemies(std::vector<Character>& enemyListStore, std::str
 	enemyFile.close();
 }
 
-void loadMainMapFile(std::string fileNm, std::vector<Npc*>& npc, std::vector<Character>& enemyListStore, int& prevZ, int& prevM, int& startPosX, int& startPosY, int& currentZone, int& currentMap, int& encounterRate)
+void FileReader::loadMainMapFile(std::string fileNm, std::vector<Npc*>& npc, std::vector<Character>& enemyListStore, int& prevZ, int& prevM, int& startPosX, int& startPosY, int& currentZone, int& currentMap, int& encounterRate)
 {
 	//Temp variables
 	std::string strInp;
@@ -338,7 +339,7 @@ void loadMainMapFile(std::string fileNm, std::vector<Npc*>& npc, std::vector<Cha
 }
 
 //Utility
-std::string FileReader::getWholeText(ifstream& fileObject)
+std::string FileReader::getWholeText(std::ifstream& fileObject)
 {
 	char readText;
 	std::string stringStore;
