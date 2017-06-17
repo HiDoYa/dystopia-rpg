@@ -4,6 +4,8 @@
 #include "Character.h"
 #include "Skill.h"
 
+#include "FileReader.h"
+
 FileReader::FileReader()
 {
 }
@@ -24,7 +26,6 @@ void FileReader::loadAlly(std::vector<Character*>& ally)
 		{
 			ally.push_back(new Character());
 			allyCounter++;
-			ally[allyCounter]->setAllyInParty(false);
 			allyFile >> inp;
 		}
 		if(inp == "Name")
@@ -162,7 +163,7 @@ void FileReader::loadMapEnemies(std::vector<Character>& enemyListStore, std::str
 	enemyFile.close();
 }
 
-void loadMainMapFile(std::string fileNm, std::vector<Character>& npc, std::vector<Character>& enemyListStore, int& prevZ, int& prevM, int& startPosX, int& startPosY, int& currentZone, int& currentMap, int& encounterRate)
+void loadMainMapFile(std::string fileNm, std::vector<Npc*>& npc, std::vector<Character>& enemyListStore, int& prevZ, int& prevM, int& startPosX, int& startPosY, int& currentZone, int& currentMap, int& encounterRate)
 {
 	//Temp variables
 	std::string strInp;

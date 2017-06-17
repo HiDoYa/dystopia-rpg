@@ -61,7 +61,7 @@ Battle::Battle()
 	srand(time(NULL));
 }
 
-void Battle::setupBattle(std::vector<Character> enemyList, std::vector<Character*>& allyList, std::vector<Skill> allySkillTemp, std::vector<Skill> enemySkillTemp)
+void Battle::setupBattle(std::vector<Character> enemyList, std::vector<Character*>& allyList, std::vector<Skill> allySkillTemp, std::vector<Skill> enemySkillTemp, std::vector<int> allyInParty)
 {
 	//TODO Open file and get ally attacks 
 	//TODO Create function that updates the textures of circles (for skills) for when the ally moves to a different grid place
@@ -78,8 +78,12 @@ void Battle::setupBattle(std::vector<Character> enemyList, std::vector<Character
 	allySkill = allySkillTemp;
 	enemySkill = enemySkillTemp;
 
-	//BATTLEPOS MUST BE SET DIFFERENTLY AT DEFAULT WHEN ALLIES ARE ADDED TO PARTY
+	for(int i = 0; i < allyInParty.size(); i++)
+	{
+		ally.push_back(allyList[allyInParty[i]]);
+	}
 
+	//BATTLEPOS MUST BE SET DIFFERENTLY AT DEFAULT WHEN ALLIES ARE ADDED TO PARTY
 	//Sets ally positions
 	for(int i = 0; i < ally.size(); i++)
 	{
@@ -109,7 +113,6 @@ void Battle::setupBattle(std::vector<Character> enemyList, std::vector<Character
 		enemy[i].setPosition(enemyPos[i].x, enemyPos[i].y);
 		enemy[i].updatePositionBattle();
 	}
-	ally = allyList;
 }
 
 //*********** BATTLE STATE 0 *********************
@@ -712,7 +715,7 @@ void Battle::allySkillCalc()
 		int allyStrength = ally[nextCharCounter]->getStrength();
 		int targetHp = ally[currentAllySelected[i]]->getCurrentHp();
 		//Skill checks for both type 0 and type 1 (healing and damaging) for enemy and allies
-		ally[i]->setHpChange(allySkill[currentOptionAlly].healthChangeHandle(allyStrength, 0, targetHp));
+		ally[i]->setHpFinal(allySkill[currentOptionAlly].healthChangeHandle(allyStrength, 0, targetHp));
 	}
 
 	for(int i = 0; i < currentEnemySelected.size(); i++)
@@ -720,7 +723,7 @@ void Battle::allySkillCalc()
 		int allyStrength = enemy[nextCharCounter].getStrength();
 		int targetDef = ally[currentEnemySelected[i]]->getDefense();
 		int targetHp = ally[currentEnemySelected[i]]->getCurrentHp();
-		enemy[i].setHpChange(allySkill[currentOptionAlly].healthChangeHandle(allyStrength, targetDef, targetHp));
+		enemy[i].setHpFinal(allySkill[currentOptionAlly].healthChangeHandle(allyStrength, targetDef, targetHp));
 	}
 }
 
@@ -789,29 +792,31 @@ void Battle::enemySkillCalc()
 		int enemyStrength = enemy[nextCharCounter].getStrength();
 		int targetDef = ally[currentAllySelected[i]]->getDefense();
 		int targetHp = ally[currentAllySelected[i]]->getCurrentHp();
-		ally[i]->setHpChange(enemySkill[currentOptionEnemy].healthChangeHandle(enemyStrength, targetDef, targetHp));
+		ally[i]->setHpFinal(enemySkill[currentOptionEnemy].healthChangeHandle(enemyStrength, targetDef, targetHp));
 	}
 
 	for(int i = 0; i < currentEnemySelected.size(); i++)
 	{
 		int enemyStrength = enemy[nextCharCounter].getStrength();
 		int targetHp = enemy[currentEnemySelected[i]].getCurrentHp();
-		enemy[i].setHpChange(enemySkill[currentOptionEnemy].healthChangeHandle(enemyStrength, 0, targetHp));
+		enemy[i].setHpFinal(enemySkill[currentOptionEnemy].healthChangeHandle(enemyStrength, 0, targetHp));
 	}
 }
 void Battle::allyHpChange(int& currentBattleState)
 {
-	//TODO Helppp
-	int hpFinal = ally[i]->getHpChange();
-	//Replace hpFinal with hpFinal of specific character
-	int sign = findHpChangeSign(hpFinal, ally[currentAllySelected].getCurrentHp());
-	if(ally[currentAllySelected].getCurrentHp() > hpFinal + 3 || ally[currentAllySelected].getCurrentHp() < hpFinal - 3)
+	for(int i = 0; i < currentAllySelected.size(); i++)
 	{
-		ally[currentAllySelected].setCurrentHp(ally[currentAllySelected].getCurrentHp() + (3 * sign), overlay);
-	}
-	else if (ally[currentAllySelected].getCurrentHp() != hpFinal)
-	{
-		ally[currentAllySelected].setCurrentHp(hpFinal, overlay);
+		int hpFinal = ally[currentAllySelected[i]]->getHpFinal();
+		//Replace hpFinal with hpFinal of specific character
+		int sign = findHpChangeSign(hpFinal, ally[currentAllySelected[i]]->getCurrentHp());
+		if(ally[currentAllySelected[i]]->getCurrentHp() > hpFinal + 3 || ally[currentAllySelected[i]]->getCurrentHp() < hpFinal - 3)
+		{
+			ally[currentAllySelected[i]]->setCurrentHp(ally[currentAllySelected[i]]->getCurrentHp() + (3 * sign));
+		}
+		else if (ally[currentAllySelected[i]]->getCurrentHp() != hpFinal)
+		{
+			ally[currentAllySelected[i]]->setCurrentHp(hpFinal);
+		}
 	}
 }
 
@@ -819,18 +824,18 @@ void Battle::enemyHpChange(int& currentBattleState)
 {
 	for(int i = 0; i < currentEnemySelected.size(); i++)
 	{
-		int hpFinal = enemy[currentEnemySelected[i]].getHpChange();
+		int hpFinal = enemy[currentEnemySelected[i]].getHpFinal();
 		int currentEnemyHp = enemy[currentEnemySelected[i]].getCurrentHp();
 		if(hpFinal != currentEnemyHp)
 		{
 			int sign = findHpChangeSign(hpFinal, currentEnemyHp);
 			if(currentEnemyHp > hpFinal + 3 || currentEnemyHp < hpFinal - 3)
 			{
-				enemy[currentEnemySelected].setCurrentHp(currentEnemyHp + (3 * sign));
+				enemy[currentEnemySelected[i]].setCurrentHp(currentEnemyHp + (3 * sign));
 			}
 			else if (currentEnemyHp != hpFinal)
 			{
-				enemy[currentEnemySelected].setCurrentHp(hpFinal);
+				enemy[currentEnemySelected[i]].setCurrentHp(hpFinal);
 			}
 		}
 	}
@@ -842,8 +847,8 @@ void Battle::checkForCompletion(int& currentBattleState)
 
 	for(int i = 0; i < currentAllySelected.size(); i++)
 	{
-		int currentHp = ally[currentAllySelected[i]].getCurrentHp();
-		int targetHp = ally[currentAllySelected[i]].getHpChange();
+		int currentHp = ally[currentAllySelected[i]]->getCurrentHp();
+		int targetHp = ally[currentAllySelected[i]]->getHpFinal();
 		if(currentHp != targetHp)
 		{
 			allDone = false;
@@ -853,7 +858,7 @@ void Battle::checkForCompletion(int& currentBattleState)
 	for(int i = 0; i < currentEnemySelected.size(); i++)
 	{
 		int currentHp = enemy[currentEnemySelected[i]].getCurrentHp();
-		int targetHp = enemy[currentEnemySelected[i]].getHpChange();
+		int targetHp = enemy[currentEnemySelected[i]].getHpFinal();
 		if(currentHp != targetHp)
 		{
 			allDone = false;

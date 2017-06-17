@@ -67,7 +67,7 @@ class Battle
 	public:
 		Battle();
 
-		void setupBattle(std::vector<Character>, std::vector<Character*>&, std::vector<Skill>, std::vector<Skill>);
+		void setupBattle(std::vector<Character>, std::vector<Character*>&, std::vector<Skill>, std::vector<Skill>, std::vector<int>);
 
 		//Battle state 0
 		void findFastestChar(int&);

@@ -27,6 +27,8 @@ Skill::Skill()
 	crit = 0;
 	accuracy = 0;
 
+	chance = 5;
+
 	//Seeding
 	srand(time(NULL));
 }
@@ -37,13 +39,29 @@ void Skill::setName(std::string str)
 	name = str;
 }
 
+void Skill::setChance(int inp)
+{
+	chance = inp;
+}
+
 void Skill::setManaCost(int inp)
 {
 	manaCost = inp;
 }
 
-void Skill::setNumTurns(int inp)
+void Skill::setMaxNumTurns(int inp)
 {
+	maxNumTurns = inp;
+}
+
+void Skill::setNumAtksPerHit(int inp)
+{
+	numAtksPerHit = inp;
+}
+
+void Skill::setReapplyTurn(int type, bool inp)
+{
+	reapplyTurn[type] = inp;
 }
 
 void Skill::setMult(int type, float inp)
@@ -199,11 +217,11 @@ void Skill::checkForMiss()
 
 int Skill::healthChangeHandle(int posMult, int negMult, int percentMax)
 {
+	int healthCh;
+
 	//Type 0 for health loss, type 2 for health gain
 	for(int type = 0; type < 2; type++)
 	{
-		int healthCh;
-
 		//Decide whether to use percent or normal calculation
 		if(percent[type] > 0)
 		{
@@ -225,6 +243,7 @@ int Skill::healthChangeHandle(int posMult, int negMult, int percentMax)
 
 int Skill::healthGainHandle()
 {
+	//TODO Wtf
 }
 
 int Skill::normCalc(int posMult, int negMult, int type)
@@ -254,12 +273,12 @@ int Skill::percentCalc(int posMult, int negMult, int percentMax, int type)
 	return val;
 }
 
-int statChangeHandle(int posMult, int negMult, int percentMax)
+int Skill::statChangeHandle(int posMult, int negMult, int percentMax)
 {
 	int statCh = 0;
 	for(int type = 2; type < 4; type++)
 	{
-		if(percent[type] > 0)
+		if(percent[type])
 		{
 			//percent
 		}

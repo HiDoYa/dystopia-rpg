@@ -15,7 +15,9 @@ Character::Character()
 
 	alive = true;
 	canAtk = true;
-	finalHp = 100;
+
+	hpFinal = 100;
+	manaFinal = 100;
 	battlePos = 0;
 
 	currentExp = 0;
@@ -85,12 +87,17 @@ void Character::setSkillNum(std::vector<int> inp)
 	skillNum = inp;
 }
 
+void Character::setPossibleSkillNum(std::vector<int> inp)
+{
+	possibleSkillNum = inp;
+}
+
 void Character::setPersistentSkillNum(std::vector<int> inp)
 {
 	persistentSkillNum = inp;
 }
 
-void Character::setNumTurnsSkill(int inp)
+void Character::setNumTurnsSkill(std::vector<int> inp)
 {
 	numTurnsSkill = inp;
 }
@@ -103,11 +110,6 @@ void Character::setAlive(bool inp)
 void Character::setCanAtk(bool inp)
 {
 	canAtk = inp;
-}
-
-void Character::setFinalHp(int inp)
-{
-	finalHp = inp;
 }
 
 void Character::setBattlePos(int inp)
@@ -131,14 +133,14 @@ void Character::setChance(int inp)
 	chance = inp;
 }
 
-void Character::setHpChange(int inp)
+void Character::setHpFinal(int inp)
 {
-	hpChange = inp;
+	hpFinal = inp;
 }
 
-void Character::setManaChnage(int inp)
+void Character::setManaFinal(int inp)
 {
-	manaChange = inp;
+	manaFinal = inp;
 }
 //********* ACCESSORS ***********
 int Character::getLevel()
@@ -201,12 +203,17 @@ std::vector<int> Character::getSkillNum()
 	return skillNum;
 }
 
+std::vector<int> Character::getPossibleSkillNum()
+{
+	return possibleSkillNum;
+}
+
 std::vector<int> Character::getPersistentSkillNum()
 {
 	return persistentSkillNum;
 }
 
-int Character::getNumTurnsSkill()
+std::vector<int> Character::getNumTurnsSkill()
 {
 	return numTurnsSkill;
 }
@@ -219,11 +226,6 @@ bool Character::getAlive()
 bool Character::getCanAtk()
 {
 	return canAtk;
-}
-
-int Character::getFinalHp()
-{
-	return finalHp;
 }
 
 //BattlePos is 0-5 corresponding to battle grid pos
@@ -247,14 +249,14 @@ int Character::getChance()
 	return chance;
 }
 
-int Character::getHpChange()
+int Character::getHpFinal()
 {
-	return hpChange;
+	return hpFinal;
 }
 
-int Character::getManaChange()
+int Character::getManaFinal()
 {
-	return manaChange;
+	return manaFinal;
 }
 
 //ETC

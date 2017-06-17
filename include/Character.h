@@ -22,7 +22,8 @@ class Character: public SpriteManager
 		int currentAgility;
 
 		//Stores ID for each skill
-		std::vector<int> skillNum;
+		std::vector<int> skillNum;         //For use in battle
+		std::vector<int> possibleSkillNum; //For all possible equippable skills
 
 		//For continuous/status effects. Can be damaging/debuff
 		std::vector<int> persistentSkillNum;
@@ -31,8 +32,8 @@ class Character: public SpriteManager
 		bool alive;
 		bool canAtk;
 
-		int hpChange;   //Stores target value after change
-		int manaChange; //Stores target value after change
+		int hpFinal;   //Stores target value after change
+		int manaFinal; //Stores target value after change
 		int battlePos;
 
 		//For allies
@@ -59,12 +60,12 @@ class Character: public SpriteManager
 		void setCurrentAgility(int);
 
 		void setSkillNum(std::vector<int>);
+		void setPossibleSkillNum(std::vector<int>);
 		void setPersistentSkillNum(std::vector<int>);
-		void setNumTurnsSkill(int);
+		void setNumTurnsSkill(std::vector<int>);
 
 		void setAlive(bool);
 		void setCanAtk(bool);
-		void setFinalHp(int);
 		void setBattlePos(int);
 
 		void setCurrentExp(int);
@@ -72,8 +73,8 @@ class Character: public SpriteManager
 
 		void setChance(int);
 
-		void setHpChange(int);
-		void setManaChange(int);
+		void setHpFinal(int);
+		void setManaFinal(int);
 
 		//****** Accessors ********
 		int getLevel();
@@ -90,8 +91,9 @@ class Character: public SpriteManager
 		int getCurrentAgility();
 
 		std::vector<int> getSkillNum();
+		std::vector<int> getPossibleSkillNum();
 		std::vector<int> getPersistentSkillNum();
-		int getNumTurnsSkill();
+		std::vector<int> getNumTurnsSkill();
 
 		bool getAlive();
 		bool getCanAtk();
@@ -103,8 +105,8 @@ class Character: public SpriteManager
 
 		int getChance();
 
-		int getHpChange();
-		int getManaChange();
+		int getHpFinal();
+		int getManaFinal();
 
 		//TODO Calculate requiredExp based on level and slight randomization
 		//********* ETC ***********

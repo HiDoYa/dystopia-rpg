@@ -55,6 +55,7 @@ class StateManager
 
 		//Menu
 		void allMenu(sf::RenderWindow&);
+		void loadMenu();
 		void updateMenu(sf::RenderWindow&);
 
 		//Map

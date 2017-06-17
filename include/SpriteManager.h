@@ -1,3 +1,5 @@
+#include <SFML/Graphics.hpp>
+
 #ifndef SPRITEMANAGER_H
 #define SPRITEMANAGER_H
 

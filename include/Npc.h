@@ -1,3 +1,5 @@
+#include "Dialogue.h"
+#include "MapPlayer.h"
 #include "SpriteManager.h"
 
 class Textbox;

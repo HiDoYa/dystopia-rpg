@@ -1,8 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-#include "Dialogue.h"
-#include "MapPlayer.h"
 #include "Textbox.h"
 #include "UIOverlay.h"
 

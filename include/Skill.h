@@ -27,8 +27,6 @@ class Skill
 		std::vector<float> mult;
 		std::vector<int> max;
 		std::vector<int> min;
-		//Percent is for percent damage, heals, debuffs, buffs
-		//Still uses mult, max, min for percent, max dmg possible, min dmg possible
 		//If mult is 0, effect is nothing
 		//If percent is true, multiplier becomes percent (out of 100)
 		std::vector<bool> percent;
@@ -38,6 +36,10 @@ class Skill
 		int accuracy;
 		//0 for selected ally, 1 for selected enemy, 2 for all allies, 3 for all enemies, 4 for self
 		//There can only be one (0 or 1) in the "target" vector because can only choose the target once
+
+		//For enemies: chance that the skill is chosen
+		int chance;
+
 		std::vector<int> target;
 	public:
 		Skill();
@@ -50,8 +52,8 @@ class Skill
 		void setManaCost(int);
 		void setMaxNumTurns(int);
 		void setNumAtksPerHit(int);
-		void setReapplyTurn(int, int);
-		void setMult(int, int);
+		void setReapplyTurn(int, bool);
+		void setMult(int, float);
 		void setMax(int, int);
 		void setMin(int, int);
 		void setPercent(int, bool);
@@ -66,7 +68,7 @@ class Skill
 		int getMaxNumTurns();
 		int getNumAtksPerHit();
 		std::vector<bool> getReapplyTurn();
-		std::vector<int> getMult();
+		std::vector<float> getMult();
 		std::vector<int> getMax();
 		std::vector<int> getMin();
 		std::vector<bool> getPercent();
@@ -80,17 +82,18 @@ class Skill
 		//***** DAMAGE UTILITY ************
 		int checkForMaxMin(int, int);
 		int checkForCrit(int);
-		int checkForMiss(int);
+		void checkForMiss();
 
 		//****** DAMAGE CALC *********
 		int healthChangeHandle(int, int, int);
+		int healthGainHandle();
 		int normCalc(int, int, int);
 		int percentCalc(int, int, int, int);
 
-		int statChangeHandle(int, int);
+		int statChangeHandle(int, int, int);
 
 		//****** TEXT *********
-		std::string dispText(std::string, int);
+		std::string dispText(std::string, std::string, int);
 };
 
 #endif
