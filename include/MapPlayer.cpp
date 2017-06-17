@@ -10,9 +10,7 @@ MapPlayer::MapPlayer()
 {
 	//Sets texture and position of sprite
 	texturePosX = texturePosY = 0;
-
-	//A character
-	setTextureSprite("images/character/player2.png");
+	setTextureSprite("images/ally/player.png");
 	setTextureRect(64, 0);
 
 	//Sound

@@ -22,7 +22,7 @@
 int main()
 {
 	//Declares and creates a new window
-	sf::RenderWindow window(sf::VideoMode(1024, 768), "Game");
+	sf::RenderWindow window(sf::VideoMode(1024, 768), "Dystopia RPG");
 
 	//Defines what region is shown on screen
 	sf::View view = window.getView();
