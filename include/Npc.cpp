@@ -19,8 +19,7 @@ Npc::Npc()
 }
 
 //Gets the converted vector, deals with animation/textbox calls, and deals with multiple textboxes
-//TODO Only allow speak when the player is facing TOWARDS the npc instead of just collision
-void Npc::speak(std::vector<bool>& event, Textbox& box, MapPlayer& player)
+void Npc::speak(std::vector<bool>& stateFlag, Textbox& box, MapPlayer& player)
 {
 	bool cond = !player.getMoving() && sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
 
@@ -31,7 +30,7 @@ void Npc::speak(std::vector<bool>& event, Textbox& box, MapPlayer& player)
 			bool allowText = true;
 			for(int j = 0; j < getCondition()[i].size(); j++)
 			{
-				if(event[getCondition()[j][i]] != getConditionCheck()[j][i])
+				if(stateFlag[getCondition()[j][i]] != getConditionCheck()[j][i])
 				{
 					allowText = false;
 				}
@@ -50,14 +49,14 @@ void Npc::speak(std::vector<bool>& event, Textbox& box, MapPlayer& player)
 							//Change assuming the first choice
 							for(int chgCounter = 0; chgCounter < getChgOneNum()[i].size(); chgCounter++)
 							{
-								event[getChgOneNum()[chgCounter][i]] = getChgOneBool()[chgCounter][i];
+								stateFlag[getChgOneNum()[chgCounter][i]] = getChgOneBool()[chgCounter][i];
 							}
 							break;
 						case 2:
 							//Change assuming the second choice
 							for(int chgCounter = 0; chgCounter < getChgOneNum()[i].size(); chgCounter++)
 							{
-								event[getChgTwoNum()[chgCounter][i]] = getChgTwoBool()[chgCounter][i];
+								stateFlag[getChgTwoNum()[chgCounter][i]] = getChgTwoBool()[chgCounter][i];
 							}
 							break;
 					}
@@ -66,7 +65,7 @@ void Npc::speak(std::vector<bool>& event, Textbox& box, MapPlayer& player)
 				{
 						for(int chgCounter = 0; chgCounter < getChgNum()[i].size(); chgCounter++)
 						{
-							event[getChgNum()[chgCounter][i]] = getChgCheck()[chgCounter][i];
+							stateFlag[getChgNum()[chgCounter][i]] = getChgCheck()[chgCounter][i];
 						}
 				}
 				break;

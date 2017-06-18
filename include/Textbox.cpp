@@ -4,7 +4,6 @@
 
 #include "Textbox.h"
 
-//Default constructor
 Textbox::Textbox()
 {
 	//Default initialization

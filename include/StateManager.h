@@ -10,7 +10,7 @@ class StateManager
 		//State control
 		int currentState;
 		int currentBattleState;
-		std::vector<bool> event;
+		std::vector<bool> stateFlag;
 	
 		//Menu (state 0)
 		bool menuLoaded;

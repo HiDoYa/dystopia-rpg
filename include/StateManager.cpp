@@ -36,8 +36,8 @@ StateManager::StateManager()
 	battle.reset(new Battle);
 
 	//Event has false and true by default
-	event.push_back(false);
-	event.push_back(true);
+	stateFlag.push_back(false);
+	stateFlag.push_back(true);
 }
 
 //********* MENU *************
@@ -140,7 +140,7 @@ void StateManager::updateMap(sf::RenderWindow& win, sf::View& view)
 
 	for(int i = 0; i < npc.size(); i++)
 	{
-		npc[i]->speak(event, textbox, player);
+		npc[i]->speak(stateFlag, textbox, player);
 	}
 
 
