@@ -16,7 +16,6 @@ Npc::Npc()
 	//Initializes speaking bool
 	speaking = false;
 	colliding = false;
-	//allowChoice = false;
 }
 
 //Gets the converted vector, deals with animation/textbox calls, and deals with multiple textboxes

@@ -21,7 +21,7 @@ Textbox::Textbox()
 	choiceBox.setFillColor(bxColor);
 	choiceBox.setSize(sf::Vector2f(800, 200));
 	curChoice.setFillColor(sf::Color::Green);
-	curChoice.setSize(sf::Vector2f(800, 75));
+	curChoice.setSize(sf::Vector2f(800, 100));
 
 	currentChoice = 0;
 	choiceBoxOpen = false;
@@ -44,8 +44,8 @@ Textbox::Textbox()
 
 
 	//Sets character sizes
-	text.setCharacterSize(20);
-	name.setCharacterSize(12);
+	text.setCharacterSize(17);
+	name.setCharacterSize(13);
 	nextPrompt.setCharacterSize(0);
 
 	choiceInstruct.setCharacterSize(15);
@@ -130,23 +130,23 @@ void Textbox::updatePosition(sf::View view)
 
 	text.setPosition(sf::Vector2f(posX + 30, posY + 50));
 	name.setPosition(sf::Vector2f(posX + 20, posY + 20));
-	nextPrompt.setPosition(sf::Vector2f(posX + 701, posY + 120));
+	nextPrompt.setPosition(sf::Vector2f(posX + 750, posY + 120));
 
 	//TODO 
 	choiceBox.setPosition(sf::Vector2f(posX + 150, posY - 300));
-	choiceOne.setPosition(sf::Vector2f(posX + 150, posY - 250));
-	choiceTwo.setPosition(sf::Vector2f(posX + 150, posY - 150));
+	choiceOne.setPosition(sf::Vector2f(posX + 170, posY - 250));
+	choiceTwo.setPosition(sf::Vector2f(posX + 170, posY - 150));
 
 	rec.setPosition(sf::Vector2f(posX, posY));
 
 	//TODO Sets the position of box 
 	if(currentChoice == 0)
 	{
-		curChoice.setPosition(sf::Vector2f(posX + 150, posY - 225));
+		curChoice.setPosition(sf::Vector2f(posX + 150, posY - 300));
 	}
 	else if(currentChoice == 1)
 	{
-		curChoice.setPosition(sf::Vector2f(posX + 150, posY - 175));
+		curChoice.setPosition(sf::Vector2f(posX + 150, posY - 200));
 	}
 }
 
@@ -310,7 +310,7 @@ void Textbox::animateText(std::string str)
 		currentCompleted = true;
 
 		//Resets temp string, and index
-		nextPrompt.setCharacterSize(13);
+		nextPrompt.setCharacterSize(11);
 
 		animText = "";
 		textIndex = 0;

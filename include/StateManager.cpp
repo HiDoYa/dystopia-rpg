@@ -56,8 +56,7 @@ void StateManager::loadMenu()
 		mainMenu.setTextureSprite("images/background.png");
 
 		fileReader.loadAlly(ally);
-		fileReader.loadSkill(allySkills);
-		//TODO Enemy skill
+		fileReader.loadSkill(skillList);
 	}
 }
 
@@ -213,7 +212,7 @@ void StateManager::loadBattle(sf::RenderWindow& win, sf::View& view)
 	{
 		battleLoaded = true;
 
-		battle->setupBattle(enemyListStore, ally, allySkills, enemySkills, allyInParty);
+		battle->setupBattle(enemyListStore, ally, skillList, allyInParty);
 
 		//Set view
 		view.setCenter(sf::Vector2f(512, 384));

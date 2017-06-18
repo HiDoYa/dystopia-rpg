@@ -30,10 +30,10 @@ class MapPlayer: public SpriteManager
 		int texturePosY;
 		bool moving;
 		int movingNum;
-		bool canMoveUp;
-		bool canMoveDown;
-		bool canMoveRight;
-		bool canMoveLeft;
+		bool canMoveUp;   //0
+		bool canMoveDown; //1
+		bool canMoveLeft; //2
+		bool canMoveRight;//3
 
 		//To check for enemy
 		bool checkEncounter;
@@ -47,6 +47,7 @@ class MapPlayer: public SpriteManager
 		void stepSound();
 		void standStill();
 		void movePos();
+		void keyPressAction(int, bool);
 		void encounter(int, int&);
 		void spriteAnimation();
 		bool collisionZones(int, int);

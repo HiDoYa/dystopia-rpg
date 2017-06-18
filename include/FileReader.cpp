@@ -14,7 +14,7 @@ FileReader::FileReader()
 void FileReader::loadAlly(std::vector<Character*>& ally)
 {
 	std::ifstream allyFile;
-	allyFile.open("data/ally/allyList");
+	allyFile.open("data/allyList");
 	std::string inp;
 	int allyCounter = -1;
 

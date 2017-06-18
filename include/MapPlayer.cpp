@@ -129,30 +129,37 @@ void MapPlayer::movePos()
 	{
 		//Do nothing (moving in opposing directions)
 	}
-	else if(wPress && canMoveUp)
+	else if(wPress)
 	{
-		lastDirection = 0;
-		moving = true;
-		spriteAnimation();
-		stepSound();
+		keyPressAction(0, canMoveUp);
 	}
-	else if(sPress && canMoveDown)
+	else if(sPress)
 	{
-		lastDirection = 1;
-		moving = true;
-		spriteAnimation();
-		stepSound();
+		keyPressAction(1, canMoveDown);
 	}
-	else if(aPress && canMoveLeft)
+	else if(aPress)
 	{
-		lastDirection = 2;
-		moving = true;
-		spriteAnimation();
-		stepSound();
+		keyPressAction(2, canMoveLeft);
 	}
-	else if(dPress && canMoveRight)
+	else if(dPress)
 	{
-		lastDirection = 3;
+		keyPressAction(3, canMoveRight);
+	}
+	else
+	{
+		standStill();
+	}
+
+	//Reset flags and check whether one can move in directions again later
+	canMoveUp = canMoveDown = canMoveLeft = canMoveRight = true;
+}
+
+void MapPlayer::keyPressAction(int direction, bool canMove)
+{
+	lastDirection = direction;
+
+	if(canMove)
+	{
 		moving = true;
 		spriteAnimation();
 		stepSound();
@@ -161,8 +168,6 @@ void MapPlayer::movePos()
 	{
 		standStill();
 	}
-
-	canMoveUp = canMoveDown = canMoveLeft = canMoveRight = true;
 }
 
 //Calculates whether player should encounter enemy. Encounter chance is from 0-100
@@ -217,12 +222,18 @@ bool MapPlayer::collisionZones(int i, int j)
 			if(currentPlayerY - 1 == j)
 			{
 				canMoveUp = false;
-				colliding = true;
+				if(lastDirection == 0)
+				{
+					colliding = true;
+				}
 			}
 			if(currentPlayerY + 1 == j)
 			{
 				canMoveDown = false;
-				colliding = true;
+				if(lastDirection == 1)
+				{
+					colliding = true;
+				}
 			}
 		}
 
@@ -231,12 +242,18 @@ bool MapPlayer::collisionZones(int i, int j)
 			if(currentPlayerX - 1 == i)
 			{
 				canMoveLeft = false;
-				colliding = true;
+				if(lastDirection == 2)
+				{
+					colliding = true;
+				}
 			}
 			if(currentPlayerX + 1 == i)
 			{
 				canMoveRight = false;
-				colliding = true;
+				if(lastDirection == 3)
+				{
+					colliding = true;
+				}
 			}
 		}
 	}
