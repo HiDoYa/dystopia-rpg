@@ -321,6 +321,7 @@ bool Textbox::textHandler(sf::String nm, sf::String str, bool condition, bool& c
 {
 	time = clock.getElapsedTime();
 	currentTime = time.asMilliseconds();
+
 	if(condition && textNum == 0 && lastTimeBox + 350 < currentTime)
 	{
 		openBox();

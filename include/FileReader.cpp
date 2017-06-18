@@ -222,11 +222,13 @@ void FileReader::loadMainMapFile(std::string fileNm, std::vector<Npc*>& npc, std
 
 			//Increments and makes new npc
 			npcCounter++;
-			npc.push_back(new Npc());
+			Npc tempNpc;
+			npc.push_back(new Npc);
 		}
 		if(strInp == "Image")
 		{
 			mainMapFile >> strInp;
+			std::cout << npcCounter << " " << strInp << '\n';
 			npc[npcCounter]->setTextureSprite(strInp);
 		}
 		if(strInp == "ImagePos")
@@ -341,14 +343,15 @@ void FileReader::loadMainMapFile(std::string fileNm, std::vector<Npc*>& npc, std
 //Utility
 std::string FileReader::getWholeText(std::ifstream& fileObject)
 {
-	char readText;
-	std::string stringStore;
-	
-	while(fileObject.peek() != '\n')
-	{
-		fileObject.get(readText);
-		stringStore += readText;
-	}
+	char readText[256];
+
+	//Skip spcae
+	fileObject.ignore();
+
+	//Gets the entire text
+	fileObject.getline(readText, 256);
+
+	std::string stringStore = readText;
 
 	return stringStore;
 }

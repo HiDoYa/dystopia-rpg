@@ -1,12 +1,12 @@
-EncRate 10
+EncRate 0
 EnemList enemyList0
 
 PrevZM 0 1
 NewPos 5 10
 
 Npc
-Image images/npc/test4.png
-ImagePos 128 0 64
+Image images/npc/test3.png
+ImagePos 0 0 64
 Pos 3 2
 Name TestNpc
 
@@ -38,6 +38,6 @@ ChoiceTwo Don't Check
 
 Npc
 Image images/npc/test4.png
-ImagePos 64 0 64
+ImagePos 0 0 64
 Pos 3 4
 Name TestNpc
