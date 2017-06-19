@@ -11,7 +11,7 @@ FileReader::FileReader()
 }
 
 //Game loading
-void FileReader::loadAlly(std::vector<Character*>& ally)
+void FileReader::loadAlly(std::vector<std::shared_ptr<Character>>& ally)
 {
 	std::ifstream allyFile;
 	allyFile.open("data/allyList");
@@ -24,20 +24,22 @@ void FileReader::loadAlly(std::vector<Character*>& ally)
 	{
 		if(inp == "Ally")
 		{
-			ally.push_back(new Character);
+			std::shared_ptr<Character> tempPtr (new Character);
+			ally.push_back(tempPtr);
 			allyCounter++;
+			//Get rid of the extra number
 			allyFile >> inp;
 		}
-		if(inp == "Name")
+		else if(inp == "Name")
 		{
 			ally[allyCounter]->setName(getWholeText(allyFile));
 		}
-		if(inp == "Level")
+		else if(inp == "Level")
 		{
 			allyFile >> inp;
 			ally[allyCounter]->setLevel(atoi(inp.c_str()));
 		}
-		if(inp == "Hp")
+		else if(inp == "Hp")
 		{
 			allyFile >> inp;
 			ally[allyCounter]->setCurrentHp(atoi(inp.c_str()));
@@ -46,7 +48,7 @@ void FileReader::loadAlly(std::vector<Character*>& ally)
 			allyFile >> inp;
 			ally[allyCounter]->setMaxHp(atoi(inp.c_str()));
 		}
-		if(inp == "Mana")
+		else if(inp == "Mana")
 		{
 			allyFile >> inp;
 			ally[allyCounter]->setCurrentMana(atoi(inp.c_str()));
@@ -55,22 +57,22 @@ void FileReader::loadAlly(std::vector<Character*>& ally)
 			allyFile >> inp;
 			ally[allyCounter]->setMaxMana(atoi(inp.c_str()));
 		}
-		if(inp == "Strength")
+		else if(inp == "Strength")
 		{
 			allyFile >> inp;
 			ally[allyCounter]->setStrength(atoi(inp.c_str()));
 		}
-		if(inp == "Defense")
+		else if(inp == "Defense")
 		{
 			allyFile >> inp;
 			ally[allyCounter]->setDefense(atoi(inp.c_str()));
 		}
-		if(inp == "Agility")
+		else if(inp == "Agility")
 		{
 			allyFile >> inp;
 			ally[allyCounter]->setAgility(atoi(inp.c_str()));
 		}
-		if(inp == "Image")
+		else if(inp == "Image")
 		{
 			allyFile >> inp;
 			ally[allyCounter]->setTextureSprite(inp);
@@ -97,9 +99,10 @@ void FileReader::loadSkill(std::vector<Skill*>& skillList)
 		skillFile >> strInp;
 		if(strInp == "Skill")
 		{
-			skillFile >> strInp;
 			skillCounter++;
 			skillList.push_back(new Skill);
+			//Get rid of the extra number
+			skillFile >> strInp;
 		}
 		else if(strInp == "Name")
 		{
@@ -170,11 +173,14 @@ void FileReader::loadSkill(std::vector<Skill*>& skillList)
 			skillFile >> strInp;
 			skillList[skillCounter]->setChance(atoi(strInp.c_str()));
 		}
+		else if(strInp == "Skill")
+		{
+		}
 	}
 	skillFile.close();
 }
 
-void FileReader::loadMapEnemies(std::vector<Character>& enemyListStore, std::string enemyList)
+void FileReader::loadMapEnemies(std::vector<std::shared_ptr<Character>>& enemyListStore, std::string enemyList)
 {
 	//Temp variables
 	std::string strInp;
@@ -190,66 +196,75 @@ void FileReader::loadMapEnemies(std::vector<Character>& enemyListStore, std::str
 		if(strInp == "Enemy")
 		{
 			tempCounter++;
-			enemyListStore.push_back(*new Character);
-			enemyListStore[tempCounter].setAlive(true);
+			std::shared_ptr<Character> tempPtr (new Character);
+			enemyListStore.push_back(tempPtr);
+			enemyListStore[tempCounter]->setAlive(true);
+			//Get rid of the extra number
 			enemyFile >> strInp;
 		}
-		if(strInp == "Name")
+		else if(strInp == "Name")
 		{
-			enemyListStore[tempCounter].setName(getWholeText(enemyFile));
+			enemyListStore[tempCounter]->setName(getWholeText(enemyFile));
 		}
-		if(strInp == "Level")
+		else if(strInp == "Level")
 		{
 			enemyFile >> strInp;
-			enemyListStore[tempCounter].setLevel(atoi(strInp.c_str()));
+			enemyListStore[tempCounter]->setLevel(atoi(strInp.c_str()));
 		}
-		if(strInp == "Hp")
+		else if(strInp == "Hp")
 		{
 			enemyFile >> strInp;
-			enemyListStore[tempCounter].setMaxHp(atoi(strInp.c_str()));
-			enemyListStore[tempCounter].setCurrentHp(atoi(strInp.c_str()));
-			enemyListStore[tempCounter].setHpFinal(atoi(strInp.c_str()));
+			enemyListStore[tempCounter]->setMaxHp(atoi(strInp.c_str()));
+			enemyListStore[tempCounter]->setCurrentHp(atoi(strInp.c_str()));
+			enemyListStore[tempCounter]->setHpFinal(atoi(strInp.c_str()));
 		}
-		if(strInp == "Mana")
+		else if(strInp == "Mana")
 		{
 			enemyFile >> strInp;
-			enemyListStore[tempCounter].setMaxMana(atoi(strInp.c_str()));
-			enemyListStore[tempCounter].setCurrentMana(atoi(strInp.c_str()));
-			enemyListStore[tempCounter].setManaFinal(atoi(strInp.c_str()));
+			enemyListStore[tempCounter]->setMaxMana(atoi(strInp.c_str()));
+			enemyListStore[tempCounter]->setCurrentMana(atoi(strInp.c_str()));
+			enemyListStore[tempCounter]->setManaFinal(atoi(strInp.c_str()));
 		}
-		if(strInp == "Strength")
+		else if(strInp == "Strength")
 		{
 			enemyFile >> strInp;
-			enemyListStore[tempCounter].setStrength(atoi(strInp.c_str()));
+			enemyListStore[tempCounter]->setStrength(atoi(strInp.c_str()));
 		}
-		if(strInp == "Defense")
+		else if(strInp == "Defense")
 		{
 			enemyFile >> strInp;
-			enemyListStore[tempCounter].setDefense(atoi(strInp.c_str()));
+			enemyListStore[tempCounter]->setDefense(atoi(strInp.c_str()));
 		}
-		if(strInp == "Agility")
+		else if(strInp == "Agility")
 		{
 			enemyFile >> strInp;
-			enemyListStore[tempCounter].setAgility(atoi(strInp.c_str()));
+			enemyListStore[tempCounter]->setAgility(atoi(strInp.c_str()));
 		}
-		if(strInp == "Chance")
+		else if(strInp == "Chance")
 		{
 			enemyFile >> strInp;
-			enemyListStore[tempCounter].setChance(atoi(strInp.c_str()));
+			enemyListStore[tempCounter]->setChance(atoi(strInp.c_str()));
 		}
-		if(strInp == "Image")
+		else if(strInp == "Image")
 		{
 			enemyFile >> strInp;
-			enemyListStore[tempCounter].setTextureSprite(strInp);
+			enemyListStore[tempCounter]->setTextureSprite(strInp);
+
+			//Where the enemy is located in the file (y location)
 			enemyFile >> strInp;
-			//TODO where the enemy is located in the file (y location)
-			enemyListStore[tempCounter].setTextureRect(0, atoi(strInp.c_str()));
+			enemyListStore[tempCounter]->setTextureRect(0, atoi(strInp.c_str()));
 		}
 	}
 	enemyFile.close();
 }
 
-void FileReader::loadMainMapFile(std::string fileNm, std::vector<Npc*>& npc, std::vector<Character>& enemyListStore, int& prevZ, int& prevM, int& startPosX, int& startPosY, int& currentZone, int& currentMap, int& encounterRate)
+void FileReader::loadMainMapFile(std::string fileNm,
+		std::vector<std::shared_ptr<Npc>>& npc,
+		std::vector<std::shared_ptr<Character>>& enemyListStore,
+		int& prevZ, int& prevM,
+		int& startPosX, int& startPosY,
+		int& currentZone, int& currentMap,
+		int& encounterRate)
 {
 	//Temp variables
 	std::string strInp;
@@ -271,13 +286,13 @@ void FileReader::loadMainMapFile(std::string fileNm, std::vector<Npc*>& npc, std
 			mainMapFile >> strInp;
 			encounterRate = atoi(strInp.c_str());
 		}
-		if(strInp == "EnemList")
+		else if(strInp == "EnemList")
 		{
 			mainMapFile >> strInp;
 			std::string tempEnemyList = "data/enemies/" + strInp;
 			loadMapEnemies(enemyListStore, tempEnemyList);
 		}
-		if(strInp == "PrevZM")
+		else if(strInp == "PrevZM")
 		{
 			//TODO
 			mainMapFile >> strInp;
@@ -300,88 +315,91 @@ void FileReader::loadMainMapFile(std::string fileNm, std::vector<Npc*>& npc, std
 				mainMapFile >> strInp;
 			}
 		}
-		if(strInp == "Npc")
+		else if(strInp == "Npc")
 		{
 			//Reset text number
 			currentTextNum = -1;
 
 			//Increments and makes new npc
 			npcCounter++;
-			Npc tempNpc;
-			npc.push_back(new Npc);
+			std::shared_ptr<Npc> tempPtr (new Npc);
+			npc.push_back(tempPtr);
+
+			//Get rid of useless number
+			mainMapFile >> strInp;
 		}
-		if(strInp == "Image")
+		else if(strInp == "Image")
 		{
 			mainMapFile >> strInp;
 			npc[npcCounter]->setTextureSprite(strInp);
 		}
-		if(strInp == "ImagePos")
+		else if(strInp == "ImagePos")
 		{
 			mainMapFile >> numOne;
 			mainMapFile >> numTwo;
 			mainMapFile >> numThree;
 			npc[npcCounter]->setTextureRect(numOne, numTwo, numThree);
 		}
-		if(strInp == "Pos")
+		else if(strInp == "Pos")
 		{
 			mainMapFile >> numOne;
 			mainMapFile >> numTwo;
 			npc[npcCounter]->setPosition(numOne * 64, numTwo * 64);
 		}
-		if(strInp == "Name")
+		else if(strInp == "Name")
 		{
 			npc[npcCounter]->setName(getWholeText(mainMapFile));
 		}
-		if(strInp == "Start")
+		else if(strInp == "Start")
 		{
 			//The beginning of new text for a npc
 			currentTextNum++;
 			npc[npcCounter]->pushNextText();
 		}
-		if(strInp == "CondTrue")
+		else if(strInp == "CondTrue")
 		{
 			mainMapFile >> strInp;
 			npc[npcCounter]->pushCondition(atoi(strInp.c_str()));
 			npc[npcCounter]->pushConditionCheck(true);
 		}
-		if(strInp == "CondFalse")
+		else if(strInp == "CondFalse")
 		{
 			mainMapFile >> strInp;
 			npc[npcCounter]->pushCondition(atoi(strInp.c_str()));
 			npc[npcCounter]->pushConditionCheck(false);
 		}
-		if(strInp == "Text")
+		else if(strInp == "Text")
 		{
 			npc[npcCounter]->pushText(getWholeText(mainMapFile));
 		}
-		if(strInp == "SetCondTrue")
+		else if(strInp == "SetCondTrue")
 		{
 			mainMapFile >> strInp;
 			npc[npcCounter]->pushChgCheck(true);
 			npc[npcCounter]->pushChgNum(atoi(strInp.c_str()));
 		}
-		if(strInp == "SetCondFalse")
+		else if(strInp == "SetCondFalse")
 		{
 			mainMapFile >> strInp;
 			npc[npcCounter]->pushChgCheck(false);
 			npc[npcCounter]->pushChgNum(atoi(strInp.c_str()));
 		}
-		if(strInp == "Choice")
+		else if(strInp == "Choice")
 		{
 			npc[npcCounter]->curChoiceTrue();
 			npc[npcCounter]->pushChoice(getWholeText(mainMapFile));
 		}
-		if(strInp == "ChoiceOne")
+		else if(strInp == "ChoiceOne")
 		{
 			curChoice = 1;
 			npc[npcCounter]->pushChoiceOne(getWholeText(mainMapFile));
 		}
-		if(strInp == "ChoiceTwo")
+		else if(strInp == "ChoiceTwo")
 		{
 			curChoice = 2;
 			npc[npcCounter]->pushChoiceTwo(strInp);
 		}
-		if(strInp == "*SetCondTrue")
+		else if(strInp == "*SetCondTrue")
 		{
 			mainMapFile >> intInp;
 			if(curChoice == 1)
@@ -395,7 +413,7 @@ void FileReader::loadMainMapFile(std::string fileNm, std::vector<Npc*>& npc, std
 				npc[npcCounter]->pushChgTwoBool(true);
 			}
 		}
-		if(strInp == "*SetCondFalse")
+		else if(strInp == "*SetCondFalse")
 		{
 			mainMapFile >> intInp;
 			if(curChoice == 1)
@@ -409,7 +427,7 @@ void FileReader::loadMainMapFile(std::string fileNm, std::vector<Npc*>& npc, std
 				npc[npcCounter]->pushChgTwoBool(false);
 			}
 		}
-		if(strInp == "*Text")
+		else if(strInp == "*Text")
 		{
 			if(curChoice == 1)
 			{

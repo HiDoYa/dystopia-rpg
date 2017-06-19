@@ -35,6 +35,9 @@ StateManager::StateManager()
 
 	battle.reset(new Battle);
 
+	//By default, ally 0 is in party
+	allyInParty.push_back(0);
+
 	//Event has false and true by default
 	stateFlag.push_back(false);
 	stateFlag.push_back(true);
@@ -116,7 +119,9 @@ void StateManager::loadMap(sf::RenderWindow& win)
 
 		//Loads npcs from main map file
 		std::string fileNm = mapFileString1 + "main" + mapFileString2;
-		fileReader.loadMainMapFile(fileNm, npc, enemyListStore, prevZ, prevM, startPosX, startPosY, currentZone, currentMap, encounterRate);
+		fileReader.loadMainMapFile(fileNm, npc, enemyListStore,
+				prevZ, prevM, startPosX, startPosY,
+				currentZone, currentMap, encounterRate);
 
 		//Set prevZ and prevM to the current
 		prevZ = currentZone;
@@ -243,9 +248,6 @@ void StateManager::updateBattle(sf::RenderWindow& win, sf::View& view)
 		//if player chose a targetable skill, choose an enemy to attack. else, go straight to state 3
 		case 3:
 			battle->chooseEnemyFocus(currentBattleState);
-			break;
-		//If enemy, choose who to attack and what skill to attack with
-		case 4:
 			battle->enemyDecision(currentBattleState);
 			break;
 		//Move forward and attack animations (both enemies and allies)

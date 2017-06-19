@@ -1,10 +1,10 @@
-EncRate 0
+EncRate 10
 EnemList enemyList0
 
 PrevZM 0 1
 NewPos 5 10
 
-Npc
+Npc 0
 	Image images/npc/test3.png
 	ImagePos 0 0 64
 	Pos 3 2
@@ -21,7 +21,7 @@ Npc
 	Start CondTrue 1
 	Text Lorem ipusm harhar
 
-Npc
+Npc 1
 	Image images/npc/test4.png
 	ImagePos 0 0 64
 	Pos 3 8
@@ -36,7 +36,7 @@ Npc
 	ChoiceTwo Don't Check
 	*Text YOU didn't check?? Wel okay.
 
-Npc
+Npc 2
 	Image images/npc/test4.png
 	ImagePos 0 0 64
 	Pos 3 4

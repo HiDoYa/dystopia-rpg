@@ -26,10 +26,10 @@ class StateManager
 		std::unique_ptr<Map> background;
 		std::unique_ptr<Map> collision;
 
-		std::vector<Npc*> npc;
+		std::vector<std::shared_ptr<Npc>> npc;
 		bool speaking;
 
-		std::vector<Character*> ally;
+		std::vector<std::shared_ptr<Character>> ally;
 		std::vector<int> allyInParty;
 
 		MapPlayer player;
@@ -42,7 +42,7 @@ class StateManager
 		int currentZone;
 		int currentMap;
 		int encounterRate;
-		std::vector<Character> enemyListStore;
+		std::vector<std::shared_ptr<Character>> enemyListStore;
 
 		//Battle (state 2)
 		std::vector<Skill*> skillList;

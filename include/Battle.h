@@ -2,6 +2,8 @@
 #include "Skill.h"
 #include "UIOverlay.h"
 
+#include <memory>
+
 #ifndef BATTLE_H
 #define BATTLE_H
 
@@ -12,7 +14,7 @@ class Battle
 		//TODO Keep "skills" in file for enemy, file for ally. When accessing skill, only use the number (id number associated with skill)
 
 		//Ally options
-		std::vector<sf::CircleShape*> allyOptions; //Stores actual option shapes
+		std::vector<std::shared_ptr<sf::CircleShape>> allyOptions; //Stores actual option shapes
 		int currentPlayerForOption;                //Stores which character to show the options around
 		int currentOptionAlly;                     //Stores the option chosen by ally
 		int currentOptionEnemy;                    //Stores the skill the enemy chooses
@@ -53,8 +55,8 @@ class Battle
 		bool dNotPressed;
 		
 		//Characters and skills
-		std::vector<Character*> ally;
-		std::vector<Character> enemy;
+		std::vector<std::shared_ptr<Character>> ally;
+		std::vector<std::shared_ptr<Character>> enemy;
 		std::vector<Skill*> skillList; //Use for both ally and enemy
 		int nextCharType;    //0 if ally, 1 if enemy, -1 if nobody
 		int nextCharCounter; //The index in the array (ally and enemy)
@@ -66,7 +68,9 @@ class Battle
 	public:
 		Battle();
 
-		void setupBattle(std::vector<Character>, std::vector<Character*>&, std::vector<Skill*>, std::vector<int>);
+		void setupBattle(std::vector<std::shared_ptr<Character>>,
+				std::vector<std::shared_ptr<Character>>&,
+				std::vector<Skill*>, std::vector<int>);
 
 		//Battle state 0
 		void findFastestChar(int&);
