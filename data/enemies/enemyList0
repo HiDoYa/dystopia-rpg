@@ -20,4 +20,4 @@ Enemy 2
 	Defense 10
 	Agility 25
 	Chance 20
-	Image images/enemies/test4.png 128
+	Image images/enemies/test4.png 0

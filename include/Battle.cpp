@@ -111,6 +111,7 @@ void Battle::setupBattle(std::vector<std::shared_ptr<Character>> enemyList,
 
 		//Adds enemy
 		enemy.push_back(enemyList[index]);
+
 		//TODO random set position
 		enemy[i]->setPosition(enemyPos[i].x, enemyPos[i].y);
 		enemy[i]->updatePositionBattle();

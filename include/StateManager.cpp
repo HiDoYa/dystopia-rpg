@@ -248,6 +248,9 @@ void StateManager::updateBattle(sf::RenderWindow& win, sf::View& view)
 		//if player chose a targetable skill, choose an enemy to attack. else, go straight to state 3
 		case 3:
 			battle->chooseEnemyFocus(currentBattleState);
+			break;
+		//Enemy chooses skill and who to target
+		case 4:
 			battle->enemyDecision(currentBattleState);
 			break;
 		//Move forward and attack animations (both enemies and allies)

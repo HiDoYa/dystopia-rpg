@@ -397,7 +397,7 @@ void FileReader::loadMainMapFile(std::string fileNm,
 		else if(strInp == "ChoiceTwo")
 		{
 			curChoice = 2;
-			npc[npcCounter]->pushChoiceTwo(strInp);
+			npc[npcCounter]->pushChoiceTwo(getWholeText(mainMapFile));
 		}
 		else if(strInp == "*SetCondTrue")
 		{
