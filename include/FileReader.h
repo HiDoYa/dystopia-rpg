@@ -11,7 +11,7 @@ class FileReader
 		FileReader();
 		//Game loading
 		void loadAlly(std::vector<Character*>&);
-		void loadSkill(std::vector<Skill>&);
+		void loadSkill(std::vector<Skill*>&);
 
 		//Per each map
 		void loadMapEnemies(std::vector<Character>&, std::string);

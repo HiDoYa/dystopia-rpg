@@ -1,6 +1,23 @@
 Skill 0
 Name ALPHA BETA OMEGA
+ManaCost 10
+Accuracy 95
+EnemyPrio 10
+Crit 5
 Type Damage
-Mult 1.5
-Max 150
-Min 15
+	Percent false
+	Mult 1.5
+	Max 150
+	Min 15
+
+Skill 1
+Name Test 2
+ManaCost 15
+Accuracy 95
+EnemyPrio 30
+Type Buff
+	Percent true
+	Reapply 3
+	Mult 2
+	Max 150
+	Min 15

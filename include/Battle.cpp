@@ -61,7 +61,7 @@ Battle::Battle()
 	srand(time(NULL));
 }
 
-void Battle::setupBattle(std::vector<Character> enemyList, std::vector<Character*>& allyList, std::vector<Skill> skillTemp, std::vector<int> allyInParty)
+void Battle::setupBattle(std::vector<Character> enemyList, std::vector<Character*>& allyList, std::vector<Skill*> skillTemp, std::vector<int> allyInParty)
 {
 	//TODO Open file and get ally attacks 
 	//TODO Create function that updates the textures of circles (for skills) for when the ally moves to a different grid place
@@ -360,14 +360,14 @@ int Battle::findNextTarget(int skillNum)
 {
 	while(currentSkillCheck < 4)
 	{
-		if(nextCharType == 0 && skillList[skillNum].getMult()[currentSkillCheck] > 0)
+		if(nextCharType == 0 && skillList[skillNum]->getMult()[currentSkillCheck] > 0)
 		{
-			return skillList[skillNum].getTarget()[currentSkillCheck];
+			return skillList[skillNum]->getTarget()[currentSkillCheck];
 		}
 
-		if(nextCharType == 1 && skillList[skillNum].getMult()[currentSkillCheck] > 0)
+		if(nextCharType == 1 && skillList[skillNum]->getMult()[currentSkillCheck] > 0)
 		{
-			return skillList[skillNum].getTarget()[currentSkillCheck];
+			return skillList[skillNum]->getTarget()[currentSkillCheck];
 		}
 		currentSkillCheck++;
 	}
@@ -537,7 +537,7 @@ void Battle::enemyChooseSkill()
 	//Add up all the chances of the skills
 	for(int i = 0; i < enemy[nextCharCounter].getSkillNum().size(); i++)
 	{
-		totalSkill += skillList[enemy[nextCharCounter].getSkillNum()[i]].getChance();
+		totalSkill += skillList[enemy[nextCharCounter].getSkillNum()[i]]->getChance();
 	}
 
 	//Get random number between 0 and the the totalSkill
@@ -547,7 +547,7 @@ void Battle::enemyChooseSkill()
 	int pastSkills = 0;
 	for(int i = 0; i < enemy[nextCharCounter].getSkillNum().size(); i++)
 	{
-		int currentChance = skillList[enemy[nextCharCounter].getSkillNum()[i]].getChance();
+		int currentChance = skillList[enemy[nextCharCounter].getSkillNum()[i]]->getChance();
 		pastSkills += currentChance;
 		if(pastSkills < chanceRoll)
 		{
@@ -714,7 +714,7 @@ void Battle::allySkillCalc()
 		int allyStrength = ally[nextCharCounter]->getStrength();
 		int targetHp = ally[currentAllySelected[i]]->getCurrentHp();
 		//Skill checks for both type 0 and type 1 (healing and damaging) for enemy and allies
-		ally[i]->setHpFinal(skillList[currentOptionAlly].healthChangeHandle(allyStrength, 0, targetHp));
+		ally[i]->setHpFinal(skillList[currentOptionAlly]->healthChangeHandle(allyStrength, 0, targetHp));
 	}
 
 	for(int i = 0; i < currentEnemySelected.size(); i++)
@@ -722,7 +722,7 @@ void Battle::allySkillCalc()
 		int allyStrength = enemy[nextCharCounter].getStrength();
 		int targetDef = ally[currentEnemySelected[i]]->getDefense();
 		int targetHp = ally[currentEnemySelected[i]]->getCurrentHp();
-		enemy[i].setHpFinal(skillList[currentOptionAlly].healthChangeHandle(allyStrength, targetDef, targetHp));
+		enemy[i].setHpFinal(skillList[currentOptionAlly]->healthChangeHandle(allyStrength, targetDef, targetHp));
 	}
 }
 
@@ -791,14 +791,14 @@ void Battle::enemySkillCalc()
 		int enemyStrength = enemy[nextCharCounter].getStrength();
 		int targetDef = ally[currentAllySelected[i]]->getDefense();
 		int targetHp = ally[currentAllySelected[i]]->getCurrentHp();
-		ally[i]->setHpFinal(skillList[currentOptionEnemy].healthChangeHandle(enemyStrength, targetDef, targetHp));
+		ally[i]->setHpFinal(skillList[currentOptionEnemy]->healthChangeHandle(enemyStrength, targetDef, targetHp));
 	}
 
 	for(int i = 0; i < currentEnemySelected.size(); i++)
 	{
 		int enemyStrength = enemy[nextCharCounter].getStrength();
 		int targetHp = enemy[currentEnemySelected[i]].getCurrentHp();
-		enemy[i].setHpFinal(skillList[currentOptionEnemy].healthChangeHandle(enemyStrength, 0, targetHp));
+		enemy[i].setHpFinal(skillList[currentOptionEnemy]->healthChangeHandle(enemyStrength, 0, targetHp));
 	}
 }
 void Battle::allyHpChange(int& currentBattleState)

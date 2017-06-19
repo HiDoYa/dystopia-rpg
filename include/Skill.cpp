@@ -9,13 +9,13 @@ Skill::Skill()
 {
 	//Default
 	manaCost = 0;
-	maxNumTurns = 1;
+	numTurns = 0;
 	numAtksPerHit = 1;
 	missed = false;
 
 	for(int i = 0; i < 4; i++)
 	{
-		reapplyTurn.push_back(false);
+		reapplyTurn.push_back(0);
 		oldVal.push_back(-1);
 		mult.push_back(0);
 		max.push_back(0);
@@ -49,9 +49,9 @@ void Skill::setManaCost(int inp)
 	manaCost = inp;
 }
 
-void Skill::setMaxNumTurns(int inp)
+void Skill::setNumTurns(int inp)
 {
-	maxNumTurns = inp;
+	numTurns = inp;
 }
 
 void Skill::setNumAtksPerHit(int inp)
@@ -59,7 +59,7 @@ void Skill::setNumAtksPerHit(int inp)
 	numAtksPerHit = inp;
 }
 
-void Skill::setReapplyTurn(int type, bool inp)
+void Skill::setReapplyTurn(int type, int inp)
 {
 	reapplyTurn[type] = inp;
 }
@@ -115,9 +115,9 @@ int Skill::getManaCost()
 	return manaCost;
 }
 
-int Skill::getMaxNumTurns()
+int Skill::getNumTurns()
 {
-	return maxNumTurns;
+	return numTurns;
 }
 
 int Skill::getNumAtksPerHit()
@@ -125,7 +125,7 @@ int Skill::getNumAtksPerHit()
 	return numAtksPerHit;
 }
 
-std::vector<bool> Skill::getReapplyTurn()
+std::vector<int> Skill::getReapplyTurn()
 {
 	return reapplyTurn;
 }

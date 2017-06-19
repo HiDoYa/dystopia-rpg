@@ -5,39 +5,39 @@ PrevZM 0 1
 NewPos 5 10
 
 Npc
-Image images/npc/test3.png
-ImagePos 0 0 64
-Pos 3 2
-Name TestNpc
+	Image images/npc/test3.png
+	ImagePos 0 0 64
+	Pos 3 2
+	Name TestNpc
 
-Start CondTrue 1
-Text Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-SetCondFalse 0
+	Start CondTrue 1
+	Text Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+	SetCondFalse 0
 
-Start CondFalse 0
-Text This is different text get scammed
-SetCondTrue 0
+	Start CondFalse 0
+	Text This is different text get scammed
+	SetCondTrue 0
 
-Start CondTrue 1
-Text Lorem ipusm harhar
-
-Npc
-Image images/npc/test4.png
-ImagePos 0 0 64
-Pos 3 8
-Name this is a test
-
-Start CondTru 1
-Text Is this possible?
-Choice This is some choice question
-ChoiceOne Check
-*SetCondTrue 4
-*Text You chcked?? How is that possible?
-ChoiceTwo Don't Check
-*Text YOU didn't check?? Wel okay.
+	Start CondTrue 1
+	Text Lorem ipusm harhar
 
 Npc
-Image images/npc/test4.png
-ImagePos 0 0 64
-Pos 3 4
-Name TestNpc
+	Image images/npc/test4.png
+	ImagePos 0 0 64
+	Pos 3 8
+	Name this is a test
+
+	Start CondTru 1
+	Text Is this possible?
+	Choice This is some choice question
+	ChoiceOne Check
+	*SetCondTrue 4
+	*Text You chcked?? How is that possible?
+	ChoiceTwo Don't Check
+	*Text YOU didn't check?? Wel okay.
+
+Npc
+	Image images/npc/test4.png
+	ImagePos 0 0 64
+	Pos 3 4
+	Name TestNpc

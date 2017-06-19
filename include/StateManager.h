@@ -45,7 +45,7 @@ class StateManager
 		std::vector<Character> enemyListStore;
 
 		//Battle (state 2)
-		std::vector<Skill> skillList;
+		std::vector<Skill*> skillList;
 		bool battleLoaded;
 		std::unique_ptr<Battle> battle;
 

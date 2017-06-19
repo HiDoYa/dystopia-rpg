@@ -9,8 +9,8 @@ class Skill
 		std::string name;
 		int manaCost;
 
-		//Number of turns for effect
-		int maxNumTurns;
+		//Number of turns remaining for effect
+		int numTurns;
 
 		//Shows multiple damage nums for one attack (think trip strike)
 		int numAtksPerHit;
@@ -19,7 +19,8 @@ class Skill
 		bool missed;
 
 		//Whether to reapply effect each turn. Uses oldVal and adds newVal on top for the new change.
-		std::vector<bool> reapplyTurn;
+		//Stores the number of turns for the effect. (0 if no reapply)
+		std::vector<int> reapplyTurn;
 		//Old value stores the past health change and buff amounts. Used because buff/debuff amounts are constant for the duration in which they act, and health changes can increase each turn 
 		std::vector<int> oldVal;
 
@@ -50,9 +51,9 @@ class Skill
 		void setName(std::string);
 		void setChance(int);
 		void setManaCost(int);
-		void setMaxNumTurns(int);
+		void setNumTurns(int);
 		void setNumAtksPerHit(int);
-		void setReapplyTurn(int, bool);
+		void setReapplyTurn(int, int);
 		void setMult(int, float);
 		void setMax(int, int);
 		void setMin(int, int);
@@ -65,9 +66,9 @@ class Skill
 		std::string getName();
 		int getChance();
 		int getManaCost();
-		int getMaxNumTurns();
+		int getNumTurns();
 		int getNumAtksPerHit();
-		std::vector<bool> getReapplyTurn();
+		std::vector<int> getReapplyTurn();
 		std::vector<float> getMult();
 		std::vector<int> getMax();
 		std::vector<int> getMin();

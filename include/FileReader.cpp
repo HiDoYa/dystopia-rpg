@@ -24,7 +24,7 @@ void FileReader::loadAlly(std::vector<Character*>& ally)
 	{
 		if(inp == "Ally")
 		{
-			ally.push_back(new Character());
+			ally.push_back(new Character);
 			allyCounter++;
 			allyFile >> inp;
 		}
@@ -85,8 +85,93 @@ void FileReader::loadAlly(std::vector<Character*>& ally)
 	allyFile.close();
 }
 
-void FileReader::loadSkill(std::vector<Skill>& skill)
+void FileReader::loadSkill(std::vector<Skill*>& skillList)
 {
+	std::string strInp;
+	std::ifstream skillFile("data/skillList");
+	int skillCounter = -1;
+	int type;
+
+	while(!skillFile.eof())
+	{
+		skillFile >> strInp;
+		if(strInp == "Skill")
+		{
+			skillFile >> strInp;
+			skillCounter++;
+			skillList.push_back(new Skill);
+		}
+		else if(strInp == "Name")
+		{
+			skillList[skillCounter]->setName(getWholeText(skillFile));
+		}
+		else if(strInp == "Type")
+		{
+			skillFile >> strInp;
+			if(strInp == "Damage")
+			{
+				type = 0;
+			}
+			else if(strInp == "Heal")
+			{
+				type = 1;
+			}
+			else if(strInp == "Debuff")
+			{
+				type = 2;
+			}
+			else if(strInp == "Buff")
+			{
+				type = 3;
+			}
+		}
+		else if(strInp == "Reapply")
+		{
+			skillFile >> strInp;
+			skillList[skillCounter]->setReapplyTurn(type, atoi(strInp.c_str()));
+		}
+		else if(strInp == "Percent")
+		{
+			skillFile >> strInp;
+			skillList[skillCounter]->setPercent(type, atoi(strInp.c_str()));
+		}
+		else if(strInp == "Mult")
+		{
+			skillFile >> strInp;
+			skillList[skillCounter]->setMult(type, atof(strInp.c_str()));
+		}
+		else if(strInp == "Max")
+		{
+			skillFile >> strInp;
+			skillList[skillCounter]->setMax(type, atoi(strInp.c_str()));
+		}
+		else if(strInp == "Min")
+		{
+			skillFile >> strInp;
+			skillList[skillCounter]->setMin(type, atoi(strInp.c_str()));
+		}
+		else if(strInp == "ManaCost")
+		{
+			skillFile >> strInp;
+			skillList[skillCounter]->setManaCost(atoi(strInp.c_str()));
+		}
+		else if(strInp == "Crit")
+		{
+			skillFile >> strInp;
+			skillList[skillCounter]->setCrit(atoi(strInp.c_str()));
+		}
+		else if(strInp == "Accuracy")
+		{
+			skillFile >> strInp;
+			skillList[skillCounter]->setAccuracy(atoi(strInp.c_str()));
+		}
+		else if(strInp == "EnemyPrio")
+		{
+			skillFile >> strInp;
+			skillList[skillCounter]->setChance(atoi(strInp.c_str()));
+		}
+	}
+	skillFile.close();
 }
 
 void FileReader::loadMapEnemies(std::vector<Character>& enemyListStore, std::string enemyList)
@@ -105,7 +190,7 @@ void FileReader::loadMapEnemies(std::vector<Character>& enemyListStore, std::str
 		if(strInp == "Enemy")
 		{
 			tempCounter++;
-			enemyListStore.push_back(*new Character());
+			enemyListStore.push_back(*new Character);
 			enemyListStore[tempCounter].setAlive(true);
 			enemyFile >> strInp;
 		}
@@ -228,7 +313,6 @@ void FileReader::loadMainMapFile(std::string fileNm, std::vector<Npc*>& npc, std
 		if(strInp == "Image")
 		{
 			mainMapFile >> strInp;
-			std::cout << npcCounter << " " << strInp << '\n';
 			npc[npcCounter]->setTextureSprite(strInp);
 		}
 		if(strInp == "ImagePos")

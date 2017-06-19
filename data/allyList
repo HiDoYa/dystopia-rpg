@@ -1,19 +1,19 @@
 Ally 1
-Name Test Ally
-Level 2
-Hp 100 15
-Mana 100 15
-Strength 10
-Defense 10
-Agility 10
-Image images/ally/test4.png 0
+	Name Test Ally
+	Level 2
+	Hp 100 15
+	Mana 100 15
+	Strength 10
+	Defense 10
+	Agility 10
+	Image images/ally/test4.png 0
 
 Ally 2
-Name Test Ally2
-Level 3
-Hp 50 10
-Mana 150 15
-Strength 15
-Defense 10
-Agility 15
-Image images/ally/test4.png 64
+	Name Test Ally2
+	Level 3
+	Hp 50 10
+	Mana 150 15
+	Strength 15
+	Defense 10
+	Agility 15
+	Image images/ally/test4.png 64

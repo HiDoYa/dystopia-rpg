@@ -55,7 +55,7 @@ class Battle
 		//Characters and skills
 		std::vector<Character*> ally;
 		std::vector<Character> enemy;
-		std::vector<Skill> skillList; //Use for both ally and enemy
+		std::vector<Skill*> skillList; //Use for both ally and enemy
 		int nextCharType;    //0 if ally, 1 if enemy, -1 if nobody
 		int nextCharCounter; //The index in the array (ally and enemy)
 
@@ -66,7 +66,7 @@ class Battle
 	public:
 		Battle();
 
-		void setupBattle(std::vector<Character>, std::vector<Character*>&, std::vector<Skill>, std::vector<int>);
+		void setupBattle(std::vector<Character>, std::vector<Character*>&, std::vector<Skill*>, std::vector<int>);
 
 		//Battle state 0
 		void findFastestChar(int&);
