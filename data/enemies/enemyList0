@@ -21,3 +21,4 @@ Enemy 2
 	Agility 25
 	Chance 20
 	Image images/enemies/test4.png 0
+	Skill 2 3

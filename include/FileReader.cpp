@@ -80,6 +80,18 @@ void FileReader::loadAlly(std::vector<std::shared_ptr<Character>>& ally)
 			allyFile >> inp;
 			ally[allyCounter]->setTextureRect(0, atoi(inp.c_str()));
 		}
+		else if (strInp == "Skill")
+		{
+			std::vector<int> tempStore;
+
+			while(allyFile.peek() != '\n')
+			{
+				allyFile >> strInp;
+				tempStore.push_back(atoi(strInp.c_str()));
+			}
+
+			ally[allyCounter]->setSkillNum(tempStore);
+		}
 		//TODO Exp and ally is in party?
 		
 		allyFile >> inp;
@@ -173,9 +185,6 @@ void FileReader::loadSkill(std::vector<Skill*>& skillList)
 			skillFile >> strInp;
 			skillList[skillCounter]->setChance(atoi(strInp.c_str()));
 		}
-		else if(strInp == "Skill")
-		{
-		}
 	}
 	skillFile.close();
 }
@@ -253,6 +262,18 @@ void FileReader::loadMapEnemies(std::vector<std::shared_ptr<Character>>& enemyLi
 			//Where the enemy is located in the file (y location)
 			enemyFile >> strInp;
 			enemyListStore[tempCounter]->setTextureRect(0, atoi(strInp.c_str()));
+		}
+		else if (strInp == "Skill")
+		{
+			std::vector<int> tempStore;
+
+			while(enemyFile.peek() != '\n')
+			{
+				enemyFile >> strInp;
+				tempStore.push_back(atoi(strInp.c_str()));
+			}
+
+			enemyListStore[tempCounter]->setSkillNum(tempStore);
 		}
 	}
 	enemyFile.close();

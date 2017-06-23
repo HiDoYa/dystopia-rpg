@@ -66,6 +66,8 @@ void Battle::setupBattle(std::vector<std::shared_ptr<Character>> enemyList,
 		std::vector<std::shared_ptr<Character>>& allyList,
 		std::vector<Skill*> skillTemp, std::vector<int> allyInParty)
 {
+	std::cout << "setupBattle\n";
+
 	//TODO Open file and get ally attacks 
 	//TODO Create function that updates the textures of circles (for skills) for when the ally moves to a different grid place
 	
@@ -122,6 +124,7 @@ void Battle::setupBattle(std::vector<std::shared_ptr<Character>> enemyList,
 //Finds fastest character and stores in nextCharType and nextCharCounter
 void Battle::findFastestChar(int& currentBattleState)
 {
+	std::cout << "findFastestChar\n";
 	int highestAgil = -1;
 	nextCharType = -1;
 	nextCharCounter = -1;
@@ -158,6 +161,7 @@ void Battle::findFastestChar(int& currentBattleState)
 //********** BATTLE STATE 1 ****************
 void Battle::statusHandle(int& currentBattleState)
 {
+	std::cout << "statusHandle\n";
 	checkForStatus();
 
 	switch (nextCharType)
@@ -174,6 +178,7 @@ void Battle::statusHandle(int& currentBattleState)
 
 void Battle::checkForStatus()
 {
+	std::cout << "checkforStatus\n";
 	//TODO Finish this
 	switch (nextCharType)
 	{
@@ -194,14 +199,17 @@ void Battle::checkForStatus()
 
 void Battle::allyStatusEffect()
 {
+	std::cout << "allyStatusEffec\n";
 }
 
 void Battle::enemyStatusEffect()
 {
+	std::cout << "enemyStatusEffect\n";
 }
 //********** BATTLE STATE 2 ****************
 void Battle::allySkillChoiceHandler(int& currentBattleState)
 {
+	std::cout << "allySkillChoiceHandler\n";
 	changeCurrentSkill();
 	if(chooseCurrentSkill())
 	{
@@ -211,6 +219,7 @@ void Battle::allySkillChoiceHandler(int& currentBattleState)
 
 void Battle::setCirclePos()
 {
+	std::cout << "setCirclePos\n";
 	for(int i = 0; i < allyOptions.size(); i++)
 	{
 		allyOptions[i]->setPosition(optionsPos[i] + allyPos[nextCharCounter]);
@@ -219,6 +228,7 @@ void Battle::setCirclePos()
 
 void Battle::changeCurrentSkill()
 {
+	std::cout << "changeCurrentSkill\n";
 	//Moves circle to the current ally
 	setCirclePos();
 
@@ -311,6 +321,7 @@ void Battle::changeCurrentSkill()
 
 bool Battle::chooseCurrentSkill()
 {
+	std::cout << "chooseCurrentSkill\n";
 	bool spacePressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
 
 	if(!spacePressed)
@@ -331,6 +342,8 @@ bool Battle::chooseCurrentSkill()
 //*********** BATTLE STATE 3 *********************
 void Battle::chooseEnemyFocus(int& currentBattleState)
 {
+	std::cout << "chooseEnemyFocus\n";
+
 	if(!processTargetting)
 	{
 		processSkillTargetting();
@@ -362,6 +375,7 @@ void Battle::chooseEnemyFocus(int& currentBattleState)
 
 int Battle::findNextTarget(int skillNum)
 {
+	std::cout << "findNextTarget\n";
 	while(currentSkillCheck < 4)
 	{
 		if(nextCharType == 0 && skillList[skillNum]->getMult()[currentSkillCheck] > 0)
@@ -380,6 +394,7 @@ int Battle::findNextTarget(int skillNum)
 
 void Battle::processSkillTargetting()
 {
+	std::cout << "processSkillTargetting\n";
 	int skillNum = 0;
 	int targetType = 0;
 	if(nextCharType == 0)
@@ -447,6 +462,7 @@ void Battle::processSkillTargetting()
 
 void Battle::attackEnemyType()
 {
+	std::cout << "attackEnemyType\n";
 	if(singularAllyFocus)
 	{
 		changeAllyFocus();
@@ -459,6 +475,7 @@ void Battle::attackEnemyType()
 
 void Battle::changeAllyFocus()
 {
+	std::cout << "changeAllyFocus\n";
 	//TODO Change from q press to WASD pressing
 	bool qPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Q);
 	
@@ -495,6 +512,7 @@ void Battle::changeAllyFocus()
 
 void Battle::changeEnemyFocus()
 {
+	std::cout << "changeEnemyFocus\n";
 	bool qPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Q);
 	
 	if(!qPressed)
@@ -530,6 +548,7 @@ void Battle::changeEnemyFocus()
 //*********** BATTLE STATE 4 *********************
 void Battle::enemyDecision(int& currentBattleState)
 {
+	std::cout << "enemyDecision\n";
 	enemyChooseSkill();
 	enemyChooseTarget();
 	currentBattleState = 5;
@@ -537,6 +556,8 @@ void Battle::enemyDecision(int& currentBattleState)
 
 void Battle::enemyChooseSkill()
 {
+	std::cout << "enemyChooseSkill\n";
+	enemyChooseSkill();
 	int totalSkill = 0;
 	//Add up all the chances of the skills
 	for(int i = 0; i < enemy[nextCharCounter]->getSkillNum().size(); i++)
@@ -562,6 +583,7 @@ void Battle::enemyChooseSkill()
 
 void Battle::enemyChooseTarget()
 {
+	std::cout << "enemyChooseTarget\n";
 	std::vector<int> allyInFront;
 	std::vector<int> allyInBack;
 
@@ -603,6 +625,7 @@ void Battle::enemyChooseTarget()
 //*********** BATTLE STATE 5 *********************
 void Battle::moveForwardAnimation(int& currentBattleState)
 {
+	std::cout << "moveForwardAnimation\n";
 	switch (nextCharType)
 	{
 		case 0:
@@ -615,6 +638,7 @@ void Battle::moveForwardAnimation(int& currentBattleState)
 }
 void Battle::allyAttackAnimation(int& currentBattleState)
 {
+	std::cout << "allyAttackAnimation\n";
 	sf::Vector2f current = ally[nextCharCounter]->getPosition();
 	
 	//Sets the area to stop
@@ -635,6 +659,7 @@ void Battle::allyAttackAnimation(int& currentBattleState)
 //Enemy simply moves forward
 void Battle::enemyAttackAnimation(int& currentBattleState)
 {
+	std::cout << "enemyAttackAnimation\n";
 	sf::Vector2f current = enemy[nextCharCounter]->getPosition();
 	
 	//Sets the area to stop
@@ -656,6 +681,7 @@ void Battle::enemyAttackAnimation(int& currentBattleState)
 //Calculates hp/mana change for enemy and ally
 void Battle::handleEffect(int& currentBattleState)
 {
+	std::cout << "handleEffect\n";
 	switch(nextCharType)
 	{
 		case 0:
@@ -671,6 +697,7 @@ void Battle::handleEffect(int& currentBattleState)
 
 int Battle::findHpChangeSign(int hpFinal, int hpInit)
 {
+	std::cout << "findHpChangeSign\n";
 	int sign;
 	if(hpFinal < hpInit)
 	{
@@ -692,6 +719,7 @@ int Battle::findHpChangeSign(int hpFinal, int hpInit)
 
 void Battle::allyTurnHandle(int& currentBattleState)
 {
+	std::cout << "allyTurnHandle\n";
 	switch(currentOptionAlly)
 	{
 		case 0:
@@ -713,6 +741,7 @@ void Battle::allyTurnHandle(int& currentBattleState)
 
 void Battle::allySkillCalc()
 {
+	std::cout << "allySkillCalc\n";
 	for(int i = 0; i < currentAllySelected.size(); i++)
 	{
 		int allyStrength = ally[nextCharCounter]->getStrength();
@@ -732,11 +761,13 @@ void Battle::allySkillCalc()
 
 void Battle::allyItem()
 {
+	std::cout << "allyItem\n";
 	//TODO Access item vector to find effect
 }
 
 void Battle::allyChangePos()
 {
+	std::cout << "allyChangePos\n";
 	//TODO make the grid blink to display where to move to
 	blinkTurn = !blinkTurn;
 
@@ -760,6 +791,7 @@ void Battle::allyChangePos()
 //Calculate using the level difference between average of allies and the enemy
 void Battle::allyAttemptFlee(int& currentBattleState)
 {
+	std::cout << "allyAttemptFlee\n";
 	int avgAlly = 0;
 	int avgEnemy = 0;
 	for(int i = 0; i < ally.size(); i++)
@@ -784,12 +816,14 @@ void Battle::allyAttemptFlee(int& currentBattleState)
 
 void Battle::enemyTurnHandle(int& currentBattleState)
 {
+	std::cout << "enemyTurnHandle\n";
 	enemySkillCalc();
 	currentBattleState = 7;
 }
 
 void Battle::enemySkillCalc()
 {
+	std::cout << "enemySkillCalc\n";
 	for(int i = 0; i < currentAllySelected.size(); i++)
 	{
 		int enemyStrength = enemy[nextCharCounter]->getStrength();
@@ -807,6 +841,7 @@ void Battle::enemySkillCalc()
 }
 void Battle::allyHpChange(int& currentBattleState)
 {
+	std::cout << "allyHpChange\n";
 	for(int i = 0; i < currentAllySelected.size(); i++)
 	{
 		int hpFinal = ally[currentAllySelected[i]]->getHpFinal();
@@ -825,6 +860,7 @@ void Battle::allyHpChange(int& currentBattleState)
 
 void Battle::enemyHpChange(int& currentBattleState)
 {
+	std::cout << "enemyHpChange\n";
 	for(int i = 0; i < currentEnemySelected.size(); i++)
 	{
 		int hpFinal = enemy[currentEnemySelected[i]]->getHpFinal();
@@ -846,6 +882,7 @@ void Battle::enemyHpChange(int& currentBattleState)
 
 void Battle::checkForCompletion(int& currentBattleState)
 {
+	std::cout << "checkForCompletion\n";
 	bool allDone = true;
 
 	for(int i = 0; i < currentAllySelected.size(); i++)
@@ -889,6 +926,7 @@ void Battle::checkForCompletion(int& currentBattleState)
 //*************** BATTLE STATE 7 *********************
 void Battle::moveBackwardAnimation(int& currentBattleState)
 {
+	std::cout << "moveBackwardAnimation\n";
 	switch(nextCharCounter)
 	{
 		case 0:
@@ -908,6 +946,7 @@ void Battle::moveBackwardAnimation(int& currentBattleState)
 
 void Battle::allyPostAttackAnimation()
 {
+	std::cout << "allyPostAttackAnimation\n";
 	goalPlace = allyPos[ally[nextCharCounter]->getBattlePos()].x;
 	if(ally[nextCharCounter]->getPosition().x < goalPlace)
 	{
@@ -921,6 +960,7 @@ void Battle::allyPostAttackAnimation()
 
 void Battle::enemyPostAttackAnimation()
 {
+	std::cout << "enemyPostAttackAnimation\n";
 	sf::Vector2f current = enemy[nextCharCounter]->getPosition();
 	
 	//Sets the area to stop
@@ -941,6 +981,7 @@ void Battle::enemyPostAttackAnimation()
 //Sets ally to dead if less than 0 hp. Returns true if all allies are dead
 bool Battle::checkAllyDeath()
 {
+	std::cout << "checkAllyDeath\n";
 	bool allDead = true;
 	for(int i = 0; i < ally.size(); i++)
 	{
@@ -959,6 +1000,7 @@ bool Battle::checkAllyDeath()
 //Returns true if all enemy are dead
 bool Battle::checkEnemyDeaths()
 {
+	std::cout << "checkEnemyDeaths\n";
 	bool allDead = true;
 
 	for(int i = 0 ; i < enemy.size(); i++)
@@ -978,6 +1020,7 @@ bool Battle::checkEnemyDeaths()
 
 void Battle::checkEndBattle(int& currentBattleState, int& currentState)
 {
+	std::cout << "checkEndBattle\n";
 	if(checkAllyDeath())
 	{
 		//TODO Gameover
@@ -999,6 +1042,7 @@ void Battle::checkEndBattle(int& currentBattleState, int& currentState)
 //Change current enemy selected if the current enemy is dead (and battle is not over yet)
 void Battle::currentEnemyDeath()
 {
+	std::cout << "currentEnemyDeath\n";
 	if(!enemy[currentTarget]->getAlive())
 	{
 		do
@@ -1016,6 +1060,7 @@ void Battle::currentEnemyDeath()
 //Also resets flag for finishing enemy focus
 void Battle::newTurn()
 {
+	std::cout << "newTurn\n";
 	for(int i = 0; i < ally.size(); i++)
 	{
 		if(ally[i]->getAlive())
@@ -1036,6 +1081,7 @@ void Battle::newTurn()
 
 void Battle::drawAll(sf::RenderWindow& win, int currentBattleState)
 {
+	std::cout << "drawAll\n";
 	for(int i = 0; i < ally.size(); i++)
 	{
 		if(ally[i]->getAlive())
@@ -1065,12 +1111,14 @@ void Battle::drawAll(sf::RenderWindow& win, int currentBattleState)
 
 void Battle::setEnemyHp(int enemyNum, int newHp)
 {
+	std::cout << "setEnemyHp\n";
 	enemy[enemyNum]->setCurrentHp(newHp);
 }
 
 //*************** UTILITY *******************
 int Battle::getMaxNum(int numOne, int numTwo)
 {
+	std::cout << "getMaxNum\n";
 	if(numOne > numTwo)
 	{
 		return numOne;

@@ -1,5 +1,5 @@
 Skill 0
-Name ALPHA BETA OMEGA
+Name Electrocute
 ManaCost 10
 Accuracy 95
 EnemyPrio 10
@@ -11,7 +11,7 @@ Type Damage
 	Min 15
 
 Skill 1
-Name Test 2
+Name Charge Up
 ManaCost 15
 Accuracy 95
 EnemyPrio 30

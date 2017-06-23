@@ -105,20 +105,19 @@ void StateManager::loadMap(sf::RenderWindow& win)
 	{
 		mapLoaded = true;
 
-		std::string mapFileString1 = "data/maps/z" + std::to_string(currentZone) + "/";
-		std::string mapFileString2 = "/m" + std::to_string(currentMap);
+		std::string mapFileString = "data/maps/z" + std::to_string(currentZone) + "/m" + std::to_string(currentMap) + "/";
 
 		//Set maps
 		ground.reset(new Map);
 		collision.reset(new Map);
 		background.reset(new Map);
 
-		ground->setupBitmap(mapFileString1 + "ground" + mapFileString2, win);
-		collision->setupBitmap(mapFileString1 + "collision" + mapFileString2, win);
+		ground->setupBitmap(mapFileString + "ground", win);
+		collision->setupBitmap(mapFileString + "collision", win);
 		background->setupStatic("images/background.png");
 
 		//Loads npcs from main map file
-		std::string fileNm = mapFileString1 + "main" + mapFileString2;
+		std::string fileNm = mapFileString + "main";
 		fileReader.loadMainMapFile(fileNm, npc, enemyListStore,
 				prevZ, prevM, startPosX, startPosY,
 				currentZone, currentMap, encounterRate);

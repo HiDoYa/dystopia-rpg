@@ -23,7 +23,7 @@ class Character: public SpriteManager
 
 		//Stores ID for each skill
 		std::vector<int> skillNum;         //For use in battle
-		std::vector<int> possibleSkillNum; //For all possible equippable skills
+		std::vector<int> possibleSkillNum; //For all possible equippable skills (for allies)
 
 		//For continuous/status effects. Can be damaging/debuff
 		std::vector<int> persistentSkillNum;
