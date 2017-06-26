@@ -80,14 +80,14 @@ void FileReader::loadAlly(std::vector<std::shared_ptr<Character>>& ally)
 			allyFile >> inp;
 			ally[allyCounter]->setTextureRect(0, atoi(inp.c_str()));
 		}
-		else if (strInp == "Skill")
+		else if(inp == "Skill")
 		{
 			std::vector<int> tempStore;
 
 			while(allyFile.peek() != '\n')
 			{
-				allyFile >> strInp;
-				tempStore.push_back(atoi(strInp.c_str()));
+				allyFile >> inp;
+				tempStore.push_back(atoi(inp.c_str()));
 			}
 
 			ally[allyCounter]->setSkillNum(tempStore);
