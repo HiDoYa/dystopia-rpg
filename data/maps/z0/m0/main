@@ -1,4 +1,4 @@
-EncRate 0
+EncRate 90
 EnemList enemyList0
 
 PrevZM 0 1
@@ -12,7 +12,7 @@ Npc 0
 
 	Start CondTrue 1
 	Text Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-	SetCondFalse 0
+	SetCondFalse 1
 
 	Start CondFalse 0
 	Text This is different text get scammed

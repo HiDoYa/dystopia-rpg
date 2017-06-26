@@ -557,7 +557,7 @@ void Battle::enemyDecision(int& currentBattleState)
 void Battle::enemyChooseSkill()
 {
 	std::cout << "enemyChooseSkill\n";
-	enemyChooseSkill();
+	enemyChooseTarget();
 	int totalSkill = 0;
 	//Add up all the chances of the skills
 	for(int i = 0; i < enemy[nextCharCounter]->getSkillNum().size(); i++)
