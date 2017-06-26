@@ -1,4 +1,4 @@
-EncRate 50
+EncRate 0
 EnemList enemyList0
 
 PrevZM 0 1
@@ -32,9 +32,9 @@ Npc 1
 	Choice This is some choice question
 	ChoiceOne Check
 	*SetCondTrue 4
-	*Text You chcked?? How is that possible?
+	*Text You picked choice one.
 	ChoiceTwo Don't Check
-	*Text YOU didn't check?? Wel okay.
+	*Text You picked choice two.
 
 Npc 2
 	Image images/npc/test4.png
