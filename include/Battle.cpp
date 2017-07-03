@@ -89,9 +89,11 @@ void Battle::setupBattle(std::vector<std::shared_ptr<Character>> enemyList,
 
 	//BATTLEPOS MUST BE SET DIFFERENTLY AT DEFAULT WHEN ALLIES ARE ADDED TO PARTY
 	//Sets ally positions
+	//TODO set battle position for allies in files
 	for(int i = 0; i < ally.size(); i++)
 	{
-		ally[i]->setPosition(allyPos[ally[i]->getBattlePos()].x, allyPos[ally[i]->getBattlePos()].y);
+		int allyBattlePos = ally[i]->getBattlePos();
+		ally[i]->setPosition(allyPos[allyBattlePos].x, allyPos[allyBattlePos].y);
 	}
 
 	//Initialize enemy
@@ -135,9 +137,10 @@ void Battle::findFastestChar(int& currentBattleState)
 	//Checks agility for allies
 	for(int i = 0; i < ally.size(); i++)
 	{
-		if(ally[i]->getCanAtk() && ally[i]->getAgility() > highestAgil)
+		int allyAgil = ally[i]->getAgility();
+		if(ally[i]->getCanAtk() && allyAgil > highestAgil)
 		{
-			highestAgil = ally[i]->getAgility();
+			highestAgil = allyAgil;
 			nextCharCounter = i;
 			nextCharType = 0;
 		}
@@ -146,9 +149,10 @@ void Battle::findFastestChar(int& currentBattleState)
 	//Checks agility for enemy
 	for(int i = 0; i < enemy.size(); i++)
 	{
-		if(enemy[i]->getCanAtk() && highestAgil < enemy[i]->getAgility())
+		int enemAgil = enemy[i]->getAgility();
+		if(enemy[i]->getCanAtk() && enemAgil > highestAgil)
 		{
-			highestAgil = enemy[i]->getAgility();
+			highestAgil = enemAgil;
 			nextCharCounter = i;
 			nextCharType = 1;
 		}
@@ -199,12 +203,117 @@ void Battle::checkForStatus()
 
 void Battle::allyStatusEffect()
 {
-	std::cout << "allyStatusEffec\n";
+	std::cout << "allyStatusEffect\n";
+	for(int i = 0; i < ally[nextCharCounter]->getPersistentSkillNum().size(); i++)
+	{
+		ally[nextCharCounter]->decrementNumTurnsSkill(i);
+		int numTurnsRemaining = ally[nextCharCounter]->getNumTurnsSkill()[i];
+		for(int j = 0; j < 4; j++)
+		{
+			Skill* currentPersistentSkill = skillList[ally[nextCharCounter]->getPersistentSkillNum()[i]];
+			int reapplyNumTurns = currentPersistentSkill->getReapplyTurn()[j];
+			if(reapplyNumTurns > 0)
+			{
+				//Damage
+				if(j == 0)
+				{
+					if(numTurnsRemaining > 0)
+					{
+						ally[nextCharCounter]->setCurrentHp(ally[nextCharCounter]->getCurrentHp() - currentPersistentSkill->getOldVal()[j]);
+					}
+				}
+				//Heal
+				else if(j == 1)
+				{
+					if(numTurnsRemaining > 0)
+					{
+						ally[nextCharCounter]->setCurrentHp(ally[nextCharCounter]->getCurrentHp() + currentPersistentSkill->getOldVal()[j]);
+					}
+				}
+				//Buff or debuff
+				else if(j == 3 || j == 4)
+				{
+					//If the debuff duration is over, return the stats to normal
+					if(numTurnsRemaining == 0)
+					{
+						int debuffType = currentPersistentSkill->getDebuffType();
+						if(debuffType == 0)
+						{
+							ally[nextCharCounter]->setStrength(ally[nextCharCounter]->getStrength() + currentPersistentSkill->getOldVal()[j]);
+						}
+						else if(debuffType == 1)
+						{
+							ally[nextCharCounter]->setDefense(ally[nextCharCounter]->getDefense() + currentPersistentSkill->getOldVal()[j]);
+						}
+						else if(debuffType == 2)
+						{
+							ally[nextCharCounter]->setAgility(ally[nextCharCounter]->getAgility() + currentPersistentSkill->getOldVal()[j]);
+						}
+					}
+					//Do nothing if debuff isn't over yet
+				}
+			}
+			delete currentPersistentSkill;
+		}
+
+	}
 }
 
 void Battle::enemyStatusEffect()
 {
 	std::cout << "enemyStatusEffect\n";
+	for(int i = 0; i < enemy[nextCharCounter]->getPersistentSkillNum().size(); i++)
+	{
+		enemy[nextCharCounter]->decrementNumTurnsSkill(i);
+		int numTurnsRemaining = enemy[nextCharCounter]->getNumTurnsSkill()[i];
+		for(int j = 0; j < 4; j++)
+		{
+			Skill* currentPersistentSkill = skillList[enemy[nextCharCounter]->getPersistentSkillNum()[i]];
+			int reapplyNumTurns = currentPersistentSkill->getReapplyTurn()[j];
+			if(reapplyNumTurns > 0)
+			{
+				//Damage
+				if(j == 0)
+				{
+					if(numTurnsRemaining > 0)
+					{
+						enemy[nextCharCounter]->setCurrentHp(enemy[nextCharCounter]->getCurrentHp() - currentPersistentSkill->getOldVal()[j]);
+					}
+				}
+				//Heal
+				else if(j == 1)
+				{
+					if(numTurnsRemaining > 0)
+					{
+						enemy[nextCharCounter]->setCurrentHp(enemy[nextCharCounter]->getCurrentHp() + currentPersistentSkill->getOldVal()[j]);
+					}
+				}
+				//Buff or debuff
+				else if(j == 3 || j == 4)
+				{
+					//If the debuff duration is over, return the stats to normal
+					if(numTurnsRemaining == 0)
+					{
+						int debuffType = currentPersistentSkill->getDebuffType();
+						if(debuffType == 0)
+						{
+							enemy[nextCharCounter]->setStrength(enemy[nextCharCounter]->getStrength() + currentPersistentSkill->getOldVal()[j]);
+						}
+						else if(debuffType == 1)
+						{
+							enemy[nextCharCounter]->setDefense(enemy[nextCharCounter]->getDefense() + currentPersistentSkill->getOldVal()[j]);
+						}
+						else if(debuffType == 2)
+						{
+							enemy[nextCharCounter]->setAgility(enemy[nextCharCounter]->getAgility() + currentPersistentSkill->getOldVal()[j]);
+						}
+					}
+					//Do nothing if debuff isn't over yet
+				}
+			}
+			delete currentPersistentSkill;
+		}
+	}
 }
 //********** BATTLE STATE 2 ****************
 void Battle::allySkillChoiceHandler(int& currentBattleState)
@@ -426,7 +535,7 @@ void Battle::processSkillTargetting()
 			{
 				if(ally[i]->getAlive())
 				{
-					currentAllySelected.push_back(i);
+					currentAllySelected = i;
 				}
 			}
 			finishedEnemyFocus = true;
@@ -437,7 +546,7 @@ void Battle::processSkillTargetting()
 			{
 				if(enemy[i]->getAlive())
 				{
-					currentEnemySelected.push_back(i);
+					currentEnemySelected = i;
 				}
 			}
 			finishedEnemyFocus = true;
@@ -446,11 +555,11 @@ void Battle::processSkillTargetting()
 			singularAllyFocus = singularEnemyFocus = false;
 			if(nextCharType == 0)
 			{
-				currentAllySelected.push_back(nextCharCounter);
+				currentAllySelected = nextCharCounter;
 			}
 			else if(nextCharType == 1)
 			{
-				currentEnemySelected.push_back(nextCharCounter);
+				currentEnemySelected = nextCharCounter;
 			}
 			finishedEnemyFocus = true;
 			break;
@@ -550,14 +659,26 @@ void Battle::enemyDecision(int& currentBattleState)
 {
 	std::cout << "enemyDecision\n";
 	enemyChooseSkill();
-	enemyChooseTarget();
+	for(int i = 0; i < 4; i++)
+	{
+		if(skillList[currentOptionEnemy]->getMult()[i] > 0)
+		{
+			if(skillList[currentOptionEnemy]->getTarget()[i] == 0)
+			{
+				enemyChooseAlly();
+			}
+			else if(skillList[currentOptionEnemy]->getTarget()[i] == 1)
+			{
+				enemyChooseEnemy();
+			}
+		}
+	}
 	currentBattleState = 5;
 }
 
 void Battle::enemyChooseSkill()
 {
 	std::cout << "enemyChooseSkill\n";
-	enemyChooseTarget();
 	int totalSkill = 0;
 	//Add up all the chances of the skills
 	for(int i = 0; i < enemy[nextCharCounter]->getSkillNum().size(); i++)
@@ -572,18 +693,20 @@ void Battle::enemyChooseSkill()
 	int pastSkills = 0;
 	for(int i = 0; i < enemy[nextCharCounter]->getSkillNum().size(); i++)
 	{
-		int currentChance = skillList[enemy[nextCharCounter]->getSkillNum()[i]]->getChance();
+		int currentSkillNumber = enemy[nextCharCounter]->getSkillNum()[i];
+		int currentChance = skillList[currentSkillNumber]->getChance();
 		pastSkills += currentChance;
 		if(pastSkills < chanceRoll)
 		{
 			currentOptionEnemy = i;
+			break;
 		}
 	}
 }
 
-void Battle::enemyChooseTarget()
+void Battle::enemyChooseAlly()
 {
-	std::cout << "enemyChooseTarget\n";
+	std::cout << "enemyChooseAlly\n";
 	std::vector<int> allyInFront;
 	std::vector<int> allyInBack;
 
@@ -608,18 +731,32 @@ void Battle::enemyChooseTarget()
 	{
 		if((rand() % 3) <= 1)
 		{
-			currentAllySelected.push_back(allyInFront[rand() % allyInFront.size()]);
+			currentAllySelected = allyInFront[rand() % allyInFront.size()];
 		}
 		else
 		{
-			currentAllySelected.push_back(allyInBack[rand() % allyInBack.size()]);
+			currentAllySelected = allyInBack[rand() % allyInBack.size()];
 		}
 	}
 	//Just choose a character randomly
 	else
 	{
-		currentAllySelected.push_back(allyInBack[rand() % allyInBack.size()]);
+		currentAllySelected = allyInBack[rand() % allyInBack.size()];
 	}
+}
+
+void Battle::enemyChooseEnemy()
+{
+	std::cout << "enemyChooseEnemy\n";
+	std::vector<int> enemiesAlive;
+	for(int i = 0; i < enemy.size(); i++)
+	{
+		if(enemy[i]->getAlive())
+		{
+			enemiesAlive.push_back(i);
+		}
+	}
+	currentEnemySelected = enemiesAlive[rand() % enemiesAlive.size()];
 }
 
 //*********** BATTLE STATE 5 *********************
@@ -741,22 +878,22 @@ void Battle::allyTurnHandle(int& currentBattleState)
 
 void Battle::allySkillCalc()
 {
-	std::cout << "allySkillCalc\n";
-	for(int i = 0; i < currentAllySelected.size(); i++)
-	{
-		int allyStrength = ally[nextCharCounter]->getStrength();
-		int targetHp = ally[currentAllySelected[i]]->getCurrentHp();
-		//Skill checks for both type 0 and type 1 (healing and damaging) for enemy and allies
-		ally[i]->setHpFinal(skillList[currentOptionAlly]->healthChangeHandle(allyStrength, 0, targetHp));
-	}
-
-	for(int i = 0; i < currentEnemySelected.size(); i++)
-	{
-		int allyStrength = enemy[nextCharCounter]->getStrength();
-		int targetDef = ally[currentEnemySelected[i]]->getDefense();
-		int targetHp = ally[currentEnemySelected[i]]->getCurrentHp();
-		enemy[i]->setHpFinal(skillList[currentOptionAlly]->healthChangeHandle(allyStrength, targetDef, targetHp));
-	}
+//	std::cout << "allySkillCalc\n";
+//	for(int i = 0; i < currentAllySelected.size(); i++)
+//	{
+//		int allyStrength = ally[nextCharCounter]->getStrength();
+//		int targetHp = ally[currentAllySelected[i]]->getCurrentHp();
+//		//Skill checks for both type 0 and type 1 (healing and damaging) for enemy and allies
+//		ally[i]->setHpFinal(skillList[currentOptionAlly]->healthChangeHandle(allyStrength, 0, targetHp));
+//	}
+//
+//	for(int i = 0; i < currentEnemySelected.size(); i++)
+//	{
+//		int allyStrength = enemy[nextCharCounter]->getStrength();
+//		int targetDef = ally[currentEnemySelected[i]]->getDefense();
+//		int targetHp = ally[currentEnemySelected[i]]->getCurrentHp();
+//		enemy[i]->setHpFinal(skillList[currentOptionAlly]->healthChangeHandle(allyStrength, targetDef, targetHp));
+//	}
 }
 
 void Battle::allyItem()
@@ -823,103 +960,103 @@ void Battle::enemyTurnHandle(int& currentBattleState)
 
 void Battle::enemySkillCalc()
 {
-	std::cout << "enemySkillCalc\n";
-	for(int i = 0; i < currentAllySelected.size(); i++)
-	{
-		int enemyStrength = enemy[nextCharCounter]->getStrength();
-		int targetDef = ally[currentAllySelected[i]]->getDefense();
-		int targetHp = ally[currentAllySelected[i]]->getCurrentHp();
-		ally[i]->setHpFinal(skillList[currentOptionEnemy]->healthChangeHandle(enemyStrength, targetDef, targetHp));
-	}
-
-	for(int i = 0; i < currentEnemySelected.size(); i++)
-	{
-		int enemyStrength = enemy[nextCharCounter]->getStrength();
-		int targetHp = enemy[currentEnemySelected[i]]->getCurrentHp();
-		enemy[i]->setHpFinal(skillList[currentOptionEnemy]->healthChangeHandle(enemyStrength, 0, targetHp));
-	}
+//	std::cout << "enemySkillCalc\n";
+//	for(int i = 0; i < currentAllySelected.size(); i++)
+//	{
+//		int enemyStrength = enemy[nextCharCounter]->getStrength();
+//		int targetDef = ally[currentAllySelected[i]]->getDefense();
+//		int targetHp = ally[currentAllySelected[i]]->getCurrentHp();
+//		ally[i]->setHpFinal(skillList[currentOptionEnemy]->healthChangeHandle(enemyStrength, targetDef, targetHp));
+//	}
+//
+//	for(int i = 0; i < currentEnemySelected.size(); i++)
+//	{
+//		int enemyStrength = enemy[nextCharCounter]->getStrength();
+//		int targetHp = enemy[currentEnemySelected[i]]->getCurrentHp();
+//		enemy[i]->setHpFinal(skillList[currentOptionEnemy]->healthChangeHandle(enemyStrength, 0, targetHp));
+//	}
 }
 void Battle::allyHpChange(int& currentBattleState)
 {
 	std::cout << "allyHpChange\n";
-	for(int i = 0; i < currentAllySelected.size(); i++)
-	{
-		int hpFinal = ally[currentAllySelected[i]]->getHpFinal();
-		//Replace hpFinal with hpFinal of specific character
-		int sign = findHpChangeSign(hpFinal, ally[currentAllySelected[i]]->getCurrentHp());
-		if(ally[currentAllySelected[i]]->getCurrentHp() > hpFinal + 3 || ally[currentAllySelected[i]]->getCurrentHp() < hpFinal - 3)
-		{
-			ally[currentAllySelected[i]]->setCurrentHp(ally[currentAllySelected[i]]->getCurrentHp() + (3 * sign));
-		}
-		else if (ally[currentAllySelected[i]]->getCurrentHp() != hpFinal)
-		{
-			ally[currentAllySelected[i]]->setCurrentHp(hpFinal);
-		}
-	}
+//	for(int i = 0; i < currentAllySelected.size(); i++)
+//	{
+//		int hpFinal = ally[currentAllySelected[i]]->getHpFinal();
+//		//Replace hpFinal with hpFinal of specific character
+//		int sign = findHpChangeSign(hpFinal, ally[currentAllySelected[i]]->getCurrentHp());
+//		if(ally[currentAllySelected[i]]->getCurrentHp() > hpFinal + 3 || ally[currentAllySelected[i]]->getCurrentHp() < hpFinal - 3)
+//		{
+//			ally[currentAllySelected[i]]->setCurrentHp(ally[currentAllySelected[i]]->getCurrentHp() + (3 * sign));
+//		}
+//		else if (ally[currentAllySelected[i]]->getCurrentHp() != hpFinal)
+//		{
+//			ally[currentAllySelected[i]]->setCurrentHp(hpFinal);
+//		}
+//	}
 }
 
 void Battle::enemyHpChange(int& currentBattleState)
 {
-	std::cout << "enemyHpChange\n";
-	for(int i = 0; i < currentEnemySelected.size(); i++)
-	{
-		int hpFinal = enemy[currentEnemySelected[i]]->getHpFinal();
-		int currentEnemyHp = enemy[currentEnemySelected[i]]->getCurrentHp();
-		if(hpFinal != currentEnemyHp)
-		{
-			int sign = findHpChangeSign(hpFinal, currentEnemyHp);
-			if(currentEnemyHp > hpFinal + 3 || currentEnemyHp < hpFinal - 3)
-			{
-				enemy[currentEnemySelected[i]]->setCurrentHp(currentEnemyHp + (3 * sign));
-			}
-			else if (currentEnemyHp != hpFinal)
-			{
-				enemy[currentEnemySelected[i]]->setCurrentHp(hpFinal);
-			}
-		}
-	}
+//	std::cout << "enemyHpChange\n";
+//	for(int i = 0; i < currentEnemySelected.size(); i++)
+//	{
+//		int hpFinal = enemy[currentEnemySelected[i]]->getHpFinal();
+//		int currentEnemyHp = enemy[currentEnemySelected[i]]->getCurrentHp();
+//		if(hpFinal != currentEnemyHp)
+//		{
+//			int sign = findHpChangeSign(hpFinal, currentEnemyHp);
+//			if(currentEnemyHp > hpFinal + 3 || currentEnemyHp < hpFinal - 3)
+//			{
+//				enemy[currentEnemySelected[i]]->setCurrentHp(currentEnemyHp + (3 * sign));
+//			}
+//			else if (currentEnemyHp != hpFinal)
+//			{
+//				enemy[currentEnemySelected[i]]->setCurrentHp(hpFinal);
+//			}
+//		}
+//	}
 }
 
 void Battle::checkForCompletion(int& currentBattleState)
 {
-	std::cout << "checkForCompletion\n";
-	bool allDone = true;
-
-	for(int i = 0; i < currentAllySelected.size(); i++)
-	{
-		int currentHp = ally[currentAllySelected[i]]->getCurrentHp();
-		int targetHp = ally[currentAllySelected[i]]->getHpFinal();
-		if(currentHp != targetHp)
-		{
-			allDone = false;
-		}
-	}
-
-	for(int i = 0; i < currentEnemySelected.size(); i++)
-	{
-		int currentHp = enemy[currentEnemySelected[i]]->getCurrentHp();
-		int targetHp = enemy[currentEnemySelected[i]]->getHpFinal();
-		if(currentHp != targetHp)
-		{
-			allDone = false;
-		}
-	}
-
-	if(allDone)
-	{
-		//If didn't check all skills for their effects yet, go back to battle state 3
-		if(currentSkillCheck < 4)
-		{
-			currentBattleState = 3;
-		}
-		else
-		{
-			//Reset current skill check for next character
-			currentSkillCheck = 0;
-
-			currentBattleState = 7;
-		}
-	}
+//	std::cout << "checkForCompletion\n";
+//	bool allDone = true;
+//
+//	for(int i = 0; i < currentAllySelected.size(); i++)
+//	{
+//		int currentHp = ally[currentAllySelected[i]]->getCurrentHp();
+//		int targetHp = ally[currentAllySelected[i]]->getHpFinal();
+//		if(currentHp != targetHp)
+//		{
+//			allDone = false;
+//		}
+//	}
+//
+//	for(int i = 0; i < currentEnemySelected.size(); i++)
+//	{
+//		int currentHp = enemy[currentEnemySelected[i]]->getCurrentHp();
+//		int targetHp = enemy[currentEnemySelected[i]]->getHpFinal();
+//		if(currentHp != targetHp)
+//		{
+//			allDone = false;
+//		}
+//	}
+//
+//	if(allDone)
+//	{
+//		//If didn't check all skills for their effects yet, go back to battle state 3
+//		if(currentSkillCheck < 4)
+//		{
+//			currentBattleState = 3;
+//		}
+//		else
+//		{
+//			//Reset current skill check for next character
+//			currentSkillCheck = 0;
+//
+//			currentBattleState = 7;
+//		}
+//	}
 	
 }
 

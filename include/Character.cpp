@@ -102,6 +102,14 @@ void Character::setNumTurnsSkill(std::vector<int> inp)
 	numTurnsSkill = inp;
 }
 
+void Character::decrementNumTurnsSkill(int element)
+{
+	if(numTurnsSkill[element] != 0)
+	{
+		numTurnsSkill[element] -= 1;
+	}
+}
+
 void Character::setAlive(bool inp)
 {
 	alive = inp;

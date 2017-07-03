@@ -230,6 +230,8 @@ void StateManager::updateBattle(sf::RenderWindow& win, sf::View& view)
 	//Activate window for OpenGL rendering
 	win.clear();
 
+	std::cout << "CURRENT BATTLE STATE: " << currentBattleState << '\n';
+
 	switch (currentBattleState)
 	{
 		//Fastest character is calculated and checks whether it is an ally, enemy, or nobody.
@@ -240,6 +242,7 @@ void StateManager::updateBattle(sf::RenderWindow& win, sf::View& view)
 		//Checks whether a persistent skill needs to be reapplied or removed
 		case 1:
 			battle->statusHandle(currentBattleState);
+			break;
 		//if player or ally is attacking, options display and user chooses next course of action
 		case 2:
 			battle->allySkillChoiceHandler(currentBattleState);

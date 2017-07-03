@@ -9,9 +9,6 @@ class Skill
 		std::string name;
 		int manaCost;
 
-		//Number of turns remaining for effect
-		int numTurns;
-
 		//Shows multiple damage nums for one attack (think trip strike)
 		int numAtksPerHit;
 
@@ -29,18 +26,23 @@ class Skill
 		std::vector<int> max;
 		std::vector<int> min;
 		//If mult is 0, effect is nothing
+
 		//If percent is true, multiplier becomes percent (out of 100)
 		std::vector<bool> percent;
 		//Accuracy, pierce, crit are percent based (out of 100)
+		
+		//Type is 0 for strength, 1 for defense, 2 for agility
+		int debuffType;
+
 		//Crit increases the magnitude of effect. Only applies for attacks
 		int crit;
 		int accuracy;
-		//0 for selected ally, 1 for selected enemy, 2 for all allies, 3 for all enemies, 4 for self
 		//There can only be one (0 or 1) in the "target" vector because can only choose the target once
 
 		//For enemies: chance that the skill is chosen
 		int chance;
 
+		//0 for selected ally, 1 for selected enemy, 2 for all allies, 3 for all enemies, 4 for self
 		std::vector<int> target;
 	public:
 		Skill();
@@ -54,9 +56,11 @@ class Skill
 		void setNumTurns(int);
 		void setNumAtksPerHit(int);
 		void setReapplyTurn(int, int);
+		void setOldVal(int, int);
 		void setMult(int, float);
 		void setMax(int, int);
 		void setMin(int, int);
+		void setDebuffType(int);
 		void setPercent(int, bool);
 		void setCrit(int);
 		void setAccuracy(int);
@@ -69,9 +73,11 @@ class Skill
 		int getNumTurns();
 		int getNumAtksPerHit();
 		std::vector<int> getReapplyTurn();
+		std::vector<int> getOldVal();
 		std::vector<float> getMult();
 		std::vector<int> getMax();
 		std::vector<int> getMin();
+		int getDebuffType();
 		std::vector<bool> getPercent();
 		int getCrit();
 		int getAccuracy();

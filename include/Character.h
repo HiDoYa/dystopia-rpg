@@ -63,6 +63,7 @@ class Character: public SpriteManager
 		void setPossibleSkillNum(std::vector<int>);
 		void setPersistentSkillNum(std::vector<int>);
 		void setNumTurnsSkill(std::vector<int>);
+		void decrementNumTurnsSkill(int);
 
 		void setAlive(bool);
 		void setCanAtk(bool);

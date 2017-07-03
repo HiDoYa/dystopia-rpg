@@ -43,8 +43,10 @@ class Battle
 
 		int currentSkillCheck; //To iterate through skills to check for effects
 		int currentTarget;
-		std::vector<int> currentEnemySelected;
-		std::vector<int> currentAllySelected;
+		
+		//Only stores singular targets
+		int currentEnemySelected;
+		int currentAllySelected;
 
 		//Skill Pressed
 		bool spaceNotPressed;
@@ -98,7 +100,8 @@ class Battle
 		//Battle state 4
 		void enemyDecision(int&);
 		void enemyChooseSkill();
-		void enemyChooseTarget();
+		void enemyChooseAlly();
+		void enemyChooseEnemy();
 
 		//Battle state 5
 		void moveForwardAnimation(int&);

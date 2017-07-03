@@ -9,14 +9,14 @@ Skill::Skill()
 {
 	//Default
 	manaCost = 0;
-	numTurns = 0;
 	numAtksPerHit = 1;
 	missed = false;
+	debuffType = -1;
 
 	for(int i = 0; i < 4; i++)
 	{
 		reapplyTurn.push_back(0);
-		oldVal.push_back(-1);
+		oldVal.push_back(0);
 		mult.push_back(0);
 		max.push_back(0);
 		min.push_back(0);
@@ -49,11 +49,6 @@ void Skill::setManaCost(int inp)
 	manaCost = inp;
 }
 
-void Skill::setNumTurns(int inp)
-{
-	numTurns = inp;
-}
-
 void Skill::setNumAtksPerHit(int inp)
 {
 	numAtksPerHit = inp;
@@ -62,6 +57,11 @@ void Skill::setNumAtksPerHit(int inp)
 void Skill::setReapplyTurn(int type, int inp)
 {
 	reapplyTurn[type] = inp;
+}
+
+void Skill::setOldVal(int type, int inp)
+{
+	oldVal[type] = inp;
 }
 
 void Skill::setMult(int type, float inp)
@@ -77,6 +77,11 @@ void Skill::setMax(int type, int inp)
 void Skill::setMin(int type, int inp)
 {
 	min[type] = inp;
+}
+
+void Skill::setDebuffType(int inp)
+{
+	debuffType = inp;
 }
 
 void Skill::setPercent(int type, bool inp)
@@ -115,11 +120,6 @@ int Skill::getManaCost()
 	return manaCost;
 }
 
-int Skill::getNumTurns()
-{
-	return numTurns;
-}
-
 int Skill::getNumAtksPerHit()
 {
 	return numAtksPerHit;
@@ -128,6 +128,11 @@ int Skill::getNumAtksPerHit()
 std::vector<int> Skill::getReapplyTurn()
 {
 	return reapplyTurn;
+}
+
+std::vector<int> Skill::getOldVal()
+{
+	return oldVal;
 }
 
 std::vector<float> Skill::getMult()
@@ -143,6 +148,11 @@ std::vector<int> Skill::getMax()
 std::vector<int> Skill::getMin()
 {
 	return min;
+}
+
+int Skill::getDebuffType()
+{
+	return debuffType;
 }
 
 std::vector<bool> Skill::getPercent()
@@ -294,7 +304,6 @@ int Skill::statChangeHandle(int posMult, int negMult, int percentMax)
 }
 
 //******** TEXT *************
-//Target argument is 0 if enemy, 1 if enemies, 2 if ally, 3 if allies
 std::string Skill::dispText(std::string chrName, std::string target, int tempDmg)
 {
 	std::string returnText = "";
