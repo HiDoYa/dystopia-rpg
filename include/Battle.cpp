@@ -255,6 +255,13 @@ void Battle::allyStatusEffect()
 			}
 			delete currentPersistentSkill;
 		}
+		if(numTurnsRemaining == 0)
+		{
+			std::vector<int> persistDelete = enemy[nextCharCounter]->getPersistentSkillNum();
+			persistDelete.erase(persistDelete.begin() + i);
+			enemy[nextCharCounter]->setPersistentSkillNum(persistDelete);
+			i--;
+		}
 
 	}
 }
@@ -312,6 +319,13 @@ void Battle::enemyStatusEffect()
 				}
 			}
 			delete currentPersistentSkill;
+		}
+		if(numTurnsRemaining == 0)
+		{
+			std::vector<int> persistDelete = enemy[nextCharCounter]->getPersistentSkillNum();
+			persistDelete.erase(persistDelete.begin() + i);
+			enemy[nextCharCounter]->setPersistentSkillNum(persistDelete);
+			i--;
 		}
 	}
 }
