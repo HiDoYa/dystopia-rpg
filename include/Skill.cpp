@@ -21,7 +21,7 @@ Skill::Skill()
 		max.push_back(0);
 		min.push_back(0);
 		percent.push_back(false);
-		target.push_back(0);
+		target.push_back(-1);
 	}
 
 	crit = 0;

@@ -235,7 +235,6 @@ void StateManager::updateBattle(sf::RenderWindow& win, sf::View& view)
 	switch (currentBattleState)
 	{
 		//Fastest character is calculated and checks whether it is an ally, enemy, or nobody.
-		//Checks whether the current fastest character needs to have a persistent skill reapplied or removed
 		case 0:
 			battle->findFastestChar(currentBattleState);
 			break;
@@ -243,29 +242,31 @@ void StateManager::updateBattle(sf::RenderWindow& win, sf::View& view)
 		case 1:
 			battle->statusHandle(currentBattleState);
 			break;
-		//if player or ally is attacking, options display and user chooses next course of action
+		//[Ally] Options display and user chooses next course of action
 		case 2:
 			battle->allySkillChoiceHandler(currentBattleState);
 			break;
-		//if player chose a targetable skill, choose an enemy to attack. else, go straight to state 3
+		//[Ally] If targetable skill, choose who to target. Else, go straight to state 5
 		case 3:
-			battle->chooseEnemyFocus(currentBattleState);
+			battle->allyChooseFocus(currentBattleState);
 			break;
-		//Enemy chooses skill and who to target
+		//[Enemy] Chooses skill and who to target
 		case 4:
 			battle->enemyDecision(currentBattleState);
 			break;
-		//Move forward and attack animations (both enemies and allies)
+		//Move forward and attack animations
 		case 5:
 			battle->moveForwardAnimation(currentBattleState);
-		//calculate damage, animate hp going down
+		//Calculate damage, animate hp going down
+		//TODO Animate hp/debuff in a different battle state?
 		case 6:
 			battle->handleEffect(currentBattleState);
 			break;
-		//Ending animation
+		//Move backward animation
 		case 7:
 			battle->moveBackwardAnimation(currentBattleState);
-		//check for game over. go back to beginning if not game over. if all enemies/allies have attacked, reset their flags.
+		//Check for game over. Go back to beginning if not game over. 
+		//If all enemies/allies have attacked, reset their flags.
 		case 8:
 			battle->checkEndBattle(currentBattleState, currentState);
 			break;

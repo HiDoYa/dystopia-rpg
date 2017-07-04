@@ -19,8 +19,6 @@ Battle::Battle()
 	qNotPressed = wNotPressed = aNotPressed = sNotPressed = dNotPressed = false;
 	singularAllyFocus = false;
 	singularEnemyFocus = false;
-	finishedEnemyFocus = false;
-	processTargetting = false;
 	
 	//Displacement during character turn
 	attackXDisp = 125;
@@ -463,136 +461,71 @@ bool Battle::chooseCurrentSkill()
 }
 
 //*********** BATTLE STATE 3 *********************
-void Battle::chooseEnemyFocus(int& currentBattleState)
+void Battle::allyChooseFocus(int& currentBattleState)
 {
 	std::cout << "chooseEnemyFocus\n";
 
-	if(!processTargetting)
+	//Look for singular focus if both bools are false
+	if(!singularAllyFocus && !singularEnemyFocus)
 	{
-		processSkillTargetting();
+		findSingularFocus();
 	}
-
-	if(!finishedEnemyFocus)
+	//Only choose who to focus if bools are true. Otherwise, just skip to battle state 5
+	if(singularAllyFocus)
 	{
-		attackEnemyType();
-
-		bool spacePressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
-
-		if(!spacePressed)
-		{
-			spaceNotPressed = true;
-		}
-
-		if(spacePressed && spaceNotPressed)
-		{
-			spaceNotPressed = false;
-			processTargetting = false;
-			finishedEnemyFocus = false;
-		}
+		changeAllyFocus();
+	}
+	else if(singularEnemyFocus)
+	{
+		changeEnemyFocus();
 	}
 	else
 	{
 		currentBattleState = 5;
 	}
-}
 
-int Battle::findNextTarget(int skillNum)
-{
-	std::cout << "findNextTarget\n";
-	while(currentSkillCheck < 4)
+	//If singular focus and space is pressed, go to state 5
+	bool spacePressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
+
+	if(!spacePressed)
 	{
-		if(nextCharType == 0 && skillList[skillNum]->getMult()[currentSkillCheck] > 0)
-		{
-			return skillList[skillNum]->getTarget()[currentSkillCheck];
-		}
-
-		if(nextCharType == 1 && skillList[skillNum]->getMult()[currentSkillCheck] > 0)
-		{
-			return skillList[skillNum]->getTarget()[currentSkillCheck];
-		}
-		currentSkillCheck++;
+		spaceNotPressed = true;
 	}
-	return -1;
+
+	if(spacePressed && spaceNotPressed)
+	{
+		spaceNotPressed = false;
+		currentBattleState = 5;
+	}
 }
 
-void Battle::processSkillTargetting()
+void Battle::findSingularFocus()
 {
-	std::cout << "processSkillTargetting\n";
+	std::cout << "findSingularFocus\n";
+
 	int skillNum = 0;
-	int targetType = 0;
+
 	if(nextCharType == 0)
 	{
 		skillNum = ally[nextCharCounter]->getSkillNum()[currentOptionAlly];
-		targetType = findNextTarget(skillNum);
 	}
 	else if(nextCharType == 1)
 	{
 		skillNum = enemy[nextCharCounter]->getSkillNum()[currentOptionAlly];
-		targetType = findNextTarget(skillNum);
 	}
 
-	switch(targetType)
+	for(int i = 0; i < 4; i++)
 	{
-		case -1:
-			//Simply exit
-			finishedEnemyFocus = true;
-			break;
-		case 0:
+		bool skillMult = skillList[skillNum]->getMult()[i] > 0;
+		int skillTarget = skillList[skillNum]->getTarget()[i];
+		if(skillMult && skillTarget == 0)
+		{
 			singularAllyFocus = true;
-			break;
-		case 1:
+		}
+		else if(skillMult && skillTarget == 1)
+		{
 			singularEnemyFocus = true;
-			break;
-		case 2:
-			singularAllyFocus = singularEnemyFocus = false;
-			for(int i = 0; i < ally.size(); i++)
-			{
-				if(ally[i]->getAlive())
-				{
-					currentAllySelected = i;
-				}
-			}
-			finishedEnemyFocus = true;
-			break;
-		case 3:
-			singularAllyFocus = singularEnemyFocus = false;
-			for(int i = 0; i < enemy.size(); i++)
-			{
-				if(enemy[i]->getAlive())
-				{
-					currentEnemySelected = i;
-				}
-			}
-			finishedEnemyFocus = true;
-			break;
-		case 4:
-			singularAllyFocus = singularEnemyFocus = false;
-			if(nextCharType == 0)
-			{
-				currentAllySelected = nextCharCounter;
-			}
-			else if(nextCharType == 1)
-			{
-				currentEnemySelected = nextCharCounter;
-			}
-			finishedEnemyFocus = true;
-			break;
-	}
-
-	//Flag to prevent this code being run again
-	processTargetting = true;
-}
-
-void Battle::attackEnemyType()
-{
-	std::cout << "attackEnemyType\n";
-	if(singularAllyFocus)
-	{
-		changeAllyFocus();
-	}
-	else if (singularEnemyFocus)
-	{
-		changeEnemyFocus();
+		}
 	}
 }
 
@@ -679,11 +612,11 @@ void Battle::enemyDecision(int& currentBattleState)
 		{
 			if(skillList[currentOptionEnemy]->getTarget()[i] == 0)
 			{
-				enemyChooseAlly();
+				enemyChooseEnemy();
 			}
 			else if(skillList[currentOptionEnemy]->getTarget()[i] == 1)
 			{
-				enemyChooseEnemy();
+				enemyChooseAlly();
 			}
 		}
 	}
@@ -833,6 +766,9 @@ void Battle::enemyAttackAnimation(int& currentBattleState)
 void Battle::handleEffect(int& currentBattleState)
 {
 	std::cout << "handleEffect\n";
+
+	processSkillTargetting();
+
 	switch(nextCharType)
 	{
 		case 0:
@@ -844,6 +780,72 @@ void Battle::handleEffect(int& currentBattleState)
 	}
 
 	checkForCompletion(currentBattleState);
+}
+
+//Returns target type for the next effect of the skill
+int Battle::findNextTarget(int skillNum)
+{
+	std::cout << "findNextTarget\n";
+	while(currentSkillCheck < 4)
+	{
+		if(skillList[skillNum]->getMult()[currentSkillCheck] > 0)
+		{
+			return skillList[skillNum]->getTarget()[currentSkillCheck];
+		}
+		currentSkillCheck++;
+	}
+	return -1;
+}
+
+void Battle::processSkillTargetting()
+{
+	std::cout << "processSkillTargetting\n";
+	int skillNum = 0;
+	int targetType = 0;
+
+	if(nextCharType == 0)
+	{
+		skillNum = ally[nextCharCounter]->getSkillNum()[currentOptionAlly];
+		targetType = findNextTarget(skillNum);
+	}
+	else if(nextCharType == 1)
+	{
+		skillNum = enemy[nextCharCounter]->getSkillNum()[currentOptionAlly];
+		targetType = findNextTarget(skillNum);
+	}
+
+	//Reset all flags
+	singularAllyFocus = singularEnemyFocus = multAllyFocus = multEnemyFocus = false;
+
+	//Set flags based on who is attacking
+	switch(targetType)
+	{
+		case -1:
+			//Simply exit
+			break;
+		case 0:
+			singularAllyFocus = true;
+			break;
+		case 1:
+			singularEnemyFocus = true;
+			break;
+		case 2:
+			multAllyFocus = true;
+			break;
+		case 3:
+			multEnemyFocus = true;
+			break;
+		case 4:
+			if(nextCharType == 0)
+			{
+				currentAllySelected = nextCharCounter;
+			}
+			else if(nextCharType == 1)
+			{
+				currentEnemySelected = nextCharCounter;
+			}
+			break;
+	}
 }
 
 int Battle::findHpChangeSign(int hpFinal, int hpInit)

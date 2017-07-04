@@ -35,11 +35,11 @@ class Battle
 		int goalPlace;
 
 		//Flags
-		bool finishedEnemyFocus;
-		bool processTargetting;
 		bool animComplete;
 		bool singularAllyFocus;
 		bool singularEnemyFocus;
+		bool multAllyFocus;
+		bool multEnemyFocus;
 
 		int currentSkillCheck; //To iterate through skills to check for effects
 		int currentTarget;
@@ -90,10 +90,8 @@ class Battle
 		bool chooseCurrentSkill();
 
 		//Battle state 3
-		void chooseEnemyFocus(int&);
-		int findNextTarget(int);
-		void processSkillTargetting();
-		void attackEnemyType();
+		void allyChooseFocus(int&);
+		void findSingularFocus();
 		void changeAllyFocus();
 		void changeEnemyFocus();
 
@@ -111,6 +109,9 @@ class Battle
 		//Battle state 6
 		void handleEffect(int&);
 		int findHpChangeSign(int, int);
+
+		int findNextTarget(int);
+		void processSkillTargetting();
 
 		void allyTurnHandle(int&);
 		void allySkillCalc();
