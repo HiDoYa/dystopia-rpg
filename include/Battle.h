@@ -114,7 +114,11 @@ class Battle
 		void processSkillTargetting();
 
 		void allyTurnHandle(int&);
+
 		void allySkillCalc();
+		void allySkillCalcHealth();
+		void allySkillCalcStat();
+
 		void allyItem();
 		void allyChangePos();
 		void allyAttemptFlee(int&);

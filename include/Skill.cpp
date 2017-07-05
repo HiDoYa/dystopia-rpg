@@ -224,36 +224,27 @@ void Skill::checkForMiss()
 }
 
 //******** DAMAGE CALCULATION *************
-
-int Skill::healthChangeHandle(int posMult, int negMult, int percentMax)
+int Skill::healthChangeHandle(int posMult, int negMult, int percentMax, int type)
 {
 	int healthCh;
 
-	//Type 0 for health loss, type 2 for health gain
-	for(int type = 0; type < 2; type++)
+	//Decide whether to use percent or normal calculation
+	if(percent[type] > 0)
 	{
-		//Decide whether to use percent or normal calculation
-		if(percent[type] > 0)
-		{
-			healthCh = percentCalc(posMult, negMult, percentMax, type);
-		}
-		else
-		{
-			healthCh = normCalc(posMult, negMult, type);
-		}
-
-		//If type 0, the health change is negative
-		if(type == 0)
-		{
-			healthCh *= -1;
-		}
+		healthCh = percentCalc(posMult, negMult, percentMax, type);
 	}
-	return healthCh;
-}
+	else
+	{
+		healthCh = normCalc(posMult, negMult, type);
+	}
 
-int Skill::healthGainHandle()
-{
-	//TODO Wtf
+	//If type 0, the health change is negative
+	if(type == 0)
+	{
+		healthCh *= -1;
+	}
+
+	return healthCh;
 }
 
 int Skill::normCalc(int posMult, int negMult, int type)

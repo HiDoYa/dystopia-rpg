@@ -767,8 +767,6 @@ void Battle::handleEffect(int& currentBattleState)
 {
 	std::cout << "handleEffect\n";
 
-	processSkillTargetting();
-
 	switch(nextCharType)
 	{
 		case 0:
@@ -820,9 +818,6 @@ void Battle::processSkillTargetting()
 	//Set flags based on who is attacking
 	switch(targetType)
 	{
-		case -1:
-			//Simply exit
-			break;
 		case 0:
 			singularAllyFocus = true;
 			break;
@@ -836,6 +831,8 @@ void Battle::processSkillTargetting()
 			multEnemyFocus = true;
 			break;
 		case 4:
+			singularAllyFocus = true;
+
 			if(nextCharType == 0)
 			{
 				currentAllySelected = nextCharCounter;
@@ -894,22 +891,79 @@ void Battle::allyTurnHandle(int& currentBattleState)
 
 void Battle::allySkillCalc()
 {
-//	std::cout << "allySkillCalc\n";
-//	for(int i = 0; i < currentAllySelected.size(); i++)
-//	{
-//		int allyStrength = ally[nextCharCounter]->getStrength();
-//		int targetHp = ally[currentAllySelected[i]]->getCurrentHp();
-//		//Skill checks for both type 0 and type 1 (healing and damaging) for enemy and allies
-//		ally[i]->setHpFinal(skillList[currentOptionAlly]->healthChangeHandle(allyStrength, 0, targetHp));
-//	}
-//
-//	for(int i = 0; i < currentEnemySelected.size(); i++)
-//	{
-//		int allyStrength = enemy[nextCharCounter]->getStrength();
-//		int targetDef = ally[currentEnemySelected[i]]->getDefense();
-//		int targetHp = ally[currentEnemySelected[i]]->getCurrentHp();
-//		enemy[i]->setHpFinal(skillList[currentOptionAlly]->healthChangeHandle(allyStrength, targetDef, targetHp));
-//	}
+	std::cout << "allySkillCalc\n";
+
+	switch(type)
+	{
+		case 0:
+		case 1:
+			allySkillCalcHealth();
+			break;
+		case 2:
+		case 3:
+			allySkillCalcStat();
+			break;
+	}
+}
+
+//TODO setHpFinal doesn't set the right number-> (currently sets it to the delta instead of the final)
+void Battle::allySkillCalcHealth()
+{
+	std::cout << "allySkillCalcHealth\n";
+	if(processSkillTargetting() != -1)
+	{
+		if(singularAllyFocus)
+		{
+			int allyStrength = ally[nextCharCounter]->getStrength();
+			int targetHp = ally[currentAllySelected]->getCurrentHp();
+
+			int targetHpFinal = skillList[currentOptionAlly]->healthChangeHandle(allyStrength, 0, targetHp, currentSkillCheck);
+			ally[currentAllySelected]->setHpFinal(targetHpFinal);
+		}
+		else if(singularEnemyFocus)
+		{
+			int allyStrength = ally[nextCharCounter]->getStrength();
+			int targetHp = enemy[currentEnemySelected]->getCurrentHp();
+			int targetDef = enemy[currentEnemySelected]->getDefense();
+
+			int targetHpFinal = skillList[currentOptionAlly]->healthChangeHandle(allyStrength, targetDef, targetHp, currentSkillCheck);
+			enemy[currentEnemySelected]->setHpFinal(targetHpFinal);
+		}
+		else if(multAllyFocus)
+		{
+			for(int i = 0; i < ally.size(); i++)
+			{
+				if(ally[i]->getAlive())
+				{
+					int allyStrength = ally[nextCharCounter]->getStrength();
+					int targetHp = ally[i]->getCurrentHp();
+
+					int targetHpFinal = skillList[currentOptionAlly]->healthChangeHandle(allyStrength, 0, targetHp, currentSkillCheck);
+					ally[i]->setHpFinal(targetHpFinal);
+				}
+			}
+		}
+		else if(multEnemyFocus)
+		{
+			for(int i = 0; i < enemy.size(); i++)
+			{
+				if(enemy[i]->getAlive())
+				{
+					int allyStrength = ally[nextCharCounter]->getStrength();
+					int targetHp = enemy[i]->getCurrentHp();
+					int targetDef = enemy[i]->getDefense();
+
+					int targetHpFinal = skillList[currentOptionAlly]->healthChangeHandle(allyStrength, targetDef, targetHp, currentSkillCheck);
+					enemy[i]->setHpFinal(targetHpFinal);
+				}
+			}
+		}
+	}
+}
+
+void Battle::allySkillCalcStat()
+{
+	std::cout << "allySkillCalcStat\n";
 }
 
 void Battle::allyItem()

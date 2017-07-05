@@ -92,8 +92,8 @@ class Skill
 		void checkForMiss();
 
 		//****** DAMAGE CALC *********
-		int healthChangeHandle(int, int, int);
-		int healthGainHandle();
+		int healthChangeHandle(int, int, int, int);
+
 		int normCalc(int, int, int);
 		int percentCalc(int, int, int, int);
 
