@@ -111,7 +111,7 @@ class Battle
 		int findHpChangeSign(int, int);
 
 		int findNextTarget(int);
-		void processSkillTargetting();
+		int processSkillTargetting();
 
 		void allyTurnHandle(int&);
 

@@ -792,10 +792,15 @@ int Battle::findNextTarget(int skillNum)
 		}
 		currentSkillCheck++;
 	}
+
+	currentSkillCheck = 0;
+
 	return -1;
 }
 
-void Battle::processSkillTargetting()
+//Calls findNextTarget (increments currentSkillCheck) and returns targetType
+//If targetType is -1, the current skill check is over
+int Battle::processSkillTargetting()
 {
 	std::cout << "processSkillTargetting\n";
 	int skillNum = 0;
@@ -804,13 +809,13 @@ void Battle::processSkillTargetting()
 	if(nextCharType == 0)
 	{
 		skillNum = ally[nextCharCounter]->getSkillNum()[currentOptionAlly];
-		targetType = findNextTarget(skillNum);
 	}
 	else if(nextCharType == 1)
 	{
 		skillNum = enemy[nextCharCounter]->getSkillNum()[currentOptionAlly];
-		targetType = findNextTarget(skillNum);
 	}
+	
+	targetType = findNextTarget(skillNum);
 
 	//Reset all flags
 	singularAllyFocus = singularEnemyFocus = multAllyFocus = multEnemyFocus = false;
@@ -843,6 +848,7 @@ void Battle::processSkillTargetting()
 			}
 			break;
 	}
+	return targetType;
 }
 
 int Battle::findHpChangeSign(int hpFinal, int hpInit)
@@ -964,6 +970,21 @@ void Battle::allySkillCalcHealth()
 void Battle::allySkillCalcStat()
 {
 	std::cout << "allySkillCalcStat\n";
+	if(processSkillTargetting() != -1)
+	{
+		if(singularAllyFocus)
+		{
+		}
+		else if(singularEnemyFocus)
+		{
+		}
+		else if(multAllyFocus)
+		{
+		}
+		else if(multEnemyFocus)
+		{
+		}
+	}
 }
 
 void Battle::allyItem()
