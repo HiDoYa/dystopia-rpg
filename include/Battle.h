@@ -43,6 +43,7 @@ class Battle
 
 		int currentSkillCheck; //To iterate through skills to check for effects
 		int currentTarget;
+		int targetType;
 		
 		//Only stores singular targets
 		int currentEnemySelected;

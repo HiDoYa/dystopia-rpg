@@ -199,6 +199,7 @@ void Battle::checkForStatus()
 	}
 }
 
+//TODO What if two characters have the same ability and both use oldVal? maybe recalculate for status effect?
 void Battle::allyStatusEffect()
 {
 	std::cout << "allyStatusEffect\n";
@@ -212,43 +213,38 @@ void Battle::allyStatusEffect()
 			int reapplyNumTurns = currentPersistentSkill->getReapplyTurn()[j];
 			if(reapplyNumTurns > 0)
 			{
-				//Damage
-				if(j == 0)
+				//Damage or heal
+				if((j == 0 || j == 1) && numTurnsRemaining > 0)
 				{
-					if(numTurnsRemaining > 0)
-					{
-						ally[nextCharCounter]->setCurrentHp(ally[nextCharCounter]->getCurrentHp() - currentPersistentSkill->getOldVal()[j]);
-					}
-				}
-				//Heal
-				else if(j == 1)
-				{
-					if(numTurnsRemaining > 0)
-					{
-						ally[nextCharCounter]->setCurrentHp(ally[nextCharCounter]->getCurrentHp() + currentPersistentSkill->getOldVal()[j]);
-					}
+					ally[nextCharCounter]->setCurrentHp(ally[nextCharCounter]->getCurrentHp() + currentPersistentSkill->getOldVal()[j]);
 				}
 				//Buff or debuff
-				else if(j == 3 || j == 4)
+				//If the debuff duration is over, return the stats to normal
+				else if((j == 2 || j == 3) && numTurnsRemaining == 0)
 				{
-					//If the debuff duration is over, return the stats to normal
-					if(numTurnsRemaining == 0)
+					int statType;
+					if(j == 2)
 					{
-						int debuffType = currentPersistentSkill->getDebuffType();
-						if(debuffType == 0)
-						{
-							ally[nextCharCounter]->setStrength(ally[nextCharCounter]->getStrength() + currentPersistentSkill->getOldVal()[j]);
-						}
-						else if(debuffType == 1)
-						{
-							ally[nextCharCounter]->setDefense(ally[nextCharCounter]->getDefense() + currentPersistentSkill->getOldVal()[j]);
-						}
-						else if(debuffType == 2)
-						{
-							ally[nextCharCounter]->setAgility(ally[nextCharCounter]->getAgility() + currentPersistentSkill->getOldVal()[j]);
-						}
+						statType = currentPersistentSkill->getDebuffType();
 					}
-					//Do nothing if debuff isn't over yet
+					else if(j == 3)
+					{
+						statType = currentPersistentSkill->getBuffType();
+					}
+					
+					if(statType == 0)
+					{
+						ally[nextCharCounter]->setStrength(ally[nextCharCounter]->getStrength() + currentPersistentSkill->getOldVal()[j]);
+					}
+					else if(statType == 1)
+					{
+						ally[nextCharCounter]->setDefense(ally[nextCharCounter]->getDefense() + currentPersistentSkill->getOldVal()[j]);
+					}
+					else if(statType == 2)
+					{
+						ally[nextCharCounter]->setAgility(ally[nextCharCounter]->getAgility() + currentPersistentSkill->getOldVal()[j]);
+					}
+				//Do nothing if debuff isn't over yet
 				}
 			}
 			delete currentPersistentSkill;
@@ -277,41 +273,36 @@ void Battle::enemyStatusEffect()
 			int reapplyNumTurns = currentPersistentSkill->getReapplyTurn()[j];
 			if(reapplyNumTurns > 0)
 			{
-				//Damage
-				if(j == 0)
+				//Damage or heal
+				if((j == 0 || j == 1) && numTurnsRemaining > 0)
 				{
-					if(numTurnsRemaining > 0)
-					{
-						enemy[nextCharCounter]->setCurrentHp(enemy[nextCharCounter]->getCurrentHp() - currentPersistentSkill->getOldVal()[j]);
-					}
-				}
-				//Heal
-				else if(j == 1)
-				{
-					if(numTurnsRemaining > 0)
-					{
-						enemy[nextCharCounter]->setCurrentHp(enemy[nextCharCounter]->getCurrentHp() + currentPersistentSkill->getOldVal()[j]);
-					}
+					enemy[nextCharCounter]->setCurrentHp(enemy[nextCharCounter]->getCurrentHp() + currentPersistentSkill->getOldVal()[j]);
 				}
 				//Buff or debuff
-				else if(j == 3 || j == 4)
+				//If the debuff duration is over, return the stats to normal
+				else if((j == 2 || j == 3) && numTurnsRemaining == 0)
 				{
-					//If the debuff duration is over, return the stats to normal
-					if(numTurnsRemaining == 0)
+					int statType;
+					if(j == 2)
 					{
-						int debuffType = currentPersistentSkill->getDebuffType();
-						if(debuffType == 0)
-						{
-							enemy[nextCharCounter]->setStrength(enemy[nextCharCounter]->getStrength() + currentPersistentSkill->getOldVal()[j]);
-						}
-						else if(debuffType == 1)
-						{
-							enemy[nextCharCounter]->setDefense(enemy[nextCharCounter]->getDefense() + currentPersistentSkill->getOldVal()[j]);
-						}
-						else if(debuffType == 2)
-						{
-							enemy[nextCharCounter]->setAgility(enemy[nextCharCounter]->getAgility() + currentPersistentSkill->getOldVal()[j]);
-						}
+						statType = currentPersistentSkill->getDebuffType();
+					}
+					else if(j == 3)
+					{
+						statType = currentPersistentSkill->getBuffType();
+					}
+
+					if(statType == 0)
+					{
+						enemy[nextCharCounter]->setStrength(enemy[nextCharCounter]->getStrength() + currentPersistentSkill->getOldVal()[j]);
+					}
+					else if(statType == 1)
+					{
+						enemy[nextCharCounter]->setDefense(enemy[nextCharCounter]->getDefense() + currentPersistentSkill->getOldVal()[j]);
+					}
+					else if(statType == 2)
+					{
+						enemy[nextCharCounter]->setAgility(enemy[nextCharCounter]->getAgility() + currentPersistentSkill->getOldVal()[j]);
 					}
 					//Do nothing if debuff isn't over yet
 				}
@@ -804,7 +795,7 @@ int Battle::processSkillTargetting()
 {
 	std::cout << "processSkillTargetting\n";
 	int skillNum = 0;
-	int targetType = 0;
+	int targetType = -1;
 
 	if(nextCharType == 0)
 	{
@@ -872,7 +863,6 @@ int Battle::findHpChangeSign(int hpFinal, int hpInit)
 
 //TODO Apply effect for both enemy AND allies
 //TODO get mana change as well
-
 void Battle::allyTurnHandle(int& currentBattleState)
 {
 	std::cout << "allyTurnHandle\n";
@@ -899,7 +889,7 @@ void Battle::allySkillCalc()
 {
 	std::cout << "allySkillCalc\n";
 
-	switch(type)
+	switch(currentSkillCheck)
 	{
 		case 0:
 		case 1:
@@ -912,7 +902,6 @@ void Battle::allySkillCalc()
 	}
 }
 
-//TODO setHpFinal doesn't set the right number-> (currently sets it to the delta instead of the final)
 void Battle::allySkillCalcHealth()
 {
 	std::cout << "allySkillCalcHealth\n";
@@ -972,8 +961,30 @@ void Battle::allySkillCalcStat()
 	std::cout << "allySkillCalcStat\n";
 	if(processSkillTargetting() != -1)
 	{
+		//If buff or debuff type is str, set to str, etc.
+		int currentSkill = ally[nextCharCounter]->getSkillNum()[currentOptionAlly];
+		int statType, targetStat;
+		if(currentSkillCheck == 2)
+		{
+			statType = skillList[currentSkill]->getDebuffType();
+		}
+		else if(currentSkillCheck == 3)
+		{
+			statType = skillList[currentSkill]->getBuffType();
+		}
+
 		if(singularAllyFocus)
 		{
+			if(statType == 0)
+			{
+				//targetStat = something;
+			}
+			else if(statType == 1)
+			{
+			}
+			else if(statType == 2)
+			{
+			}
 		}
 		else if(singularEnemyFocus)
 		{

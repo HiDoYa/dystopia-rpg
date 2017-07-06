@@ -11,6 +11,7 @@ Skill::Skill()
 	manaCost = 0;
 	numAtksPerHit = 1;
 	missed = false;
+	buffType = -1;
 	debuffType = -1;
 
 	for(int i = 0; i < 4; i++)
@@ -77,6 +78,11 @@ void Skill::setMax(int type, int inp)
 void Skill::setMin(int type, int inp)
 {
 	min[type] = inp;
+}
+
+void Skill::setBuffType(int inp)
+{
+	buffType = inp;
 }
 
 void Skill::setDebuffType(int inp)
@@ -148,6 +154,11 @@ std::vector<int> Skill::getMax()
 std::vector<int> Skill::getMin()
 {
 	return min;
+}
+
+int Skill::getBuffType()
+{
+	return buffType;
 }
 
 int Skill::getDebuffType()
@@ -244,7 +255,13 @@ int Skill::healthChangeHandle(int posMult, int negMult, int percentMax, int type
 		healthCh *= -1;
 	}
 
-	return healthCh;
+	//If persistent, store in oldVal
+	if(reapplyTurn[type] > 0)
+	{
+		oldVal[type] = healthCh;
+	}
+
+	return percentMax + healthCh;
 }
 
 int Skill::normCalc(int posMult, int negMult, int type)
@@ -252,7 +269,6 @@ int Skill::normCalc(int posMult, int negMult, int type)
 	int val = 0;
 	val = (posMult - negMult) * mult[type];
 
-	//TODO Type
 	checkForMaxMin(val, type);
 
 	if((rand() % 100 + 1) < crit)
@@ -274,7 +290,7 @@ int Skill::percentCalc(int posMult, int negMult, int percentMax, int type)
 	return val;
 }
 
-int Skill::statChangeHandle(int posMult, int negMult, int percentMax)
+int Skill::statChangeHandle(int stat, int posMult, int negMult, int percentMax)
 {
 	int statCh = 0;
 	for(int type = 2; type < 4; type++)
@@ -288,10 +304,19 @@ int Skill::statChangeHandle(int posMult, int negMult, int percentMax)
 			//norm
 		}
 
+		//If type is 2, stat change is negative (debuff)
 		if(type == 2)
 		{
+			statCh *= -1;
+		}
+		
+		//If persistent, store in oldVal
+		if(reapplyTurn[type] > 0)
+		{
+			oldVal[type] = -statCh;
 		}
 	}
+	return statCh + stat;
 }
 
 //******** TEXT *************
