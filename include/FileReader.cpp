@@ -44,8 +44,6 @@ void FileReader::loadAlly(std::vector<std::shared_ptr<Character>>& ally)
 			allyFile >> inp;
 			ally[allyCounter]->setCurrentHp(atoi(inp.c_str()));
 			ally[allyCounter]->setHpFinal(atoi(inp.c_str()));
-
-			allyFile >> inp;
 			ally[allyCounter]->setMaxHp(atoi(inp.c_str()));
 		}
 		else if(inp == "Mana")
@@ -53,8 +51,6 @@ void FileReader::loadAlly(std::vector<std::shared_ptr<Character>>& ally)
 			allyFile >> inp;
 			ally[allyCounter]->setCurrentMana(atoi(inp.c_str()));
 			ally[allyCounter]->setManaFinal(atoi(inp.c_str()));
-
-			allyFile >> inp;
 			ally[allyCounter]->setMaxMana(atoi(inp.c_str()));
 		}
 		else if(inp == "Strength")
@@ -90,7 +86,7 @@ void FileReader::loadAlly(std::vector<std::shared_ptr<Character>>& ally)
 				tempStore.push_back(atoi(inp.c_str()));
 			}
 
-			ally[allyCounter]->setSkillNum(tempStore);
+			ally[allyCounter]->setPossibleSkillNum(tempStore);
 		}
 		//TODO Exp and ally is in party?
 		
@@ -185,6 +181,38 @@ void FileReader::loadSkill(std::vector<Skill*>& skillList)
 			skillFile >> strInp;
 			skillList[skillCounter]->setChance(atoi(strInp.c_str()));
 		}
+		else if(strInp == "BuffType")
+		{
+			skillFile >> strInp;
+			if(strInp == "Strength")
+			{
+				skillList[skillCounter]->setBuffType(0);
+			}
+			else if(strInp == "Defense")
+			{
+				skillList[skillCounter]->setBuffType(1);
+			}
+			else if(strInp == "Agility")
+			{
+				skillList[skillCounter]->setBuffType(2);
+			}
+		}
+		else if(strInp == "DebuffType")
+		{
+			skillFile >> strInp;
+			if(strInp == "Strength")
+			{
+				skillList[skillCounter]->setDebuffType(0);
+			}
+			else if(strInp == "Defense")
+			{
+				skillList[skillCounter]->setDebuffType(1);
+			}
+			else if(strInp == "Agility")
+			{
+				skillList[skillCounter]->setDebuffType(2);
+			}
+		}
 	}
 	skillFile.close();
 }
@@ -201,7 +229,6 @@ void FileReader::loadMapEnemies(std::vector<std::shared_ptr<Character>>& enemyLi
 	while(!enemyFile.eof())
 	{
 		enemyFile >> strInp;
-		//TODO Enemy file also stores which skills the enemy should use
 		if(strInp == "Enemy")
 		{
 			tempCounter++;
@@ -315,13 +342,11 @@ void FileReader::loadMainMapFile(std::string fileNm,
 		}
 		else if(strInp == "PrevZM")
 		{
-			//TODO
 			mainMapFile >> strInp;
 			int potenPrevZ = atoi(strInp.c_str());
 			mainMapFile >> strInp;
 			int potenPrevM = atoi(strInp.c_str());
 
-			//TODO
 			mainMapFile >> strInp;
 			if(potenPrevZ == prevZ && potenPrevM == prevM)
 			{

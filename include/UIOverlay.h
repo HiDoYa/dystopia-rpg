@@ -11,14 +11,6 @@ class UIOverlay
 		//Font Used
 		sf::Font font;
 
-		//Bars
-		sf::RectangleShape maxHpBar;
-		sf::RectangleShape currentHpBar;
-		sf::RectangleShape maxManaBar;
-		sf::RectangleShape currentManaBar;
-		sf::RectangleShape maxExpBar;
-		sf::RectangleShape currentExpBar;
-
 		//Exp bar and level indicator
 		sf::CircleShape levelNumWrapper;
 		sf::Text levelText;
@@ -36,11 +28,6 @@ class UIOverlay
 		void setPosition(sf::View);
 		void setCurrency(int);
 		void setLevel(int);
-		void setHealth(int, int);
-		void setMana(int, int);
-		void setExp(int, int);
-		//TODO Skill display
-		//TODO Minimap [low-prio]
 
 		//Etc
 		void drawAll(sf::RenderWindow&);

@@ -13,13 +13,9 @@ class Character: public SpriteManager
 		int currentMana;
 		int maxMana;
 
-		//Strength, defense, agility can be changed through battle, but resets after battle
 		int strength;
-		int currentStrength;
 		int defense;
-		int currentDefense;
 		int agility;
-		int currentAgility;
 
 		//Stores ID for each skill
 		std::vector<int> skillNum;         //For use in battle
@@ -53,11 +49,8 @@ class Character: public SpriteManager
 		void setMaxMana(int);
 
 		void setStrength(int);
-		void setCurrentStrength(int);
 		void setDefense(int);
-		void setCurrentDefense(int);
 		void setAgility(int);
-		void setCurrentAgility(int);
 
 		void setSkillNum(std::vector<int>);
 		void setPossibleSkillNum(std::vector<int>);

@@ -80,8 +80,8 @@ class Skill
 		std::vector<float> getMult();
 		std::vector<int> getMax();
 		std::vector<int> getMin();
-		std::vector<int> getBuffType();
-		std::vector<int> getDebuffType();
+		int getBuffType();
+		int getDebuffType();
 		std::vector<bool> getPercent();
 		int getCrit();
 		int getAccuracy();
@@ -97,11 +97,10 @@ class Skill
 
 		//****** DAMAGE CALC *********
 		int healthChangeHandle(int, int, int, int);
+		int statChangeHandle(int, int, int, int);
 
 		int normCalc(int, int, int);
 		int percentCalc(int, int, int, int);
-
-		int statChangeHandle(int, int, int);
 
 		//****** TEXT *********
 		std::string dispText(std::string, std::string, int);

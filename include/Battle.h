@@ -43,7 +43,6 @@ class Battle
 
 		int currentSkillCheck; //To iterate through skills to check for effects
 		int currentTarget;
-		int targetType;
 		
 		//Only stores singular targets
 		int currentEnemySelected;
@@ -126,29 +125,29 @@ class Battle
 
 		void enemyTurnHandle(int&);
 		void enemySkillCalc();
-
-		void allyHpChange(int&);
-		void enemyHpChange(int&);
-
-		void checkForCompletion(int&);
+		void enemySkillCalcHealth();
+		void enemySkillCalcStat();
 
 		//Battle state 7
-		void moveBackwardAnimation(int&);
-		void allyPostAttackAnimation();
-		void enemyPostAttackAnimation();
-		
+		void hpAnimate(int&);
+		void allyHpChange();
+		void enemyHpChange();
+		void checkForCompletion(int&);
+
 		//Battle state 8
+		void moveBackwardAnimation(int&);
+		void allyPostAttackAnimation(int&);
+		void enemyPostAttackAnimation(int&);
+		
+		//Battle state 9
 		bool checkAllyDeath();
 		bool checkEnemyDeaths();
-		void checkEndBattle(int&, int&);
+		void checkEndBattle(int&, int&, std::vector<int>, std::vector<std::shared_ptr<Character>>);
 		void currentEnemyDeath();
 		void newTurn();
 		
 		//Drawing
 		void drawAll(sf::RenderWindow&, int);
-
-		//Mutators
-		void setEnemyHp(int, int);
 
 		//Utility
 		int getMaxNum(int, int);

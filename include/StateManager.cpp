@@ -257,18 +257,23 @@ void StateManager::updateBattle(sf::RenderWindow& win, sf::View& view)
 		//Move forward and attack animations
 		case 5:
 			battle->moveForwardAnimation(currentBattleState);
-		//Calculate damage, animate hp going down
-		//TODO Animate hp/debuff in a different battle state?
+			break;
+		//Calculate damage/buffs
 		case 6:
 			battle->handleEffect(currentBattleState);
 			break;
-		//Move backward animation
+		//Animate hp
 		case 7:
+			battle->hpAnimate(currentBattleState);
+			break;
+		//Move backward animation
+		case 8:
 			battle->moveBackwardAnimation(currentBattleState);
+			break;
 		//Check for game over. Go back to beginning if not game over. 
 		//If all enemies/allies have attacked, reset their flags.
-		case 8:
-			battle->checkEndBattle(currentBattleState, currentState);
+		case 9:
+			battle->checkEndBattle(currentBattleState, currentState, allyInParty, ally);
 			break;
 	}
 	//TODO Update battle log here

@@ -28,7 +28,7 @@ int main()
 	sf::View view = window.getView();
 	
 	//Sets framerate to 60fps
-	window.setFramerateLimit(60);
+	window.setFramerateLimit(10);
 
 	//State Manager
 	StateManager state;

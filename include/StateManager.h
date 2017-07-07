@@ -46,6 +46,7 @@ class StateManager
 
 		//Battle (state 2)
 		std::vector<Skill*> skillList;
+		std::vector<int> unlockedSkills;
 		bool battleLoaded;
 		std::unique_ptr<Battle> battle;
 

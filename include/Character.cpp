@@ -57,29 +57,14 @@ void Character::setStrength(int inp)
 	strength = inp;
 }
 
-void Character::setCurrentStrength(int inp)
-{
-	currentStrength = inp;
-}
-
 void Character::setDefense(int inp)
 {
 	defense = inp;
 }
 
-void Character::setCurrentDefense(int inp)
-{
-	currentDefense = inp;
-}
-
 void Character::setAgility(int inp)
 {
 	agility = inp;
-}
-
-void Character::setCurrentAgility(int inp)
-{
-	currentAgility = inp;
 }
 
 void Character::setSkillNum(std::vector<int> inp)
@@ -181,30 +166,15 @@ int Character::getStrength()
 	return strength;
 }
 
-int Character::getCurrentStrength()
-{
-	return currentStrength;
-}
-
 int Character::getDefense()
 {
 	return defense;
-}
-
-int Character::getCurrentDefense()
-{
-	return currentDefense;
 }
 
 int Character::getAgility()
 {
 	return agility;
 }
-
-int Character::getCurrentAgility()
-{
-	return currentAgility;
-}	
 
 std::vector<int> Character::getSkillNum()
 {

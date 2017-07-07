@@ -18,6 +18,7 @@ Accuracy 95
 EnemyPrio 30
 Crit 0
 Type Buff
+	BuffType Strength
 	Percent true
 	Reapply 3
 	Mult 2

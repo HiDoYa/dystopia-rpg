@@ -261,7 +261,37 @@ int Skill::healthChangeHandle(int posMult, int negMult, int percentMax, int type
 		oldVal[type] = healthCh;
 	}
 
-	return percentMax + healthCh;
+	return healthCh + percentMax;
+}
+
+int Skill::statChangeHandle(int posMult, int negMult, int percentMax, int type)
+{
+	int statCh = 0;
+
+	if(percent[type] > 0)
+	{
+		//percent
+		statCh = percentCalc(posMult, negMult, percentMax, type);
+	}
+	else
+	{
+		//norm
+		statCh = normCalc(posMult, negMult, type);
+	}
+
+	//If type is 2, stat change is negative (debuff)
+	if(type == 2)
+	{
+		statCh *= -1;
+	}
+	
+	//If persistent, store in oldVal
+	if(reapplyTurn[type] > 0)
+	{
+		oldVal[type] = -statCh;
+	}
+
+	return statCh + percentMax;
 }
 
 int Skill::normCalc(int posMult, int negMult, int type)
@@ -288,35 +318,6 @@ int Skill::percentCalc(int posMult, int negMult, int percentMax, int type)
 	checkForMaxMin(val, type);
 	checkForMiss();
 	return val;
-}
-
-int Skill::statChangeHandle(int stat, int posMult, int negMult, int percentMax)
-{
-	int statCh = 0;
-	for(int type = 2; type < 4; type++)
-	{
-		if(percent[type])
-		{
-			//percent
-		}
-		else
-		{
-			//norm
-		}
-
-		//If type is 2, stat change is negative (debuff)
-		if(type == 2)
-		{
-			statCh *= -1;
-		}
-		
-		//If persistent, store in oldVal
-		if(reapplyTurn[type] > 0)
-		{
-			oldVal[type] = -statCh;
-		}
-	}
-	return statCh + stat;
 }
 
 //******** TEXT *************
