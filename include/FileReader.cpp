@@ -78,7 +78,7 @@ void FileReader::loadAlly(std::vector<std::shared_ptr<Character>>& ally)
 		}
 		else if(inp == "Skill")
 		{
-			std::vector<int> tempStore;
+			std::vector<int> tempStore = ally[allyCounter]->getPossibleSkillNum();
 
 			while(allyFile.peek() != '\n')
 			{
@@ -211,6 +211,30 @@ void FileReader::loadSkill(std::vector<Skill*>& skillList)
 			else if(strInp == "Agility")
 			{
 				skillList[skillCounter]->setDebuffType(2);
+			}
+		}
+		else if(strInp == "Target")
+		{
+			skillFile >> strInp;
+			if(strInp == "SingleAlly")
+			{
+				skillList[skillCounter]->setTarget(type, 0);
+			}
+			else if(strInp == "SingleEnemy")
+			{
+				skillList[skillCounter]->setTarget(type, 1);
+			}
+			else if(strInp == "MultAlly")
+			{
+				skillList[skillCounter]->setTarget(type, 2);
+			}
+			else if(strInp == "MultEnemy")
+			{
+				skillList[skillCounter]->setTarget(type, 3);
+			}
+			else if(strInp == "Self")
+			{
+				skillList[skillCounter]->setTarget(type, 4);
 			}
 		}
 	}

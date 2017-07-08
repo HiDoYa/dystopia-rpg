@@ -24,6 +24,21 @@ Character::Character()
 	requiredExp = 1;
 
 	chance = 5;
+
+	currentHpBar.setSize(sf::Vector2f(250, 30));
+	maxHpBar.setSize(sf::Vector2f(250, 30));
+	currentManaBar.setSize(sf::Vector2f(250, 30));
+	maxManaBar.setSize(sf::Vector2f(250, 30));
+
+	currentHpBar.setColor(sf::Color::Red);
+
+	//Everybody starts off with these 3 basic skills
+	possibleSkillNum.push_back(0);
+	possibleSkillNum.push_back(1);
+	possibleSkillNum.push_back(2);
+	skillNum.push_back(0);
+	skillNum.push_back(1);
+	skillNum.push_back(2);
 }
 
 //********* MUTATORS *************

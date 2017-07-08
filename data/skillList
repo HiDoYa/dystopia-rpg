@@ -5,6 +5,7 @@ Accuracy 95
 EnemyPrio 10
 Crit 15
 Type Damage
+	Target SingleEnemy
 	Percent false
 	Reapply 0
 	Mult 1.5
@@ -18,6 +19,7 @@ Accuracy 95
 EnemyPrio 30
 Crit 0
 Type Buff
+	Target Self
 	BuffType Strength
 	Percent true
 	Reapply 3
@@ -32,6 +34,7 @@ Accuracy 95
 EnemyPrio 10
 Crit 15
 Type Damage
+	Target SingleEnemy
 	Percent false
 	Reapply 0
 	Mult 2
@@ -45,217 +48,9 @@ Accuracy 95
 EnemyPrio 10
 Crit 15
 Type Damage
+	Target SingleEnemy
 	Percent false
 	Reapply 0
 	Mult 2
 	Max 150
 	Min 15
-
-Skill 4
-Name TO_REPLACE
-ManaCost 10
-Accuracy 95
-EnemyPrio 10
-Crit 15
-Type Damage
-	Percent false
-	Reapply 0
-	Mult 2
-	Max 150
-	Min 15
-
-Skill 5
-Name TO_REPLACE
-ManaCost 10
-Accuracy 95
-EnemyPrio 10
-Crit 15
-Type Damage
-	Percent false
-	Reapply 0
-	Mult 2
-	Max 150
-	Min 15
-
-Skill 6
-Name TO_REPLACE
-ManaCost 10
-Accuracy 95
-EnemyPrio 10
-Crit 15
-Type Damage
-	Percent false
-	Reapply 0
-	Mult 2
-	Max 150
-	Min 15
-
-Skill 7
-Name TO_REPLACE
-ManaCost 10
-Accuracy 95
-EnemyPrio 10
-Crit 15
-Type Damage
-	Percent false
-	Reapply 0
-	Mult 2
-	Max 150
-	Min 15
-
-Skill 8
-Name TO_REPLACE
-ManaCost 10
-Accuracy 95
-EnemyPrio 10
-Crit 15
-Type Damage
-	Percent false
-	Reapply 0
-	Mult 2
-	Max 150
-	Min 15
-
-Skill 9
-Name TO_REPLACE
-ManaCost 10
-Accuracy 95
-EnemyPrio 10
-Crit 15
-Type Damage
-	Percent false
-	Reapply 0
-	Mult 2
-	Max 150
-	Min 15
-
-Skill 10
-Name TO_REPLACE
-ManaCost 10
-Accuracy 95
-EnemyPrio 10
-Crit 15
-Type Damage
-	Percent false
-	Reapply 0
-	Mult 2
-	Max 150
-	Min 15
-
-Skill 11
-Name TO_REPLACE
-ManaCost 10
-Accuracy 95
-EnemyPrio 10
-Crit 15
-Type Damage
-	Percent false
-	Reapply 0
-	Mult 2
-	Max 150
-	Min 15
-
-Skill 12
-Name TO_REPLACE
-ManaCost 10
-Accuracy 95
-EnemyPrio 10
-Crit 15
-Type Damage
-	Percent false
-	Reapply 0
-	Mult 2
-	Max 150
-	Min 15
-
-Skill 13
-Name TO_REPLACE
-ManaCost 10
-Accuracy 95
-EnemyPrio 10
-Crit 15
-Type Damage
-	Percent false
-	Reapply 0
-	Mult 2
-	Max 150
-	Min 15
-
-Skill 14
-Name TO_REPLACE
-ManaCost 10
-Accuracy 95
-EnemyPrio 10
-Crit 15
-Type Damage
-	Percent false
-	Reapply 0
-	Mult 2
-	Max 150
-	Min 15
-
-Skill 15
-Name TO_REPLACE
-ManaCost 10
-Accuracy 95
-EnemyPrio 10
-Crit 15
-Type Damage
-	Percent false
-	Reapply 0
-	Mult 2
-	Max 150
-	Min 15
-
-Skill 16
-Name TO_REPLACE
-ManaCost 10
-Accuracy 95
-EnemyPrio 10
-Crit 15
-Type Damage
-	Percent false
-	Reapply 0
-	Mult 2
-	Max 150
-	Min 15
-
-Skill 17
-Name TO_REPLACE
-ManaCost 10
-Accuracy 95
-EnemyPrio 10
-Crit 15
-Type Damage
-	Percent false
-	Reapply 0
-	Mult 2
-	Max 150
-	Min 15
-
-Skill 18
-Name TO_REPLACE
-ManaCost 10
-Accuracy 95
-EnemyPrio 10
-Crit 15
-Type Damage
-	Percent false
-	Reapply 0
-	Mult 2
-	Max 150
-	Min 15
-
-Skill 19
-Name TO_REPLACE
-ManaCost 10
-Accuracy 95
-EnemyPrio 10
-Crit 15
-Type Damage
-	Percent false
-	Reapply 0
-	Mult 2
-	Max 150
-	Min 15
-

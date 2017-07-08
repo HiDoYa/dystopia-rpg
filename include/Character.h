@@ -6,6 +6,11 @@
 class Character: public SpriteManager
 {
 	private:
+		sf::RectangleShape currentHpBar;
+		sf::RectangleShape maxHpBar;
+		sf::RectangleShape currentManaBar;
+		sf::RectangleShape maxManaBar;
+
 		//Attributes
 		int level;
 		int currentHp;

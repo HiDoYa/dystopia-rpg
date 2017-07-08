@@ -66,7 +66,6 @@ void Battle::setupBattle(std::vector<std::shared_ptr<Character>> enemyList,
 {
 	std::cout << "setupBattle\n";
 
-	//TODO Open file and get ally attacks 
 	//TODO Create function that updates the textures of circles (for skills) for when the ally moves to a different grid place
 	
 	//Initialize for clearing all previous battle data
@@ -94,7 +93,7 @@ void Battle::setupBattle(std::vector<std::shared_ptr<Character>> enemyList,
 	}
 
 	//Initialize enemy
-	int numEnemies = rand() % 4 + 1;
+	int numEnemies = rand() % 5 + 1;
 	for(int i = 0; i < numEnemies; i++)
 	{
 		//Chooses enemy from list
@@ -173,19 +172,21 @@ void Battle::findFastestChar(int& currentBattleState)
 			}
 		}
 	}
-
 	//Set flag to false
-	if(nextCharType == 0)
+	else if(nextCharType == 0)
 	{
 		ally[nextCharCounter]->setCanAtk(false);
+
+		//Current state is done
+		currentBattleState = 1;
 	}
 	else if(nextCharType == 1)
 	{
 		enemy[nextCharCounter]->setCanAtk(false);
-	}
 
-	//Current state is done
-	currentBattleState = 1;
+		//Current state is done
+		currentBattleState = 1;
+	}
 }
 
 //********** BATTLE STATE 1 ****************
@@ -199,6 +200,7 @@ void Battle::statusHandle(int& currentBattleState)
 		case 0:
 			//Ally attack
 			currentBattleState = 2;
+			break;
 		case 1:
 			//Enemy attack
 			currentBattleState = 4;
@@ -209,7 +211,6 @@ void Battle::statusHandle(int& currentBattleState)
 void Battle::checkForStatus()
 {
 	std::cout << "checkforStatus\n";
-	//TODO Finish this
 	switch (nextCharType)
 	{
 		case 0:
@@ -546,6 +547,7 @@ void Battle::findSingularFocus()
 			singularEnemyFocus = true;
 		}
 	}
+	std::cout << "SingularAllyFocus: " << singularAllyFocus << "  SingularEnemyFocus: " << singularEnemyFocus << '\n';
 }
 
 void Battle::changeAllyFocus()
