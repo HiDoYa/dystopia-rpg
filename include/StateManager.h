@@ -13,8 +13,8 @@ class StateManager
 		std::vector<bool> stateFlag;
 	
 		//Menu (state 0)
-		bool menuLoaded;
 		MainMenu mainMenu;
+		bool menuLoaded;
 
 		//Map (state 1)
 		bool mapLoaded;

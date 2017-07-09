@@ -1,3 +1,4 @@
+#include "ClickButton.h"
 #include "Character.h"
 #include "Skill.h"
 #include "UIOverlay.h"
@@ -14,7 +15,9 @@ class Battle
 		//TODO Keep "skills" in file for enemy, file for ally. When accessing skill, only use the number (id number associated with skill)
 
 		//Ally options
-		std::vector<std::shared_ptr<sf::CircleShape>> allyOptions; //Stores actual option shapes
+		std::vector<std::shared_ptr<ClickButton>> allyOptions; //Stores actual option shapes
+		sf::Color allyOptionSelect;
+		sf::Color allyOptionDeselect;
 		int currentPlayerForOption;                //Stores which character to show the options around
 		int currentOptionAlly;                     //Stores the option chosen by ally
 		int currentOptionEnemy;                    //Stores the skill the enemy chooses
@@ -84,10 +87,8 @@ class Battle
 		void enemyStatusEffect();
 		
 		//Battle state 2
-		void allySkillChoiceHandler(int&);
+		void allySkillChoiceHandler(int&, sf::RenderWindow&);
 		void setCirclePos();
-		void changeCurrentSkill();
-		bool chooseCurrentSkill();
 
 		//Battle state 3
 		void allyChooseFocus(int&);

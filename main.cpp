@@ -5,6 +5,7 @@
 //Game classes
 #include "include/Battle.h"
 #include "include/Character.h"
+#include "include/ClickButton.h"
 #include "include/Dialogue.h"
 #include "include/FileReader.h"
 #include "include/MainMenu.h"

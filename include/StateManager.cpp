@@ -65,10 +65,7 @@ void StateManager::loadMenu()
 
 void StateManager::updateMenu(sf::RenderWindow& win)
 {
-	mainMenu.scroll();
-	mainMenu.currentlySelectedIndicate();
-
-	switch (mainMenu.selection())
+	switch (mainMenu.clickCheck(win))
 	{
 		case 0:
 			//Starts game
@@ -82,9 +79,6 @@ void StateManager::updateMenu(sf::RenderWindow& win)
 			win.close();
 			break;
 	}
-
-	//Draw bg
-	mainMenu.drawSprite(win);
 
 	//Draw menu
 	mainMenu.drawAll(win);
@@ -244,7 +238,7 @@ void StateManager::updateBattle(sf::RenderWindow& win, sf::View& view)
 			break;
 		//[Ally] Options display and user chooses next course of action
 		case 2:
-			battle->allySkillChoiceHandler(currentBattleState);
+			battle->allySkillChoiceHandler(currentBattleState, win);
 			break;
 		//[Ally] If targetable skill, choose who to target. Else, go straight to state 5
 		case 3:

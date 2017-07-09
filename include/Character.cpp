@@ -30,7 +30,7 @@ Character::Character()
 	currentManaBar.setSize(sf::Vector2f(250, 30));
 	maxManaBar.setSize(sf::Vector2f(250, 30));
 
-	currentHpBar.setColor(sf::Color::Red);
+	currentHpBar.setFillColor(sf::Color::Red);
 
 	//Everybody starts off with these 3 basic skills
 	possibleSkillNum.push_back(0);

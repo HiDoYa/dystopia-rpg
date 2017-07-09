@@ -50,11 +50,15 @@ Battle::Battle()
 	//Creates 6 circles for skills
 	for(int i = 0; i < 6; i++)
 	{
-		std::shared_ptr<sf::CircleShape> tempPtr (new sf::CircleShape);
+		std::shared_ptr<ClickButton> tempPtr (new ClickButton(1));
+		tempPtr->getCirc()->setRadius(25);
 		allyOptions.push_back(tempPtr);
-		allyOptions[i]->setRadius(25);
-		allyOptions[i]->setFillColor(sf::Color(150, 196, 255));
+		currentOptionAlly = i;
 	}
+
+	//TODO Set colors
+	allyOptionSelect = sf::Color(sf::Color::Blue);
+	allyOptionDeselect = sf::Color(150, 196, 255);
 
 	//Seeding
 	srand(time(NULL));
@@ -348,13 +352,18 @@ void Battle::enemyStatusEffect()
 	}
 }
 //********** BATTLE STATE 2 ****************
-void Battle::allySkillChoiceHandler(int& currentBattleState)
+void Battle::allySkillChoiceHandler(int& currentBattleState, sf::RenderWindow& win)
 {
 	std::cout << "allySkillChoiceHandler\n";
-	changeCurrentSkill();
-	if(chooseCurrentSkill())
+	setCirclePos();
+
+	for(int i = 0; i < allyOptions.size(); i++)
 	{
-		currentBattleState = 3;
+		if(allyOptions[i]->mouseClickedInButton(allyOptionSelect, allyOptionDeselect, win))
+		{
+			currentOptionAlly = i;
+			currentBattleState = 3;
+		}
 	}
 }
 
@@ -363,121 +372,8 @@ void Battle::setCirclePos()
 	std::cout << "setCirclePos\n";
 	for(int i = 0; i < allyOptions.size(); i++)
 	{
-		allyOptions[i]->setPosition(optionsPos[i] + allyPos[nextCharCounter]);
+		allyOptions[i]->getCirc()->setPosition(optionsPos[i] + allyPos[nextCharCounter]);
 	}
-}
-
-void Battle::changeCurrentSkill()
-{
-	std::cout << "changeCurrentSkill\n";
-	//Moves circle to the current ally
-	setCirclePos();
-
-	bool wPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::W);
-	bool aPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::A);
-	bool sPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::S);
-	bool dPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::D);
-
-	//Reset and prevent full press
-	if(!wPressed)
-	{
-		wNotPressed = true;
-	}
-	if(!aPressed)
-	{
-		aNotPressed = true;
-	}
-	if(!sPressed)
-	{
-		sNotPressed = true;
-	}
-	if(!dPressed)
-	{
-		dNotPressed = true;
-	}
-
-	//If key was released before being typed again
-	if(wPressed && wNotPressed)
-	{
-		wNotPressed = false;
-		currentOptionAlly--;
-		
-		//Special exceptions
-		if(currentOptionAlly == -1)
-		{
-			currentOptionAlly = 0;
-		}
-		else if(currentOptionAlly == 2)
-		{
-			currentOptionAlly = 3;
-		}
-	}
-	if(aPressed && aNotPressed)
-	{
-		aNotPressed = false;
-		currentOptionAlly -= 3;
-
-		//Special exceptions
-		if(currentOptionAlly < 0)
-		{
-			currentOptionAlly += 3;
-		}
-	}
-	if(sPressed && sNotPressed)
-	{
-		sNotPressed = false;
-		currentOptionAlly++;
-		
-		//Special exceptions
-		if(currentOptionAlly == 6)
-		{
-			currentOptionAlly = 5;
-		}
-		else if(currentOptionAlly == 3)
-		{
-			currentOptionAlly = 2;
-		}
-	}
-	if(dPressed && dNotPressed)
-	{
-		dNotPressed = false;
-		currentOptionAlly += 3;
-
-		//Special exceptions
-		if(currentOptionAlly > 5)
-		{
-			currentOptionAlly -= 3;
-		}
-	}
-	
-	//Reset all colors
-	for(int i = 0; i < allyOptions.size(); i++)
-	{
-		allyOptions[i]->setFillColor(sf::Color(160, 196, 255));
-	}
-
-	//Highlight current
-	allyOptions[currentOptionAlly]->setFillColor(sf::Color::Blue);
-}
-
-bool Battle::chooseCurrentSkill()
-{
-	std::cout << "chooseCurrentSkill\n";
-	bool spacePressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
-
-	if(!spacePressed)
-	{
-		spaceNotPressed = true;
-	}
-
-
-	//Go to next battle state with currentOptionAlly storing the skill to use
-	if(spacePressed && spaceNotPressed)
-	{
-		spaceNotPressed = false;
-		return true;
-	}
-	return false;
 }
 
 //*********** BATTLE STATE 3 *********************
@@ -707,7 +603,6 @@ void Battle::enemyChooseEnemy()
 			}
 		}
 	}
-
 	//If there are allies in the front row, there is a 2/3 chance of the ally being selected from the front and 1/3 chance of the ally being selected from the back
 	if(allyInFront.size() > 0)
 	{
@@ -1657,7 +1552,7 @@ void Battle::drawAll(sf::RenderWindow& win, int currentBattleState)
 	{
 		for(int i = 0; i < allyOptions.size(); i++)
 		{
-			win.draw(*allyOptions[i]);
+			allyOptions[i]->drawAll(win);
 		}
 	}
 }
