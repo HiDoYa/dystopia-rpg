@@ -27,9 +27,12 @@ class ClickButton
 		//Text inside button
 		void centerText();
 
-		//Col1 is for selected, col2 is for deselected
+		//Col1 is for selected, col2 is for deselected colors
+		//Texture1 and texture2 is for image names
 		bool mouseInButton(sf::Color, sf::Color, sf::RenderWindow&);
+		bool mouseInButton(std::string, std::string, sf::RenderWindow&);
 		bool mouseClickedInButton(sf::Color, sf::Color, sf::RenderWindow&);
+		bool mouseClickedInButton(std::string, std::string, sf::RenderWindow&);
 
 		void drawAll(sf::RenderWindow&);
 };

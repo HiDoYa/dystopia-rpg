@@ -7,8 +7,8 @@ MainMenu::MainMenu()
 	//TODO Add bgm
 	
 	//Set color
-	unselected = sf::Color(35, 83, 160);
-	selected = sf::Color(96, 157, 255);
+	unselected = sf::Color(35, 83, 160, 150);
+	selected = sf::Color(96, 157, 255, 255);
 
 	//Set rectangle
 	startButton.getRect()->setSize(sf::Vector2f(400, 100));

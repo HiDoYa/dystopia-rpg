@@ -107,9 +107,63 @@ bool ClickButton::mouseInButton(sf::Color col1, sf::Color col2, sf::RenderWindow
 	return false;
 }
 
+bool ClickButton::mouseInButton(std::string texture1, std::string texture2, sf::RenderWindow& win)
+{
+	sf::Vector2i mouseCoords = sf::Mouse::getPosition(win);
+
+	if(type == 0)
+	{
+		int startX = rect.getPosition().x;
+		int endX = rect.getPosition().x + rect.getSize().x;
+		int startY = rect.getPosition().y;
+		int endY = rect.getPosition().y + rect.getSize().y;
+
+		if(mouseCoords.x >= startX && mouseCoords.x <= endX &&
+		   mouseCoords.y >= startY && mouseCoords.y <= endY)
+		{
+			rect.setTexture(texture1);
+			return true;
+		}
+
+		rect.setTexture(texture2);
+	}
+	else if(type == 1)
+	{
+		float rad = circ.getRadius();
+		float posX = circ.getPosition().x + rad;
+		float posY = circ.getPosition().y + rad;
+
+		float diffX = posX - mouseCoords.x;
+		float diffY = posY - mouseCoords.y;
+
+		if(sqrt(diffX * diffX + diffY * diffY) < rad)
+		{
+			circ.setTexture(texture1);
+			return true;
+		}
+
+		circ.setTexture(texture2);
+	}
+
+	return false;
+}
+
 bool ClickButton::mouseClickedInButton(sf::Color col1, sf::Color col2, sf::RenderWindow& win)
 {
 	bool mouseInside = mouseInButton(col1, col2, win);
+	bool mouseClicked = sf::Mouse::isButtonPressed(sf::Mouse::Left);
+
+	if(mouseInside && mouseClicked)
+	{
+		return true;
+	}
+
+	return false;
+}
+
+bool ClickButton::mouseClickedInButton(std::string texture1, std::string texture2, sf::RenderWindow& win)
+{
+	bool mouseInside = mouseInButton(texture1, texture2, win);
 	bool mouseClicked = sf::Mouse::isButtonPressed(sf::Mouse::Left);
 
 	if(mouseInside && mouseClicked)
