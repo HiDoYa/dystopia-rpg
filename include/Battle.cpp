@@ -12,8 +12,6 @@ Battle::Battle()
 	currentOptionEnemy = 0;
 
 	currentTime = lastTime = 0;
-	newPos = 0;
-	blinkTurn = true;
 	goalPlace = 0;
 	currentTarget = 0;
 	qNotPressed = wNotPressed = aNotPressed = sNotPressed = dNotPressed = false;
@@ -24,28 +22,29 @@ Battle::Battle()
 	attackXDisp = 150;
 
 	//Ally positions
-	allyPos.push_back(sf::Vector2f(650, 200));
-	allyPos.push_back(sf::Vector2f(650, 400));
-	allyPos.push_back(sf::Vector2f(650, 600));
-	allyPos.push_back(sf::Vector2f(850, 200));
-	allyPos.push_back(sf::Vector2f(850, 400));
-	allyPos.push_back(sf::Vector2f(850, 600));
+	allyPos = {sf::Vector2f(650, 200),
+		   sf::Vector2f(650, 400),
+		   sf::Vector2f(650, 600),
+		   sf::Vector2f(850, 200),
+		   sf::Vector2f(850, 200),
+		   sf::Vector2f(850, 400),
+		   sf::Vector2f(850, 600)};
 
 	//Enemy Positions
-	enemyPos.push_back(sf::Vector2f(150, 200));
-	enemyPos.push_back(sf::Vector2f(150, 400));
-	enemyPos.push_back(sf::Vector2f(150, 600));
-	enemyPos.push_back(sf::Vector2f(350, 200));
-	enemyPos.push_back(sf::Vector2f(350, 400));
-	enemyPos.push_back(sf::Vector2f(350, 600));
+	enemyPos = {sf::Vector2f(150, 200),
+		    sf::Vector2f(150, 400),
+		    sf::Vector2f(150, 600),
+		    sf::Vector2f(350, 200),
+		    sf::Vector2f(350, 400),
+		    sf::Vector2f(350, 600)};
 
 	//Options positions
-	optionsPos.push_back(sf::Vector2f(-100, -100));
-	optionsPos.push_back(sf::Vector2f(-100, 0));
-	optionsPos.push_back(sf::Vector2f(-100, 100));
-	optionsPos.push_back(sf::Vector2f(100, -100));
-	optionsPos.push_back(sf::Vector2f(100, 0));
-	optionsPos.push_back(sf::Vector2f(100, 100));
+	optionsPos = {sf::Vector2f(-100, -100),
+		      sf::Vector2f(-100, 0),
+		      sf::Vector2f(-100, 100),
+		      sf::Vector2f(100, -100),
+		      sf::Vector2f(100, 0),
+		      sf::Vector2f(100, 100)};
 
 	//Creates 6 circles for skills
 	for(int i = 0; i < 6; i++)
@@ -130,9 +129,6 @@ void Battle::findFastestChar(int& currentBattleState)
 	int highestAgil = -1;
 	nextCharType = -1;
 	nextCharCounter = -1;
-
-	//Reset the position of rectangle (for changing position)
-	newPos = 0;
 
 	//Checks agility for allies
 	for(int i = 0; i < ally.size(); i++)
@@ -1029,23 +1025,7 @@ void Battle::allyChangePos()
 {
 	std::cout << "allyChangePos\n";
 	//TODO make the grid blink to display where to move to
-	blinkTurn = !blinkTurn;
-
-	tme = clk.getElapsedTime();
-	currentTime = tme.asMilliseconds();
-
-	if(lastTime + 300 > currentTime)
-	{
-		lastTime = currentTime;
-		if(blinkTurn && lastTime + 300 > currentTime)
-		{
-			gridRect[newPos].setFillColor(sf::Color::Red);
-		}
-		else if(!blinkTurn && lastTime + 300 > currentTime)
-		{
-			gridRect[newPos].setFillColor(sf::Color::Blue);
-		}
-	}
+	//Use buttons with alpha
 }
 
 //Calculate using the level difference between average of allies and the enemy

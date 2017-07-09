@@ -1,3 +1,5 @@
+#include <memory>
+
 #ifndef MAPMENU_H
 #define MAPMENU_H
 
@@ -7,10 +9,7 @@ class MapMenu
 		sf::Texture bgTexture;
 		sf::RectangleShape bgSprite;
 
-		std::vector<sf::Text> menuChoice;
-		std::Vector<sf::RectangleSHape> menuChoiceBoxes;
-
-		sf::RectangleShape currentSelection;
+		std::vector<std::shared_ptr<sf::ClickButton>> menuChoices;
 	public:
 };
 

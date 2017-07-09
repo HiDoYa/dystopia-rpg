@@ -15,9 +15,13 @@ class Battle
 		//TODO Keep "skills" in file for enemy, file for ally. When accessing skill, only use the number (id number associated with skill)
 
 		//Ally options
-		std::vector<std::shared_ptr<ClickButton>> allyOptions; //Stores actual option shapes
 		sf::Color allyOptionSelect;
 		sf::Color allyOptionDeselect;
+		std::vector<std::shared_ptr<ClickButton>> allyOptions; //Stores actual option shapes
+
+		//TODO Draw grid (when there aren't buttons). Make it transparent
+		std::vector<std::shared_ptr<ClickButton>> chooseAlly;  //Grid for allies
+		std::vector<std::shared_ptr<ClickButton>> chooseEnemy; //Grid for enemies
 		int currentPlayerForOption;                //Stores which character to show the options around
 		int currentOptionAlly;                     //Stores the option chosen by ally
 		int currentOptionEnemy;                    //Stores the skill the enemy chooses
@@ -27,11 +31,6 @@ class Battle
 		sf::Time tme;
 		float currentTime;
 		float lastTime;
-
-		//For changing position
-		std::vector<sf::RectangleShape> gridRect;
-		int newPos;
-		bool blinkTurn;
 
 		//For animation
 		int attackXDisp;
