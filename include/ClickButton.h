@@ -12,6 +12,7 @@ class ClickButton
 
 		sf::Font font;
 		sf::Text text;
+		sf::Texture texture;
 		sf::RectangleShape rect;
 		sf::CircleShape circ;
 	public:

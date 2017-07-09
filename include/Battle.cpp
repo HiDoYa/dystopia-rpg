@@ -21,6 +21,10 @@ Battle::Battle()
 	//Displacement during character turn
 	attackXDisp = 150;
 
+	//TODO Set colors
+	allyOptionSelect = sf::Color(sf::Color::Blue);
+	allyOptionDeselect = sf::Color(150, 196, 255);
+
 	//Ally positions
 	allyPos = {sf::Vector2f(650, 200),
 		   sf::Vector2f(650, 400),
@@ -52,12 +56,35 @@ Battle::Battle()
 		std::shared_ptr<ClickButton> tempPtr (new ClickButton(1));
 		tempPtr->getCirc()->setRadius(25);
 		allyOptions.push_back(tempPtr);
-		currentOptionAlly = i;
 	}
 
-	//TODO Set colors
-	allyOptionSelect = sf::Color(sf::Color::Blue);
-	allyOptionDeselect = sf::Color(150, 196, 255);
+	for(int i = 0; i < 6; i++)
+	{
+		std::shared_ptr<ClickButton> tempPtr (new ClickButton);
+		chooseAlly.push_back(tempPtr);
+		chooseAlly[i]->getRect()->setSize(sf::Vector2f(200, 200));
+	}
+
+	chooseAlly[0]->getRect()->setPosition(sf::Vector2f(550, 100));
+	chooseAlly[1]->getRect()->setPosition(sf::Vector2f(550, 300));
+	chooseAlly[2]->getRect()->setPosition(sf::Vector2f(550, 500));
+	chooseAlly[3]->getRect()->setPosition(sf::Vector2f(750, 100));
+	chooseAlly[4]->getRect()->setPosition(sf::Vector2f(750, 300));
+	chooseAlly[5]->getRect()->setPosition(sf::Vector2f(750, 500));
+
+	for(int i = 0; i < 6; i++)
+	{
+		std::shared_ptr<ClickButton> tempPtr (new ClickButton);
+		chooseEnemy.push_back(tempPtr);
+		chooseEnemy[i]->getRect()->setSize(sf::Vector2f(200, 200));
+	}
+
+	chooseEnemy[0]->getRect()->setPosition(sf::Vector2f(50, 100));
+	chooseEnemy[1]->getRect()->setPosition(sf::Vector2f(50, 300));
+	chooseEnemy[2]->getRect()->setPosition(sf::Vector2f(50, 500));
+	chooseEnemy[3]->getRect()->setPosition(sf::Vector2f(250, 100));
+	chooseEnemy[4]->getRect()->setPosition(sf::Vector2f(250, 300));
+	chooseEnemy[5]->getRect()->setPosition(sf::Vector2f(250, 500));
 
 	//Seeding
 	srand(time(NULL));
@@ -1512,6 +1539,13 @@ void Battle::newTurn()
 void Battle::drawAll(sf::RenderWindow& win, int currentBattleState)
 {
 	std::cout << "drawAll\n";
+
+	for(int i = 0; i < chooseAlly.size(); i++)
+	{
+		chooseAlly[i]->drawAll(win);
+		chooseEnemy[i]->drawAll(win);
+	}
+
 	for(int i = 0; i < ally.size(); i++)
 	{
 		if(ally[i]->getAlive())
