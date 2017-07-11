@@ -37,6 +37,7 @@ class SpriteManager
 		sf::Vector2f getPosition();
 
 		//Etc
+		bool mouseInSprite(sf::RenderWindow&);
 		void drawSprite(sf::RenderWindow&);
 		void updatePositionBattle();
 		void drawSpriteBattle(sf::RenderWindow&);

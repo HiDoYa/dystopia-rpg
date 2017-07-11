@@ -7,6 +7,7 @@
 class ClickButton
 {
 	private:
+		//TODO Add sound when clicked
 		//0 for rect, 1 for circle
 		int type;
 

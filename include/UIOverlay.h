@@ -1,26 +1,30 @@
+#include "ClickButton.h"
+
 #ifndef UIOVERLAY_H
 #define UIOVERLAY_H
 
 class UIOverlay
 {
 	private:
+		//Font Used
+		sf::Font font;
+
 		//Mainwrapper
 		sf::Texture mainWrapperTexture;
 		sf::Sprite mainWrapperSprite;
 
-		//Font Used
-		sf::Font font;
-
-		//Exp bar and level indicator
+		//Level indicator
 		sf::CircleShape levelNumWrapper;
 		sf::Text levelText;
 
-		//Equipped skills
-		std::vector<sf::Texture> skillIconTextures;
-		std::vector<sf::CircleShape> skillIcons;
-
 		//Currency and other data
 		sf::Text currencyText;
+
+		//Button
+		ClickButton menuOpen;
+		sf::Color menuSelected;
+		sf::Color menuDeselected;
+
 	public:
 		UIOverlay();
 
@@ -30,6 +34,7 @@ class UIOverlay
 		void setLevel(int);
 
 		//Etc
+		void checkForMapMenu(int&, sf::RenderWindow&);
 		void drawAll(sf::RenderWindow&);
 };
 

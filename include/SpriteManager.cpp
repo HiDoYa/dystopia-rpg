@@ -76,6 +76,11 @@ sf::Vector2f SpriteManager::getPosition()
 }
 
 //****************** ETC ********************
+bool SpriteManager::mouseInSprite(sf::RenderWindow& win)
+{
+	sf::Vector2i mousePos = sf::Mouse::getPosition(win);
+}
+
 void SpriteManager::drawSprite(sf::RenderWindow& win)
 {
 	win.draw(sprite);
@@ -104,7 +109,6 @@ void SpriteManager::drawSpriteBattle(sf::RenderWindow& win)
 
 	win.draw(name);
 }
-
 
 void SpriteManager::moveSprite(int x, int y)
 {

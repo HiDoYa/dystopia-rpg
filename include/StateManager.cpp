@@ -4,11 +4,13 @@
 #include <memory>
 
 #include "Battle.h"
+#include "BattleOverlay.h"
 #include "Character.h"
 #include "Dialogue.h"
 #include "FileReader.h"
 #include "MainMenu.h"
 #include "Map.h"
+#include "MapMenu.h"
 #include "MapPlayer.h"
 #include "Npc.h"
 #include "Skill.h"
@@ -44,19 +46,12 @@ StateManager::StateManager()
 }
 
 //********* MENU *************
-
-void StateManager::allMenu(sf::RenderWindow& win)
-{
-	loadMenu();
-	updateMenu(win);
-}
-
 void StateManager::loadMenu()
 {
 	if(!menuLoaded)
 	{
 		menuLoaded = true;
-		mainMenu.setTextureSprite("images/background.png");
+		mainMenu.setTextureSprite("images/ui/mainMenu.png");
 
 		fileReader.loadAlly(ally);
 		fileReader.loadSkill(skillList);
@@ -85,14 +80,6 @@ void StateManager::updateMenu(sf::RenderWindow& win)
 }
 
 //********* MAP *************
-
-void StateManager::allMap(sf::RenderWindow& win, sf::View& view)
-{
-	loadMap(win);
-	updateMap(win, view);
-	renderMap(win, view);
-}
-
 void StateManager::loadMap(sf::RenderWindow& win)
 {
 	if(!mapLoaded)
@@ -108,7 +95,7 @@ void StateManager::loadMap(sf::RenderWindow& win)
 
 		ground->setupBitmap(mapFileString + "ground", win);
 		collision->setupBitmap(mapFileString + "collision", win);
-		background->setupStatic("images/background.png");
+		background->setupStatic("images/maps/background0.png");
 
 		//Loads npcs from main map file
 		std::string fileNm = mapFileString + "main";
@@ -159,6 +146,8 @@ void StateManager::updateMap(sf::RenderWindow& win, sf::View& view)
 	player.encounter(encounterRate, currentState);
 
 	ground->newMapCheck(player, startPosX, startPosY, currentZone, currentMap, mapLoaded, encounterRate);
+	
+	overlay.checkForMapMenu(currentState, win);
 
 	//Set view
 	view.setCenter(player.getPosition());
@@ -196,14 +185,6 @@ void StateManager::renderMap(sf::RenderWindow& win, sf::View& view)
 }
 
 //******** BATTLE *********
-
-void StateManager::allBattle(sf::RenderWindow& win, sf::View& view)
-{
-	loadBattle(win, view);
-	updateBattle(win, view);
-	renderBattle(win, view);
-}
-
 void StateManager::loadBattle(sf::RenderWindow& win, sf::View& view)
 {
 	if(!battleLoaded)
@@ -283,6 +264,19 @@ void StateManager::renderBattle(sf::RenderWindow& win, sf::View& view)
 
 	//On top
 	overlay.drawAll(win);
+}
+
+//***** MAP MENU ******
+void StateManager::loadMapMenu(sf::RenderWindow& win)
+{
+}
+
+void StateManager::updateMapMenu(sf::RenderWindow& win)
+{
+}
+
+void StateManager::renderMapMenu(sf::RenderWindow& win)
+{
 }
 
 //***** ACCESSORS ******

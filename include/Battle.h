@@ -1,3 +1,4 @@
+#include "BattleOverlay.h"
 #include "ClickButton.h"
 #include "Character.h"
 #include "Skill.h"
@@ -12,6 +13,7 @@
 class Battle
 {
 	private:
+		BattleOverlay battleOverlay;
 		//TODO Keep "skills" in file for enemy, file for ally. When accessing skill, only use the number (id number associated with skill)
 
 		//Ally options
@@ -61,7 +63,7 @@ class Battle
 		//Characters and skills
 		std::vector<std::shared_ptr<Character>> ally;
 		std::vector<std::shared_ptr<Character>> enemy;
-		std::vector<Skill*> skillList; //Use for both ally and enemy
+		std::vector<std::shared_ptr<Skill>> skillList; //Use for both ally and enemy
 		int nextCharType;    //0 if ally, 1 if enemy, -1 if nobody
 		int nextCharCounter; //The index in the array (ally and enemy)
 
@@ -74,7 +76,7 @@ class Battle
 
 		void setupBattle(std::vector<std::shared_ptr<Character>>,
 				std::vector<std::shared_ptr<Character>>&,
-				std::vector<Skill*>, std::vector<int>);
+				std::vector<std::shared_ptr<Skill>>, std::vector<int>);
 
 		//Battle state 0
 		void findFastestChar(int&);

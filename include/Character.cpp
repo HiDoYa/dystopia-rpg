@@ -125,14 +125,14 @@ void Character::setBattlePos(int inp)
 	battlePos = inp;
 }
 
-void Character::setCurrentExp(int inp)
+void Character::setCurrentExp(float inp)
 {
 	currentExp = inp;
 }
 
 void Character::setRequiredExp()
 {
-	int numToPow = 1.05;
+	float numToPow = 1.05;
 	requiredExp = pow(numToPow, level);
 }
 
@@ -227,12 +227,12 @@ int Character::getBattlePos()
 	return battlePos;
 }
 
-int Character::getCurrentExp()
+float Character::getCurrentExp()
 {
 	return currentExp;
 }
 
-int Character::getRequiredExp()
+float Character::getRequiredExp()
 {
 	return requiredExp;
 }

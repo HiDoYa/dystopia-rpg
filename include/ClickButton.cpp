@@ -122,11 +122,11 @@ bool ClickButton::mouseInButton(std::string texture1, std::string texture2, sf::
 		   mouseCoords.y >= startY && mouseCoords.y <= endY)
 		{
 			texture.loadFromFile(texture1);
-			rect.setTexture(texture);
+			rect.setTexture(&texture);
 			return true;
 		}
 		texture.loadFromFile(texture2);
-		rect.setTexture(texture);
+		rect.setTexture(&texture);
 	}
 	else if(type == 1)
 	{
@@ -140,12 +140,12 @@ bool ClickButton::mouseInButton(std::string texture1, std::string texture2, sf::
 		if(sqrt(diffX * diffX + diffY * diffY) < rad)
 		{
 			texture.loadFromFile(texture1);
-			circ.setTexture(texture);
+			circ.setTexture(&texture);
 			return true;
 		}
 
 		texture.loadFromFile(texture2);
-		circ.setTexture(texture);
+		circ.setTexture(&texture);
 	}
 
 	return false;

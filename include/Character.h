@@ -38,8 +38,8 @@ class Character: public SpriteManager
 		int battlePos;
 
 		//For allies
-		int currentExp;
-		int requiredExp;
+		float currentExp;
+		float requiredExp;
 		
 		//For enemies
 		int chance;
@@ -67,7 +67,7 @@ class Character: public SpriteManager
 		void setCanAtk(bool);
 		void setBattlePos(int);
 
-		void setCurrentExp(int);
+		void setCurrentExp(float);
 		void setRequiredExp();
 
 		void setChance(int);
@@ -99,8 +99,8 @@ class Character: public SpriteManager
 		int getFinalHp();
 		int getBattlePos();
 
-		int getCurrentExp();
-		int getRequiredExp();
+		float getCurrentExp();
+		float getRequiredExp();
 
 		int getChance();
 

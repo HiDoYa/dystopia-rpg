@@ -5,6 +5,10 @@
 
 UIOverlay::UIOverlay()
 {
+	//TODO Mainwrapper
+	mainWrapperTexture.loadFromFile("mapUi.png");
+	mainWrapperSprite.setTexture(mainWrapperTexture);
+
 	//Font
 	font.loadFromFile("font/Ubuntu.ttf");
 	currencyText.setCharacterSize(15);
@@ -19,6 +23,17 @@ UIOverlay::UIOverlay()
 	levelText.setFont(font);
 	levelText.setColor(sf::Color::Black);
 	levelText.setCharacterSize(25);
+
+	//Button
+	menuOpen.getRect()->setSize(sf::Vector2f(200, 50));
+	menuOpen.getRect()->setPosition(sf::Vector2f(100, 100));
+
+	menuOpen.getText()->setString("Menu");
+	menuOpen.getText()->setCharacterSize(15);
+	menuOpen.centerText();
+
+	menuSelected = sf::Color::Red;
+	menuDeselected = sf::Color::Black;
 }
 
 //********** MUTATORS ************** 
@@ -48,6 +63,14 @@ void UIOverlay::setLevel(int lvl)
 
 //********* ETC ***********
 
+void UIOverlay::checkForMapMenu(int& currentState, sf::RenderWindow& win)
+{
+	if(menuOpen.mouseClickedInButton(menuSelected, menuDeselected, win))
+	{
+		currentState = 3;
+	}
+}
+
 void UIOverlay::drawAll(sf::RenderWindow& win)
 {
 	win.draw(mainWrapperSprite);
@@ -56,4 +79,6 @@ void UIOverlay::drawAll(sf::RenderWindow& win)
 	win.draw(levelText);
 
 	win.draw(currencyText);
+
+	menuOpen.drawAll(win);
 }

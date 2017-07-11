@@ -45,30 +45,35 @@ class StateManager
 		std::vector<std::shared_ptr<Character>> enemyListStore;
 
 		//Battle (state 2)
-		std::vector<Skill*> skillList;
+		std::vector<std::shared_ptr<Skill>> skillList;
 		std::vector<int> unlockedSkills;
 		bool battleLoaded;
 		std::unique_ptr<Battle> battle;
+
+		//Map Menu (state 3)
+		MapMenu mapMenu;
 
 	public:
 		StateManager();
 
 		//Menu
-		void allMenu(sf::RenderWindow&);
 		void loadMenu();
 		void updateMenu(sf::RenderWindow&);
 
 		//Map
-		void allMap(sf::RenderWindow&, sf::View&);
 		void loadMap(sf::RenderWindow&);
 		void updateMap(sf::RenderWindow&, sf::View&);
 		void renderMap(sf::RenderWindow&, sf::View&);
 
 		//Battle
-		void allBattle(sf::RenderWindow&, sf::View&);
 		void loadBattle(sf::RenderWindow&, sf::View&);
 		void updateBattle(sf::RenderWindow&, sf::View&);
 		void renderBattle(sf::RenderWindow&, sf::View&);
+
+		//Map Menu
+		void loadMapMenu(sf::RenderWindow&);
+		void updateMapMenu(sf::RenderWindow&);
+		void renderMapMenu(sf::RenderWindow&);
 
 		//Accessors
 		int getCurrentState();

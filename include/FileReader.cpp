@@ -95,7 +95,7 @@ void FileReader::loadAlly(std::vector<std::shared_ptr<Character>>& ally)
 	allyFile.close();
 }
 
-void FileReader::loadSkill(std::vector<Skill*>& skillList)
+void FileReader::loadSkill(std::vector<std::shared_ptr<Skill>>& skillList)
 {
 	std::string strInp;
 	std::ifstream skillFile("data/skillList");
@@ -108,7 +108,8 @@ void FileReader::loadSkill(std::vector<Skill*>& skillList)
 		if(strInp == "Skill")
 		{
 			skillCounter++;
-			skillList.push_back(new Skill);
+			std::shared_ptr<Skill> tempPtr (new Skill);
+			skillList.push_back(tempPtr);
 			//Get rid of the extra number
 			skillFile >> strInp;
 		}

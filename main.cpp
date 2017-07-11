@@ -4,12 +4,14 @@
 
 //Game classes
 #include "include/Battle.h"
+#include "include/BattleOverlay.h"
 #include "include/Character.h"
 #include "include/ClickButton.h"
 #include "include/Dialogue.h"
 #include "include/FileReader.h"
 #include "include/MainMenu.h"
 #include "include/Map.h"
+#include "include/MapMenu.h"
 #include "include/MapPlayer.h"
 #include "include/Npc.h"
 #include "include/SpriteManager.h"
@@ -53,21 +55,34 @@ int main()
 		}
 
 
-		switch (state.getCurrentState())
+		if(window.hasFocus())
 		{
-			case 0:
-				state.allMenu(window);
-				break;
-			case 1:
-				state.allMap(window, view);
-				break;
-			case 2:
-				state.allBattle(window, view);
-				break;
-		}
+			switch (state.getCurrentState())
+			{
+				case 0:
+					state.loadMenu();
+					state.updateMenu(window);
+					break;
+				case 1:
+					state.loadMap(window);
+					state.updateMap(window, view);
+					state.renderMap(window, view);
+					break;
+				case 2:
+					state.loadBattle(window, view);
+					state.updateBattle(window, view);
+					state.renderBattle(window, view);
+					break;
+				case 3:
+					state.loadMapMenu(window);
+					state.updateMapMenu(window);
+					state.renderMapMenu(window);
+					break;
+			}
 
-		//End current frame and display its contents on screen
-		window.display();
+			//End current frame and display its contents on screen
+			window.display();
+		}
 	}
 
 	std::cout << "Exiting in main.cpp\n";

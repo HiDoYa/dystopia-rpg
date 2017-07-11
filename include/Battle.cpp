@@ -92,7 +92,7 @@ Battle::Battle()
 
 void Battle::setupBattle(std::vector<std::shared_ptr<Character>> enemyList,
 		std::vector<std::shared_ptr<Character>>& allyList,
-		std::vector<Skill*> skillTemp, std::vector<int> allyInParty)
+		std::vector<std::shared_ptr<Skill>> skillTemp, std::vector<int> allyInParty)
 {
 	std::cout << "setupBattle\n";
 
@@ -265,7 +265,7 @@ void Battle::allyStatusEffect()
 		int numTurnsRemaining = ally[nextCharCounter]->getNumTurnsSkill()[i];
 		for(int j = 0; j < 4; j++)
 		{
-			Skill* currentPersistentSkill = skillList[ally[nextCharCounter]->getPersistentSkillNum()[i]];
+			std::shared_ptr<Skill> currentPersistentSkill = skillList[ally[nextCharCounter]->getPersistentSkillNum()[i]];
 			int reapplyNumTurns = currentPersistentSkill->getReapplyTurn()[j];
 			if(reapplyNumTurns > 0)
 			{
@@ -303,7 +303,6 @@ void Battle::allyStatusEffect()
 				//Do nothing if debuff isn't over yet
 				}
 			}
-			delete currentPersistentSkill;
 		}
 		if(numTurnsRemaining == 0)
 		{
@@ -325,7 +324,7 @@ void Battle::enemyStatusEffect()
 		int numTurnsRemaining = enemy[nextCharCounter]->getNumTurnsSkill()[i];
 		for(int j = 0; j < 4; j++)
 		{
-			Skill* currentPersistentSkill = skillList[enemy[nextCharCounter]->getPersistentSkillNum()[i]];
+			std::shared_ptr<Skill> currentPersistentSkill = skillList[enemy[nextCharCounter]->getPersistentSkillNum()[i]];
 			int reapplyNumTurns = currentPersistentSkill->getReapplyTurn()[j];
 			if(reapplyNumTurns > 0)
 			{
@@ -363,7 +362,6 @@ void Battle::enemyStatusEffect()
 					//Do nothing if debuff isn't over yet
 				}
 			}
-			delete currentPersistentSkill;
 		}
 		if(numTurnsRemaining == 0)
 		{
@@ -1569,6 +1567,8 @@ void Battle::drawAll(sf::RenderWindow& win, int currentBattleState)
 			allyOptions[i]->drawAll(win);
 		}
 	}
+
+	battleOverlay.drawAll(win);
 }
 
 //*************** UTILITY *******************
