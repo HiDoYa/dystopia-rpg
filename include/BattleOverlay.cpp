@@ -5,7 +5,7 @@
 
 BattleOverlay::BattleOverlay()
 {
-	bgTexture.loadFromFile("ui/battleUi");
+	bgTexture.loadFromFile("images/ui/battleUi.png");
 	bgSprite.setTexture(&bgTexture);
 
 	font.loadFromFile("font/Ubuntu.ttf");

@@ -14,16 +14,18 @@ class UIOverlay
 		sf::Sprite mainWrapperSprite;
 
 		//Level indicator
-		sf::CircleShape levelNumWrapper;
 		sf::Text levelText;
 
 		//Currency and other data
 		sf::Text currencyText;
 
 		//Button
-		ClickButton menuOpen;
+		ClickButton charButton;
+		ClickButton skillButton;
+		ClickButton battlePosButton;
 		sf::Color menuSelected;
 		sf::Color menuDeselected;
+
 
 	public:
 		UIOverlay();
@@ -34,7 +36,7 @@ class UIOverlay
 		void setLevel(int);
 
 		//Etc
-		void checkForMapMenu(int&, sf::RenderWindow&);
+		bool checkForMapMenu(int&, sf::RenderWindow&);
 		void drawAll(sf::RenderWindow&);
 };
 

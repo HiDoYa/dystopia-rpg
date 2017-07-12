@@ -34,6 +34,7 @@ StateManager::StateManager()
 	menuLoaded = false;
 	mapLoaded = false;
 	battleLoaded = false;
+	mapMenuLoaded = false;
 
 	battle.reset(new Battle);
 
@@ -43,6 +44,7 @@ StateManager::StateManager()
 	//Event has false and true by default
 	stateFlag.push_back(false);
 	stateFlag.push_back(true);
+
 }
 
 //********* MENU *************
@@ -147,7 +149,10 @@ void StateManager::updateMap(sf::RenderWindow& win, sf::View& view)
 
 	ground->newMapCheck(player, startPosX, startPosY, currentZone, currentMap, mapLoaded, encounterRate);
 	
-	overlay.checkForMapMenu(currentState, win);
+	if(overlay.checkForMapMenu(menuOption, win))
+	{
+		currentState = 3;
+	}
 
 	//Set view
 	view.setCenter(player.getPosition());
@@ -180,8 +185,8 @@ void StateManager::renderMap(sf::RenderWindow& win, sf::View& view)
 	//TODO High ground
 	
 	//Always on top
-	textbox.drawAll(win);
 	overlay.drawAll(win);
+	textbox.drawAll(win);
 }
 
 //******** BATTLE *********
@@ -269,6 +274,10 @@ void StateManager::renderBattle(sf::RenderWindow& win, sf::View& view)
 //***** MAP MENU ******
 void StateManager::loadMapMenu(sf::RenderWindow& win)
 {
+	if(!mapMenuLoaded)
+	{
+		mapMenuLoaded = true;
+	}
 }
 
 void StateManager::updateMapMenu(sf::RenderWindow& win)

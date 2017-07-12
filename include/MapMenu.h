@@ -10,10 +10,25 @@ class MapMenu
 		sf::Texture bgTexture;
 		sf::RectangleShape bgSprite;
 
-		std::vector<std::shared_ptr<ClickButton>> menuChoices;
+		std::vector<std::shared_ptr<ClickButton>> characterButtons;
+
+		//Characters
 		std::vector<std::shared_ptr<sf::RectangleShape>> characterCards;
+
+		//Skills
+
+		//Battle Positions
 	public:
 		MapMenu();
+		//Characters
+		void setupChar(std::vector<std::-shared_ptr<Character>>&);
+
+
+		//Skills
+		
+		
+		//Battle Positions
+
 		void drawAll(sf::RenderWindow&);
 };
 

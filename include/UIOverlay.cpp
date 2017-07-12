@@ -6,16 +6,13 @@
 UIOverlay::UIOverlay()
 {
 	//TODO Mainwrapper
-	mainWrapperTexture.loadFromFile("mapUi.png");
+	mainWrapperTexture.loadFromFile("images/ui/mapUi.png");
 	mainWrapperSprite.setTexture(mainWrapperTexture);
 
 	//Font
 	font.loadFromFile("font/Ubuntu.ttf");
 	currencyText.setCharacterSize(15);
 
-	//level wrapper
-	levelNumWrapper.setRadius(30);
-	
 	//Currency Text
 	currencyText.setFont(font);
 	
@@ -25,9 +22,17 @@ UIOverlay::UIOverlay()
 	levelText.setCharacterSize(25);
 
 	//Button
-	menuOpen.getRect()->setSize(sf::Vector2f(200, 50));
-	menuOpen.getText()->setString("Menu");
-	menuOpen.getText()->setCharacterSize(15);
+	charButton.getRect()->setSize(sf::Vector2f(200, 50));
+	charButton.getText()->setString("Characters");
+	charButton.getText()->setCharacterSize(15);
+
+	skillButton.getRect()->setSize(sf::Vector2f(200, 50));
+	skillButton.getText()->setString("Skills");
+	skillButton.getText()->setCharacterSize(15);
+
+	battlePosButton.getRect()->setSize(sf::Vector2f(200, 50));
+	battlePosButton.getText()->setString("Battle");
+	battlePosButton.getText()->setCharacterSize(15);
 
 	menuSelected = sf::Color::Red;
 	menuDeselected = sf::Color::Black;
@@ -41,13 +46,13 @@ void UIOverlay::setPosition(sf::View view)
 	int y = view.getCenter().y - (view.getSize().y / 2);
 	mainWrapperSprite.setPosition(x, y);
 
-	levelNumWrapper.setPosition(sf::Vector2f(x + 10, y + 20));
-
 	currencyText.setPosition(sf::Vector2f(x + 900, y + 30));
 
 	levelText.setPosition(sf::Vector2f(x + 33, y + 40));
 
-	menuOpen.updatePositionMap(100, 100, view);
+	charButton.updatePositionMap(100, 700, view);
+	skillButton.updatePositionMap(350, 700, view);
+	battlePosButton.updatePositionMap(600, 700, view);
 }
 
 void UIOverlay::setCurrency(int cur)
@@ -62,22 +67,38 @@ void UIOverlay::setLevel(int lvl)
 
 //********* ETC ***********
 
-void UIOverlay::checkForMapMenu(int& currentState, sf::RenderWindow& win)
+bool UIOverlay::checkForMapMenu(int& menuOption, sf::RenderWindow& win)
 {
-	if(menuOpen.mouseClickedInButton(menuSelected, menuDeselected, win))
+	bool charBool = charButton.mouseClickedInButton(menuSelected, menuDeselected, win);
+	bool skillBool = skillButton.mouseClickedInButton(menuSelected, menuDeselected, win);
+	bool battlePosBool = battlePosButton.mouseClickedInButton(menuSelected, menuDeselected, win);
+	if(charBool)
 	{
-		currentState = 3;
+		menuOption = 0;
+		return true;
 	}
+	else if(skillBool)
+	{
+		menuOption = 1;
+		return true;
+	}
+	else if(battlePosBool)
+	{
+		menuOption = 2;
+		return true;
+	}
+	return false;
 }
 
 void UIOverlay::drawAll(sf::RenderWindow& win)
 {
 	win.draw(mainWrapperSprite);
 
-	win.draw(levelNumWrapper);
 	win.draw(levelText);
 
 	win.draw(currencyText);
 
-	menuOpen.drawAll(win);
+	charButton.drawAll(win);
+	skillButton.drawAll(win);
+	battlePosButton.drawAll(win);
 }
