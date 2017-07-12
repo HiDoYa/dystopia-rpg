@@ -11,6 +11,10 @@ class ClickButton
 		//0 for rect, 1 for circle
 		int type;
 
+		//For the map
+		int viewX;
+		int viewY;
+
 		sf::Font font;
 		sf::Text text;
 		sf::Texture texture;
@@ -36,6 +40,7 @@ class ClickButton
 		bool mouseClickedInButton(sf::Color, sf::Color, sf::RenderWindow&);
 		bool mouseClickedInButton(std::string, std::string, sf::RenderWindow&);
 
+		void updatePositionMap(int, int, sf::View);
 		void drawAll(sf::RenderWindow&);
 };
 

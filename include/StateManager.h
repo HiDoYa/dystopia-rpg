@@ -51,7 +51,7 @@ class StateManager
 		std::unique_ptr<Battle> battle;
 
 		//Map Menu (state 3)
-		MapMenu mapMenu;
+		//MapMenu mapMenu;
 
 	public:
 		StateManager();

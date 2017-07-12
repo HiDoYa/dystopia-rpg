@@ -26,11 +26,8 @@ UIOverlay::UIOverlay()
 
 	//Button
 	menuOpen.getRect()->setSize(sf::Vector2f(200, 50));
-	menuOpen.getRect()->setPosition(sf::Vector2f(100, 100));
-
 	menuOpen.getText()->setString("Menu");
 	menuOpen.getText()->setCharacterSize(15);
-	menuOpen.centerText();
 
 	menuSelected = sf::Color::Red;
 	menuDeselected = sf::Color::Black;
@@ -49,6 +46,8 @@ void UIOverlay::setPosition(sf::View view)
 	currencyText.setPosition(sf::Vector2f(x + 900, y + 30));
 
 	levelText.setPosition(sf::Vector2f(x + 33, y + 40));
+
+	menuOpen.updatePositionMap(100, 100, view);
 }
 
 void UIOverlay::setCurrency(int cur)

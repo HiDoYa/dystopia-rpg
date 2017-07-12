@@ -6,6 +6,8 @@
 
 ClickButton::ClickButton()
 {
+	//Not used by default
+	viewX = viewY = 0;
 	font.loadFromFile("font/Ubuntu.ttf");
 	text.setFont(font);
 	type = 0;
@@ -77,8 +79,8 @@ bool ClickButton::mouseInButton(sf::Color col1, sf::Color col2, sf::RenderWindow
 		int startY = rect.getPosition().y;
 		int endY = rect.getPosition().y + rect.getSize().y;
 
-		if(mouseCoords.x >= startX && mouseCoords.x <= endX &&
-		   mouseCoords.y >= startY && mouseCoords.y <= endY)
+		if(mouseCoords.x + viewX >= startX && mouseCoords.x + viewX <= endX &&
+		   mouseCoords.y + viewY >= startY && mouseCoords.y + viewY <= endY)
 		{
 			rect.setFillColor(col1);
 			return true;
@@ -175,6 +177,23 @@ bool ClickButton::mouseClickedInButton(std::string texture1, std::string texture
 	}
 
 	return false;
+}
+
+void ClickButton::updatePositionMap(int x, int y, sf::View view)
+{
+	viewX = view.getCenter().x - (view.getSize().x / 2);
+	viewY = view.getCenter().y - (view.getSize().y / 2);
+
+	if(type == 0)
+	{
+		rect.setPosition(viewX + x, viewY + y);
+	}
+	else if(type == 1)
+	{
+		circ.setPosition(viewX + x, viewY + y);
+	}
+
+	centerText();
 }
 
 void ClickButton::drawAll(sf::RenderWindow& win)

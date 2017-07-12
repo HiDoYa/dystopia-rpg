@@ -131,14 +131,12 @@ void Textbox::updatePosition(sf::View view)
 	name.setPosition(sf::Vector2f(posX + 20, posY + 20));
 	nextPrompt.setPosition(sf::Vector2f(posX + 750, posY + 120));
 
-	//TODO 
 	choiceBox.setPosition(sf::Vector2f(posX + 150, posY - 300));
 	choiceOne.setPosition(sf::Vector2f(posX + 170, posY - 250));
 	choiceTwo.setPosition(sf::Vector2f(posX + 170, posY - 150));
 
 	rec.setPosition(sf::Vector2f(posX, posY));
 
-	//TODO Sets the position of box 
 	if(currentChoice == 0)
 	{
 		curChoice.setPosition(sf::Vector2f(posX + 150, posY - 300));

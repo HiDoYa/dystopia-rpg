@@ -18,8 +18,8 @@ BattleOverlay::BattleOverlay()
 	currentCharDesc.setCharacterSize(15);
 	damageNumbers.setCharacterSize(15);
 
-	battleLog.setPosition(sf::Vector2i(100, 600));
-	currentCharDesc.setPosition(sf::Vector2i(100, 200));
+	battleLog.setPosition(sf::Vector2f(100, 600));
+	currentCharDesc.setPosition(sf::Vector2f(100, 200));
 }
 
 void BattleOverlay::showCurrentCharDesc()
