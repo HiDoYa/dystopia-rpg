@@ -10,19 +10,33 @@ ClickButton::ClickButton()
 	viewX = viewY = 0;
 	font.loadFromFile("font/Ubuntu.ttf");
 	text.setFont(font);
+	hoverText.setFont(font);
 	type = 0;
+	hover = false;
 }
 
 ClickButton::ClickButton(int inp)
 {
 	font.loadFromFile("font/Ubuntu.ttf");
 	text.setFont(font);
+	hoverText.setFont(font);
 	type = inp;
+	hover = false;
 }
 
 void ClickButton::setType(int inp)
 {
 	type = inp;
+}
+
+void ClickButton::setHoverText(bool inp)
+{
+	hover = inp;
+}
+
+sf::Text* ClickButton::getHoverText()
+{
+	return &hoverText;
 }
 
 sf::Text* ClickButton::getText()
@@ -66,6 +80,17 @@ void ClickButton::centerText()
 	yDisp = ((wrapperHeight - textHeight) / 2) + wrapperTop;
 
 	text.setPosition(xDisp, yDisp);
+	
+	if(hover)
+	{
+		textWidth = hoverText.getGlobalBounds().width;
+		textHeight = text.getGlobalBounds().height;
+		
+		xDisp = ((wrapperWidth - textWidth) / 2) + wrapperLeft;
+		yDisp = ((wrapperHeight - textHeight) / 2) + wrapperTop;
+
+		hoverText.setPosition(xDisp, yDisp - wrapperWidth * (3/4));
+	}
 }
 
 bool ClickButton::mouseInButton(sf::Color col1, sf::Color col2, sf::RenderWindow& win)
@@ -205,6 +230,11 @@ void ClickButton::drawAll(sf::RenderWindow& win)
 	else if(type == 1)
 	{
 		win.draw(circ);
+	}
+	
+	if(hover)
+	{
+		win.draw(hoverText);
 	}
 	win.draw(text);
 }

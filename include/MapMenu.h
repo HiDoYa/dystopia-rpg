@@ -1,4 +1,6 @@
 #include "ClickButton.h"
+#include "Character.h"
+#include "CharacterCards.h"
 #include <memory>
 
 #ifndef MAPMENU_H
@@ -7,13 +9,14 @@
 class MapMenu
 {
 	private:
+		//TODO Manipulate this
 		sf::Texture bgTexture;
 		sf::RectangleShape bgSprite;
 
-		std::vector<std::shared_ptr<ClickButton>> characterButtons;
-
 		//Characters
-		std::vector<std::shared_ptr<sf::RectangleShape>> characterCards;
+		std::vector<std::shared_ptr<ClickButton>> characterButtons;
+		CharacterCards characterCard;
+		bool charSelected;
 
 		//Skills
 
@@ -21,7 +24,8 @@ class MapMenu
 	public:
 		MapMenu();
 		//Characters
-		void setupChar(std::vector<std::-shared_ptr<Character>>&);
+		void setupChar(std::vector<std::shared_ptr<Character>>&);
+		void showCharacterCard();
 
 
 		//Skills

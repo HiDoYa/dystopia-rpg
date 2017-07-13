@@ -6,6 +6,7 @@
 #include "include/Battle.h"
 #include "include/BattleOverlay.h"
 #include "include/Character.h"
+#include "include/CharacterCards.h"
 #include "include/ClickButton.h"
 #include "include/Dialogue.h"
 #include "include/FileReader.h"
@@ -16,6 +17,7 @@
 #include "include/Npc.h"
 #include "include/SpriteManager.h"
 #include "include/Skill.h"
+#include "include/StatBar.h"
 #include "include/Textbox.h"
 #include "include/UIOverlay.h"
 

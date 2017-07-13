@@ -22,6 +22,8 @@ class SpriteManager
 		SpriteManager();
 
 		//Mutators
+		//TODO name and font shouldn't be in spriteManager
+		//TODO make another class wrapping spritemanager that includes battle sprites
 		void setName(std::string);
 		void setHpBar(int, int);
 		void setManaBar(int, int);
@@ -39,6 +41,7 @@ class SpriteManager
 		//Etc
 		bool mouseInSprite(sf::RenderWindow&);
 		void drawSprite(sf::RenderWindow&);
+
 		void updatePositionBattle();
 		void drawSpriteBattle(sf::RenderWindow&);
 		void moveSprite(int, int);

@@ -33,15 +33,16 @@ Character::Character()
 	currentHpBar.setFillColor(sf::Color::Red);
 
 	//Everybody starts off with these 3 basic skills
-	possibleSkillNum.push_back(0);
-	possibleSkillNum.push_back(1);
-	possibleSkillNum.push_back(2);
-	skillNum.push_back(0);
-	skillNum.push_back(1);
-	skillNum.push_back(2);
+	possibleSkillNum.push_back{0, 1, 2};
+	skillNum.push_back{0, 1, 2};
 }
 
 //********* MUTATORS *************
+void Character::setName(std::string inp)
+{
+	name = inp;
+}
+
 void Character::setLevel(int inp)
 {
 	level = inp;
@@ -151,6 +152,11 @@ void Character::setManaFinal(int inp)
 	manaFinal = inp;
 }
 //********* ACCESSORS ***********
+std::string Character::getName()
+{
+	return name;
+}
+
 int Character::getLevel()
 {
 	return level;

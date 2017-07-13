@@ -282,10 +282,25 @@ void StateManager::loadMapMenu(sf::RenderWindow& win)
 
 void StateManager::updateMapMenu(sf::RenderWindow& win)
 {
+	overlay.checkForMapMenu(menuOption, win);
 }
 
 void StateManager::renderMapMenu(sf::RenderWindow& win)
 {
+	switch(menuOption)
+	{
+		case 0:
+			mapMenu.drawAllChar(win);
+			break;
+		case 1:
+			mapMenu.drawAllSkills(win);
+			break;
+		case 2:
+			mapMenu.drawAllBattlePos(win);
+			break;
+	}
+
+	overlay.drawAll(win);
 }
 
 //***** ACCESSORS ******

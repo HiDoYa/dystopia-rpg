@@ -6,6 +6,8 @@
 class Character: public SpriteManager
 {
 	private:
+		std::string name;
+
 		sf::RectangleShape currentHpBar;
 		sf::RectangleShape maxHpBar;
 		sf::RectangleShape currentManaBar;
@@ -47,6 +49,7 @@ class Character: public SpriteManager
 		Character();
 
 		//****** Mutators ********
+		void setName(std::string);
 		void setLevel(int);
 		void setCurrentHp(int);
 		void setMaxHp(int);
@@ -76,6 +79,7 @@ class Character: public SpriteManager
 		void setManaFinal(int);
 
 		//****** Accessors ********
+		std::string getName();
 		int getLevel();
 		int getCurrentHp();
 		int getMaxHp();

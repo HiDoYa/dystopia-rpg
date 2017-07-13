@@ -7,27 +7,49 @@ MapMenu::MapMenu()
 {
 	//TODO
 	bgTexture.loadFromFile("test");
-	bgSprite.setTexture(bgTexture);
+	bgSprite.setTexture(&bgTexture);
+	charSelected = false;
 }
 
 void MapMenu::setupChar(std::vector<std::shared_ptr<Character>>& ally)
 {
+	charSelected = false;
 	for(int i = 0; i < ally.size(); i++)
 	{
 		std::shared_ptr<ClickButton> tempPtr (new ClickButton);
-		tempPtr.push_back(characterButtons);
+		characterButtons.push_back(tempPtr);
 		characterButtons[i]->getRect()->setSize(sf::Vector2f(200, 50));
-		characterButtons[i]->getRect()->setPosition(sf::Vector2f(200, 50));
+		characterButtons[i]->getRect()->setPosition(sf::Vector2f(200, 50 * i));
 		characterButtons[i]->getText()->setString(ally[i]->getName());
 	}
 }
 
-void MapMenu::drawAll(sf::RenderWindow& win)
+void MapMenu::showCharacterCard()
+{
+	characterCard.setup(*(ally[selected]));
+}
+
+void MapMenu::drawAllChar(sf::RenderWindow& win)
 {
 	win.draw(bgSprite);
 
-	for(int i = 0; i < characterButtons.size(); i++)
+	if(charSelected)
 	{
-		characterButtons[i]->drawAll(win);
+		characterCard.drawAll(win);
 	}
+	else
+	{
+		for(int i = 0; i < characterButtons.size(); i++)
+		{
+			characterButtons[i]->drawAll(win);
+		}
+	}
+}
+
+void MapMenu::drawAllSkills(sf::RenderWindow& win)
+{
+}
+
+void MapMenu::dawAllBattlePos(sf::RenderWindow& win)
+{
 }

@@ -10,6 +10,7 @@ class ClickButton
 		//TODO Add sound when clicked
 		//0 for rect, 1 for circle
 		int type;
+		bool hover;
 
 		//For the map
 		int viewX;
@@ -17,6 +18,7 @@ class ClickButton
 
 		sf::Font font;
 		sf::Text text;
+		sf::Text hoverText;
 		sf::Texture texture;
 		sf::RectangleShape rect;
 		sf::CircleShape circ;
@@ -25,7 +27,9 @@ class ClickButton
 		ClickButton(int);
 		
 		void setType(int);
+		void setHoverText(bool);
 
+		sf::Text* getHoverText();
 		sf::Text* getText();
 		sf::RectangleShape* getRect();
 		sf::CircleShape* getCirc();
