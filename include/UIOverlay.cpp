@@ -50,9 +50,9 @@ void UIOverlay::setPosition(sf::View view)
 
 	levelText.setPosition(sf::Vector2f(x + 33, y + 40));
 
-	charButton.updatePositionMap(100, 700, view);
-	skillButton.updatePositionMap(350, 700, view);
-	battlePosButton.updatePositionMap(600, 700, view);
+	charButton.updatePositionMap(25, 700, view);
+	skillButton.updatePositionMap(275, 700, view);
+	battlePosButton.updatePositionMap(525, 700, view);
 }
 
 void UIOverlay::setCurrency(int cur)

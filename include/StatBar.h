@@ -9,8 +9,6 @@ class StatBar
 		int sizeX;
 		int sizeY;
 
-		bool labelUse;
-
 		//0 is above, 1 is below, 2 is inside
 		int labelPos;
 		
@@ -21,7 +19,6 @@ class StatBar
 		sf::RectangleShape maxRect;
 	public:
 		StatBar();
-		void setLabelUse(bool);
 		void setLabelPos(int);
 		void setLabelSize(int);
 		sf::RectangleShape* getCurrentRect();
@@ -30,7 +27,7 @@ class StatBar
 		void setMaxSize(sf::Vector2f);
 		//setPosition must be used after text character size and box size
 		void setPosition(sf::Vector2f);
-		void setStats(int, int);
+		void setStats(int, int, std::string = "");
 		void updateSize();
 		void drawAll(sf::RenderWindow&);
 };

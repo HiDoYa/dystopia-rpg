@@ -272,18 +272,52 @@ void StateManager::renderBattle(sf::RenderWindow& win, sf::View& view)
 }
 
 //***** MAP MENU ******
-void StateManager::loadMapMenu(sf::RenderWindow& win)
+//TODO Remove view if not used
+void StateManager::loadMapMenu(sf::RenderWindow& win, sf::View view)
 {
 	if(!mapMenuLoaded)
 	{
 		mapMenuLoaded = true;
-		mapMenu.setupChar(ally);
+		switch(menuOption)
+		{
+			case 0:
+				mapMenu.setupChar(ally);
+				break;
+			case 1:
+				break;
+			case 2:
+				break;
+		}
+		mapMenu.setTitle(menuOption);
 	}
 }
 
-void StateManager::updateMapMenu(sf::RenderWindow& win)
+void StateManager::updateMapMenu(sf::RenderWindow& win, sf::View view)
 {
-	overlay.checkForMapMenu(menuOption, win);
+	//TODO Move all updatePosition to setup? (Don't need to rerun because view stays same)
+	if(overlay.checkForMapMenu(menuOption, win))
+	{
+		//Reload the menu
+		mapMenuLoaded = false;
+	}
+
+	mapMenu.updatePosition(view);
+
+	//Check for back button press
+	mapMenu.checkForBackButton(currentState, win);
+
+	switch(menuOption)
+	{
+		case 0:
+			mapMenu.checkForCharacterButton(ally, win);
+			//This needs to be run here because text height is determined one frame late
+			mapMenu.updateCharacterCardPosition(view);
+			break;
+		case 1:
+			break;
+		case 2:
+			break;
+	}
 }
 
 void StateManager::renderMapMenu(sf::RenderWindow& win)
@@ -302,6 +336,7 @@ void StateManager::renderMapMenu(sf::RenderWindow& win)
 	}
 
 	overlay.drawAll(win);
+	mapMenu.drawBack(win);
 }
 
 //***** ACCESSORS ******

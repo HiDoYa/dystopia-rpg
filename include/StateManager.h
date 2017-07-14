@@ -4,6 +4,8 @@
 class StateManager
 {
 	private:
+		//TODO Instead of making new font instance in classes, make one font instance in statemanager and pass them into various classes
+		//TODO Make "updatePosition" (uses "view") centralized: maybe wrapper?
 		//For reading data
 		FileReader fileReader;
 
@@ -73,8 +75,8 @@ class StateManager
 		void renderBattle(sf::RenderWindow&, sf::View&);
 
 		//Map Menu
-		void loadMapMenu(sf::RenderWindow&);
-		void updateMapMenu(sf::RenderWindow&);
+		void loadMapMenu(sf::RenderWindow&, sf::View);
+		void updateMapMenu(sf::RenderWindow&, sf::View);
 		void renderMapMenu(sf::RenderWindow&);
 
 		//Accessors

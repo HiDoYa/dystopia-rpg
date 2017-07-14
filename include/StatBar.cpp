@@ -6,14 +6,13 @@ StatBar::StatBar()
 {
 	font.loadFromFile("font/Ubuntu.ttf");
 	label.setFont(font);
-	current = max = sizeX = sizeY = 0;
-	labelUse = false;
-	labelPos = false;
-}
+	label.setCharacterSize(10);
 
-void StatBar::setLabelUse(bool inp)
-{
-	labelUse = inp;
+	current = max = sizeX = sizeY = 0;
+	labelPos = false;
+
+	maxRect.setFillColor(sf::Color::Black);
+	currentRect.setFillColor(sf::Color::Green);
 }
 
 void StatBar::setLabelPos(int inp)
@@ -54,35 +53,44 @@ void StatBar::setPosition(sf::Vector2f pos)
 {
 	currentRect.setPosition(pos);
 	maxRect.setPosition(pos);
-	if(labelUse)
+
+	int labelHeight = label.getGlobalBounds().height;
+	int labelPadding = labelHeight / 10;
+
+	switch(labelPos)
 	{
-		switch(labelPos)
-		{
-			case 0:
-				int labelHeight = label.getGlobalBounds().height;
-				//10 is for leaving some space (not snug)
-				label.setPosition(pos.x + 10, pos.y - height - 10);
-				break;
-			case 1:
-				label.setPosition(pos.x + 10, pos.y + sizeY + 10);
-				break;
-			case 2:
-				int labelHeight = label.getGlobalBounds().height;
-				int yDisp = (labelHeight / 2) - (sizeY / 2);
-				label.setPosition(pos.x + 10, pos.y + yDisp);
-				break;
-		}
+		case 0:
+			//10 is for leaving some space (not snug)
+			label.setPosition(pos.x + 10, pos.y - labelHeight - labelPadding);
+			break;
+		case 1:
+			label.setPosition(pos.x + 10, pos.y + sizeY + labelPadding);
+			break;
+		case 2:
+			int yDisp = (labelHeight / 2) - (sizeY / 2);
+			label.setPosition(pos.x + 10, pos.y + yDisp);
+			break;
 	}
 }
 
-void StatBar::setStats(int currentInp, int maxInp)
+void StatBar::setStats(int currentInp, int maxInp, std::string stat)
 {
 	current = currentInp;
 	max = maxInp;
+
 	updateSize();
+
+	//Set string
+	std::string labelInp;
+	if(stat != "")
+	{
+		labelInp = stat + ": ";
+	}
+	labelInp += std::to_string(currentInp) + " / " + std::to_string(maxInp);
+	label.setString(labelInp);
 }
 
-void Statbar::updateSize()
+void StatBar::updateSize()
 {
 	float currentSizeX = (float(current) / max) * sizeX;
 	currentRect.setSize(sf::Vector2f(currentSizeX, sizeY));
@@ -93,9 +101,5 @@ void StatBar::drawAll(sf::RenderWindow& win)
 {
 	win.draw(maxRect);
 	win.draw(currentRect);
-
-	if(labelUse)
-	{
-		win.draw(label);
-	}
+	win.draw(label);
 }

@@ -9,7 +9,9 @@ class CharacterCards
 	private:
 		sf::Font font;
 
+		//Image is the character's image
 		SpriteManager image;
+		//Background is just character card background
 		SpriteManager background;
 
 		sf::Text name;
@@ -25,7 +27,8 @@ class CharacterCards
 	public:
 		CharacterCards();
 		//Utility
-		void setupText(sf::Text, sf::Font, int = 30);
+		void setupText(sf::Text&, sf::Font&, int = 30);
+		void updatePosition(sf::View);
 
 		//Setup
 		void setupCard(Character);

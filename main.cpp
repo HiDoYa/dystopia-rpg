@@ -76,8 +76,8 @@ int main()
 					state.renderBattle(window, view);
 					break;
 				case 3:
-					state.loadMapMenu(window);
-					state.updateMapMenu(window);
+					state.loadMapMenu(window, view);
+					state.updateMapMenu(window, view);
 					state.renderMapMenu(window);
 					break;
 			}
