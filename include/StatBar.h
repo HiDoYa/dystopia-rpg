@@ -24,6 +24,9 @@ class StatBar
 		void setLabelUse(bool);
 		void setLabelPos(int);
 		void setLabelSize(int);
+		sf::RectangleShape* getCurrentRect();
+		sf::RectangleShape* getMaxRect();
+		sf::Text* getLabel();
 		void setMaxSize(sf::Vector2f);
 		//setPosition must be used after text character size and box size
 		void setPosition(sf::Vector2f);

@@ -33,8 +33,8 @@ Character::Character()
 	currentHpBar.setFillColor(sf::Color::Red);
 
 	//Everybody starts off with these 3 basic skills
-	possibleSkillNum.push_back{0, 1, 2};
-	skillNum.push_back{0, 1, 2};
+	possibleSkillNum = {0, 1, 2};
+	skillNum = {0, 1, 2};
 }
 
 //********* MUTATORS *************

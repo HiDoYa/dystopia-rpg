@@ -277,6 +277,7 @@ void StateManager::loadMapMenu(sf::RenderWindow& win)
 	if(!mapMenuLoaded)
 	{
 		mapMenuLoaded = true;
+		mapMenu.setupChar(ally);
 	}
 }
 

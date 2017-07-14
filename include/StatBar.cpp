@@ -36,10 +36,9 @@ sf::RectangleShape* StatBar::getMaxRect()
 	return &maxRect;
 }
 
-sf::Text
-
+sf::Text* StatBar::getLabel()
 {
-	return &currentRect;
+	return &label;
 }
 
 void StatBar::setMaxSize(sf::Vector2f size)

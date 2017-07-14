@@ -17,6 +17,7 @@ class MapMenu
 		std::vector<std::shared_ptr<ClickButton>> characterButtons;
 		CharacterCards characterCard;
 		bool charSelected;
+		int charSelectedNum;
 
 		//Skills
 
@@ -25,7 +26,7 @@ class MapMenu
 		MapMenu();
 		//Characters
 		void setupChar(std::vector<std::shared_ptr<Character>>&);
-		void showCharacterCard();
+		void showCharacterCard(std::vector<std::shared_ptr<Character>>&);
 
 
 		//Skills
@@ -33,7 +34,9 @@ class MapMenu
 		
 		//Battle Positions
 
-		void drawAll(sf::RenderWindow&);
+		void drawAllChar(sf::RenderWindow&);
+		void drawAllSkills(sf::RenderWindow&);
+		void drawAllBattlePos(sf::RenderWindow&);
 };
 
 #endif

@@ -24,9 +24,9 @@ void MapMenu::setupChar(std::vector<std::shared_ptr<Character>>& ally)
 	}
 }
 
-void MapMenu::showCharacterCard()
+void MapMenu::showCharacterCard(std::vector<std::shared_ptr<Character>>& ally)
 {
-	characterCard.setup(*(ally[selected]));
+	characterCard.setupCard(*(ally[charSelectedNum]));
 }
 
 void MapMenu::drawAllChar(sf::RenderWindow& win)
@@ -50,6 +50,6 @@ void MapMenu::drawAllSkills(sf::RenderWindow& win)
 {
 }
 
-void MapMenu::dawAllBattlePos(sf::RenderWindow& win)
+void MapMenu::drawAllBattlePos(sf::RenderWindow& win)
 {
 }

@@ -24,7 +24,10 @@ class CharacterCards
 
 	public:
 		CharacterCards();
+		//Utility
 		void setupText(sf::Text, sf::Font, int = 30);
+
+		//Setup
 		void setupCard(Character);
 
 		void drawAll(sf::RenderWindow&);

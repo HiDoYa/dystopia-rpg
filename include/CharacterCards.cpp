@@ -16,13 +16,13 @@ CharacterCards::CharacterCards()
 	hp.setLabelPos(0);
 	hp.setLabelSize(25);
 	hp.setMaxSize(sf::Vector2f(200, 50));
-	hp.setPositiion(sf::Vecto2f(100, 400));
+	hp.setPositiion(sf::Vector2f(100, 400));
 
 	mana.setLabelUse(true);
 	mana.setLabelPos(0);
 	mana.setLabelSize(25);
 	mana.setMaxSize(sf::Vector2f(200, 50));
-	mana.setPositiion(sf::Vecto2f(100, 400));
+	mana.setPosition(sf::Vector2f(100, 400));
 }
 
 void CharacterCards::setupText(sf::Text txt, sf::Font font, int charSize)
