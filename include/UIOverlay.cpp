@@ -38,6 +38,15 @@ UIOverlay::UIOverlay()
 	menuDeselected = sf::Color::Black;
 }
 
+void UIOverlay::setPartyMember(std::vector<int> partyMembers,
+				std::vector<std::shared_ptr<Character>> ally)
+{
+	for(int i = 0; i < partyMembers.size; i++)
+	{
+		std::shared_ptr<Character>currentAllyPtr = ally[partyMembers[i]];
+	}
+}
+
 //********** MUTATORS ************** 
 
 void UIOverlay::setPosition(sf::View view)

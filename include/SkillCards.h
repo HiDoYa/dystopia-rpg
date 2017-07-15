@@ -8,22 +8,17 @@
 class SkillCards
 {
 	private:
-		SpriteManager icon;
-		SpriteManager background;
+		sf::CircleShape icon;
+		sf::RectangleShape cardBackground;
 		//TODO Maybe a star system to indicate weaker/stronger skills?
 		SpriteManager skillRating;
 
 		sf::Font font;
 		sf::Text name;
 		sf::Text description;
-
-		ClickButton nextPage;
-		ClickButton prevPage;
-		sf::Text pageIndicate;
-		int currentpage;
-		int maxPage;
 	public:
 		SkillCards();
+		void setupCard(Skill);
 		void updatePosition(sf::View);
 
 		void setupCard(Skill);

@@ -23,6 +23,11 @@ class MapMenu
 		bool charSelected;
 
 		//Skills
+		ClickButton nextPage;
+		ClickButton prevPage;
+		sf::Text pageIndicate;
+		int currentPage;
+		int maxPage;
 
 		//Battle Positions
 	public:
@@ -38,7 +43,7 @@ class MapMenu
 		void setupChar(std::vector<std::shared_ptr<Character>>&);
 		void showCharacterCard(std::shared_ptr<Character>&);
 		void checkForCharacterButton(std::vector<std::shared_ptr<Character>>&, sf::RenderWindow&);
-		void updateCharacterCardPosition(sf::View);
+		void updateCharPosition(sf::View);
 		void drawAllChar(sf::RenderWindow&);
 
 		//Skills

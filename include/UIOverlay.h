@@ -1,4 +1,5 @@
 #include "ClickButton.h"
+#include "Character.h"
 
 #ifndef UIOVERLAY_H
 #define UIOVERLAY_H
@@ -12,6 +13,9 @@ class UIOverlay
 		//Mainwrapper
 		sf::Texture mainWrapperTexture;
 		sf::Sprite mainWrapperSprite;
+
+		//Currently In Party
+		std::vector<std::shared_ptr<ClickButton>> partyMembers;
 
 		//Level indicator
 		sf::Text levelText;

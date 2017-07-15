@@ -311,7 +311,7 @@ void StateManager::updateMapMenu(sf::RenderWindow& win, sf::View view)
 		case 0:
 			mapMenu.checkForCharacterButton(ally, win);
 			//This needs to be run here because text height is determined one frame late
-			mapMenu.updateCharacterCardPosition(view);
+			mapMenu.updateCharPosition(view);
 			break;
 		case 1:
 			break;

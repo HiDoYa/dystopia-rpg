@@ -27,6 +27,7 @@ class StatBar
 		void setMaxSize(sf::Vector2f);
 		//setPosition must be used after text character size and box size
 		void setPosition(sf::Vector2f);
+		//current, max, statName
 		void setStats(int, int, std::string = "");
 		void updateSize();
 		void drawAll(sf::RenderWindow&);

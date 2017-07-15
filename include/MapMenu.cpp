@@ -19,6 +19,16 @@ MapMenu::MapMenu()
 	title.setFont(font);
 	title.setCharacterSize(25);
 	title.setColor(sf::Color::Black);
+
+	//Setup next/prev page buttons
+	nextPage.setType(1);
+	prevPage.setType(1);
+	nextPage.getCirc()->setRadius(10);
+	prevPage.getCirc()->setRadius(10);
+
+	currentPage = maxPage = 1;
+	pageIndicate.setFont(font);
+	pageIndicate.setCharacterSize(10);
 }
 
 void MapMenu::setTitle(int menuOption)
@@ -104,7 +114,7 @@ void MapMenu::checkForCharacterButton(std::vector<std::shared_ptr<Character>>& a
 	}
 }
 
-void MapMenu::updateCharacterCardPosition(sf::View view)
+void MapMenu::updateCharPosition(sf::View view)
 {
 	for(int i = 0; i < characterButtons.size(); i++)
 	{
