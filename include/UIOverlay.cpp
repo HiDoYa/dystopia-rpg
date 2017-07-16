@@ -27,11 +27,11 @@ UIOverlay::UIOverlay()
 	charButton.getText()->setCharacterSize(15);
 
 	skillButton.getRect()->setSize(sf::Vector2f(200, 50));
-	skillButton.getText()->setString("Skills");
+	skillButton.getText()->setString("Battle");
 	skillButton.getText()->setCharacterSize(15);
 
 	battlePosButton.getRect()->setSize(sf::Vector2f(200, 50));
-	battlePosButton.getText()->setString("Battle");
+	battlePosButton.getText()->setString("Save");
 	battlePosButton.getText()->setCharacterSize(15);
 
 	menuSelected = sf::Color::Red;

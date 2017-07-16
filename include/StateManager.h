@@ -32,6 +32,9 @@ class StateManager
 		bool speaking;
 
 		std::vector<std::shared_ptr<Character>> ally;
+		//Allies that are discovered (0 is there by default)
+		std::vector<int> allyFound;
+		//Allies that are in party (0 is there by default)
 		std::vector<int> allyInParty;
 
 		MapPlayer player;

@@ -29,6 +29,7 @@ OverlayCharDisplay::OverlayCharDisplay()
 	mana.getLabel()->setColor(sf::Color::Black);
 
 	cardWrap.setSize(sf::Vector2f(100, 110));
+	cardWrap.setFillColor(sf::Color(230, 230, 230));
 }
 
 void OverlayCharDisplay::setupDisplay(std::shared_ptr<Character> currentAllyPtr)

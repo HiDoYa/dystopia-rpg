@@ -8,6 +8,8 @@ class Event
 		void addItem(int);
 		void removeItem(int);
 
+		void addAlly(int);
+
 		void addSkill(int, int);
 
 		void cutscene(int);

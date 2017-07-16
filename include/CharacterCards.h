@@ -30,16 +30,18 @@ class CharacterCards
 		bool existInParty;
 		int allyIndex;
 
+		//TODO finish skill buttons
+		std::vector<std::shared_ptr<ClickButton>> skillButton;
 	public:
 		CharacterCards();
 		//Utility
 		void setupText(sf::Text&, sf::Font&, int = 30);
-		void updatePosition(sf::View);
+		void updatePosition(std::vector<std::shared_ptr<Character>>, sf::View);
 
 		//Setup
 		void setupCard(Character, int, std::vector<int>);
 		void checkForButton(std::vector<int>&, int&, bool&, sf::RenderWindow&);
 
-		void drawAll(sf::RenderWindow&);
+		void drawAll(std::vector<std::shared_ptr<Character>>, sf::RenderWindow&);
 };
 #endif

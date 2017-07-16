@@ -46,6 +46,8 @@ class Skill
 
 		//0 for selected ally, 1 for selected enemy, 2 for all allies, 3 for all enemies, 4 for self
 		std::vector<int> target;
+		//Includes indexes of allies which can equip the skill
+		std::vector<int> allyEquip;
 	public:
 		Skill();
 		
@@ -68,6 +70,7 @@ class Skill
 		void setCrit(int);
 		void setAccuracy(int);
 		void setTarget(int, int);
+		void setAllyEquip(std::vector<int>);
 
 		//****** ACCESSORS *********
 		std::string getName();
@@ -86,6 +89,7 @@ class Skill
 		int getCrit();
 		int getAccuracy();
 		std::vector<int> getTarget();
+		std::vector<int> getAllyEquip();
 		
 		//***** UTILITY ************
 		int checkForSelection();

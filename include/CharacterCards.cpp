@@ -28,9 +28,16 @@ CharacterCards::CharacterCards()
 	mana.getCurrentRect()->setFillColor(sf::Color::Yellow);
 	mana.getLabel()->setColor(sf::Color::Black);
 
-	partyButton.getRect()->setSize(sf::Vector2f(200, 50));
+	partyButton.getRect()->setSize(sf::Vector2f(300, 80));
 	partyButton.getText()->setCharacterSize(15);
 	partyButton.getText()->setColor(sf::Color::Black);
+
+	for(int i = 0; i < 3; i++)
+	{
+		skillButton.push_back(std::shared_ptr<ClickButton>(new ClickButton));
+		skillButton[i]->setType(1);
+		skillButton[i]->getCirc()->setRadius(15);
+	}
 }
 
 void CharacterCards::setupText(sf::Text& txt, sf::Font& font, int charSize)
@@ -40,7 +47,7 @@ void CharacterCards::setupText(sf::Text& txt, sf::Font& font, int charSize)
 	txt.setColor(sf::Color::Black);
 }
 
-void CharacterCards::updatePosition(sf::View view)
+void CharacterCards::updatePosition(std::vector<std::shared_ptr<Character>> ally, sf::View view)
 {
 	int viewX = view.getCenter().x - (view.getSize().x / 2);
 	int viewY = view.getCenter().y - (view.getSize().y / 2);
@@ -48,13 +55,19 @@ void CharacterCards::updatePosition(sf::View view)
 	hp.setPosition(sf::Vector2f(180 + viewX, 450 + viewY));
 	mana.setPosition(sf::Vector2f(180 + viewX, 580 + viewY));
 
-	name.setPosition(660 + viewX, 150 + viewY);
+	name.setPosition(180 + viewX, 150 + viewY);
 	desc.setPosition(180 + viewX, 150 + viewY);
-	str.setPosition(180 + viewX, 200 + viewY);
-	def.setPosition(180 + viewX, 260 + viewY);
-	agi.setPosition(180 + viewX, 320 + viewY);
+	str.setPosition(180 + viewX, 220 + viewY);
+	def.setPosition(180 + viewX, 280 + viewY);
+	agi.setPosition(180 + viewX, 340 + viewY);
 
-	partyButton.updatePositionMap(660, 300, view);
+	if(allyIndex != -1)
+	{
+		ally[allyIndex]->setPosition(570 + viewX, 450 + viewY);
+		ally[allyIndex]->setScale(2.5, 2.5);
+	}
+
+	partyButton.updatePositionMap(700, 100, view);
 }
 
 void CharacterCards::setupCard(Character chr, int indexInAlly, std::vector<int> allyInParty)
@@ -81,7 +94,11 @@ void CharacterCards::setupCard(Character chr, int indexInAlly, std::vector<int> 
 		}
 	}
 
-	if(existInParty)
+	if(allyIndex == 0)
+	{
+		partyButton.getText()->setString("Cannot Remove");
+	}
+	else if(existInParty)
 	{
 		partyButton.getText()->setString("Remove from Party");
 	}
@@ -99,7 +116,7 @@ void CharacterCards::checkForButton(std::vector<int>& allyInParty, int& currentS
 {
 	bool pressed = partyButton.mouseClickedInButton(sf::Color::Red, sf::Color::White, win);
 
-	if(pressed && allyInParty.size() < 3)
+	if(pressed && allyInParty.size() < 3 && allyIndex != 0)
 	{
 		if(existInParty)
 		{
@@ -122,7 +139,7 @@ void CharacterCards::checkForButton(std::vector<int>& allyInParty, int& currentS
 	}
 }
 
-void CharacterCards::drawAll(sf::RenderWindow& win)
+void CharacterCards::drawAll(std::vector<std::shared_ptr<Character>> ally, sf::RenderWindow& win)
 {
 	background.drawSprite(win);
 
@@ -136,6 +153,8 @@ void CharacterCards::drawAll(sf::RenderWindow& win)
 	win.draw(str);
 	win.draw(def);
 	win.draw(agi);
+
+	ally[allyIndex]->drawSprite(win);
 
 	partyButton.drawAll(win);
 }

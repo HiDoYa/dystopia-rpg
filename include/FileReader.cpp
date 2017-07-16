@@ -238,6 +238,16 @@ void FileReader::loadSkill(std::vector<std::shared_ptr<Skill>>& skillList)
 				skillList[skillCounter]->setTarget(type, 4);
 			}
 		}
+		else if(strInp == "Ally")
+		{
+			std::vector<int> tempStore;
+			while(skillFile.peek() != '\n')
+			{
+				skillFile >> strInp;
+				tempStore.push_back(atoi(strInp.c_str()));
+			}
+			skillList[skillCounter]->setAllyEquip(tempStore);
+		}
 	}
 	skillFile.close();
 }

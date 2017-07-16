@@ -110,6 +110,11 @@ void Skill::setTarget(int type, int inp)
 	target[type] = inp;
 }
 
+void Skill::setAllyEquip(std::vector<int> inp)
+{
+	allyEquip = inp;
+}
+
 //********** ACCESSOR *********
 std::string Skill::getName()
 {
@@ -184,6 +189,11 @@ int Skill::getAccuracy()
 std::vector<int> Skill::getTarget()
 {
 	return target;
+}
+
+std::vector<int> Skill::getAllyEquip()
+{
+	return allyEquip;
 }
 
 // ********* UTILITY *************

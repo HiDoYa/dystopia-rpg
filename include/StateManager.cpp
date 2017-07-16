@@ -37,12 +37,12 @@ StateManager::StateManager()
 	battle.reset(new Battle);
 
 	//By default, ally 0 is in party
+	allyFound.push_back(0);
 	allyInParty.push_back(0);
 
 	//Event has false and true by default
 	stateFlag.push_back(false);
 	stateFlag.push_back(true);
-
 }
 
 //********* MENU *************
@@ -280,7 +280,7 @@ void StateManager::loadMapMenu(sf::RenderWindow& win, sf::View view)
 		switch(menuOption)
 		{
 			case 0:
-				mapMenu.setupChar(ally);
+				mapMenu.setupChar(ally, allyFound);
 				break;
 			case 1:
 				break;
@@ -312,7 +312,7 @@ void StateManager::updateMapMenu(sf::RenderWindow& win, sf::View view)
 		case 0:
 			mapMenu.checkForCharacterButton(ally, allyInParty, win);
 			//This needs to be run here because text height is determined one frame late
-			mapMenu.updateCharPosition(view);
+			mapMenu.updateCharPosition(ally, view);
 			mapMenu.checkForPartyButton(allyInParty, currentState, mapMenuLoaded, win);
 			break;
 		case 1:
@@ -327,13 +327,13 @@ void StateManager::renderMapMenu(sf::RenderWindow& win)
 	switch(menuOption)
 	{
 		case 0:
-			mapMenu.drawAllChar(win);
+			mapMenu.drawAllChar(ally, win);
 			break;
 		case 1:
-			mapMenu.drawAllSkills(win);
+			mapMenu.drawAllBattle(win);
 			break;
 		case 2:
-			mapMenu.drawAllBattlePos(win);
+			mapMenu.drawAllSave(win);
 			break;
 	}
 

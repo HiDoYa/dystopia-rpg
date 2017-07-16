@@ -4,6 +4,7 @@ ManaCost 10
 Accuracy 95
 EnemyPrio 10
 Crit 15
+Ally 0 1 2
 Type Damage
 	Target SingleEnemy
 	Percent false
@@ -18,6 +19,7 @@ ManaCost 15
 Accuracy 95
 EnemyPrio 30
 Crit 0
+Ally 0 1 2
 Type Buff
 	Target Self
 	BuffType Strength
@@ -33,6 +35,7 @@ ManaCost 10
 Accuracy 95
 EnemyPrio 10
 Crit 15
+Ally 0 1 2
 Type Damage
 	Target SingleEnemy
 	Percent false
@@ -47,6 +50,7 @@ ManaCost 10
 Accuracy 95
 EnemyPrio 10
 Crit 15
+Ally 0 1 2
 Type Damage
 	Target SingleEnemy
 	Percent false

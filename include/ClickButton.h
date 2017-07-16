@@ -30,6 +30,7 @@ class ClickButton
 		void setHoverText(bool);
 
 		//TODO Do hovertext
+		//TODO Create gradient overlay over texture (if hovered, skill button is greyed out a bit?)
 		sf::Text* getHoverText();
 		sf::Text* getText();
 		sf::RectangleShape* getRect();

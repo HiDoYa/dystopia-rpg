@@ -19,16 +19,6 @@ MapMenu::MapMenu()
 	title.setFont(font);
 	title.setCharacterSize(25);
 	title.setColor(sf::Color::Black);
-
-	//Setup next/prev page buttons
-	nextPage.setType(1);
-	prevPage.setType(1);
-	nextPage.getCirc()->setRadius(10);
-	prevPage.getCirc()->setRadius(10);
-
-	currentPage = maxPage = 1;
-	pageIndicate.setFont(font);
-	pageIndicate.setCharacterSize(10);
 }
 
 void MapMenu::setTitle(int menuOption)
@@ -39,10 +29,10 @@ void MapMenu::setTitle(int menuOption)
 			title.setString("Characters");
 			break;
 		case 1:
-			title.setString("Skills");
+			title.setString("Battle");
 			break;
 		case 2:
-			title.setString("Battle");
+			title.setString("Save");
 			break;
 	}
 }
@@ -78,21 +68,22 @@ void MapMenu::drawBackground(sf::RenderWindow& win)
 }
 
 //******** CHARACTERS *********
-void MapMenu::setupChar(std::vector<std::shared_ptr<Character>>& ally)
+void MapMenu::setupChar(std::vector<std::shared_ptr<Character>>& ally, std::vector<int> allyFound)
 {
 	charSelected = false;
-	for(int i = 0; i < ally.size(); i++)
+	for(int i = 0; i < allyFound.size(); i++)
 	{
 		std::shared_ptr<ClickButton> tempPtr (new ClickButton);
 		characterButtons.push_back(tempPtr);
 		characterButtons[i]->getRect()->setSize(sf::Vector2f(300, 120));
-		characterButtons[i]->getText()->setString(ally[i]->getName());
+		characterButtons[i]->getText()->setString(ally[allyFound[i]]->getName());
 		characterButtons[i]->getText()->setCharacterSize(20);
 		characterButtons[i]->getText()->setColor(sf::Color::Black);
 	}
 }
 
-void MapMenu::showCharacterCard(std::shared_ptr<Character>& allySingular, int indexInAlly, std::vector<int> allyInParty)
+void MapMenu::showCharacterCard(std::shared_ptr<Character>& allySingular, int indexInAlly,
+				std::vector<int> allyInParty)
 {
 	characterCard.setupCard(*allySingular, indexInAlly, allyInParty);
 }
@@ -119,22 +110,22 @@ void MapMenu::checkForPartyButton(std::vector<int>& allyInParty, int& currentSta
 	characterCard.checkForButton(allyInParty, currentState, mapMenuLoaded, win);
 }
 
-void MapMenu::updateCharPosition(sf::View view)
+void MapMenu::updateCharPosition(std::vector<std::shared_ptr<Character>> ally, sf::View view)
 {
 	for(int i = 0; i < characterButtons.size(); i++)
 	{
 		characterButtons[i]->updatePositionMap(200, 150 * (i + 1), view);
 	}
-	characterCard.updatePosition(view);
+	characterCard.updatePosition(ally, view);
 }
 
-void MapMenu::drawAllChar(sf::RenderWindow& win)
+void MapMenu::drawAllChar(std::vector<std::shared_ptr<Character>> ally, sf::RenderWindow& win)
 {
 	menuBackground.drawSprite(win);
 
 	if(charSelected)
 	{
-		characterCard.drawAll(win);
+		characterCard.drawAll(ally, win);
 	}
 	else
 	{
@@ -145,14 +136,14 @@ void MapMenu::drawAllChar(sf::RenderWindow& win)
 	}
 }
 
-//******** SKILLS *********
-void MapMenu::drawAllSkills(sf::RenderWindow& win)
+//******** BATTLE *********
+void MapMenu::drawAllBattle(sf::RenderWindow& win)
 {
 	menuBackground.drawSprite(win);
 }
 
-//******** BATTLEPOS *********
-void MapMenu::drawAllBattlePos(sf::RenderWindow& win)
+//******** SAVE *********
+void MapMenu::drawAllSave(sf::RenderWindow& win)
 {
 	menuBackground.drawSprite(win);
 }

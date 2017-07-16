@@ -14,6 +14,10 @@ void Event::removeItem(int itemId)
 {
 }
 
+void Event::addAlly(int allyInd)
+{
+}
+
 void Event::addSkill(int skillId, int allyNum)
 {
 }

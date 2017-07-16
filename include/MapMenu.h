@@ -22,14 +22,10 @@ class MapMenu
 		CharacterCards characterCard;
 		bool charSelected;
 
-		//Skills
-		ClickButton nextPage;
-		ClickButton prevPage;
-		sf::Text pageIndicate;
-		int currentPage;
-		int maxPage;
+		//Battle
 
-		//Battle Positions
+		//Save
+		//TODO Save in another "currentState"
 	public:
 		//General
 		MapMenu();
@@ -40,19 +36,19 @@ class MapMenu
 		void drawBackground(sf::RenderWindow&);
 		
 		//Characters
-		void setupChar(std::vector<std::shared_ptr<Character>>&);
+		void setupChar(std::vector<std::shared_ptr<Character>>&, std::vector<int>);
 		void showCharacterCard(std::shared_ptr<Character>&, int, std::vector<int>);
 		void checkForCharacterButton(std::vector<std::shared_ptr<Character>>&,
 					     std::vector<int>, sf::RenderWindow&);
 		void checkForPartyButton(std::vector<int>&, int&, bool&, sf::RenderWindow&);
-		void updateCharPosition(sf::View);
-		void drawAllChar(sf::RenderWindow&);
+		void updateCharPosition(std::vector<std::shared_ptr<Character>>, sf::View);
+		void drawAllChar(std::vector<std::shared_ptr<Character>>, sf::RenderWindow&);
 
-		//Skills
-		void drawAllSkills(sf::RenderWindow&);
+		//Battle
+		void drawAllBattle(sf::RenderWindow&);
 		
-		//Battle Positions
-		void drawAllBattlePos(sf::RenderWindow&);
+		//Save
+		void drawAllSave(sf::RenderWindow&);
 };
 
 #endif
