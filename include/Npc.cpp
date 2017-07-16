@@ -19,7 +19,7 @@ Npc::Npc()
 }
 
 //Gets the converted vector, deals with animation/textbox calls, and deals with multiple textboxes
-void Npc::speak(std::vector<bool>& stateFlag, Textbox& box, MapPlayer& player)
+void Npc::speak(std::vector<bool>& stateFlag, Textbox& box, MapPlayer& player, sf::RenderWindow& win)
 {
 	bool cond = !player.getMoving() && sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
 
@@ -40,7 +40,7 @@ void Npc::speak(std::vector<bool>& stateFlag, Textbox& box, MapPlayer& player)
 			{
 				if(getChoiceFlag()[i])
 				{
-					switch(box.choiceBoxDisp(name, getText()[i], getChoiceDisp()[i], getChoiceOne()[i], getChoiceTwo()[i], getChoiceOneDisp()[i], getChoiceTwoDisp()[i], cond, speaking))
+					switch(box.choiceBoxDisp(name, getText()[i], getChoiceDisp()[i], getChoiceOne()[i], getChoiceTwo()[i], getChoiceOneDisp()[i], getChoiceTwoDisp()[i], cond, speaking, win))
 					{
 						case 0:
 							//Choice box is not completed yet

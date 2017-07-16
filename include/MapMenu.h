@@ -41,8 +41,10 @@ class MapMenu
 		
 		//Characters
 		void setupChar(std::vector<std::shared_ptr<Character>>&);
-		void showCharacterCard(std::shared_ptr<Character>&);
-		void checkForCharacterButton(std::vector<std::shared_ptr<Character>>&, sf::RenderWindow&);
+		void showCharacterCard(std::shared_ptr<Character>&, int, std::vector<int>);
+		void checkForCharacterButton(std::vector<std::shared_ptr<Character>>&,
+					     std::vector<int>, sf::RenderWindow&);
+		void checkForPartyButton(std::vector<int>&, int&, bool&, sf::RenderWindow&);
 		void updateCharPosition(sf::View);
 		void drawAllChar(sf::RenderWindow&);
 

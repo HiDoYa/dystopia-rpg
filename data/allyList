@@ -1,6 +1,6 @@
 Ally 1
-	Name Test Ally
-	Level 2
+	Name You
+	Level 1
 	Hp 100
 	Mana 100
 	Strength 10
@@ -10,8 +10,8 @@ Ally 1
 	Image images/ally/test4.png 0
 
 Ally 2
-	Name Test Ally2
-	Level 3
+	Name Bot Speck
+	Level 1
 	Hp 50
 	Mana 150
 	Strength 15

@@ -29,6 +29,7 @@ class ClickButton
 		void setType(int);
 		void setHoverText(bool);
 
+		//TODO Do hovertext
 		sf::Text* getHoverText();
 		sf::Text* getText();
 		sf::RectangleShape* getRect();
@@ -36,6 +37,9 @@ class ClickButton
 
 		//Text inside button
 		void centerText();
+
+		//TODO Greyed out if inactive option?
+		//TODO Toggle (keep in a certain color if clicked and take away the color if some other condition is met)
 
 		//Col1 is for selected, col2 is for deselected colors
 		//Texture1 and texture2 is for image names

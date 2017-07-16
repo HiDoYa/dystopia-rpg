@@ -36,14 +36,22 @@ UIOverlay::UIOverlay()
 
 	menuSelected = sf::Color::Red;
 	menuDeselected = sf::Color::Black;
+
+	inParty.setFont(font);
+	inParty.setCharacterSize(10);
+	inParty.setColor(sf::Color::Black);
+	inParty.setString("Party Members");
 }
 
 void UIOverlay::setPartyMember(std::vector<int> partyMembers,
 				std::vector<std::shared_ptr<Character>> ally)
 {
-	for(int i = 0; i < partyMembers.size; i++)
+	partyCards.clear();
+	for(int i = 0; i < partyMembers.size(); i++)
 	{
 		std::shared_ptr<Character>currentAllyPtr = ally[partyMembers[i]];
+		partyCards.push_back(std::shared_ptr<OverlayCharDisplay>(new OverlayCharDisplay));
+		partyCards[i]->setupDisplay(currentAllyPtr);
 	}
 }
 
@@ -58,6 +66,12 @@ void UIOverlay::setPosition(sf::View view)
 	currencyText.setPosition(sf::Vector2f(x + 900, y + 30));
 
 	levelText.setPosition(sf::Vector2f(x + 33, y + 40));
+
+	inParty.setPosition(sf::Vector2f(x + 10, y + 20));
+	for(int i = 0; i < partyCards.size(); i++)
+	{
+		partyCards[i]->updatePosition(sf::Vector2f(20, 130 * i + 50), view);
+	}
 
 	charButton.updatePositionMap(25, 700, view);
 	skillButton.updatePositionMap(275, 700, view);
@@ -106,6 +120,13 @@ void UIOverlay::drawAll(sf::RenderWindow& win)
 	win.draw(levelText);
 
 	win.draw(currencyText);
+
+	for(int i = 0; i < partyCards.size(); i++)
+	{
+		partyCards[i]->drawAll(win);
+	}
+
+	win.draw(inParty);
 
 	charButton.drawAll(win);
 	skillButton.drawAll(win);

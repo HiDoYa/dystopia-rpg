@@ -19,9 +19,8 @@ class SkillCards
 	public:
 		SkillCards();
 		void setupCard(Skill);
-		void updatePosition(sf::View);
+		void setPosition(sf::Vector2f, sf::View);
 
-		void setupCard(Skill);
 		void drawAll(sf::RenderWindow&);
 };
 

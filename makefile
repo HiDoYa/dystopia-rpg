@@ -1,4 +1,4 @@
-OBJ = main.o Textbox.o SpriteManager.o Map.o Npc.o MapPlayer.o Battle.o UIOverlay.o MainMenu.o StateManager.o Character.o Dialogue.o Skill.o FileReader.o ClickButton.o BattleOverlay.o MapMenu.o CharacterCards.o StatBar.o
+OBJ = main.o Textbox.o SpriteManager.o Map.o Npc.o MapPlayer.o Battle.o UIOverlay.o MainMenu.o StateManager.o Character.o Dialogue.o Skill.o FileReader.o ClickButton.o BattleOverlay.o MapMenu.o CharacterCards.o StatBar.o OverlayCharDisplay.o
 all: game
 
 game: $(OBJ)
@@ -42,6 +42,9 @@ MapPlayer.o: include/MapPlayer.cpp
 	g++ -std=c++11 -c $<
 
 Npc.o: include/Npc.cpp
+	g++ -std=c++11 -c $<
+
+OverlayCharDisplay.o: include/OverlayCharDisplay.cpp
 	g++ -std=c++11 -c $<
 
 SpriteManager.o: include/SpriteManager.cpp

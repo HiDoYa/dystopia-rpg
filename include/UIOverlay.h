@@ -1,5 +1,6 @@
 #include "ClickButton.h"
 #include "Character.h"
+#include "OverlayCharDisplay.h"
 
 #ifndef UIOVERLAY_H
 #define UIOVERLAY_H
@@ -15,7 +16,8 @@ class UIOverlay
 		sf::Sprite mainWrapperSprite;
 
 		//Currently In Party
-		std::vector<std::shared_ptr<ClickButton>> partyMembers;
+		sf::Text inParty;
+		std::vector<std::shared_ptr<OverlayCharDisplay>> partyCards;
 
 		//Level indicator
 		sf::Text levelText;
@@ -33,6 +35,8 @@ class UIOverlay
 
 	public:
 		UIOverlay();
+
+		void setPartyMember(std::vector<int>, std::vector<std::shared_ptr<Character>>);
 
 		//Mutators
 		void setPosition(sf::View);

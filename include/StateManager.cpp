@@ -4,9 +4,7 @@
 #include <memory>
 
 #include "Battle.h"
-#include "BattleOverlay.h"
 #include "Character.h"
-#include "Dialogue.h"
 #include "FileReader.h"
 #include "MainMenu.h"
 #include "Map.h"
@@ -127,7 +125,7 @@ void StateManager::updateMap(sf::RenderWindow& win, sf::View& view)
 
 	for(int i = 0; i < npc.size(); i++)
 	{
-		npc[i]->speak(stateFlag, textbox, player);
+		npc[i]->speak(stateFlag, textbox, player, win);
 	}
 
 
@@ -149,6 +147,7 @@ void StateManager::updateMap(sf::RenderWindow& win, sf::View& view)
 
 	ground->newMapCheck(player, startPosX, startPosY, currentZone, currentMap, mapLoaded, encounterRate);
 	
+	overlay.setPartyMember(allyInParty, ally);
 	if(overlay.checkForMapMenu(menuOption, win))
 	{
 		currentState = 3;
@@ -295,6 +294,8 @@ void StateManager::loadMapMenu(sf::RenderWindow& win, sf::View view)
 void StateManager::updateMapMenu(sf::RenderWindow& win, sf::View view)
 {
 	//TODO Move all updatePosition to setup? (Don't need to rerun because view stays same)
+	overlay.setPartyMember(allyInParty, ally);
+	overlay.setPosition(view);
 	if(overlay.checkForMapMenu(menuOption, win))
 	{
 		//Reload the menu
@@ -309,9 +310,10 @@ void StateManager::updateMapMenu(sf::RenderWindow& win, sf::View view)
 	switch(menuOption)
 	{
 		case 0:
-			mapMenu.checkForCharacterButton(ally, win);
+			mapMenu.checkForCharacterButton(ally, allyInParty, win);
 			//This needs to be run here because text height is determined one frame late
 			mapMenu.updateCharPosition(view);
+			mapMenu.checkForPartyButton(allyInParty, currentState, mapMenuLoaded, win);
 			break;
 		case 1:
 			break;

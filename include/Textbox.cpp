@@ -17,11 +17,6 @@ Textbox::Textbox()
 	rec.setFillColor(bxColor);
 	rec.setSize(sf::Vector2f(0, height));
 
-	choiceBox.setFillColor(bxColor);
-	choiceBox.setSize(sf::Vector2f(800, 200));
-	curChoice.setFillColor(sf::Color::Green);
-	curChoice.setSize(sf::Vector2f(800, 100));
-
 	currentChoice = 0;
 	choiceBoxOpen = false;
 	oldTextSize = 0;
@@ -38,9 +33,8 @@ Textbox::Textbox()
 
 	choiceInstruct.setFont(font);
 	choiceInstruct.setStyle(sf::Text::Underlined);
-	choiceOne.setFont(font);
-	choiceTwo.setFont(font);
-
+	choiceOne.getText()->setFont(font);
+	choiceTwo.getText()->setFont(font);
 
 	//Sets character sizes
 	text.setCharacterSize(17);
@@ -48,8 +42,11 @@ Textbox::Textbox()
 	nextPrompt.setCharacterSize(0);
 
 	choiceInstruct.setCharacterSize(15);
-	choiceOne.setCharacterSize(20);
-	choiceTwo.setCharacterSize(20);
+	choiceOne.getText()->setCharacterSize(15);
+	choiceTwo.getText()->setCharacterSize(15);
+
+	choiceOne.getRect()->setSize(sf::Vector2f(500, 100));
+	choiceTwo.getRect()->setSize(sf::Vector2f(500, 100));
 
 
 	//Load Music
@@ -61,8 +58,8 @@ Textbox::Textbox()
 	name.setColor(txtColor);
 
 	choiceInstruct.setColor(txtColor);
-	choiceOne.setColor(txtColor);
-	choiceTwo.setColor(txtColor);
+	choiceOne.getText()->setColor(txtColor);
+	choiceTwo.getText()->setColor(txtColor);
 
 	nextPrompt.setColor(txtColor);
 
@@ -131,20 +128,10 @@ void Textbox::updatePosition(sf::View view)
 	name.setPosition(sf::Vector2f(posX + 20, posY + 20));
 	nextPrompt.setPosition(sf::Vector2f(posX + 750, posY + 120));
 
-	choiceBox.setPosition(sf::Vector2f(posX + 150, posY - 300));
-	choiceOne.setPosition(sf::Vector2f(posX + 170, posY - 250));
-	choiceTwo.setPosition(sf::Vector2f(posX + 170, posY - 150));
+	choiceOne.updatePositionMap(262, 275, view);
+	choiceTwo.updatePositionMap(262, 400, view);
 
 	rec.setPosition(sf::Vector2f(posX, posY));
-
-	if(currentChoice == 0)
-	{
-		curChoice.setPosition(sf::Vector2f(posX + 150, posY - 300));
-	}
-	else if(currentChoice == 1)
-	{
-		curChoice.setPosition(sf::Vector2f(posX + 150, posY - 200));
-	}
 }
 
 //TODO
@@ -160,11 +147,9 @@ void Textbox::drawAll(sf::RenderWindow& win)
 	win.draw(rec);
 	if(displayChoiceBoxes)
 	{
-		win.draw(choiceBox);
-		win.draw(curChoice);
 		win.draw(choiceInstruct);
-		win.draw(choiceOne);
-		win.draw(choiceTwo);
+		choiceOne.drawAll(win);
+		choiceTwo.drawAll(win);
 	}
 	win.draw(text);
 	win.draw(name);
@@ -361,7 +346,10 @@ bool Textbox::textHandler(sf::String nm, sf::String str, bool condition, bool& c
 
 //Return 0 if choiceBox isn't done yet.
 //Returns 1 or 2 if choiceBox is done and indicates which choice the user chose
-int Textbox::choiceBoxDisp(std::string nm, std::string textStr, std::string regInp, std::string strOne, std::string strTwo, std::string choiceOneDisp, std::string choiceTwoDisp, bool condition, bool& currentlyTalking)
+int Textbox::choiceBoxDisp(std::string nm, std::string textStr, std::string regInp,
+			   std::string strOne, std::string strTwo, std::string choiceOneDisp,
+			   std::string choiceTwoDisp, bool condition, bool& currentlyTalking,
+			   sf::RenderWindow& win)
 {
 	time = clock.getElapsedTime();
 	currentTime = time.asMilliseconds();
@@ -400,14 +388,15 @@ int Textbox::choiceBoxDisp(std::string nm, std::string textStr, std::string regI
 	if(textNum == sVec.size() + 1)
 	{
 		animateText(regInp);
+		bool choiceComp = false;
 		if(currentCompleted)
 		{
 			displayChoiceBoxes = true;
-			choiceOne.setString(strOne);
-			choiceTwo.setString(strTwo);
-			makeChoice();
+			choiceOne.getText()->setString(strOne);
+			choiceTwo.getText()->setString(strTwo);
+			choiceComp = makeChoice(win);
 		}
-		if(nextText())
+		if(choiceComp)
 		{
 			displayChoiceBoxes = false;
 			textNum = sVec.size() + 2;
@@ -458,21 +447,22 @@ int Textbox::choiceBoxDisp(std::string nm, std::string textStr, std::string regI
 	return 0;
 }
 
-void Textbox::makeChoice()
+bool Textbox::makeChoice(sf::RenderWindow& win)
 {
-	bool sPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::S);
-	bool wPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::W);
+	bool firstOption = choiceOne.mouseClickedInButton(sf::Color::Red, sf::Color::White, win);
+	bool secondOption = choiceTwo.mouseClickedInButton(sf::Color::Red, sf::Color::White, win);
 
-	//To change current selection
-	if(sPressed && currentChoice == 0)
-	{
-		currentChoice = 1;
-	}
-	else if(wPressed && currentChoice == 1)
+	if(firstOption)
 	{
 		currentChoice = 0;
+		return true;
 	}
-
+	else if(secondOption)
+	{
+		currentChoice = 1;
+		return true;
+	}
+	return false;
 }
 
 //************* POST TEXT *****************
@@ -505,7 +495,8 @@ bool Textbox::nextText()
 	time = clock.getElapsedTime();
 	currentTime = time.asMilliseconds();
 
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && currentCompleted && (lastTimeSkip + textDelay < currentTime))
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Space) &&
+	   currentCompleted && (lastTimeSkip + textDelay < currentTime))
 	{
 		nextPrompt.setCharacterSize(0);
 		lastNotPressed = false;

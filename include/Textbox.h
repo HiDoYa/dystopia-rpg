@@ -1,3 +1,4 @@
+#include "ClickButton.h"
 #include <SFML/Audio.hpp>
 
 #ifndef TEXTBOX_H
@@ -15,11 +16,9 @@ class Textbox
 		bool currentCompleted;
 
 		//Choices
-		sf::RectangleShape choiceBox;
-		sf::RectangleShape curChoice;
 		sf::Text choiceInstruct;
-		sf::Text choiceOne;
-		sf::Text choiceTwo;
+		ClickButton choiceOne;
+		ClickButton choiceTwo;
 		bool choiceBoxOpen;
 		bool displayChoiceBoxes;
 		int currentChoice;
@@ -81,8 +80,10 @@ class Textbox
 		//**** DURING TEXT *********
 		void animateText(std::string);
 		bool textHandler(sf::String, sf::String, bool, bool&);
-		int choiceBoxDisp(std::string, std::string, std::string, std::string, std::string, std::string, std::string, bool, bool&);
-		void makeChoice();
+		int choiceBoxDisp(std::string, std::string, std::string,
+				  std::string, std::string, std::string,
+				  std::string, bool, bool&, sf::RenderWindow& win);
+		bool makeChoice(sf::RenderWindow&);
 
 		//****** POST TEXT *********
 		void closeBox();

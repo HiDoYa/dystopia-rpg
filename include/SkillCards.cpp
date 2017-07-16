@@ -28,3 +28,12 @@ void SkillCards::setPosition(sf::Vector2f pos, sf::View view)
 {
 	name.setPosition();
 }
+
+void SkillCards::drawAll(sf::RenderWindow& win)
+{
+	win.draw(cardBackground);
+	win.draw(icon);
+	skillRating.drawAll(win);
+	win.draw(name);
+	win.draw(description);
+}

@@ -5,6 +5,8 @@
 CharacterCards::CharacterCards()
 {
 	font.loadFromFile("font/Ubuntu.ttf");
+	existInParty = false;
+	allyIndex = -1;
 
 	background.setTextureSprite("images/ui/characterCard.png");
 
@@ -25,6 +27,10 @@ CharacterCards::CharacterCards()
 	mana.setMaxSize(sf::Vector2f(350, 50));
 	mana.getCurrentRect()->setFillColor(sf::Color::Yellow);
 	mana.getLabel()->setColor(sf::Color::Black);
+
+	partyButton.getRect()->setSize(sf::Vector2f(200, 50));
+	partyButton.getText()->setCharacterSize(15);
+	partyButton.getText()->setColor(sf::Color::Black);
 }
 
 void CharacterCards::setupText(sf::Text& txt, sf::Font& font, int charSize)
@@ -47,9 +53,11 @@ void CharacterCards::updatePosition(sf::View view)
 	str.setPosition(180 + viewX, 200 + viewY);
 	def.setPosition(180 + viewX, 260 + viewY);
 	agi.setPosition(180 + viewX, 320 + viewY);
+
+	partyButton.updatePositionMap(660, 300, view);
 }
 
-void CharacterCards::setupCard(Character chr)
+void CharacterCards::setupCard(Character chr, int indexInAlly, std::vector<int> allyInParty)
 {
 	name.setString(chr.getName());
 
@@ -61,6 +69,57 @@ void CharacterCards::setupCard(Character chr)
 	
 	hp.setStats(chr.getCurrentHp(), chr.getMaxHp(), "Health");
 	mana.setStats(chr.getCurrentMana(), chr.getMaxMana(), "Mana");
+
+	//Checks whether the ally is already in the party
+	existInParty = false;
+	allyIndex = indexInAlly;
+	for(int i = 0; i < allyInParty.size(); i++)
+	{
+		if(allyInParty[i] == indexInAlly)
+		{
+			existInParty = true;
+		}
+	}
+
+	if(existInParty)
+	{
+		partyButton.getText()->setString("Remove from Party");
+	}
+	else if(allyInParty.size() == 3)
+	{
+		partyButton.getText()->setString("Party is full.");
+	}
+	else if(!existInParty)
+	{
+		partyButton.getText()->setString("Add to Party");
+	}
+}
+
+void CharacterCards::checkForButton(std::vector<int>& allyInParty, int& currentState, bool& mapMenuLoaded, sf::RenderWindow& win)
+{
+	bool pressed = partyButton.mouseClickedInButton(sf::Color::Red, sf::Color::White, win);
+
+	if(pressed && allyInParty.size() < 3)
+	{
+		if(existInParty)
+		{
+			for(int i = 0; i < allyInParty.size(); i++)
+			{
+				if(allyInParty[i] == allyIndex)
+				{
+					allyInParty.erase(allyInParty.begin() + i);
+					break;
+				}
+			}
+		}
+		else
+		{
+			allyInParty.push_back(allyIndex);
+		}
+		//Goes back to the map
+		currentState = 1;
+		mapMenuLoaded = false;
+	}
 }
 
 void CharacterCards::drawAll(sf::RenderWindow& win)
@@ -77,4 +136,6 @@ void CharacterCards::drawAll(sf::RenderWindow& win)
 	win.draw(str);
 	win.draw(def);
 	win.draw(agi);
+
+	partyButton.drawAll(win);
 }

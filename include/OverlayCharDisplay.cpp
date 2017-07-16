@@ -9,21 +9,34 @@ OverlayCharDisplay::OverlayCharDisplay()
 	name.setFont(font);
 	level.setFont(font);
 
-	name.setCharacterSize(13);
-	level.setCharacterSize(15);
+	name.setCharacterSize(8);
+	level.setCharacterSize(9);
+	hp.getLabel()->setCharacterSize(4);
+	mana.getLabel()->setCharacterSize(4);
 
-	hp.setLabelPos(1);
-	mana.setLabelPos(1);
+	hp.setMaxSize(sf::Vector2f(80, 14));
+	mana.setMaxSize(sf::Vector2f(80, 14));
 
-	cardWrap.setSize(sf::Vector2f(150, 50));
+	hp.getCurrentRect()->setFillColor(sf::Color::Red);
+	mana.getCurrentRect()->setFillColor(sf::Color::Yellow);
+
+	hp.setLabelPos(2);
+	mana.setLabelPos(2);
+
+	name.setColor(sf::Color::Black);
+	level.setColor(sf::Color::Black);
+	hp.getLabel()->setColor(sf::Color::Black);
+	mana.getLabel()->setColor(sf::Color::Black);
+
+	cardWrap.setSize(sf::Vector2f(100, 110));
 }
 
 void OverlayCharDisplay::setupDisplay(std::shared_ptr<Character> currentAllyPtr)
 {
+	level.setString("Level : " + std::to_string(currentAllyPtr->getLevel()));
 	name.setString(currentAllyPtr->getName());
-	level.setString(std::to_string(currentAllyPtr->getLevel()));
-	hp.setStats(currentAllyPtr->getCurrentHp(), currentAllyPtr->getMaxHp(), "Health");
-	mana.setStats(currentAllyPtr->getCurrentMana(), currentAllyPtr->getMaxMana(), "Mana");
+	hp.setStats(currentAllyPtr->getCurrentHp(), currentAllyPtr->getMaxHp());
+	mana.setStats(currentAllyPtr->getCurrentMana(), currentAllyPtr->getMaxMana());
 }
 
 void OverlayCharDisplay::updatePosition(sf::Vector2f pos, sf::View view)
@@ -32,6 +45,11 @@ void OverlayCharDisplay::updatePosition(sf::Vector2f pos, sf::View view)
 	int viewY = view.getCenter().y - (view.getSize().y / 2);
 
 	cardWrap.setPosition(sf::Vector2f(pos.x + viewX, pos.y + viewY));
+	level.setPosition(sf::Vector2f(pos.x + viewX + 6, pos.y + viewY + 14));
+	name.setPosition(sf::Vector2f(pos.x + viewX + 6, pos.y + viewY + 23));
+	name.setPosition(sf::Vector2f(pos.x + viewX + 6, pos.y + viewY + 33));
+	hp.setPosition(sf::Vector2f(pos.x + viewX + 6, pos.y + viewY + 58));
+	mana.setPosition(sf::Vector2f(pos.x + viewX + 6, pos.y + viewY + 84));
 }
 
 void OverlayCharDisplay::drawAll(sf::RenderWindow& win)

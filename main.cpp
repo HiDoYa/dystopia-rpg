@@ -15,6 +15,7 @@
 #include "include/MapMenu.h"
 #include "include/MapPlayer.h"
 #include "include/Npc.h"
+#include "include/OverlayCharDisplay.h"
 #include "include/SpriteManager.h"
 #include "include/Skill.h"
 #include "include/StatBar.h"

@@ -92,13 +92,13 @@ void MapMenu::setupChar(std::vector<std::shared_ptr<Character>>& ally)
 	}
 }
 
-void MapMenu::showCharacterCard(std::shared_ptr<Character>& allySingular)
+void MapMenu::showCharacterCard(std::shared_ptr<Character>& allySingular, int indexInAlly, std::vector<int> allyInParty)
 {
-	characterCard.setupCard(*allySingular);
+	characterCard.setupCard(*allySingular, indexInAlly, allyInParty);
 }
 
 void MapMenu::checkForCharacterButton(std::vector<std::shared_ptr<Character>>& ally,
-				      sf::RenderWindow& win)
+				      std::vector<int> allyInParty, sf::RenderWindow& win)
 {
 	if(!charSelected)
 	{
@@ -107,11 +107,16 @@ void MapMenu::checkForCharacterButton(std::vector<std::shared_ptr<Character>>& a
 			if(characterButtons[i]->mouseClickedInButton(sf::Color::Red, sf::Color::White, win))
 			{
 				charSelected = true;
-				showCharacterCard(ally[i]);
+				showCharacterCard(ally[i], i, allyInParty);
 				break;
 			}
 		}
 	}
+}
+
+void MapMenu::checkForPartyButton(std::vector<int>& allyInParty, int& currentState, bool& mapMenuLoaded, sf::RenderWindow& win)
+{
+	characterCard.checkForButton(allyInParty, currentState, mapMenuLoaded, win);
 }
 
 void MapMenu::updateCharPosition(sf::View view)
