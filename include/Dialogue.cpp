@@ -22,6 +22,9 @@ void Dialogue::pushNextText()
 	chgNum.push_back(newIntVec);
 	chgCheck.push_back(newBoolVec);
 
+	giveType.push_back(newIntVec);
+	giveId.push_back(newIntVec);
+
 	//Choice
 	choiceFlag.push_back(false);
 	choiceDisp.push_back("");
@@ -111,6 +114,16 @@ void Dialogue::pushChgTwoBool(bool boolInp)
 	chgTwoBool[chgTwoBool.size() - 1].push_back(boolInp);
 }
 
+void Dialogue::pushGiveType(int intInp)
+{
+	giveType[giveType.size() - 1].push_back(intInp);
+}
+
+void Dialogue::pushGiveId(int intInp)
+{
+	giveId[giveId.size() - 1].push_back(intInp);
+}
+
 //******** ACCESSORS **********
 std::vector<std::string> Dialogue::getText()
 {
@@ -135,6 +148,16 @@ std::vector<std::vector<int>> Dialogue::getChgNum()
 std::vector<std::vector<bool>> Dialogue::getChgCheck()
 {
 	return chgCheck;
+}
+
+std::vector<std::vector<int>> Dialogue::getGiveType()
+{
+	return giveType;
+}
+
+std::vector<std::vector<int>> Dialogue::getGiveId()
+{
+	return giveId;
 }
 
 std::vector<bool> Dialogue::getChoiceFlag()

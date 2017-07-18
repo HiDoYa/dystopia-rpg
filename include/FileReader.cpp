@@ -406,8 +406,18 @@ void FileReader::loadMainMapFile(std::string fileNm,
 			std::shared_ptr<Npc> tempPtr (new Npc);
 			npc.push_back(tempPtr);
 
-			//Get rid of useless number
+			int numInp;
 			mainMapFile >> strInp;
+			mainMapFile >> numInp;
+
+			if(strInp == "CondTrue")
+			{
+				npc[npcCounter]->npcExistCondition(numInp, true);
+			}
+			else if(strInp == "CondFalse")
+			{
+				npc[npcCounter]->npcExistCondition(numInp, false);
+			}
 		}
 		else if(strInp == "Image")
 		{
@@ -464,6 +474,23 @@ void FileReader::loadMainMapFile(std::string fileNm,
 			mainMapFile >> strInp;
 			npc[npcCounter]->pushChgCheck(false);
 			npc[npcCounter]->pushChgNum(atoi(strInp.c_str()));
+		}
+		else if(strInp == "Give")
+		{
+			int idNum;
+			mainMapFile >> strInp;
+			if(strInp == "Ally")
+			{
+				npc[npcCounter]->pushGiveType(0);
+				mainMapFile >> idNum;
+				npc[npcCounter]->pushGiveId(idNum);
+			}
+			else if(strInp == "Skill")
+			{
+				npc[npcCounter]->pushGiveType(1);
+				mainMapFile >> idNum;
+				npc[npcCounter]->pushGiveId(idNum);
+			}
 		}
 		else if(strInp == "Choice")
 		{

@@ -18,6 +18,10 @@ class Dialogue
 		std::vector<std::vector<int>> chgNum;
 		//Stores to change the event to true or to false
 		std::vector<std::vector<bool>> chgCheck;
+
+		//0 is ally, 2 is skill
+		std::vector<std::vector<int>> giveType;
+		std::vector<std::vector<int>> giveId;
 		
 
 		//******* CHOICES TEXT *******
@@ -46,6 +50,9 @@ class Dialogue
 		void pushChgNum(int);
 		void pushChgCheck(bool);
 
+		void pushGiveType(int);
+		void pushGiveId(int);
+
 		//******** CHOICE SPECIFIC ********
 		void curChoiceTrue();
 		void pushChoice(std::string);
@@ -64,6 +71,9 @@ class Dialogue
 		std::vector<std::vector<bool>> getConditionCheck();
 		std::vector<std::vector<int>> getChgNum();
 		std::vector<std::vector<bool>> getChgCheck();
+
+		std::vector<std::vector<int>> getGiveType();
+		std::vector<std::vector<int>> getGiveId();
 		
 		std::vector<bool> getChoiceFlag();
 		std::vector<std::string> getChoiceDisp();

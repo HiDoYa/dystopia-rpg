@@ -18,8 +18,23 @@ Npc::Npc()
 	colliding = false;
 }
 
+void Npc::npcExistCondition(int flagNum, bool flagBool)
+{
+	npcExistNum = flagNum;
+	npcExistCond = flagBool;
+}
+
+bool Npc::npcExists(std::vector<bool> stateFlag)
+{
+	if(stateFlag[npcExistNum] == npcExistCond)
+	{
+		return true;
+	}
+	return false;
+}
+
 //Gets the converted vector, deals with animation/textbox calls, and deals with multiple textboxes
-void Npc::speak(std::vector<bool>& stateFlag, Textbox& box, MapPlayer& player, sf::RenderWindow& win)
+void Npc::speak(std::vector<bool>& stateFlag, std::vector<int>& allyFound, std::vector<int>& unlockedSkills, Textbox& box, MapPlayer& player, sf::RenderWindow& win)
 {
 	bool cond = !player.getMoving() && sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
 
@@ -47,30 +62,113 @@ void Npc::speak(std::vector<bool>& stateFlag, Textbox& box, MapPlayer& player, s
 							break;
 						case 1:
 							//Change assuming the first choice
-							for(int chgCounter = 0; chgCounter < getChgOneNum()[i].size(); chgCounter++)
-							{
-								stateFlag[getChgOneNum()[chgCounter][i]] = getChgOneBool()[chgCounter][i];
-							}
+							changeStateFlag(stateFlag, i, 1);
 							break;
 						case 2:
 							//Change assuming the second choice
-							for(int chgCounter = 0; chgCounter < getChgOneNum()[i].size(); chgCounter++)
-							{
-								stateFlag[getChgTwoNum()[chgCounter][i]] = getChgTwoBool()[chgCounter][i];
-							}
+							changeStateFlag(stateFlag, i, 2);
 							break;
 					}
 				}
 				else if(box.textHandler(name, getText()[i], cond, speaking))
 				{
-						for(int chgCounter = 0; chgCounter < getChgNum()[i].size(); chgCounter++)
-						{
-							stateFlag[getChgNum()[chgCounter][i]] = getChgCheck()[chgCounter][i];
-						}
+					changeStateFlag(stateFlag, i, 0);
+					giveToPlayer(allyFound, unlockedSkills, i, 0);
 				}
 				break;
 			}
 		}
+	}
+}
+
+void Npc::giveToPlayer(std::vector<int>& allyFound, std::vector<int>& unlockedSkills, int textNum, int type)
+{
+	//TODO Type for choice text
+	for(int i = 0; i < getGiveType()[textNum].size(); i++)
+	{
+		if(getGiveType()[textNum][i] == 0)
+		{
+			allyFound.push_back(getGiveId()[textNum][i]);
+		}
+		else if(getGiveType()[textNum][i] == 1)
+		{
+			unlockedSkills.push_back(getGiveId()[textNum][i]);
+		}
+	}
+
+	ascendSort(allyFound);
+	removeDup(allyFound);
+	ascendSort(unlockedSkills);
+	removeDup(unlockedSkills);
+}
+
+//Insertion sort
+void Npc::ascendSort(std::vector<int>& toSort)
+{
+	for(int i = 1; i < toSort.size(); i++)
+	{
+		int curIndex = i;
+		while(curIndex > 0 && toSort[curIndex] < toSort[curIndex - 1])
+		{
+			int tempSwap = toSort[curIndex];
+			toSort[curIndex] = toSort[curIndex - 1];
+			toSort[curIndex - 1] = tempSwap;
+			curIndex--;
+		}
+	}
+}
+
+void Npc::removeDup(std::vector<int>& toRemove)
+{
+	int lastNum = toRemove[0];
+	for(int i = 1; i < toRemove.size(); i++)
+	{
+		if(toRemove[i] == lastNum)
+		{
+			toRemove.erase(toRemove.begin() + i);
+			i--;
+		}
+		lastNum = toRemove[i];
+	}
+}
+
+//Type is 0 if regular text, 1 if option one (in choice), 2 if option two (in choice)
+void Npc::changeStateFlag(std::vector<bool>& stateFlag, int textNum, int type)
+{
+	int stateNum, iterations;
+	bool changeTo;
+
+	switch(type)
+	{
+		case 0:
+			iterations = getChgNum()[textNum].size();
+			break;
+		case 1:
+			iterations = getChgOneNum()[textNum].size();
+			break;
+		case 2:
+			iterations = getChgTwoNum()[textNum].size();
+			break;
+	}
+
+	for(int chgCounter = 0; chgCounter < iterations; chgCounter++)
+	{
+		switch(type)
+		{
+			case 0:
+				stateNum = getChgNum()[textNum][chgCounter];
+				changeTo = getChgCheck()[textNum][chgCounter];
+				break;
+			case 1:
+				stateNum = getChgOneNum()[textNum][chgCounter];
+				changeTo = getChgOneBool()[textNum][chgCounter];
+				break;
+			case 2:
+				stateNum = getChgTwoNum()[textNum][chgCounter];
+				changeTo = getChgTwoBool()[textNum][chgCounter];
+				break;
+		}
+		stateFlag[stateNum] = changeTo;
 	}
 }
 

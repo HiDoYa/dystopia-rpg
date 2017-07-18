@@ -15,9 +15,18 @@ class Npc: public SpriteManager, public Dialogue
 		bool speaking;
 		//Stores whether player is next to npc
 		bool colliding;
+
+		int npcExistNum;
+		bool npcExistCond;
 	public:
 		Npc();
-		void speak(std::vector<bool>&, Textbox&, MapPlayer&, sf::RenderWindow&);
+		void npcExistCondition(int, bool);
+		bool npcExists(std::vector<bool>);
+		void speak(std::vector<bool>&, std::vector<int>&, std::vector<int>&, Textbox&, MapPlayer&, sf::RenderWindow&);
+		void giveToPlayer(std::vector<int>&, std::vector<int>&, int, int);
+		void ascendSort(std::vector<int>&);
+		void removeDup(std::vector<int>&);
+		void changeStateFlag(std::vector<bool>&, int, int);
 		void collision(MapPlayer&);
 
 		//****** MUTATORS **********

@@ -40,6 +40,9 @@ StateManager::StateManager()
 	allyFound.push_back(0);
 	allyInParty.push_back(0);
 
+	//By default, skills 0 1 2 are unlocked
+	unlockedSkills = {0, 1, 2};
+
 	//Event has false and true by default
 	stateFlag.push_back(false);
 	stateFlag.push_back(true);
@@ -125,15 +128,21 @@ void StateManager::updateMap(sf::RenderWindow& win, sf::View& view)
 
 	for(int i = 0; i < npc.size(); i++)
 	{
-		npc[i]->speak(stateFlag, textbox, player, win);
+		if(npc[i]->npcExists(stateFlag))
+		{
+			npc[i]->speak(stateFlag, allyFound, unlockedSkills, textbox, player, win);
+		}
 	}
 
 
 	for(int i = 0; i < npc.size(); i++)
 	{
-		if(npc[i]->getSpeaking())
+		if(npc[i]->npcExists(stateFlag))
 		{
-			speaking = true;
+			if(npc[i]->getSpeaking())
+			{
+				speaking = true;
+			}
 		}
 	}
 	
@@ -174,12 +183,18 @@ void StateManager::renderMap(sf::RenderWindow& win, sf::View& view)
 	
 	for(int i = 0; i < npc.size(); i++)
 	{
-		win.draw(npc[i]->getSprite());
+		if(npc[i]->npcExists(stateFlag))
+		{
+			win.draw(npc[i]->getSprite());
+		}
 	}
 
 	for(int i = 0; i < npc.size(); i++)
 	{
-		npc[i]->collision(player);
+		if(npc[i]->npcExists(stateFlag))
+		{
+			npc[i]->collision(player);
+		}
 	}
 	//TODO High ground
 	
