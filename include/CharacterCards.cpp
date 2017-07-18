@@ -6,6 +6,8 @@ CharacterCards::CharacterCards()
 {
 	font.loadFromFile("font/Ubuntu.ttf");
 	existInParty = false;
+	skillLoad = false;
+	skillLoadNum = -1;
 	allyIndex = -1;
 
 	background.setTextureSprite("images/ui/characterCard.png");
@@ -15,6 +17,8 @@ CharacterCards::CharacterCards()
 	setupText(str, font, 20);
 	setupText(def, font, 20);
 	setupText(agi, font, 20);
+	setupText(skillText, font, 20);
+	skillText.setString("Equipped Skills");
 
 	hp.setLabelPos(0);
 	hp.setLabelSize(13);
@@ -36,7 +40,7 @@ CharacterCards::CharacterCards()
 	{
 		skillButton.push_back(std::shared_ptr<ClickButton>(new ClickButton));
 		skillButton[i]->setType(1);
-		skillButton[i]->getCirc()->setRadius(15);
+		skillButton[i]->getCirc()->setRadius(50);
 	}
 }
 
@@ -66,6 +70,11 @@ void CharacterCards::updatePosition(std::vector<std::shared_ptr<Character>> ally
 		ally[allyIndex]->setPosition(570 + viewX, 450 + viewY);
 		ally[allyIndex]->setScale(2.5, 2.5);
 	}
+
+	skillText.setPosition(720 + viewX, 230 + viewY);
+	skillButton[0]->updatePositionMap(690, 330, view);
+	skillButton[1]->updatePositionMap(790, 260, view);
+	skillButton[2]->updatePositionMap(890, 330, view);
 
 	partyButton.updatePositionMap(700, 100, view);
 }
@@ -139,6 +148,19 @@ void CharacterCards::checkForButton(std::vector<int>& allyInParty, int& currentS
 	}
 }
 
+void CharacterCards::checkForSkill(sf::RenderWindow& win)
+{
+	for(int i = 0; i < skillButton.size(); i++)
+	{
+		bool pressed = skillButton[i]->mouseClickedInButton(sf::Color::Red, sf::Color::White, win);
+		if(pressed)
+		{
+			skillLoad = true;
+			skillLoadNum = i;
+		}
+	}
+}
+
 void CharacterCards::drawAll(std::vector<std::shared_ptr<Character>> ally, sf::RenderWindow& win)
 {
 	background.drawSprite(win);
@@ -157,4 +179,11 @@ void CharacterCards::drawAll(std::vector<std::shared_ptr<Character>> ally, sf::R
 	ally[allyIndex]->drawSprite(win);
 
 	partyButton.drawAll(win);
+
+	for(int i = 0; i < skillButton.size(); i++)
+	{
+		skillButton[i]->drawAll(win);
+	}
+
+	win.draw(skillText);
 }

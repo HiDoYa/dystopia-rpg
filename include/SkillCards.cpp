@@ -26,7 +26,13 @@ void SkillCards::setupCard(Skill skill)
 
 void SkillCards::setPosition(sf::Vector2f pos, sf::View view)
 {
-	name.setPosition();
+	int viewX = view.getCenter().x - view.getSize().x;
+	int viewY = view.getCenter().y - view.getSize().y;
+	name.setPosition(sf::Vector2f(pos.x + viewX, pos.y + viewY));
+	description.setPosition(sf::Vector2f(pos.x + viewX, pos.y + viewY));
+	skillRating.setPosition(pos.x + viewX, pos.y + viewY);
+	cardBackground.setPosition(sf::Vector2f(pos.x + viewX, pos.y + viewY));
+	icon.setPosition(sf::Vector2f(pos.x + viewX, pos.y + viewY));
 }
 
 void SkillCards::drawAll(sf::RenderWindow& win)

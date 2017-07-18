@@ -31,7 +31,10 @@ class CharacterCards
 		int allyIndex;
 
 		//TODO finish skill buttons
+		sf::Text skillText;
 		std::vector<std::shared_ptr<ClickButton>> skillButton;
+		bool skillLoad;
+		int skillLoadNum;
 	public:
 		CharacterCards();
 		//Utility
@@ -41,6 +44,7 @@ class CharacterCards
 		//Setup
 		void setupCard(Character, int, std::vector<int>);
 		void checkForButton(std::vector<int>&, int&, bool&, sf::RenderWindow&);
+		void checkForSkill(sf::RenderWindow&);
 
 		void drawAll(std::vector<std::shared_ptr<Character>>, sf::RenderWindow&);
 };
