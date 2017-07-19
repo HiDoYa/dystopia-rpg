@@ -14,6 +14,7 @@ class CharacterCards
 		SpriteManager image;
 		//Background is just character card background
 		SpriteManager background;
+		SpriteManager skillDispBackground;
 
 		sf::Text name;
 		sf::Text desc;
@@ -25,7 +26,7 @@ class CharacterCards
 		StatBar hp;
 		StatBar mana;
 
-		//TODO This button adds or removes party members (can only add up to 3)
+		//This button adds or removes party members (can only add up to 3)
 		ClickButton partyButton;
 		bool existInParty;
 		int allyIndex;
@@ -35,6 +36,14 @@ class CharacterCards
 		std::vector<std::shared_ptr<ClickButton>> skillButton;
 		bool skillLoad;
 		int skillLoadNum;
+
+		//Selecting new skills
+		bool displaySkills;
+		std::vector<std::shared_ptr<SkillCards>> skillCards;
+		ClickButton prevPage;
+		ClickButton nextPage;
+		int curPage;
+		int maxPage;
 	public:
 		CharacterCards();
 		//Utility

@@ -18,4 +18,38 @@ Ally 2
 	Defense 10
 	Agility 15
 	Skill 1 2 3
-	Image images/ally/test4.png 64
+	Image images/ally/test4.png 0
+
+
+Ally 3
+	Name Bot Jon
+	Level 1
+	Hp 50
+	Mana 150
+	Strength 15
+	Defense 10
+	Agility 15
+	Skill 1 2 3
+	Image images/ally/test4.png 0
+
+Ally 4
+	Name Bot Glonn
+	Level 1
+	Hp 50
+	Mana 150
+	Strength 15
+	Defense 10
+	Agility 15
+	Skill 1 2 3
+	Image images/ally/test4.png 0
+
+Ally 5
+	Name Bot Michel
+	Level 1
+	Hp 50
+	Mana 150
+	Strength 15
+	Defense 10
+	Agility 15
+	Skill 1 2 3
+	Image images/ally/test4.png 0

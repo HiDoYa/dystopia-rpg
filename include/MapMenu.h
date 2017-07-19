@@ -47,6 +47,9 @@ class MapMenu
 		//Battle
 		void drawAllBattle(sf::RenderWindow&);
 		
+		//Items
+		void drawAllItem(sf::RenderWindow&);
+		
 		//Save
 		void drawAllSave(sf::RenderWindow&);
 };

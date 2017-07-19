@@ -7,6 +7,8 @@ class Skill
 		//For enemy, all skills are equipped.
 		//For ally/player, only some skills are equipped
 		std::string name;
+		std::string description;
+		int powerRating;
 		int manaCost;
 
 		//Shows multiple damage nums for one attack (think trip strike)
@@ -55,6 +57,8 @@ class Skill
 		
 		//****** MUTATORS *********
 		void setName(std::string);
+		void setDescription(std::string);
+		void setPowerRating(int);
 		void setChance(int);
 		void setManaCost(int);
 		void setNumTurns(int);
@@ -74,6 +78,8 @@ class Skill
 
 		//****** ACCESSORS *********
 		std::string getName();
+		std::string getDescription();
+		int getPowerRating();
 		int getChance();
 		int getManaCost();
 		int getNumTurns();

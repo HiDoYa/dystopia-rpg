@@ -40,6 +40,11 @@ class Dialogue
 		std::vector<std::vector<bool>> chgOneBool;
 		std::vector<std::vector<bool>> chgTwoBool;
 
+		std::vector<std::vector<int>> giveOneType;
+		std::vector<std::vector<int>> giveTwoType;
+		std::vector<std::vector<int>> giveOneId;
+		std::vector<std::vector<int>> giveTwoId;
+
 	public:
 		Dialogue();
 		//******** PUSH ********
@@ -65,6 +70,11 @@ class Dialogue
 		void pushChgOneBool(bool);
 		void pushChgTwoBool(bool);
 
+		void pushGiveOneType(int);
+		void pushGiveTwoType(int);
+		void pushGiveOneId(int);
+		void pushGiveTwoId(int);
+
 		//***** ACCESSORS ***********
 		std::vector<std::string> getText();
 		std::vector<std::vector<int>> getCondition();
@@ -85,6 +95,11 @@ class Dialogue
 		std::vector<std::vector<int>> getChgTwoNum();
 		std::vector<std::vector<bool>> getChgOneBool();
 		std::vector<std::vector<bool>> getChgTwoBool();
+
+		std::vector<std::vector<int>> getGiveOneType();
+		std::vector<std::vector<int>> getGiveTwoType();
+		std::vector<std::vector<int>> getGiveOneId();
+		std::vector<std::vector<int>> getGiveTwoId();
 };
 
 #endif

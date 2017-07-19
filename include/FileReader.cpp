@@ -117,6 +117,16 @@ void FileReader::loadSkill(std::vector<std::shared_ptr<Skill>>& skillList)
 		{
 			skillList[skillCounter]->setName(getWholeText(skillFile));
 		}
+		else if(strInp == "Description")
+		{
+			skillList[skillCounter]->setDescription(getWholeText(skillFile));
+		}
+		else if(strInp == "PowerRating")
+		{
+			int intInp;
+			skillFile >> intInp;
+			skillList[skillCounter]->setPowerRating(intInp);
+		}
 		else if(strInp == "Type")
 		{
 			skillFile >> strInp;
@@ -533,6 +543,52 @@ void FileReader::loadMainMapFile(std::string fileNm,
 			{
 				npc[npcCounter]->pushChgTwoNum(intInp);
 				npc[npcCounter]->pushChgTwoBool(false);
+			}
+		}
+		else if(strInp == "*Give")
+		{
+			int idNum;
+			mainMapFile >> strInp;
+
+			if(curChoice == 0)
+			{
+				if(strInp == "Ally")
+				{
+					npc[npcCounter]->pushGiveOneType(0);
+				}
+				else if(strInp == "Skill")
+				{
+					npc[npcCounter]->pushGiveOneType(1);
+				}
+				mainMapFile >> idNum;
+				npc[npcCounter]->pushGiveOneId(idNum);
+			}
+			else if(curChoice == 1)
+			{
+				if(strInp == "Ally")
+				{
+					npc[npcCounter]->pushGiveTwoType(0);
+				}
+				else if(strInp == "Skill")
+				{
+					npc[npcCounter]->pushGiveTwoType(1);
+				}
+				mainMapFile >> idNum;
+				npc[npcCounter]->pushGiveTwoId(idNum);
+			}
+			//Regular text
+			else
+			{
+				if(strInp == "Ally")
+				{
+					npc[npcCounter]->pushGiveType(0);
+				}
+				else if(strInp == "Skill")
+				{
+					npc[npcCounter]->pushGiveType(1);
+				}
+				mainMapFile >> idNum;
+				npc[npcCounter]->pushGiveId(idNum);
 			}
 		}
 		else if(strInp == "*Text")

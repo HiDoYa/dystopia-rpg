@@ -10,7 +10,7 @@ MapMenu::MapMenu()
 	charSelected = false;
 
 	//Setup back button
-	backButton.getRect()->setSize(sf::Vector2f(200, 50));
+	backButton.getRect()->setSize(sf::Vector2f(150, 50));
 	backButton.getText()->setString("Back");
 	backButton.getText()->setCharacterSize(15);
 
@@ -32,6 +32,9 @@ void MapMenu::setTitle(int menuOption)
 			title.setString("Battle");
 			break;
 		case 2:
+			title.setString("Items");
+			break;
+		case 3:
 			title.setString("Save");
 			break;
 	}
@@ -51,7 +54,7 @@ void MapMenu::updatePosition(sf::View view)
 	int viewX = view.getCenter().x - (view.getSize().x / 2);
 	int viewY = view.getCenter().y - (view.getSize().y / 2);
 
-	backButton.updatePositionMap(775, 700, view);
+	backButton.updatePositionMap(825, 700, view);
 	menuBackground.setPosition(0 + viewX, 0 + viewY);
 	title.setPosition(180 + viewX, 90 + viewY);
 }
@@ -138,6 +141,12 @@ void MapMenu::drawAllChar(std::vector<std::shared_ptr<Character>> ally, sf::Rend
 
 //******** BATTLE *********
 void MapMenu::drawAllBattle(sf::RenderWindow& win)
+{
+	menuBackground.drawSprite(win);
+}
+
+//******** ITEMS *********
+void MapMenu::drawAllItem(sf::RenderWindow& win)
 {
 	menuBackground.drawSprite(win);
 }

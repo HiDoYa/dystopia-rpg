@@ -1,5 +1,7 @@
 Skill 0
 Name Electrocute
+Description Powerful electrical surge damages one enemy.
+PowerRating 3
 ManaCost 10
 Accuracy 95
 EnemyPrio 10

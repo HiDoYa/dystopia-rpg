@@ -20,7 +20,7 @@ SkillCards::SkillCards()
 void SkillCards::setupCard(Skill skill)
 {
 	name.setString(skill.getName());
-	//TODO description.setString();
+	description.setString(skill.getDescription());
 	//TODO load icon and skillRating
 }
 

@@ -63,10 +63,12 @@ void Npc::speak(std::vector<bool>& stateFlag, std::vector<int>& allyFound, std::
 						case 1:
 							//Change assuming the first choice
 							changeStateFlag(stateFlag, i, 1);
+							giveToPlayer(allyFound, unlockedSkills, i, 1);
 							break;
 						case 2:
 							//Change assuming the second choice
 							changeStateFlag(stateFlag, i, 2);
+							giveToPlayer(allyFound, unlockedSkills, i, 2);
 							break;
 					}
 				}
@@ -83,16 +85,46 @@ void Npc::speak(std::vector<bool>& stateFlag, std::vector<int>& allyFound, std::
 
 void Npc::giveToPlayer(std::vector<int>& allyFound, std::vector<int>& unlockedSkills, int textNum, int type)
 {
-	//TODO Type for choice text
-	for(int i = 0; i < getGiveType()[textNum].size(); i++)
+	if(type == 0)
 	{
-		if(getGiveType()[textNum][i] == 0)
+		for(int i = 0; i < getGiveType()[textNum].size(); i++)
 		{
-			allyFound.push_back(getGiveId()[textNum][i]);
+			if(getGiveType()[textNum][i] == 0)
+			{
+				allyFound.push_back(getGiveId()[textNum][i]);
+			}
+			else if(getGiveType()[textNum][i] == 1)
+			{
+				unlockedSkills.push_back(getGiveId()[textNum][i]);
+			}
 		}
-		else if(getGiveType()[textNum][i] == 1)
+	}
+	else if(type == 1)
+	{
+		for(int i = 0; i < getGiveOneType()[textNum].size(); i++)
 		{
-			unlockedSkills.push_back(getGiveId()[textNum][i]);
+			if(getGiveOneType()[textNum][i] == 0)
+			{
+				allyFound.push_back(getGiveOneId()[textNum][i]);
+			}
+			else if(getGiveType()[textNum][i] == 1)
+			{
+				unlockedSkills.push_back(getGiveOneId()[textNum][i]);
+			}
+		}
+	}
+	else if(type == 2)
+	{
+		for(int i = 0; i < getGiveTwoType()[textNum].size(); i++)
+		{
+			if(getGiveTwoType()[textNum][i] == 0)
+			{
+				allyFound.push_back(getGiveTwoId()[textNum][i]);
+			}
+			else if(getGiveTwoType()[textNum][i] == 1)
+			{
+				unlockedSkills.push_back(getGiveTwoId()[textNum][i]);
+			}
 		}
 	}
 

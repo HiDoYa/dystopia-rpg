@@ -8,6 +8,7 @@
 Skill::Skill()
 {
 	//Default
+	powerRating = 1;
 	manaCost = 0;
 	numAtksPerHit = 1;
 	missed = false;
@@ -38,6 +39,16 @@ Skill::Skill()
 void Skill::setName(std::string str)
 {
 	name = str;
+}
+
+void Skill::setDescription(std::string str)
+{
+	description = str;
+}
+
+void Skill::setPowerRating(int inp)
+{
+	powerRating = inp;
 }
 
 void Skill::setChance(int inp)
@@ -119,6 +130,16 @@ void Skill::setAllyEquip(std::vector<int> inp)
 std::string Skill::getName()
 {
 	return name;
+}
+
+std::string Skill::getDescription()
+{
+	return description;
+}
+
+int Skill::getPowerRating()
+{
+	return powerRating;
 }
 
 int Skill::getChance()

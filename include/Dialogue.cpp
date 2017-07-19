@@ -36,6 +36,11 @@ void Dialogue::pushNextText()
 	chgTwoNum.push_back(newIntVec);
 	chgOneBool.push_back(newBoolVec);
 	chgTwoBool.push_back(newBoolVec);
+
+	giveOneType.push_back(newIntVec);
+	giveTwoType.push_back(newIntVec);
+	giveOneId.push_back(newIntVec);
+	giveTwoId.push_back(newIntVec);
 }
 
 void Dialogue::pushText(std::string textInp)
@@ -61,6 +66,16 @@ void Dialogue::pushChgNum(int chgNumInp)
 void Dialogue::pushChgCheck(bool chgChkInp)
 {
 	chgCheck[chgCheck.size() - 1].push_back(chgChkInp);
+}
+
+void Dialogue::pushGiveType(int intInp)
+{
+	giveType[giveType.size() - 1].push_back(intInp);
+}
+
+void Dialogue::pushGiveId(int intInp)
+{
+	giveId[giveId.size() - 1].push_back(intInp);
 }
 
 //************* CHOICE SPECIFIC **********
@@ -114,14 +129,24 @@ void Dialogue::pushChgTwoBool(bool boolInp)
 	chgTwoBool[chgTwoBool.size() - 1].push_back(boolInp);
 }
 
-void Dialogue::pushGiveType(int intInp)
+void Dialogue::pushGiveOneType(int intInp)
 {
-	giveType[giveType.size() - 1].push_back(intInp);
+	giveOneType[giveOneType.size() - 1].push_back(intInp);
 }
 
-void Dialogue::pushGiveId(int intInp)
+void Dialogue::pushGiveTwoType(int intInp)
 {
-	giveId[giveId.size() - 1].push_back(intInp);
+	giveTwoType[giveTwoType.size() - 1].push_back(intInp);
+}
+
+void Dialogue::pushGiveOneId(int intInp)
+{
+	giveOneId[giveOneId.size() - 1].push_back(intInp);
+}
+
+void Dialogue::pushGiveTwoId(int intInp)
+{
+	giveTwoId[giveTwoId.size() - 1].push_back(intInp);
 }
 
 //******** ACCESSORS **********
@@ -208,5 +233,25 @@ std::vector<std::vector<bool>> Dialogue::getChgOneBool()
 std::vector<std::vector<bool>> Dialogue::getChgTwoBool()
 {
 	return chgTwoBool;
+}
+
+std::vector<std::vector<int>> Dialogue::getGiveOneType()
+{
+	return giveOneType;
+}
+
+std::vector<std::vector<int>> Dialogue::getGiveTwoType()
+{
+	return giveTwoType;
+}
+
+std::vector<std::vector<int>> Dialogue::getGiveOneId()
+{
+	return giveOneId;
+}
+
+std::vector<std::vector<int>> Dialogue::getGiveTwoId()
+{
+	return giveTwoId;
 }
 

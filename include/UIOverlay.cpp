@@ -22,17 +22,21 @@ UIOverlay::UIOverlay()
 	levelText.setCharacterSize(25);
 
 	//Button
-	charButton.getRect()->setSize(sf::Vector2f(200, 50));
+	charButton.getRect()->setSize(sf::Vector2f(150, 50));
 	charButton.getText()->setString("Characters");
 	charButton.getText()->setCharacterSize(15);
 
-	skillButton.getRect()->setSize(sf::Vector2f(200, 50));
-	skillButton.getText()->setString("Battle");
-	skillButton.getText()->setCharacterSize(15);
+	battleButton.getRect()->setSize(sf::Vector2f(150, 50));
+	battleButton.getText()->setString("Battle");
+	battleButton.getText()->setCharacterSize(15);
 
-	battlePosButton.getRect()->setSize(sf::Vector2f(200, 50));
-	battlePosButton.getText()->setString("Save");
-	battlePosButton.getText()->setCharacterSize(15);
+	itemButton.getRect()->setSize(sf::Vector2f(150, 50));
+	itemButton.getText()->setString("Items");
+	itemButton.getText()->setCharacterSize(15);
+
+	saveButton.getRect()->setSize(sf::Vector2f(150, 50));
+	saveButton.getText()->setString("Save");
+	saveButton.getText()->setCharacterSize(15);
 
 	menuSelected = sf::Color::Red;
 	menuDeselected = sf::Color::Black;
@@ -74,8 +78,9 @@ void UIOverlay::setPosition(sf::View view)
 	}
 
 	charButton.updatePositionMap(25, 700, view);
-	skillButton.updatePositionMap(275, 700, view);
-	battlePosButton.updatePositionMap(525, 700, view);
+	battleButton.updatePositionMap(225, 700, view);
+	itemButton.updatePositionMap(425, 700, view);
+	saveButton.updatePositionMap(625, 700, view);
 }
 
 void UIOverlay::setCurrency(int cur)
@@ -93,21 +98,27 @@ void UIOverlay::setLevel(int lvl)
 bool UIOverlay::checkForMapMenu(int& menuOption, sf::RenderWindow& win)
 {
 	bool charBool = charButton.mouseClickedInButton(menuSelected, menuDeselected, win);
-	bool skillBool = skillButton.mouseClickedInButton(menuSelected, menuDeselected, win);
-	bool battlePosBool = battlePosButton.mouseClickedInButton(menuSelected, menuDeselected, win);
+	bool battleBool = battleButton.mouseClickedInButton(menuSelected, menuDeselected, win);
+	bool itemBool = itemButton.mouseClickedInButton(menuSelected, menuDeselected, win);
+	bool saveBool = saveButton.mouseClickedInButton(menuSelected, menuDeselected, win);
 	if(charBool)
 	{
 		menuOption = 0;
 		return true;
 	}
-	else if(skillBool)
+	else if(battleBool)
 	{
 		menuOption = 1;
 		return true;
 	}
-	else if(battlePosBool)
+	else if(itemBool)
 	{
 		menuOption = 2;
+		return true;
+	}
+	else if(saveBool)
+	{
+		menuOption = 3;
 		return true;
 	}
 	return false;
@@ -129,6 +140,7 @@ void UIOverlay::drawAll(sf::RenderWindow& win)
 	win.draw(inParty);
 
 	charButton.drawAll(win);
-	skillButton.drawAll(win);
-	battlePosButton.drawAll(win);
+	battleButton.drawAll(win);
+	itemButton.drawAll(win);
+	saveButton.drawAll(win);
 }

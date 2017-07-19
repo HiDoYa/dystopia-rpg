@@ -42,6 +42,7 @@ CharacterCards::CharacterCards()
 		skillButton[i]->setType(1);
 		skillButton[i]->getCirc()->setRadius(50);
 	}
+	displaySkills = false;
 }
 
 void CharacterCards::setupText(sf::Text& txt, sf::Font& font, int charSize)
@@ -125,6 +126,15 @@ void CharacterCards::checkForButton(std::vector<int>& allyInParty, int& currentS
 {
 	bool pressed = partyButton.mouseClickedInButton(sf::Color::Red, sf::Color::White, win);
 
+	bool skillPressed = false;
+	for(int i = 0; i < skillButton.size(); i++)
+	{
+		if(skillButton[i]->mouseClickedInButton(sf::Color::Red, sf::Color::White, win))
+		{
+			skillPressed = true;
+		}
+	}
+
 	if(pressed && allyInParty.size() < 3 && allyIndex != 0)
 	{
 		if(existInParty)
@@ -146,6 +156,11 @@ void CharacterCards::checkForButton(std::vector<int>& allyInParty, int& currentS
 		currentState = 1;
 		mapMenuLoaded = false;
 	}
+
+	if(skillPressed)
+	{
+		displaySkills = true;
+	}
 }
 
 void CharacterCards::checkForSkill(sf::RenderWindow& win)
@@ -163,27 +178,34 @@ void CharacterCards::checkForSkill(sf::RenderWindow& win)
 
 void CharacterCards::drawAll(std::vector<std::shared_ptr<Character>> ally, sf::RenderWindow& win)
 {
-	background.drawSprite(win);
-
-	hp.drawAll(win);
-	mana.drawAll(win);
-	image.drawSprite(win);
-
-	win.draw(name);
-	win.draw(desc);
-
-	win.draw(str);
-	win.draw(def);
-	win.draw(agi);
-
-	ally[allyIndex]->drawSprite(win);
-
-	partyButton.drawAll(win);
-
-	for(int i = 0; i < skillButton.size(); i++)
+	if(!displaySkills)
 	{
-		skillButton[i]->drawAll(win);
-	}
+		background.drawSprite(win);
 
-	win.draw(skillText);
+		hp.drawAll(win);
+		mana.drawAll(win);
+		image.drawSprite(win);
+
+		win.draw(name);
+		win.draw(desc);
+
+		win.draw(str);
+		win.draw(def);
+		win.draw(agi);
+
+		ally[allyIndex]->drawSprite(win);
+
+		partyButton.drawAll(win);
+
+		for(int i = 0; i < skillButton.size(); i++)
+		{
+			skillButton[i]->drawAll(win);
+		}
+
+		win.draw(skillText);
+	}
+	else
+	{
+		skillDispBackground.drawSprite(win);
+	}
 }
