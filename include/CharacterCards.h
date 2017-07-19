@@ -1,5 +1,6 @@
 #include "SpriteManager.h"
 #include "StatBar.h"
+#include "SkillCards.h"
 #include "Character.h"
 #include "ClickButton.h"
 
@@ -34,11 +35,10 @@ class CharacterCards
 		//TODO finish skill buttons
 		sf::Text skillText;
 		std::vector<std::shared_ptr<ClickButton>> skillButton;
-		bool skillLoad;
-		int skillLoadNum;
 
 		//Selecting new skills
 		bool displaySkills;
+		int skillToChange;
 		std::vector<std::shared_ptr<SkillCards>> skillCards;
 		ClickButton prevPage;
 		ClickButton nextPage;
@@ -47,11 +47,12 @@ class CharacterCards
 	public:
 		CharacterCards();
 		//Utility
+		void setDisplaySkills(bool);
 		void setupText(sf::Text&, sf::Font&, int = 30);
 		void updatePosition(std::vector<std::shared_ptr<Character>>, sf::View);
 
 		//Setup
-		void setupCard(Character, int, std::vector<int>);
+		void setupCard(Character, int, std::vector<int>, std::vector<std::shared_ptr<Skill>>, std::vector<int>);
 		void checkForButton(std::vector<int>&, int&, bool&, sf::RenderWindow&);
 		void checkForSkill(sf::RenderWindow&);
 

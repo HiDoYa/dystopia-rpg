@@ -325,7 +325,7 @@ void StateManager::updateMapMenu(sf::RenderWindow& win, sf::View view)
 	switch(menuOption)
 	{
 		case 0:
-			mapMenu.checkForCharacterButton(ally, allyInParty, win);
+			mapMenu.checkForCharacterButton(ally, allyInParty, skillList, unlockedSkills, win);
 			//This needs to be run here because text height is determined one frame late
 			mapMenu.updateCharPosition(ally, view);
 			mapMenu.checkForPartyButton(allyInParty, currentState, mapMenuLoaded, win);
@@ -333,6 +333,8 @@ void StateManager::updateMapMenu(sf::RenderWindow& win, sf::View view)
 		case 1:
 			break;
 		case 2:
+			break;
+		case 3:
 			break;
 	}
 }
@@ -348,6 +350,9 @@ void StateManager::renderMapMenu(sf::RenderWindow& win)
 			mapMenu.drawAllBattle(win);
 			break;
 		case 2:
+			mapMenu.drawAllItem(win);
+			break;
+		case 3:
 			mapMenu.drawAllSave(win);
 			break;
 	}

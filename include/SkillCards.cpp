@@ -4,42 +4,62 @@
 
 SkillCards::SkillCards()
 {
-	font.loadFromFile("font/Ubuntu.ttf");
-
-	//set text
-	name.setFont(font);
-	description.setFont(font);
-	name.setCharacterSize(15);
-	description.setCharacterSize(12);
-
 	//Set shapes
-	icon.setRadius(8);
-	skillRating.setSize(sf::Vector2f(200, 70));
+	icon.setRadius(50);
+	cardBackground.setSize(sf::Vector2f());
+	//skillRating.setSize(sf::Vector2f(200, 70));
+
+	//Set button
+	equip.setType(0);
+	equip.setHoverText(true);
+	equip.getHoverText()->setCharacterSize(9);
+	equip.getHoverText()->setColor(sf::Color::White);
+
+	equip.getText()->setString("Equip");
+	equip.getText()->setCharacterSize(10);
+	equip.getText()->setColor(sf::Color::Black);
+	equip.getRect()->setSize(sf::Vector2f(75, 40));
+
+	//Icon
+	iconTexture.loadFromFile("images/skillIcons.png");
+	icon.setTexture(&iconTexture);
 }
 
-void SkillCards::setupCard(Skill skill)
+void SkillCards::setupCard(Skill skill, int id)
 {
-	name.setString(skill.getName());
-	description.setString(skill.getDescription());
+	std::string textHover = skill.getName() + '\n' + skill.getDescription();
+	equip.getHoverText()->setString(textHover);
+
+	icon.setTextureRect(sf::IntRect(id % 10, id / 10, 64, 64));
+
 	//TODO load icon and skillRating
 }
 
 void SkillCards::setPosition(sf::Vector2f pos, sf::View view)
 {
-	int viewX = view.getCenter().x - view.getSize().x;
-	int viewY = view.getCenter().y - view.getSize().y;
-	name.setPosition(sf::Vector2f(pos.x + viewX, pos.y + viewY));
-	description.setPosition(sf::Vector2f(pos.x + viewX, pos.y + viewY));
+	int viewX = view.getCenter().x - (view.getSize().x / 2);
+	int viewY = view.getCenter().y - (view.getSize().y / 2);
+
 	skillRating.setPosition(pos.x + viewX, pos.y + viewY);
 	cardBackground.setPosition(sf::Vector2f(pos.x + viewX, pos.y + viewY));
-	icon.setPosition(sf::Vector2f(pos.x + viewX, pos.y + viewY));
+	icon.setPosition(sf::Vector2f(pos.x + 30 + viewX, pos.y + 10 + viewY));
+	equip.updatePositionMap(pos.x, pos.y + 80, view);
+	equip.setPositionHover(pos.x + 30, pos.y + 30, view);
+}
+
+bool SkillCards::selectSkill(sf::RenderWindow& win)
+{
+	if(equip.mouseClickedInButton(sf::Color::Red, sf::Color::White, win))
+	{
+		return true;
+	}
+	return false;
 }
 
 void SkillCards::drawAll(sf::RenderWindow& win)
 {
 	win.draw(cardBackground);
 	win.draw(icon);
-	skillRating.drawAll(win);
-	win.draw(name);
-	win.draw(description);
+	skillRating.drawSprite(win);
+	equip.drawAll(win);
 }

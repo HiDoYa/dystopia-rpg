@@ -22,19 +22,19 @@ UIOverlay::UIOverlay()
 	levelText.setCharacterSize(25);
 
 	//Button
-	charButton.getRect()->setSize(sf::Vector2f(150, 50));
+	charButton.getRect()->setSize(sf::Vector2f(175, 50));
 	charButton.getText()->setString("Characters");
 	charButton.getText()->setCharacterSize(15);
 
-	battleButton.getRect()->setSize(sf::Vector2f(150, 50));
+	battleButton.getRect()->setSize(sf::Vector2f(175, 50));
 	battleButton.getText()->setString("Battle");
 	battleButton.getText()->setCharacterSize(15);
 
-	itemButton.getRect()->setSize(sf::Vector2f(150, 50));
+	itemButton.getRect()->setSize(sf::Vector2f(175, 50));
 	itemButton.getText()->setString("Items");
 	itemButton.getText()->setCharacterSize(15);
 
-	saveButton.getRect()->setSize(sf::Vector2f(150, 50));
+	saveButton.getRect()->setSize(sf::Vector2f(175, 50));
 	saveButton.getText()->setString("Save");
 	saveButton.getText()->setCharacterSize(15);
 

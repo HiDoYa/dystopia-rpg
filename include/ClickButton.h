@@ -11,6 +11,7 @@ class ClickButton
 		//0 for rect, 1 for circle
 		int type;
 		bool hover;
+		bool mouseInside;
 
 		//For the map
 		int viewX;
@@ -50,6 +51,7 @@ class ClickButton
 		bool mouseClickedInButton(std::string, std::string, sf::RenderWindow&);
 
 		void updatePositionMap(int, int, sf::View);
+		void setPositionHover(int, int, sf::View);
 		void drawAll(sf::RenderWindow&);
 };
 

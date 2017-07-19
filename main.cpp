@@ -18,6 +18,7 @@
 #include "include/OverlayCharDisplay.h"
 #include "include/SpriteManager.h"
 #include "include/Skill.h"
+#include "include/SkillCards.h"
 #include "include/StatBar.h"
 #include "include/Textbox.h"
 #include "include/UIOverlay.h"

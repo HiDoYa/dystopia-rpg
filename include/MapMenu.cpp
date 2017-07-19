@@ -10,7 +10,7 @@ MapMenu::MapMenu()
 	charSelected = false;
 
 	//Setup back button
-	backButton.getRect()->setSize(sf::Vector2f(150, 50));
+	backButton.getRect()->setSize(sf::Vector2f(175, 50));
 	backButton.getText()->setString("Back");
 	backButton.getText()->setCharacterSize(15);
 
@@ -74,6 +74,7 @@ void MapMenu::drawBackground(sf::RenderWindow& win)
 void MapMenu::setupChar(std::vector<std::shared_ptr<Character>>& ally, std::vector<int> allyFound)
 {
 	charSelected = false;
+	characterCard.setDisplaySkills(false);
 	for(int i = 0; i < allyFound.size(); i++)
 	{
 		std::shared_ptr<ClickButton> tempPtr (new ClickButton);
@@ -86,13 +87,17 @@ void MapMenu::setupChar(std::vector<std::shared_ptr<Character>>& ally, std::vect
 }
 
 void MapMenu::showCharacterCard(std::shared_ptr<Character>& allySingular, int indexInAlly,
-				std::vector<int> allyInParty)
+				std::vector<int> allyInParty, 
+				std::vector<std::shared_ptr<Skill>> skillList, 
+				std::vector<int> unlockedSkills)
 {
-	characterCard.setupCard(*allySingular, indexInAlly, allyInParty);
+	characterCard.setupCard(*allySingular, indexInAlly, allyInParty, skillList, unlockedSkills);
 }
 
 void MapMenu::checkForCharacterButton(std::vector<std::shared_ptr<Character>>& ally,
-				      std::vector<int> allyInParty, sf::RenderWindow& win)
+				      std::vector<int> allyInParty, 
+				      std::vector<std::shared_ptr<Skill>> skillList,
+				      std::vector<int> unlockedSkills, sf::RenderWindow& win)
 {
 	if(!charSelected)
 	{
@@ -101,7 +106,7 @@ void MapMenu::checkForCharacterButton(std::vector<std::shared_ptr<Character>>& a
 			if(characterButtons[i]->mouseClickedInButton(sf::Color::Red, sf::Color::White, win))
 			{
 				charSelected = true;
-				showCharacterCard(ally[i], i, allyInParty);
+				showCharacterCard(ally[i], i, allyInParty, skillList, unlockedSkills);
 				break;
 			}
 		}

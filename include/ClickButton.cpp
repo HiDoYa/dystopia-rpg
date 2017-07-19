@@ -7,6 +7,7 @@
 ClickButton::ClickButton()
 {
 	//Not used by default
+	mouseInside = false;
 	viewX = viewY = 0;
 	font.loadFromFile("font/Ubuntu.ttf");
 	text.setFont(font);
@@ -119,8 +120,8 @@ bool ClickButton::mouseInButton(sf::Color col1, sf::Color col2, sf::RenderWindow
 		float posX = circ.getPosition().x + rad;
 		float posY = circ.getPosition().y + rad;
 
-		float diffX = posX - mouseCoords.x;
-		float diffY = posY - mouseCoords.y;
+		float diffX = posX - mouseCoords.x - viewX;
+		float diffY = posY - mouseCoords.y - viewY;
 
 		if(sqrt(diffX * diffX + diffY * diffY) < rad)
 		{
@@ -180,7 +181,7 @@ bool ClickButton::mouseInButton(std::string texture1, std::string texture2, sf::
 
 bool ClickButton::mouseClickedInButton(sf::Color col1, sf::Color col2, sf::RenderWindow& win)
 {
-	bool mouseInside = mouseInButton(col1, col2, win);
+	mouseInside = mouseInButton(col1, col2, win);
 	bool mouseClicked = sf::Mouse::isButtonPressed(sf::Mouse::Left);
 
 	if(mouseInside && mouseClicked)
@@ -193,7 +194,7 @@ bool ClickButton::mouseClickedInButton(sf::Color col1, sf::Color col2, sf::Rende
 
 bool ClickButton::mouseClickedInButton(std::string texture1, std::string texture2, sf::RenderWindow& win)
 {
-	bool mouseInside = mouseInButton(texture1, texture2, win);
+	mouseInside = mouseInButton(texture1, texture2, win);
 	bool mouseClicked = sf::Mouse::isButtonPressed(sf::Mouse::Left);
 
 	if(mouseInside && mouseClicked)
@@ -221,6 +222,14 @@ void ClickButton::updatePositionMap(int x, int y, sf::View view)
 	centerText();
 }
 
+void ClickButton::setPositionHover(int x, int y, sf::View view)
+{
+	viewX = view.getCenter().x - (view.getSize().x / 2);
+	viewY = view.getCenter().y - (view.getSize().y / 2);
+
+	hoverText.setPosition(sf::Vector2f(x + viewX, y + viewY));
+}
+
 void ClickButton::drawAll(sf::RenderWindow& win)
 {
 	if(type == 0)
@@ -232,7 +241,7 @@ void ClickButton::drawAll(sf::RenderWindow& win)
 		win.draw(circ);
 	}
 	
-	if(hover)
+	if(hover && mouseInside)
 	{
 		win.draw(hoverText);
 	}
