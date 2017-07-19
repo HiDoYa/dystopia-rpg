@@ -10,10 +10,9 @@ Npc CondFalse 0
 	Pos 3 2
 	Name TestNpc
 
-	Start CondTrue 1 CondFalse 0
+	Start CondTrue 1
 	Text Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
 	Give Ally 1
-	SetCondFalse 1
 
 	Start CondFalse 0
 	Text This is different text get scammed

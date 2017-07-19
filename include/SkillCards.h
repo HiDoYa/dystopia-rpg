@@ -13,7 +13,6 @@ class SkillCards
 		ClickButton equip;
 		sf::RectangleShape cardBackground;
 		//TODO Maybe a star system to indicate weaker/stronger skills?
-		SpriteManager skillRating;
 	public:
 		SkillCards();
 		void setupCard(Skill, int);

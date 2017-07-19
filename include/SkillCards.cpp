@@ -7,7 +7,6 @@ SkillCards::SkillCards()
 	//Set shapes
 	icon.setRadius(50);
 	cardBackground.setSize(sf::Vector2f());
-	//skillRating.setSize(sf::Vector2f(200, 70));
 
 	//Set button
 	equip.setType(0);
@@ -32,7 +31,6 @@ void SkillCards::setupCard(Skill skill, int id)
 
 	icon.setTextureRect(sf::IntRect(id % 10, id / 10, 64, 64));
 
-	//TODO load icon and skillRating
 }
 
 void SkillCards::setPosition(sf::Vector2f pos, sf::View view)
@@ -40,7 +38,6 @@ void SkillCards::setPosition(sf::Vector2f pos, sf::View view)
 	int viewX = view.getCenter().x - (view.getSize().x / 2);
 	int viewY = view.getCenter().y - (view.getSize().y / 2);
 
-	skillRating.setPosition(pos.x + viewX, pos.y + viewY);
 	cardBackground.setPosition(sf::Vector2f(pos.x + viewX, pos.y + viewY));
 	icon.setPosition(sf::Vector2f(pos.x + 30 + viewX, pos.y + 10 + viewY));
 	equip.updatePositionMap(pos.x, pos.y + 80, view);
@@ -60,6 +57,5 @@ void SkillCards::drawAll(sf::RenderWindow& win)
 {
 	win.draw(cardBackground);
 	win.draw(icon);
-	skillRating.drawSprite(win);
 	equip.drawAll(win);
 }
