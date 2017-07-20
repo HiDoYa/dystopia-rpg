@@ -144,7 +144,6 @@ void Battle::setupBattle(std::vector<std::shared_ptr<Character>> enemyList,
 
 		//TODO random set position
 		enemy[i]->setPosition(enemyPos[i].x, enemyPos[i].y);
-		enemy[i]->updatePositionBattle();
 	}
 }
 
@@ -1548,7 +1547,7 @@ void Battle::drawAll(sf::RenderWindow& win, int currentBattleState)
 	{
 		if(ally[i]->getAlive())
 		{
-			ally[i]->drawSpriteBattle(win);
+			ally[i]->drawSprite(win);
 		}
 	}
 
@@ -1556,7 +1555,7 @@ void Battle::drawAll(sf::RenderWindow& win, int currentBattleState)
 	{
 		if(enemy[i]->getAlive())
 		{
-			enemy[i]->drawSpriteBattle(win);
+			enemy[i]->drawSprite(win);
 		}
 	}
 

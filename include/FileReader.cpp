@@ -262,10 +262,98 @@ void FileReader::loadSkill(std::vector<std::shared_ptr<Skill>>& skillList)
 	skillFile.close();
 }
 
+void FileReader::loadItem(std::vector<std::shared_ptr<Item>>& itemList)
+{
+	std::string strInp;
+	int intInp;
+
+	std::ifstream itemFile("data/itemList");
+
+	while(!itemFile.eof())
+	{
+		itemFile >> strInp;
+		if(strInp == "Item")
+		{
+			itemFile >> strInp;
+			itemList.push_back(std::shared_ptr<Item>(new Item));
+		}
+		else if(strInp == "Image")
+		{
+			itemFile >> strInp;
+			itemList[itemList.size() - 1]->setImage(strInp);
+		}
+		else if(strInp == "Name")
+		{
+			itemFile >> strInp;
+			itemList[itemList.size() - 1]->setName(strInp);
+		}
+		else if(strInp == "Description")
+		{
+			itemFile >> strInp;
+			itemList[itemList.size() - 1]->setDescription(strInp);
+		}
+		else if(strInp == "SellPrice")
+		{
+			itemFile >> intInp;
+			itemList[itemList.size() - 1]->setSellPrice(intInp);
+		}
+		else if(strInp == "ItemType")
+		{
+			itemFile >> strInp;
+			if(strInp == "Weapon")
+			{
+				itemList[itemList.size() - 1]->setItemType(0);
+			}
+			else if(strInp == "Armor")
+			{
+				itemList[itemList.size() - 1]->setItemType(1);
+			}
+			else if(strInp == "ProcessingUnit")
+			{
+				itemList[itemList.size() - 1]->setItemType(2);
+			}
+			else if(strInp == "Consumable")
+			{
+				itemList[itemList.size() - 1]->setItemType(3);
+			}
+			else if(strInp == "QuestItem")
+			{
+				itemList[itemList.size() - 1]->setItemType(4);
+			}
+		}
+		else if(strInp == "StrIncrease")
+		{
+			itemFile >> intInp;
+			itemList[itemList.size() - 1]->setStrIncrease(intInp);
+		}
+		else if(strInp == "DefIncrease")
+		{
+			itemFile >> intInp;
+			itemList[itemList.size() - 1]->setDefIncrease(intInp);
+		}
+		else if(strInp == "AgiIncrease")
+		{
+			itemFile >> intInp;
+			itemList[itemList.size() - 1]->setAgiIncrease(intInp);
+		}
+		else if(strInp == "HpIncrease")
+		{
+			itemFile >> intInp;
+			itemList[itemList.size() - 1]->setHpIncrease(intInp);
+		}
+		else if(strInp == "ManaIncrease")
+		{
+			itemFile >> intInp;
+			itemList[itemList.size() - 1]->setManaIncrease(intInp);
+		}
+	}
+}
+
 void FileReader::loadMapEnemies(std::vector<std::shared_ptr<Character>>& enemyListStore, std::string enemyList)
 {
 	//Temp variables
 	std::string strInp;
+	int intInp;
 	int tempCounter = -1;
 
 	//Read from enemyFile to create enemyListStore purely for storing enemy info
@@ -289,42 +377,42 @@ void FileReader::loadMapEnemies(std::vector<std::shared_ptr<Character>>& enemyLi
 		}
 		else if(strInp == "Level")
 		{
-			enemyFile >> strInp;
-			enemyListStore[tempCounter]->setLevel(atoi(strInp.c_str()));
+			enemyFile >> intInp;
+			enemyListStore[tempCounter]->setLevel(intInp);
 		}
 		else if(strInp == "Hp")
 		{
-			enemyFile >> strInp;
-			enemyListStore[tempCounter]->setMaxHp(atoi(strInp.c_str()));
-			enemyListStore[tempCounter]->setCurrentHp(atoi(strInp.c_str()));
-			enemyListStore[tempCounter]->setHpFinal(atoi(strInp.c_str()));
+			enemyFile >> intInp;
+			enemyListStore[tempCounter]->setMaxHp(intInp);
+			enemyListStore[tempCounter]->setCurrentHp(intInp);
+			enemyListStore[tempCounter]->setHpFinal(intInp);
 		}
 		else if(strInp == "Mana")
 		{
-			enemyFile >> strInp;
-			enemyListStore[tempCounter]->setMaxMana(atoi(strInp.c_str()));
-			enemyListStore[tempCounter]->setCurrentMana(atoi(strInp.c_str()));
-			enemyListStore[tempCounter]->setManaFinal(atoi(strInp.c_str()));
+			enemyFile >> intInp;
+			enemyListStore[tempCounter]->setMaxMana(intInp);
+			enemyListStore[tempCounter]->setCurrentMana(intInp);
+			enemyListStore[tempCounter]->setManaFinal(intInp);
 		}
 		else if(strInp == "Strength")
 		{
-			enemyFile >> strInp;
-			enemyListStore[tempCounter]->setStrength(atoi(strInp.c_str()));
+			enemyFile >> intInp;
+			enemyListStore[tempCounter]->setStrength(intInp);
 		}
 		else if(strInp == "Defense")
 		{
-			enemyFile >> strInp;
-			enemyListStore[tempCounter]->setDefense(atoi(strInp.c_str()));
+			enemyFile >> intInp;
+			enemyListStore[tempCounter]->setDefense(intInp);
 		}
 		else if(strInp == "Agility")
 		{
-			enemyFile >> strInp;
-			enemyListStore[tempCounter]->setAgility(atoi(strInp.c_str()));
+			enemyFile >> intInp;
+			enemyListStore[tempCounter]->setAgility(intInp);
 		}
 		else if(strInp == "Chance")
 		{
-			enemyFile >> strInp;
-			enemyListStore[tempCounter]->setChance(atoi(strInp.c_str()));
+			enemyFile >> intInp;
+			enemyListStore[tempCounter]->setChance(intInp);
 		}
 		else if(strInp == "Image")
 		{
@@ -332,10 +420,10 @@ void FileReader::loadMapEnemies(std::vector<std::shared_ptr<Character>>& enemyLi
 			enemyListStore[tempCounter]->setTextureSprite(strInp);
 
 			//Where the enemy is located in the file (y location)
-			enemyFile >> strInp;
-			enemyListStore[tempCounter]->setTextureRect(0, atoi(strInp.c_str()));
+			enemyFile >> intInp;
+			enemyListStore[tempCounter]->setTextureRect(0, intInp);
 		}
-		else if (strInp == "Skill")
+		else if(strInp == "Skill")
 		{
 			std::vector<int> tempStore;
 
@@ -346,6 +434,14 @@ void FileReader::loadMapEnemies(std::vector<std::shared_ptr<Character>>& enemyLi
 			}
 
 			enemyListStore[tempCounter]->setSkillNum(tempStore);
+		}
+		else if(strInp == "Drop")
+		{
+			enemyFile >> intInp;
+			enemyListStore[tempCounter]->pushDropItemId(intInp);
+
+			enemyFile >> intInp;
+			enemyListStore[tempCounter]->pushDropItemChance(intInp);
 		}
 	}
 	enemyFile.close();

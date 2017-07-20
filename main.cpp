@@ -10,6 +10,7 @@
 #include "include/ClickButton.h"
 #include "include/Dialogue.h"
 #include "include/FileReader.h"
+#include "include/Item.h"
 #include "include/MainMenu.h"
 #include "include/Map.h"
 #include "include/MapMenu.h"

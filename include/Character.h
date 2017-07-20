@@ -45,6 +45,8 @@ class Character: public SpriteManager
 		
 		//For enemies
 		int chance;
+		std::vector<int> dropItemId;
+		std::vector<int> dropItemChance;
 	public:
 		Character();
 
@@ -74,6 +76,8 @@ class Character: public SpriteManager
 		void setRequiredExp();
 
 		void setChance(int);
+		void pushDropItemId(int);
+		void pushDropItemChance(int);
 
 		void setHpFinal(int);
 		void setManaFinal(int);
@@ -107,6 +111,8 @@ class Character: public SpriteManager
 		float getRequiredExp();
 
 		int getChance();
+		std::vector<int> getDropItemId();
+		std::vector<int> getDropItemChance();
 
 		int getHpFinal();
 		int getManaFinal();

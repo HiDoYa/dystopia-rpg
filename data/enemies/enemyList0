@@ -10,6 +10,8 @@ Enemy 1
 	Atk 15
 	Image images/enemies/test4.png 0
 	Skill 0 1 2 3
+	Drops 0 20
+	Drops 1 10
 
 Enemy 2
 	Name Test two

@@ -123,7 +123,7 @@ void MapPlayer::movePos()
 			checkEncounter = true;
 		}
 		
-		moveSprite(xSpeed, ySpeed);
+		getSprite()->move(sf::Vector2f(xSpeed, ySpeed));
 	}
 	else if((wPress && sPress) || (aPress && dPress))
 	{

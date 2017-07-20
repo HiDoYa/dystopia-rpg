@@ -1,4 +1,5 @@
 #include <memory>
+#include "Item.h"
 #include "Npc.h"
 
 #ifndef FILEREADER_H
@@ -13,6 +14,7 @@ class FileReader
 		//Game loading
 		void loadAlly(std::vector<std::shared_ptr<Character>>&);
 		void loadSkill(std::vector<std::shared_ptr<Skill>>&);
+		void loadItem(std::vector<std::shared_ptr<Item>>&);
 
 		//Per each map
 		void loadMapEnemies(std::vector<std::shared_ptr<Character>>&, std::string);

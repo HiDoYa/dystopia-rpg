@@ -1,0 +1,12 @@
+Item 0
+	Image images/spaghetti.png
+	Name TO_REPLACE
+	Description THIS IS COOL
+	SellPrice 15
+	ItemType Weapon
+		StrIncrease 10
+		DefIncrease 10
+		StrIncrease 10
+		HpIncrease 10
+		ManaIncrease 0
+

@@ -31,6 +31,10 @@ class StateManager
 		std::vector<std::shared_ptr<Npc>> npc;
 		bool speaking;
 
+		std::vector<std::shared_ptr<Item>> itemList;
+		//Each integer indicates how many of each item is held
+		std::vector<int> itemHeld;
+
 		std::vector<std::shared_ptr<Character>> ally;
 		//Allies that are discovered (0 is there by default)
 		std::vector<int> allyFound;

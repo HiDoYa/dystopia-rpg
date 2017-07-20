@@ -142,6 +142,16 @@ void Character::setChance(int inp)
 	chance = inp;
 }
 
+void Character::pushDropItemId(int inp)
+{
+	dropItemId.push_back(inp);
+}
+
+void Character::pushDropItemChance(int inp)
+{
+	dropItemChance.push_back(inp);
+}
+
 void Character::setHpFinal(int inp)
 {
 	hpFinal = inp;
@@ -246,6 +256,16 @@ float Character::getRequiredExp()
 int Character::getChance()
 {
 	return chance;
+}
+
+std::vector<int> Character::getDropItemId()
+{
+	return dropItemId;
+}
+
+std::vector<int> Character::getDropItemChance()
+{
+	return dropItemChance;
 }
 
 int Character::getHpFinal()

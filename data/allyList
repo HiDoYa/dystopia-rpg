@@ -6,11 +6,11 @@ Ally 1
 	Strength 10
 	Defense 10
 	Agility 10
-	Skill 4 6 7
+	Skill 1 2 3
 	Image images/ally/test4.png 0
 
 Ally 2
-	Name Bot Speck
+	Name James Ollivera
 	Level 1
 	Hp 50
 	Mana 150
@@ -22,7 +22,7 @@ Ally 2
 
 
 Ally 3
-	Name Bot Jon
+	Name MediBot
 	Level 1
 	Hp 50
 	Mana 150
@@ -33,7 +33,7 @@ Ally 3
 	Image images/ally/test4.png 0
 
 Ally 4
-	Name Bot Glonn
+	Name Slowbot
 	Level 1
 	Hp 50
 	Mana 150
@@ -44,7 +44,7 @@ Ally 4
 	Image images/ally/test4.png 0
 
 Ally 5
-	Name Bot Michel
+	Name Arac
 	Level 1
 	Hp 50
 	Mana 150

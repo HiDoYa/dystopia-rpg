@@ -185,7 +185,7 @@ void StateManager::renderMap(sf::RenderWindow& win, sf::View& view)
 	{
 		if(npc[i]->npcExists(stateFlag))
 		{
-			win.draw(npc[i]->getSprite());
+			npc[i]->drawSprite(win);
 		}
 	}
 
@@ -280,9 +280,6 @@ void StateManager::renderBattle(sf::RenderWindow& win, sf::View& view)
 
 	//Mid ground
 	battle->drawAll(win, currentBattleState);
-
-	//On top
-	overlay.drawAll(win);
 }
 
 //***** MAP MENU ******
