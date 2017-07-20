@@ -9,18 +9,24 @@ ClickButton::ClickButton()
 	//Not used by default
 	mouseInside = false;
 	viewX = viewY = 0;
+
 	font.loadFromFile("font/Ubuntu.ttf");
 	text.setFont(font);
 	hoverText.setFont(font);
+
 	type = 0;
 	hover = false;
 }
 
 ClickButton::ClickButton(int inp)
 {
+	mouseInside = false;
+	viewX = viewY = 0;
+
 	font.loadFromFile("font/Ubuntu.ttf");
 	text.setFont(font);
 	hoverText.setFont(font);
+
 	type = inp;
 	hover = false;
 }
@@ -146,8 +152,8 @@ bool ClickButton::mouseInButton(std::string texture1, std::string texture2, sf::
 		int startY = rect.getPosition().y;
 		int endY = rect.getPosition().y + rect.getSize().y;
 
-		if(mouseCoords.x >= startX && mouseCoords.x <= endX &&
-		   mouseCoords.y >= startY && mouseCoords.y <= endY)
+		if(mouseCoords.x + viewX >= startX && mouseCoords.x + viewX <= endX &&
+		   mouseCoords.y + viewY >= startY && mouseCoords.y + viewY <= endY)
 		{
 			texture.loadFromFile(texture1);
 			rect.setTexture(&texture);
@@ -162,8 +168,8 @@ bool ClickButton::mouseInButton(std::string texture1, std::string texture2, sf::
 		float posX = circ.getPosition().x + rad;
 		float posY = circ.getPosition().y + rad;
 
-		float diffX = posX - mouseCoords.x;
-		float diffY = posY - mouseCoords.y;
+		float diffX = posX - mouseCoords.x - viewX;
+		float diffY = posY - mouseCoords.y - viewY;
 
 		if(sqrt(diffX * diffX + diffY * diffY) < rad)
 		{

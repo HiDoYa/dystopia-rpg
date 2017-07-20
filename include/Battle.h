@@ -51,14 +51,6 @@ class Battle
 		//Only stores singular targets
 		int currentEnemySelected;
 		int currentAllySelected;
-
-		//Skill Pressed
-		bool spaceNotPressed;
-		bool qNotPressed;
-		bool wNotPressed;
-		bool aNotPressed;
-		bool sNotPressed;
-		bool dNotPressed;
 		
 		//Characters and skills
 		std::vector<std::shared_ptr<Character>> ally;
@@ -94,8 +86,8 @@ class Battle
 		//Battle state 3
 		void allyChooseFocus(int&);
 		void findSingularFocus();
-		void changeAllyFocus();
-		void changeEnemyFocus();
+		bool changeAllyFocus();
+		bool changeEnemyFocus();
 
 		//Battle state 4
 		void enemyDecision(int&);

@@ -6,7 +6,7 @@ Ally 1
 	Strength 10
 	Defense 10
 	Agility 10
-	Skill 1 2 3
+	Skill 0 1 2
 	Image images/ally/test4.png 0
 
 Ally 2
@@ -17,7 +17,7 @@ Ally 2
 	Strength 15
 	Defense 10
 	Agility 15
-	Skill 1 2 3
+	Skill 0 1 2
 	Image images/ally/test4.png 0
 
 
@@ -29,7 +29,7 @@ Ally 3
 	Strength 15
 	Defense 10
 	Agility 15
-	Skill 1 2 3
+	Skill 0 1 2
 	Image images/ally/test4.png 0
 
 Ally 4
@@ -40,7 +40,7 @@ Ally 4
 	Strength 15
 	Defense 10
 	Agility 15
-	Skill 1 2 3
+	Skill 0 1 2
 	Image images/ally/test4.png 0
 
 Ally 5
@@ -51,5 +51,5 @@ Ally 5
 	Strength 15
 	Defense 10
 	Agility 15
-	Skill 1 2 3
+	Skill 0 1 2
 	Image images/ally/test4.png 0

@@ -151,6 +151,7 @@ void CharacterCards::setupCard(Character chr, int indexInAlly, std::vector<int> 
 
 void CharacterCards::checkForButton(std::vector<int>& allyInParty, int& currentState, bool& mapMenuLoaded, sf::RenderWindow& win)
 {
+	//TODO BattlePos set (make sure they are unique)
 	//Party add or remove
 	bool pressed = partyButton.mouseClickedInButton(sf::Color::Red, sf::Color::White, win);
 	if(pressed && allyInParty.size() < 3 && allyIndex != 0)

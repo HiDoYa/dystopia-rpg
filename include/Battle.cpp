@@ -14,7 +14,6 @@ Battle::Battle()
 	currentTime = lastTime = 0;
 	goalPlace = 0;
 	currentTarget = 0;
-	qNotPressed = wNotPressed = aNotPressed = sNotPressed = dNotPressed = false;
 	singularAllyFocus = false;
 	singularEnemyFocus = false;
 	
@@ -54,7 +53,7 @@ Battle::Battle()
 	for(int i = 0; i < 6; i++)
 	{
 		std::shared_ptr<ClickButton> tempPtr (new ClickButton(1));
-		tempPtr->getCirc()->setRadius(25);
+		tempPtr->getCirc()->setRadius(30);
 		allyOptions.push_back(tempPtr);
 	}
 
@@ -99,7 +98,6 @@ void Battle::setupBattle(std::vector<std::shared_ptr<Character>> enemyList,
 	//TODO Create function that updates the textures of circles (for skills) for when the ally moves to a different grid place
 	
 	//Initialize for clearing all previous battle data
-	qNotPressed = wNotPressed = aNotPressed = sNotPressed = dNotPressed = false;
 	enemy.clear();
 
 	//Initialize for req default data
@@ -379,8 +377,7 @@ void Battle::allySkillChoiceHandler(int& currentBattleState, sf::RenderWindow& w
 
 	for(int i = 0; i < allyOptions.size(); i++)
 	{
-		if(allyOptions[i]->mouseClickedInButton(allyOptionSelect, allyOptionDeselect, win))
-		{
+		if(allyOptions[i]->mouseClickedInButton(allyOptionSelect, allyOptionDeselect, win)) {
 			currentOptionAlly = i;
 			currentBattleState = 3;
 		}
@@ -399,7 +396,7 @@ void Battle::setCirclePos()
 //*********** BATTLE STATE 3 *********************
 void Battle::allyChooseFocus(int& currentBattleState)
 {
-	std::cout << "chooseEnemyFocus\n";
+	std::cout << "allyChooseFocus\n";
 
 	//Look for singular focus if both bools are false
 	if(!singularAllyFocus && !singularEnemyFocus)
@@ -409,28 +406,20 @@ void Battle::allyChooseFocus(int& currentBattleState)
 	//Only choose who to focus if bools are true. Otherwise, just skip to battle state 5
 	if(singularAllyFocus)
 	{
-		changeAllyFocus();
+		if(changeAllyFocus())
+		{
+			currentBattleState = 5;
+		}
 	}
 	else if(singularEnemyFocus)
 	{
-		changeEnemyFocus();
+		if(changeEnemyFocus())
+		{
+			currentBattleState = 5;
+		}
 	}
 	else
 	{
-		currentBattleState = 5;
-	}
-
-	//If singular focus and space is pressed, go to state 5
-	bool spacePressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
-
-	if(!spacePressed)
-	{
-		spaceNotPressed = true;
-	}
-
-	if(spacePressed && spaceNotPressed)
-	{
-		spaceNotPressed = false;
 		currentBattleState = 5;
 	}
 }
@@ -463,79 +452,31 @@ void Battle::findSingularFocus()
 			singularEnemyFocus = true;
 		}
 	}
-	std::cout << "SingularAllyFocus: " << singularAllyFocus << "  SingularEnemyFocus: " << singularEnemyFocus << '\n';
 }
 
-void Battle::changeAllyFocus()
+bool Battle::changeAllyFocus()
 {
 	std::cout << "changeAllyFocus\n";
-	//TODO Change from q press to WASD pressing
-	bool qPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Q);
-	
-	if(!qPressed)
-	{
-		qNotPressed = true;
-	}
+	bool pressed = false;
 
-	//Initialize current target
-	do
+	for(int i = 0; i < chooseAlly.size(); i++)
 	{
-		currentTarget++;
-		if(currentTarget >= ally.size())
+		//TODO Check if that position has an ally that is alive
+		//ally[i]->getAlive()
+		if(chooseAlly[i]->mouseClickedInButton(allyOptionSelect, allyOptionDeselect, win))
 		{
-			currentTarget = 0;
+			pressed = true;
+			currentTarget = i;
+			break;
 		}
-	}while(!(ally[currentTarget]->getAlive()));
-
-
-	//If q pressed, swap to next enemy that is not dead
-	if(qPressed && qNotPressed)
-	{
-		qNotPressed = false;
-		do
-		{
-			currentTarget++;
-			if(currentTarget >= ally.size())
-			{
-				currentTarget = 0;
-			}
-		}while(!(enemy[currentTarget]->getAlive()));
 	}
 }
 
-void Battle::changeEnemyFocus()
+bool Battle::changeEnemyFocus()
 {
 	std::cout << "changeEnemyFocus\n";
-	bool qPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Q);
-	
-	if(!qPressed)
-	{
-		qNotPressed = true;
-	}
 
-	//Initialize current target
-	do
-	{
-		currentTarget++;
-		if(currentTarget >= enemy.size())
-		{
-			currentTarget = 0;
-		}
-	}while(!(enemy[currentTarget]->getAlive()));
-
-	//If q pressed, swap to next enemy that is not dead
-	if(qPressed && qNotPressed)
-	{
-		qNotPressed = false;
-		do
-		{
-			currentTarget++;
-			if(currentTarget >= enemy.size())
-			{
-				currentTarget = 0;
-			}
-		}while(!(enemy[currentTarget]->getAlive()));
-	}
+	//ally[i]->getAlive()
 }
 
 //*********** BATTLE STATE 4 *********************
@@ -555,6 +496,7 @@ void Battle::enemyDecision(int& currentBattleState)
 			{
 				enemyChooseEnemy();
 			}
+			std::cout << "Is this running?\n";
 		}
 	}
 	currentBattleState = 5;

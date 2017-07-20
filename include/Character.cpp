@@ -15,6 +15,7 @@ Character::Character()
 
 	alive = true;
 	canAtk = true;
+	//agiMarker
 
 	hpFinal = 100;
 	manaFinal = 100;
