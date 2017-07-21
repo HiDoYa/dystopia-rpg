@@ -461,8 +461,18 @@ bool Battle::changeAllyFocus()
 
 	for(int i = 0; i < chooseAlly.size(); i++)
 	{
-		//TODO Check if that position has an ally that is alive
-		//ally[i]->getAlive()
+		for(int j = 0; j < ally.size(); j++)
+		{
+			if(ally[j]->getAlive() && ally[j]->getBattlePos() == i)
+			{
+				if(chooseAlly[i]->mouseClickedInButton(allyOptionSelect, allyOptionDeselect, win))
+				{
+					pressed = true;
+					currentTarget = i;
+					break;
+				}
+			}
+		}
 		if(chooseAlly[i]->mouseClickedInButton(allyOptionSelect, allyOptionDeselect, win))
 		{
 			pressed = true;
@@ -476,6 +486,27 @@ bool Battle::changeEnemyFocus()
 {
 	std::cout << "changeEnemyFocus\n";
 
+	for(int i = 0; i < chooseEnemy.size(); i++)
+	{
+		for(int j = 0; j < enemy.size(); j++)
+		{
+			if(enemy[j]->getAlive() && enemy[j]->getBattlePos() == i)
+			{
+				if(chooseEnemy[i]->mouseClickedInButton(allyOptionSelect, allyOptionDeselect, win))
+				{
+					pressed = true;
+					currentTarget = i;
+					break;
+				}
+			}
+		}
+		if(chooseEnemy[i]->mouseClickedInButton(allyOptionSelect, allyOptionDeselect, win))
+		{
+			pressed = true;
+			currentTarget = i;
+			break;
+		}
+	}
 	//ally[i]->getAlive()
 }
 
