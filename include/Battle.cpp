@@ -10,6 +10,7 @@ Battle::Battle()
 	currentPlayerForOption = 0;
 	currentOptionAlly = 0;
 	currentOptionEnemy = 0;
+	currentSkillCheck = 0;
 
 	currentTime = lastTime = 0;
 	goalPlace = 0;
@@ -61,7 +62,7 @@ Battle::Battle()
 	{
 		std::shared_ptr<ClickButton> tempPtr (new ClickButton);
 		chooseAlly.push_back(tempPtr);
-		chooseAlly[i]->getRect()->setSize(sf::Vector2f(200, 200));
+		chooseAlly[i]->getRect()->setSize(sf::Vector2f(100, 100));
 	}
 
 	chooseAlly[0]->getRect()->setPosition(sf::Vector2f(550, 100));
@@ -75,7 +76,7 @@ Battle::Battle()
 	{
 		std::shared_ptr<ClickButton> tempPtr (new ClickButton);
 		chooseEnemy.push_back(tempPtr);
-		chooseEnemy[i]->getRect()->setSize(sf::Vector2f(200, 200));
+		chooseEnemy[i]->getRect()->setSize(sf::Vector2f(100, 100));
 	}
 
 	chooseEnemy[0]->getRect()->setPosition(sf::Vector2f(50, 100));
@@ -394,7 +395,7 @@ void Battle::setCirclePos()
 }
 
 //*********** BATTLE STATE 3 *********************
-void Battle::allyChooseFocus(int& currentBattleState)
+void Battle::allyChooseFocus(int& currentBattleState, sf::RenderWindow& win)
 {
 	std::cout << "allyChooseFocus\n";
 
@@ -406,14 +407,14 @@ void Battle::allyChooseFocus(int& currentBattleState)
 	//Only choose who to focus if bools are true. Otherwise, just skip to battle state 5
 	if(singularAllyFocus)
 	{
-		if(changeAllyFocus())
+		if(changeAllyFocus(win))
 		{
 			currentBattleState = 5;
 		}
 	}
 	else if(singularEnemyFocus)
 	{
-		if(changeEnemyFocus())
+		if(changeEnemyFocus(win))
 		{
 			currentBattleState = 5;
 		}
@@ -454,7 +455,7 @@ void Battle::findSingularFocus()
 	}
 }
 
-bool Battle::changeAllyFocus()
+bool Battle::changeAllyFocus(sf::RenderWindow& win)
 {
 	std::cout << "changeAllyFocus\n";
 	bool pressed = false;
@@ -473,18 +474,15 @@ bool Battle::changeAllyFocus()
 				}
 			}
 		}
-		if(chooseAlly[i]->mouseClickedInButton(allyOptionSelect, allyOptionDeselect, win))
-		{
-			pressed = true;
-			currentTarget = i;
-			break;
-		}
 	}
+
+	return pressed;
 }
 
-bool Battle::changeEnemyFocus()
+bool Battle::changeEnemyFocus(sf::RenderWindow& win)
 {
 	std::cout << "changeEnemyFocus\n";
+	bool pressed = false;
 
 	for(int i = 0; i < chooseEnemy.size(); i++)
 	{
@@ -500,14 +498,9 @@ bool Battle::changeEnemyFocus()
 				}
 			}
 		}
-		if(chooseEnemy[i]->mouseClickedInButton(allyOptionSelect, allyOptionDeselect, win))
-		{
-			pressed = true;
-			currentTarget = i;
-			break;
-		}
 	}
-	//ally[i]->getAlive()
+
+	return pressed;
 }
 
 //*********** BATTLE STATE 4 *********************
@@ -527,7 +520,7 @@ void Battle::enemyDecision(int& currentBattleState)
 			{
 				enemyChooseEnemy();
 			}
-			std::cout << "Is this running?\n";
+			std::cout << "Running6\n";
 		}
 	}
 	currentBattleState = 5;
@@ -597,7 +590,7 @@ void Battle::enemyChooseEnemy()
 		}
 	}
 	//If there are allies in the front row, there is a 2/3 chance of the ally being selected from the front and 1/3 chance of the ally being selected from the back
-	if(allyInFront.size() > 0)
+	if(allyInFront.size() > 0 && allyInBack.size() > 0)
 	{
 		if((rand() % 3) <= 1)
 		{
@@ -609,7 +602,11 @@ void Battle::enemyChooseEnemy()
 		}
 	}
 	//Just choose a character randomly
-	else
+	else if(allyInFront.size() > 0)
+	{
+		currentEnemySelected = allyInFront[rand() % allyInFront.size()];
+	}
+	else if(allyInBack.size() > 0)
 	{
 		currentEnemySelected = allyInBack[rand() % allyInBack.size()];
 	}
@@ -1286,6 +1283,7 @@ void Battle::allyHpChange()
 		if(ally[i]->getAlive())
 		{
 			int hpFinal = ally[i]->getHpFinal();
+			std::cout << "HP FINAL " << hpFinal << '\n';
 			//Replace hpFinal with hpFinal of specific character
 			int sign = findHpChangeSign(hpFinal, ally[i]->getCurrentHp());
 			if(ally[i]->getCurrentHp() > hpFinal + 3 || ally[i]->getCurrentHp() < hpFinal - 3)
@@ -1521,6 +1519,9 @@ void Battle::drawAll(sf::RenderWindow& win, int currentBattleState)
 		if(ally[i]->getAlive())
 		{
 			ally[i]->drawSprite(win);
+
+			ally[i]->statBarUpdate();
+			ally[i]->drawBars(win);
 		}
 	}
 
@@ -1529,6 +1530,9 @@ void Battle::drawAll(sf::RenderWindow& win, int currentBattleState)
 		if(enemy[i]->getAlive())
 		{
 			enemy[i]->drawSprite(win);
+
+			enemy[i]->statBarUpdate();
+			enemy[i]->drawBars(win);
 		}
 	}
 

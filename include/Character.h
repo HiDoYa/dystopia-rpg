@@ -1,4 +1,5 @@
 #include "SpriteManager.h"
+#include "StatBar.h"
 
 #ifndef CHARACTER_H
 #define CHARACTER_H
@@ -8,10 +9,8 @@ class Character: public SpriteManager
 	private:
 		std::string name;
 
-		sf::RectangleShape currentHpBar;
-		sf::RectangleShape maxHpBar;
-		sf::RectangleShape currentManaBar;
-		sf::RectangleShape maxManaBar;
+		StatBar hp;
+		StatBar mana;
 
 		//Attributes
 		int level;
@@ -119,6 +118,8 @@ class Character: public SpriteManager
 
 		//TODO Calculate requiredExp based on level and slight randomization
 		//********* ETC ***********
+		void statBarUpdate();
+		void drawBars(sf::RenderWindow&);
 		void levelUp();
 };
 

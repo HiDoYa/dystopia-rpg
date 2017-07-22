@@ -84,10 +84,10 @@ class Battle
 		void setCirclePos();
 
 		//Battle state 3
-		void allyChooseFocus(int&);
+		void allyChooseFocus(int&, sf::RenderWindow&);
 		void findSingularFocus();
-		bool changeAllyFocus();
-		bool changeEnemyFocus();
+		bool changeAllyFocus(sf::RenderWindow&);
+		bool changeEnemyFocus(sf::RenderWindow&);
 
 		//Battle state 4
 		void enemyDecision(int&);

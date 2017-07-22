@@ -242,7 +242,7 @@ void StateManager::updateBattle(sf::RenderWindow& win, sf::View& view)
 			break;
 		//[Ally] If targetable skill, choose who to target. Else, go straight to state 5
 		case 3:
-			battle->allyChooseFocus(currentBattleState);
+			battle->allyChooseFocus(currentBattleState, win);
 			break;
 		//[Enemy] Chooses skill and who to target
 		case 4:

@@ -7,6 +7,7 @@ StatBar::StatBar()
 	font.loadFromFile("font/Ubuntu.ttf");
 	label.setFont(font);
 	label.setCharacterSize(10);
+	label.setColor(sf::Color::Black);
 
 	current = max = sizeX = sizeY = 0;
 	labelPos = false;

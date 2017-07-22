@@ -26,12 +26,14 @@ Character::Character()
 
 	chance = 5;
 
-	currentHpBar.setSize(sf::Vector2f(250, 30));
-	maxHpBar.setSize(sf::Vector2f(250, 30));
-	currentManaBar.setSize(sf::Vector2f(250, 30));
-	maxManaBar.setSize(sf::Vector2f(250, 30));
+	hp.setMaxSize(sf::Vector2f(150, 18));
+	mana.setMaxSize(sf::Vector2f(150, 18));
 
-	currentHpBar.setFillColor(sf::Color::Red);
+	hp.getCurrentRect()->setFillColor(sf::Color::Red);
+	mana.getCurrentRect()->setFillColor(sf::Color::Yellow);
+
+	hp.getLabel()->setCharacterSize(7);
+	mana.getLabel()->setCharacterSize(7);
 
 	//Everybody starts off with these 3 basic skills
 	possibleSkillNum = {0, 1, 2};
@@ -280,6 +282,22 @@ int Character::getManaFinal()
 }
 
 //ETC
+
+void Character::statBarUpdate()
+{
+	hp.setStats(currentHp, maxHp, "Health");
+	mana.setStats(currentMana, maxMana, "Mana");
+
+	hp.setPosition(sf::Vector2f(getPosition().x - 50, getPosition().y - 70));
+	mana.setPosition(sf::Vector2f(getPosition().x - 50, getPosition().y - 30));
+}
+
+void Character::drawBars(sf::RenderWindow& win)
+{
+	hp.drawAll(win);
+	mana.drawAll(win);
+}
+
 //Recalculates required exp and increments level
 //TODO Need indication of level up
 void Character::levelUp()
