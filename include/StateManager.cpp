@@ -254,7 +254,7 @@ void StateManager::updateBattle(sf::RenderWindow& win, sf::View& view)
 			break;
 		//Calculate damage/buffs
 		case 6:
-			battle->handleEffect(currentBattleState);
+			battle->handleEffect(currentBattleState, win);
 			break;
 		//Animate hp
 		case 7:
@@ -270,7 +270,6 @@ void StateManager::updateBattle(sf::RenderWindow& win, sf::View& view)
 			battle->checkEndBattle(currentBattleState, currentState, allyInParty, ally);
 			break;
 	}
-	//TODO Update battle log here
 }
 
 void StateManager::renderBattle(sf::RenderWindow& win, sf::View& view)

@@ -101,20 +101,20 @@ class Battle
 		void enemyAttackAnimation(int&);
 
 		//Battle state 6
-		void handleEffect(int&);
+		void handleEffect(int&, sf::RenderWindow&);
 		int findHpChangeSign(int, int);
 
 		int findNextTarget(int);
 		int processSkillTargetting();
 
-		void allyTurnHandle(int&);
+		bool allyTurnHandle(int&, sf::RenderWindow&);
 
 		void allySkillCalc();
 		void allySkillCalcHealth();
 		void allySkillCalcStat();
 
 		void allyItem();
-		void allyChangePos();
+		bool allyChangePos(sf::RenderWindow& win);
 		void allyAttemptFlee(int&);
 
 		void enemyTurnHandle(int&);
@@ -136,8 +136,8 @@ class Battle
 		//Battle state 9
 		bool checkAllyDeath();
 		bool checkEnemyDeaths();
-		void checkEndBattle(int&, int&, std::vector<int>, std::vector<std::shared_ptr<Character>>);
-		void currentEnemyDeath();
+		void checkEndBattle(int&, int&, std::vector<int>, 
+				std::vector<std::shared_ptr<Character>>);
 		void newTurn();
 		
 		//Drawing

@@ -5,8 +5,7 @@
 
 BattleOverlay::BattleOverlay()
 {
-	bgTexture.loadFromFile("images/ui/battleUi.png");
-	bgSprite.setTexture(&bgTexture);
+	bgSprite.setTextureSprite("images/ui/battleUi.png");
 
 	font.loadFromFile("font/Ubuntu.ttf");
 
@@ -20,19 +19,56 @@ BattleOverlay::BattleOverlay()
 
 	battleLog.setPosition(sf::Vector2f(100, 600));
 	currentCharDesc.setPosition(sf::Vector2f(100, 200));
+
+	battleLog.setColor(sf::Color::Black);
 }
 
 void BattleOverlay::showCurrentCharDesc()
 {
 }
 
-void BattleOverlay::updateBattleLog()
+void BattleOverlay::attackedLog(std::string user, std::string target, int amount)
 {
+	std::string tempStr = user + " attacked " + target + " for " + std::to_string(amount) + " damage!";
+	updateBattleLog(tempStr, false);
+}
+
+void BattleOverlay::healedLog(std::string user, std::string target, int amount)
+{
+	std::string tempStr = user + " healed " + target + " for " + std::to_string(amount) + " health!";
+	updateBattleLog(tempStr, false);
+}
+
+void BattleOverlay::buffedLog(std::string user, std::string target, std::string stat, int amount)
+{
+	std::string tempStr = user + " buffed " + target + "'s " + stat + " for " + std::to_string(amount) + "!";
+	updateBattleLog(tempStr, false);
+}
+
+void BattleOverlay::debuffedLog(std::string user, std::string target, std::string stat, int amount)
+{
+	std::string tempStr = user + " debuffed " + target + "'s " + stat + " for " + std::to_string(amount) + "!";
+	updateBattleLog(tempStr, false);
+}
+
+void BattleOverlay::genericSkillLog(std::string user, std::string skillName)
+{
+	updateBattleLog(user + " used " + skillName + ".");
+}
+
+void BattleOverlay::updateBattleLog(std::string strInp, bool replace)
+{
+	if(!replace)
+	{
+		std::string tempStr = battleLog.getString();
+		tempStr += '\n' + strInp;
+	}
+	battleLog.setString(strInp);
 }
 
 void BattleOverlay::drawAll(sf::RenderWindow& win)
 {
-	win.draw(bgSprite);
+	bgSprite.drawSprite(win);
 	win.draw(battleLog);
 	win.draw(currentCharDesc);
 	win.draw(damageNumbers);

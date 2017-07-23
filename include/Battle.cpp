@@ -96,6 +96,7 @@ void Battle::setupBattle(std::vector<std::shared_ptr<Character>> enemyList,
 {
 	std::cout << "setupBattle\n";
 
+	singularAllyFocus = singularEnemyFocus = false;
 	//TODO Create function that updates the textures of circles (for skills) for when the ally moves to a different grid place
 	
 	//Initialize for clearing all previous battle data
@@ -142,7 +143,25 @@ void Battle::setupBattle(std::vector<std::shared_ptr<Character>> enemyList,
 		enemy.push_back(enemyList[index]);
 
 		//TODO random set position
-		enemy[i]->setPosition(enemyPos[i].x, enemyPos[i].y);
+		bool foundRand;
+		int posTemp;
+
+		do
+		{
+			foundRand = true;
+			posTemp = rand() % 6;
+			for(int i = 0; i < enemy.size(); i++)
+			{
+				if(enemy[i]->getBattlePos() == posTemp)
+				{
+					foundRand = false;
+					break;
+				}
+			}
+		} while(!foundRand);
+
+		enemy[i]->setBattlePos(posTemp);
+		enemy[i]->setPosition(enemyPos[posTemp].x, enemyPos[posTemp].y);
 	}
 }
 
@@ -211,6 +230,15 @@ void Battle::findFastestChar(int& currentBattleState)
 
 		//Current state is done
 		currentBattleState = 1;
+	}
+}
+
+void Battle::setSkillNames()
+{
+	for(int i = 0; i < 3; i++)
+	{
+		std::string skillName = skillList[ally[nextCharCounter]->getSkillNum()[i]];
+		allyOptions[i]->getHoverText()->setString(skillName);
 	}
 }
 
@@ -380,7 +408,16 @@ void Battle::allySkillChoiceHandler(int& currentBattleState, sf::RenderWindow& w
 	{
 		if(allyOptions[i]->mouseClickedInButton(allyOptionSelect, allyOptionDeselect, win)) {
 			currentOptionAlly = i;
-			currentBattleState = 3;
+			if(i < 3)
+			{
+				//Skills
+				currentBattleState = 3;
+			}
+			else
+			{
+				//Not skills
+				currentBattleState = 6;
+			}
 		}
 	}
 }
@@ -404,6 +441,7 @@ void Battle::allyChooseFocus(int& currentBattleState, sf::RenderWindow& win)
 	{
 		findSingularFocus();
 	}
+
 	//Only choose who to focus if bools are true. Otherwise, just skip to battle state 5
 	if(singularAllyFocus)
 	{
@@ -469,7 +507,7 @@ bool Battle::changeAllyFocus(sf::RenderWindow& win)
 				if(chooseAlly[i]->mouseClickedInButton(allyOptionSelect, allyOptionDeselect, win))
 				{
 					pressed = true;
-					currentTarget = i;
+					currentTarget = j;
 					break;
 				}
 			}
@@ -488,7 +526,7 @@ bool Battle::changeEnemyFocus(sf::RenderWindow& win)
 	{
 		for(int j = 0; j < enemy.size(); j++)
 		{
-			if(enemy[j]->getAlive() && enemy[j]->getBattlePos() == i)
+			if(enemy[j]->getBattlePos() == i && enemy[j]->getAlive())
 			{
 				if(chooseEnemy[i]->mouseClickedInButton(allyOptionSelect, allyOptionDeselect, win))
 				{
@@ -520,7 +558,6 @@ void Battle::enemyDecision(int& currentBattleState)
 			{
 				enemyChooseEnemy();
 			}
-			std::cout << "Running6\n";
 		}
 	}
 	currentBattleState = 5;
@@ -632,7 +669,7 @@ void Battle::allyAttackAnimation(int& currentBattleState)
 	sf::Vector2f current = ally[nextCharCounter]->getPosition();
 	
 	//Sets the area to stop
-	goalPlace = allyPos[nextCharCounter].x - attackXDisp;
+	goalPlace = allyPos[ally[nextCharCounter]->getBattlePos()].x - attackXDisp;
 	
 	//Moves the enemy, otherwise increments battle state
 	if(current.x > goalPlace)
@@ -650,9 +687,9 @@ void Battle::enemyAttackAnimation(int& currentBattleState)
 {
 	std::cout << "enemyAttackAnimation\n";
 	sf::Vector2f current = enemy[nextCharCounter]->getPosition();
-	
+
 	//Sets the area to stop
-	goalPlace = enemyPos[nextCharCounter].x + attackXDisp;
+	goalPlace = enemyPos[enemy[nextCharCounter]->getBattlePos()].x + attackXDisp;
 
 	//Moves the enemy, otherwise increments battle state
 	if(current.x < goalPlace)
@@ -667,26 +704,35 @@ void Battle::enemyAttackAnimation(int& currentBattleState)
 
 //******** BATTLE STATE 6 **************
 //Calculates hp/mana change for enemy and ally
-void Battle::handleEffect(int& currentBattleState)
+void Battle::handleEffect(int& currentBattleState, sf::RenderWindow& win)
 {
 	std::cout << "handleEffect\n";
+
+	//Used for allyChangePos
+	bool done = false;
 
 	switch(nextCharType)
 	{
 		case 0:
-			allyTurnHandle(currentBattleState);
+			done = allyTurnHandle(currentBattleState, win);
 			break;
 		case 1:
 			enemyTurnHandle(currentBattleState);
+			done = true;
 			break;
 	}
-	currentBattleState = 7;
+	
+	if(done)
+	{
+		currentBattleState = 7;
+	}
 }
 
 //Returns target type for the next effect of the skill
 int Battle::findNextTarget(int skillNum)
 {
 	std::cout << "findNextTarget\n";
+
 	while(currentSkillCheck < 4)
 	{
 		if(skillList[skillNum]->getMult()[currentSkillCheck] > 0)
@@ -775,7 +821,7 @@ int Battle::findHpChangeSign(int hpFinal, int hpInit)
 
 //TODO Apply effect for both enemy AND allies
 //TODO get mana change as well
-void Battle::allyTurnHandle(int& currentBattleState)
+bool Battle::allyTurnHandle(int& currentBattleState, sf::RenderWindow& win)
 {
 	std::cout << "allyTurnHandle\n";
 	switch(currentOptionAlly)
@@ -784,15 +830,17 @@ void Battle::allyTurnHandle(int& currentBattleState)
 		case 1:
 		case 2:
 			allySkillCalc();
-			break;
+			return true;
 		case 3:
 			allyItem();
+			return true;
 			break;
 		case 4:
-			allyChangePos();
+			return allyChangePos(win);
 			break;
 		case 5:
 			allyAttemptFlee(currentBattleState);
+			return true;
 			break;
 	}
 }
@@ -801,69 +849,69 @@ void Battle::allySkillCalc()
 {
 	std::cout << "allySkillCalc\n";
 
-	switch(currentSkillCheck)
+	if(processSkillTargetting() != -1)
 	{
-		case 0:
-		case 1:
-			allySkillCalcHealth();
-			break;
-		case 2:
-		case 3:
-			allySkillCalcStat();
-			break;
+		switch(currentSkillCheck)
+		{
+			case 0:
+			case 1:
+				allySkillCalcHealth();
+				break;
+			case 2:
+			case 3:
+				allySkillCalcStat();
+				break;
+		}
 	}
 }
 
 void Battle::allySkillCalcHealth()
 {
 	std::cout << "allySkillCalcHealth\n";
-	if(processSkillTargetting() != -1)
+	int skillNum = ally[nextCharCounter]->getSkillNum()[currentOptionAlly];
+	if(singularAllyFocus)
 	{
-		int skillNum = ally[nextCharCounter]->getSkillNum()[currentOptionAlly];
-		if(singularAllyFocus)
-		{
-			int allyStrength = ally[nextCharCounter]->getStrength();
-			int targetHp = ally[currentAllySelected]->getCurrentHp();
+		int allyStrength = ally[nextCharCounter]->getStrength();
+		int targetHp = ally[currentAllySelected]->getCurrentHp();
 
-			int targetHpFinal = skillList[skillNum]->healthChangeHandle(allyStrength, 0, targetHp, currentSkillCheck);
-			ally[currentAllySelected]->setHpFinal(targetHpFinal);
-		}
-		else if(singularEnemyFocus)
-		{
-			int allyStrength = ally[nextCharCounter]->getStrength();
-			int targetHp = enemy[currentEnemySelected]->getCurrentHp();
-			int targetDef = enemy[currentEnemySelected]->getDefense();
+		int targetHpFinal = skillList[skillNum]->healthChangeHandle(allyStrength, 0, targetHp, currentSkillCheck);
+		ally[currentAllySelected]->setHpFinal(targetHpFinal);
+	}
+	else if(singularEnemyFocus)
+	{
+		int allyStrength = ally[nextCharCounter]->getStrength();
+		int targetHp = enemy[currentEnemySelected]->getCurrentHp();
+		int targetDef = enemy[currentEnemySelected]->getDefense();
 
-			int targetHpFinal = skillList[skillNum]->healthChangeHandle(allyStrength, targetDef, targetHp, currentSkillCheck);
-			enemy[currentEnemySelected]->setHpFinal(targetHpFinal);
-		}
-		else if(multAllyFocus)
+		int targetHpFinal = skillList[skillNum]->healthChangeHandle(allyStrength, targetDef, targetHp, currentSkillCheck);
+		enemy[currentEnemySelected]->setHpFinal(targetHpFinal);
+	}
+	else if(multAllyFocus)
+	{
+		for(int i = 0; i < ally.size(); i++)
 		{
-			for(int i = 0; i < ally.size(); i++)
+			if(ally[i]->getAlive())
 			{
-				if(ally[i]->getAlive())
-				{
-					int allyStrength = ally[nextCharCounter]->getStrength();
-					int targetHp = ally[i]->getCurrentHp();
+				int allyStrength = ally[nextCharCounter]->getStrength();
+				int targetHp = ally[i]->getCurrentHp();
 
-					int targetHpFinal = skillList[skillNum]->healthChangeHandle(allyStrength, 0, targetHp, currentSkillCheck);
-					ally[i]->setHpFinal(targetHpFinal);
-				}
+				int targetHpFinal = skillList[skillNum]->healthChangeHandle(allyStrength, 0, targetHp, currentSkillCheck);
+				ally[i]->setHpFinal(targetHpFinal);
 			}
 		}
-		else if(multEnemyFocus)
+	}
+	else if(multEnemyFocus)
+	{
+		for(int i = 0; i < enemy.size(); i++)
 		{
-			for(int i = 0; i < enemy.size(); i++)
+			if(enemy[i]->getAlive())
 			{
-				if(enemy[i]->getAlive())
-				{
-					int allyStrength = ally[nextCharCounter]->getStrength();
-					int targetHp = enemy[i]->getCurrentHp();
-					int targetDef = enemy[i]->getDefense();
+				int allyStrength = ally[nextCharCounter]->getStrength();
+				int targetHp = enemy[i]->getCurrentHp();
+				int targetDef = enemy[i]->getDefense();
 
-					int targetHpFinal = skillList[skillNum]->healthChangeHandle(allyStrength, targetDef, targetHp, currentSkillCheck);
-					enemy[i]->setHpFinal(targetHpFinal);
-				}
+				int targetHpFinal = skillList[skillNum]->healthChangeHandle(allyStrength, targetDef, targetHp, currentSkillCheck);
+				enemy[i]->setHpFinal(targetHpFinal);
 			}
 		}
 	}
@@ -872,137 +920,134 @@ void Battle::allySkillCalcHealth()
 void Battle::allySkillCalcStat()
 {
 	std::cout << "allySkillCalcStat\n";
-	if(processSkillTargetting() != -1)
+	//If buff or debuff type is str, set to str, etc.
+	int skillNum = ally[nextCharCounter]->getSkillNum()[currentOptionAlly];
+	int statType;
+	if(currentSkillCheck == 2)
 	{
-		//If buff or debuff type is str, set to str, etc.
-		int skillNum = ally[nextCharCounter]->getSkillNum()[currentOptionAlly];
-		int statType;
-		if(currentSkillCheck == 2)
-		{
-			statType = skillList[skillNum]->getDebuffType();
-		}
-		else if(currentSkillCheck == 3)
-		{
-			statType = skillList[skillNum]->getBuffType();
-		}
+		statType = skillList[skillNum]->getDebuffType();
+	}
+	else if(currentSkillCheck == 3)
+	{
+		statType = skillList[skillNum]->getBuffType();
+	}
 
-		if(singularAllyFocus)
+	if(singularAllyFocus)
+	{
+		if(statType == 0)
 		{
-			if(statType == 0)
-			{
-				int allyStrength = ally[nextCharCounter]->getStrength();
-				int targetStat = ally[currentAllySelected]->getStrength();
-				int targetDef = ally[currentAllySelected]->getDefense();
-				int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
-				ally[currentAllySelected]->setStrength(targetStatFinal);
-			}
-			else if(statType == 1)
-			{
-				int allyStrength = ally[nextCharCounter]->getStrength();
-				int targetStat = ally[currentAllySelected]->getDefense();
-				int targetDef = ally[currentAllySelected]->getDefense();
-				int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
-				ally[currentAllySelected]->setDefense(targetStatFinal);
-			}
-			else if(statType == 2)
-			{
-				int allyStrength = ally[nextCharCounter]->getStrength();
-				int targetStat = ally[currentAllySelected]->getAgility();
-				int targetDef = ally[currentAllySelected]->getDefense();
-				int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
-				ally[currentAllySelected]->setAgility(targetStatFinal);
-			}
+			int allyStrength = ally[nextCharCounter]->getStrength();
+			int targetStat = ally[currentAllySelected]->getStrength();
+			int targetDef = ally[currentAllySelected]->getDefense();
+			int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
+			ally[currentAllySelected]->setStrength(targetStatFinal);
 		}
-		else if(singularEnemyFocus)
+		else if(statType == 1)
 		{
-			if(statType == 0)
-			{
-				int allyStrength = ally[nextCharCounter]->getStrength();
-				int targetStat = enemy[currentEnemySelected]->getStrength();
-				int targetDef = enemy[currentEnemySelected]->getDefense();
-				int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
-				enemy[currentEnemySelected]->setStrength(targetStatFinal);
-			}
-			else if(statType == 1)
-			{
-				int allyStrength = ally[nextCharCounter]->getStrength();
-				int targetStat = enemy[currentEnemySelected]->getDefense();
-				int targetDef = enemy[currentEnemySelected]->getDefense();
-				int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
-				enemy[currentEnemySelected]->setDefense(targetStatFinal);
-			}
-			else if(statType == 2)
-			{
-				int allyStrength = ally[nextCharCounter]->getStrength();
-				int targetStat = enemy[currentEnemySelected]->getAgility();
-				int targetDef = enemy[currentEnemySelected]->getDefense();
-				int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
-				enemy[currentEnemySelected]->setAgility(targetStatFinal);
-			}
+			int allyStrength = ally[nextCharCounter]->getStrength();
+			int targetStat = ally[currentAllySelected]->getDefense();
+			int targetDef = ally[currentAllySelected]->getDefense();
+			int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
+			ally[currentAllySelected]->setDefense(targetStatFinal);
 		}
-		else if(multAllyFocus)
+		else if(statType == 2)
 		{
-			for(int i = 0; i < ally.size(); i++)
+			int allyStrength = ally[nextCharCounter]->getStrength();
+			int targetStat = ally[currentAllySelected]->getAgility();
+			int targetDef = ally[currentAllySelected]->getDefense();
+			int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
+			ally[currentAllySelected]->setAgility(targetStatFinal);
+		}
+	}
+	else if(singularEnemyFocus)
+	{
+		if(statType == 0)
+		{
+			int allyStrength = ally[nextCharCounter]->getStrength();
+			int targetStat = enemy[currentEnemySelected]->getStrength();
+			int targetDef = enemy[currentEnemySelected]->getDefense();
+			int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
+			enemy[currentEnemySelected]->setStrength(targetStatFinal);
+		}
+		else if(statType == 1)
+		{
+			int allyStrength = ally[nextCharCounter]->getStrength();
+			int targetStat = enemy[currentEnemySelected]->getDefense();
+			int targetDef = enemy[currentEnemySelected]->getDefense();
+			int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
+			enemy[currentEnemySelected]->setDefense(targetStatFinal);
+		}
+		else if(statType == 2)
+		{
+			int allyStrength = ally[nextCharCounter]->getStrength();
+			int targetStat = enemy[currentEnemySelected]->getAgility();
+			int targetDef = enemy[currentEnemySelected]->getDefense();
+			int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
+			enemy[currentEnemySelected]->setAgility(targetStatFinal);
+		}
+	}
+	else if(multAllyFocus)
+	{
+		for(int i = 0; i < ally.size(); i++)
+		{
+			if(ally[i]->getAlive())
 			{
-				if(ally[i]->getAlive())
+				if(statType == 0)
 				{
-					if(statType == 0)
-					{
-						int allyStrength = ally[nextCharCounter]->getStrength();
-						int targetStat = ally[i]->getStrength();
-						int targetDef = ally[i]->getDefense();
-						int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
-						ally[i]->setStrength(targetStatFinal);
-					}
-					else if(statType == 1)
-					{
-						int allyStrength = ally[nextCharCounter]->getStrength();
-						int targetStat = ally[i]->getDefense();
-						int targetDef = ally[i]->getDefense();
-						int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
-						ally[i]->setDefense(targetStatFinal);
-					}
-					else if(statType == 2)
-					{
-						int allyStrength = ally[nextCharCounter]->getStrength();
-						int targetStat = ally[i]->getAgility();
-						int targetDef = ally[i]->getDefense();
-						int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
-						ally[i]->setAgility(targetStatFinal);
-					}
+					int allyStrength = ally[nextCharCounter]->getStrength();
+					int targetStat = ally[i]->getStrength();
+					int targetDef = ally[i]->getDefense();
+					int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
+					ally[i]->setStrength(targetStatFinal);
+				}
+				else if(statType == 1)
+				{
+					int allyStrength = ally[nextCharCounter]->getStrength();
+					int targetStat = ally[i]->getDefense();
+					int targetDef = ally[i]->getDefense();
+					int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
+					ally[i]->setDefense(targetStatFinal);
+				}
+				else if(statType == 2)
+				{
+					int allyStrength = ally[nextCharCounter]->getStrength();
+					int targetStat = ally[i]->getAgility();
+					int targetDef = ally[i]->getDefense();
+					int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
+					ally[i]->setAgility(targetStatFinal);
 				}
 			}
 		}
-		else if(multEnemyFocus)
+	}
+	else if(multEnemyFocus)
+	{
+		for(int i = 0; i < enemy.size(); i++)
 		{
-			for(int i = 0; i < enemy.size(); i++)
+			if(enemy[i]->getAlive())
 			{
-				if(enemy[i]->getAlive())
+				if(statType == 0)
 				{
-					if(statType == 0)
-					{
-						int allyStrength = ally[nextCharCounter]->getStrength();
-						int targetStat = enemy[i]->getStrength();
-						int targetDef = enemy[i]->getDefense();
-						int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
-						enemy[i]->setStrength(targetStatFinal);
-					}
-					else if(statType == 1)
-					{
-						int allyStrength = ally[nextCharCounter]->getStrength();
-						int targetStat = enemy[i]->getDefense();
-						int targetDef = enemy[i]->getDefense();
-						int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
-						enemy[i]->setDefense(targetStatFinal);
-					}
-					else if(statType == 2)
-					{
-						int allyStrength = ally[nextCharCounter]->getStrength();
-						int targetStat = enemy[i]->getAgility();
-						int targetDef = enemy[i]->getDefense();
-						int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
-						enemy[i]->setAgility(targetStatFinal);
-					}
+					int allyStrength = ally[nextCharCounter]->getStrength();
+					int targetStat = enemy[i]->getStrength();
+					int targetDef = enemy[i]->getDefense();
+					int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
+					enemy[i]->setStrength(targetStatFinal);
+				}
+				else if(statType == 1)
+				{
+					int allyStrength = ally[nextCharCounter]->getStrength();
+					int targetStat = enemy[i]->getDefense();
+					int targetDef = enemy[i]->getDefense();
+					int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
+					enemy[i]->setDefense(targetStatFinal);
+				}
+				else if(statType == 2)
+				{
+					int allyStrength = ally[nextCharCounter]->getStrength();
+					int targetStat = enemy[i]->getAgility();
+					int targetDef = enemy[i]->getDefense();
+					int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
+					enemy[i]->setAgility(targetStatFinal);
 				}
 			}
 		}
@@ -1015,11 +1060,22 @@ void Battle::allyItem()
 	//TODO Access item vector to find effect
 }
 
-void Battle::allyChangePos()
+bool Battle::allyChangePos(sf::RenderWindow& win)
 {
 	std::cout << "allyChangePos\n";
 	//TODO make the grid blink to display where to move to
 	//Use buttons with alpha
+	for(int i = 0; i < chooseAlly.size(); i++)
+	{
+		if(chooseAlly[i]->mouseClickedInButton(allyOptionSelect, allyOptionDeselect, win))
+		{
+			ally[nextCharCounter]->setBattlePos(i);
+			ally[nextCharCounter]->setPosition(allyPos[i].x, allyPos[i].y);
+			return true;
+		}
+
+	}
+	return false;
 }
 
 //Calculate using the level difference between average of allies and the enemy
@@ -1058,16 +1114,19 @@ void Battle::enemySkillCalc()
 {
 	std::cout << "enemySkillCalc\n";
 
-	switch(currentSkillCheck)
+	if(processSkillTargetting() != -1)
 	{
-		case 0:
-		case 1:
-			enemySkillCalcHealth();
-			break;
-		case 2:
-		case 3:
-			enemySkillCalcStat();
-			break;
+		switch(currentSkillCheck)
+		{
+			case 0:
+			case 1:
+				enemySkillCalcHealth();
+				break;
+			case 2:
+			case 3:
+				enemySkillCalcStat();
+				break;
+		}
 	}
 }
 
@@ -1075,53 +1134,50 @@ void Battle::enemySkillCalcHealth()
 {
 	std::cout << "enemySkillCalc\n";
 
-	if(processSkillTargetting() != -1)
+	int skillNum = enemy[nextCharCounter]->getSkillNum()[currentOptionEnemy];
+	if(singularAllyFocus)
 	{
-		int skillNum = enemy[nextCharCounter]->getSkillNum()[currentOptionEnemy];
-		if(singularAllyFocus)
-		{
-			int allyStrength = enemy[nextCharCounter]->getStrength();
-			int targetHp = enemy[currentAllySelected]->getCurrentHp();
+		int allyStrength = enemy[nextCharCounter]->getStrength();
+		int targetHp = enemy[currentAllySelected]->getCurrentHp();
 
-			int targetHpFinal = skillList[skillNum]->healthChangeHandle(allyStrength, 0, targetHp, currentSkillCheck);
-			enemy[currentAllySelected]->setHpFinal(targetHpFinal);
-		}
-		else if(singularEnemyFocus)
-		{
-			int allyStrength = enemy[nextCharCounter]->getStrength();
-			int targetHp = ally[currentEnemySelected]->getCurrentHp();
-			int targetDef = ally[currentEnemySelected]->getDefense();
+		int targetHpFinal = skillList[skillNum]->healthChangeHandle(allyStrength, 0, targetHp, currentSkillCheck);
+		enemy[currentAllySelected]->setHpFinal(targetHpFinal);
+	}
+	else if(singularEnemyFocus)
+	{
+		int allyStrength = enemy[nextCharCounter]->getStrength();
+		int targetHp = ally[currentEnemySelected]->getCurrentHp();
+		int targetDef = ally[currentEnemySelected]->getDefense();
 
-			int targetHpFinal = skillList[skillNum]->healthChangeHandle(allyStrength, targetDef, targetHp, currentSkillCheck);
-			ally[currentEnemySelected]->setHpFinal(targetHpFinal);
-		}
-		else if(multAllyFocus)
+		int targetHpFinal = skillList[skillNum]->healthChangeHandle(allyStrength, targetDef, targetHp, currentSkillCheck);
+		ally[currentEnemySelected]->setHpFinal(targetHpFinal);
+	}
+	else if(multAllyFocus)
+	{
+		for(int i = 0; i < enemy.size(); i++)
 		{
-			for(int i = 0; i < enemy.size(); i++)
+			if(enemy[i]->getAlive())
 			{
-				if(enemy[i]->getAlive())
-				{
-					int allyStrength = enemy[nextCharCounter]->getStrength();
-					int targetHp = enemy[i]->getCurrentHp();
+				int allyStrength = enemy[nextCharCounter]->getStrength();
+				int targetHp = enemy[i]->getCurrentHp();
 
-					int targetHpFinal = skillList[skillNum]->healthChangeHandle(allyStrength, 0, targetHp, currentSkillCheck);
-					enemy[i]->setHpFinal(targetHpFinal);
-				}
+				int targetHpFinal = skillList[skillNum]->healthChangeHandle(allyStrength, 0, targetHp, currentSkillCheck);
+				enemy[i]->setHpFinal(targetHpFinal);
 			}
 		}
-		else if(multEnemyFocus)
+	}
+	else if(multEnemyFocus)
+	{
+		for(int i = 0; i < ally.size(); i++)
 		{
-			for(int i = 0; i < ally.size(); i++)
+			if(ally[i]->getAlive())
 			{
-				if(ally[i]->getAlive())
-				{
-					int allyStrength = enemy[nextCharCounter]->getStrength();
-					int targetHp = ally[i]->getCurrentHp();
-					int targetDef = ally[i]->getDefense();
+				int allyStrength = enemy[nextCharCounter]->getStrength();
+				int targetHp = ally[i]->getCurrentHp();
+				int targetDef = ally[i]->getDefense();
 
-					int targetHpFinal = skillList[skillNum]->healthChangeHandle(allyStrength, targetDef, targetHp, currentSkillCheck);
-					ally[i]->setHpFinal(targetHpFinal);
-				}
+				int targetHpFinal = skillList[skillNum]->healthChangeHandle(allyStrength, targetDef, targetHp, currentSkillCheck);
+				ally[i]->setHpFinal(targetHpFinal);
 			}
 		}
 	}
@@ -1130,137 +1186,134 @@ void Battle::enemySkillCalcHealth()
 void Battle::enemySkillCalcStat()
 {
 	std::cout << "enemySkillCalcStat\n";
-	if(processSkillTargetting() != -1)
+	//If buff or debuff type is str, set to str, etc.
+	int skillNum = enemy[nextCharCounter]->getSkillNum()[currentOptionEnemy];
+	int statType;
+	if(currentSkillCheck == 2)
 	{
-		//If buff or debuff type is str, set to str, etc.
-		int skillNum = enemy[nextCharCounter]->getSkillNum()[currentOptionEnemy];
-		int statType;
-		if(currentSkillCheck == 2)
-		{
-			statType = skillList[skillNum]->getDebuffType();
-		}
-		else if(currentSkillCheck == 3)
-		{
-			statType = skillList[skillNum]->getBuffType();
-		}
+		statType = skillList[skillNum]->getDebuffType();
+	}
+	else if(currentSkillCheck == 3)
+	{
+		statType = skillList[skillNum]->getBuffType();
+	}
 
-		if(singularAllyFocus)
+	if(singularAllyFocus)
+	{
+		if(statType == 0)
 		{
-			if(statType == 0)
-			{
-				int allyStrength = enemy[nextCharCounter]->getStrength();
-				int targetStat = enemy[currentAllySelected]->getStrength();
-				int targetDef = enemy[currentAllySelected]->getDefense();
-				int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
-				enemy[currentAllySelected]->setStrength(targetStatFinal);
-			}
-			else if(statType == 1)
-			{
-				int allyStrength = enemy[nextCharCounter]->getStrength();
-				int targetStat = enemy[currentAllySelected]->getDefense();
-				int targetDef = enemy[currentAllySelected]->getDefense();
-				int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
-				enemy[currentAllySelected]->setDefense(targetStatFinal);
-			}
-			else if(statType == 2)
-			{
-				int allyStrength = enemy[nextCharCounter]->getStrength();
-				int targetStat = enemy[currentAllySelected]->getAgility();
-				int targetDef = enemy[currentAllySelected]->getDefense();
-				int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
-				enemy[currentAllySelected]->setAgility(targetStatFinal);
-			}
+			int allyStrength = enemy[nextCharCounter]->getStrength();
+			int targetStat = enemy[currentAllySelected]->getStrength();
+			int targetDef = enemy[currentAllySelected]->getDefense();
+			int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
+			enemy[currentAllySelected]->setStrength(targetStatFinal);
 		}
-		else if(singularEnemyFocus)
+		else if(statType == 1)
 		{
-			if(statType == 0)
-			{
-				int allyStrength = enemy[nextCharCounter]->getStrength();
-				int targetStat = ally[currentEnemySelected]->getStrength();
-				int targetDef = ally[currentEnemySelected]->getDefense();
-				int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
-				ally[currentEnemySelected]->setStrength(targetStatFinal);
-			}
-			else if(statType == 1)
-			{
-				int allyStrength = enemy[nextCharCounter]->getStrength();
-				int targetStat = ally[currentEnemySelected]->getDefense();
-				int targetDef = ally[currentEnemySelected]->getDefense();
-				int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
-				ally[currentEnemySelected]->setDefense(targetStatFinal);
-			}
-			else if(statType == 2)
-			{
-				int allyStrength = enemy[nextCharCounter]->getStrength();
-				int targetStat = ally[currentEnemySelected]->getAgility();
-				int targetDef = ally[currentEnemySelected]->getDefense();
-				int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
-				ally[currentEnemySelected]->setAgility(targetStatFinal);
-			}
+			int allyStrength = enemy[nextCharCounter]->getStrength();
+			int targetStat = enemy[currentAllySelected]->getDefense();
+			int targetDef = enemy[currentAllySelected]->getDefense();
+			int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
+			enemy[currentAllySelected]->setDefense(targetStatFinal);
 		}
-		else if(multAllyFocus)
+		else if(statType == 2)
 		{
-			for(int i = 0; i < enemy.size(); i++)
+			int allyStrength = enemy[nextCharCounter]->getStrength();
+			int targetStat = enemy[currentAllySelected]->getAgility();
+			int targetDef = enemy[currentAllySelected]->getDefense();
+			int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
+			enemy[currentAllySelected]->setAgility(targetStatFinal);
+		}
+	}
+	else if(singularEnemyFocus)
+	{
+		if(statType == 0)
+		{
+			int allyStrength = enemy[nextCharCounter]->getStrength();
+			int targetStat = ally[currentEnemySelected]->getStrength();
+			int targetDef = ally[currentEnemySelected]->getDefense();
+			int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
+			ally[currentEnemySelected]->setStrength(targetStatFinal);
+		}
+		else if(statType == 1)
+		{
+			int allyStrength = enemy[nextCharCounter]->getStrength();
+			int targetStat = ally[currentEnemySelected]->getDefense();
+			int targetDef = ally[currentEnemySelected]->getDefense();
+			int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
+			ally[currentEnemySelected]->setDefense(targetStatFinal);
+		}
+		else if(statType == 2)
+		{
+			int allyStrength = enemy[nextCharCounter]->getStrength();
+			int targetStat = ally[currentEnemySelected]->getAgility();
+			int targetDef = ally[currentEnemySelected]->getDefense();
+			int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
+			ally[currentEnemySelected]->setAgility(targetStatFinal);
+		}
+	}
+	else if(multAllyFocus)
+	{
+		for(int i = 0; i < enemy.size(); i++)
+		{
+			if(enemy[i]->getAlive())
 			{
-				if(enemy[i]->getAlive())
+				if(statType == 0)
 				{
-					if(statType == 0)
-					{
-						int allyStrength = ally[nextCharCounter]->getStrength();
-						int targetStat = enemy[i]->getStrength();
-						int targetDef = enemy[i]->getDefense();
-						int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
-						enemy[i]->setStrength(targetStatFinal);
-					}
-					else if(statType == 1)
-					{
-						int allyStrength = ally[nextCharCounter]->getStrength();
-						int targetStat = enemy[i]->getDefense();
-						int targetDef = enemy[i]->getDefense();
-						int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
-						enemy[i]->setDefense(targetStatFinal);
-					}
-					else if(statType == 2)
-					{
-						int allyStrength = ally[nextCharCounter]->getStrength();
-						int targetStat = enemy[i]->getAgility();
-						int targetDef = enemy[i]->getDefense();
-						int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
-						enemy[i]->setAgility(targetStatFinal);
-					}
+					int allyStrength = ally[nextCharCounter]->getStrength();
+					int targetStat = enemy[i]->getStrength();
+					int targetDef = enemy[i]->getDefense();
+					int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
+					enemy[i]->setStrength(targetStatFinal);
+				}
+				else if(statType == 1)
+				{
+					int allyStrength = ally[nextCharCounter]->getStrength();
+					int targetStat = enemy[i]->getDefense();
+					int targetDef = enemy[i]->getDefense();
+					int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
+					enemy[i]->setDefense(targetStatFinal);
+				}
+				else if(statType == 2)
+				{
+					int allyStrength = ally[nextCharCounter]->getStrength();
+					int targetStat = enemy[i]->getAgility();
+					int targetDef = enemy[i]->getDefense();
+					int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
+					enemy[i]->setAgility(targetStatFinal);
 				}
 			}
 		}
-		else if(multEnemyFocus)
+	}
+	else if(multEnemyFocus)
+	{
+		for(int i = 0; i < ally.size(); i++)
 		{
-			for(int i = 0; i < ally.size(); i++)
+			if(ally[i]->getAlive())
 			{
-				if(ally[i]->getAlive())
+				if(statType == 0)
 				{
-					if(statType == 0)
-					{
-						int allyStrength = ally[nextCharCounter]->getStrength();
-						int targetStat = ally[i]->getStrength();
-						int targetDef = ally[i]->getDefense();
-						int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
-						ally[i]->setStrength(targetStatFinal);
-					}
-					else if(statType == 1)
-					{
-						int allyStrength = ally[nextCharCounter]->getStrength();
-						int targetStat = ally[i]->getDefense();
-						int targetDef = ally[i]->getDefense();
-						int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
-						ally[i]->setDefense(targetStatFinal);
-					}
-					else if(statType == 2)
-					{
-						int allyStrength = ally[nextCharCounter]->getStrength();
-						int targetStat = ally[i]->getAgility();
-						int targetDef = ally[i]->getDefense();
-						int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
-						ally[i]->setAgility(targetStatFinal);
-					}
+					int allyStrength = ally[nextCharCounter]->getStrength();
+					int targetStat = ally[i]->getStrength();
+					int targetDef = ally[i]->getDefense();
+					int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
+					ally[i]->setStrength(targetStatFinal);
+				}
+				else if(statType == 1)
+				{
+					int allyStrength = ally[nextCharCounter]->getStrength();
+					int targetStat = ally[i]->getDefense();
+					int targetDef = ally[i]->getDefense();
+					int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
+					ally[i]->setDefense(targetStatFinal);
+				}
+				else if(statType == 2)
+				{
+					int allyStrength = ally[nextCharCounter]->getStrength();
+					int targetStat = ally[i]->getAgility();
+					int targetDef = ally[i]->getDefense();
+					int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
+					ally[i]->setAgility(targetStatFinal);
 				}
 			}
 		}
@@ -1283,7 +1336,6 @@ void Battle::allyHpChange()
 		if(ally[i]->getAlive())
 		{
 			int hpFinal = ally[i]->getHpFinal();
-			std::cout << "HP FINAL " << hpFinal << '\n';
 			//Replace hpFinal with hpFinal of specific character
 			int sign = findHpChangeSign(hpFinal, ally[i]->getCurrentHp());
 			if(ally[i]->getCurrentHp() > hpFinal + 3 || ally[i]->getCurrentHp() < hpFinal - 3)
@@ -1473,25 +1525,7 @@ void Battle::checkEndBattle(int& currentBattleState, int& currentState, std::vec
 	else
 	{
 		newTurn();
-		currentEnemyDeath();
 		currentBattleState = 0;
-	}
-}
-
-//Change current enemy selected if the current enemy is dead (and battle is not over yet)
-void Battle::currentEnemyDeath()
-{
-	std::cout << "currentEnemyDeath\n";
-	if(!enemy[currentTarget]->getAlive())
-	{
-		do
-		{
-			currentTarget++;
-			if(currentTarget >= enemy.size())
-			{
-				currentTarget = 0;
-			}
-		}while(!enemy[currentTarget]->getAlive());
 	}
 }
 
@@ -1500,6 +1534,7 @@ void Battle::currentEnemyDeath()
 void Battle::newTurn()
 {
 	std::cout << "newTurn\n";
+	singularAllyFocus = singularEnemyFocus = false;
 }
 
 //************ DRAWING ***************

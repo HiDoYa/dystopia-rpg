@@ -1,11 +1,12 @@
+#include "SpriteManager.h"
+
 #ifndef BATTLEOVERLAY_H
 #define BATTLEOVERLAY_H
 
 class BattleOverlay
 {
 	private:
-		sf::Texture bgTexture;
-		sf::RectangleShape bgSprite;
+		SpriteManager bgSprite;
 
 		sf::Font font;
 
@@ -15,7 +16,13 @@ class BattleOverlay
 	public:
 		BattleOverlay();
 		void showCurrentCharDesc();
-		void updateBattleLog();
+
+		void attackedLog(std::string, std::string, int);
+		void healedLog(std::string, std::string, int);
+		void buffedLog(std::string, std::string, std::string, int);
+		void debuffedLog(std::string, std::string, std::string, int);
+		void genericSkillLog(std::string, std::string);
+		void updateBattleLog(std::string strInp, bool replace = true);
 		void drawAll(sf::RenderWindow&);
 };
 

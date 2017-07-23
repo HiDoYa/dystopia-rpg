@@ -3,9 +3,9 @@ Ally 1
 	Level 1
 	Hp 100
 	Mana 100
-	Strength 10
-	Defense 10
-	Agility 10
+	Strength 20
+	Defense 20
+	Agility 20
 	Skill 0 1 2
 	Image images/ally/test4.png 0
 
@@ -14,9 +14,9 @@ Ally 2
 	Level 1
 	Hp 50
 	Mana 150
-	Strength 15
-	Defense 10
-	Agility 15
+	Strength 25
+	Defense 20
+	Agility 25
 	Skill 0 1 2
 	Image images/ally/test4.png 0
 
@@ -26,9 +26,9 @@ Ally 3
 	Level 1
 	Hp 50
 	Mana 150
-	Strength 15
-	Defense 10
-	Agility 15
+	Strength 25
+	Defense 20
+	Agility 25
 	Skill 0 1 2
 	Image images/ally/test4.png 0
 
