@@ -154,7 +154,7 @@ void StateManager::updateMap(sf::RenderWindow& win, sf::View& view)
 	} 
 	player.encounter(encounterRate, currentState);
 
-	ground->newMapCheck(player, startPosX, startPosY, currentZone, currentMap, mapLoaded, encounterRate);
+	ground->newMapCheck(player, currentZone, currentMap, mapLoaded);
 	
 	overlay.setPartyMember(allyInParty, ally);
 	if(overlay.checkForMapMenu(menuOption, win))
@@ -211,6 +211,7 @@ void StateManager::loadBattle(sf::RenderWindow& win, sf::View& view)
 		battleLoaded = true;
 
 		battle->setupBattle(enemyListStore, ally, skillList, allyInParty);
+		nextBattleState = 0;
 
 		//Set view
 		view.setCenter(sf::Vector2f(512, 384));
@@ -226,50 +227,59 @@ void StateManager::updateBattle(sf::RenderWindow& win, sf::View& view)
 
 	std::cout << "CURRENT BATTLE STATE: " << currentBattleState << '\n';
 
-	switch (currentBattleState)
+	if(nextBattleState != currentBattleState)
 	{
-		//Fastest character is calculated and checks whether it is an ally, enemy, or nobody.
-		case 0:
-			battle->findFastestChar(currentBattleState);
-			break;
-		//Checks whether a persistent skill needs to be reapplied or removed
-		case 1:
-			battle->statusHandle(currentBattleState);
-			break;
-		//[Ally] Options display and user chooses next course of action
-		case 2:
-			battle->allySkillChoiceHandler(currentBattleState, win);
-			break;
-		//[Ally] If targetable skill, choose who to target. Else, go straight to state 5
-		case 3:
-			battle->allyChooseFocus(currentBattleState, win);
-			break;
-		//[Enemy] Chooses skill and who to target
-		case 4:
-			battle->enemyDecision(currentBattleState);
-			break;
-		//Move forward and attack animations
-		case 5:
-			battle->moveForwardAnimation(currentBattleState);
-			break;
-		//Calculate damage/buffs
-		case 6:
-			battle->handleEffect(currentBattleState, win);
-			break;
-		//Animate hp
-		case 7:
-			battle->hpAnimate(currentBattleState);
-			break;
-		//Move backward animation
-		case 8:
-			battle->moveBackwardAnimation(currentBattleState);
-			break;
-		//Check for game over. Go back to beginning if not game over. 
-		//If all enemies/allies have attacked, reset their flags.
-		case 9:
-			battle->checkEndBattle(currentBattleState, currentState, allyInParty, ally);
-			break;
+		battle->delayState(currentBattleState, nextBattleState);
 	}
+	else 
+	{
+		switch (currentBattleState)
+		{
+			//Fastest character is calculated and checks whether it is an ally, enemy, or nobody.
+			case 0:
+				battle->findFastestChar(nextBattleState);
+				break;
+			//Checks whether a persistent skill needs to be reapplied or removed
+			case 1:
+				battle->statusHandle(nextBattleState);
+				break;
+			//[Ally] Options display and user chooses next course of action
+			case 2:
+				battle->allySkillChoiceHandler(nextBattleState, win);
+				break;
+			//[Ally] If targetable skill, choose who to target. Else, go straight to state 5
+			case 3:
+				battle->allyChooseFocus(nextBattleState, win);
+				break;
+			//[Enemy] Chooses skill and who to target
+			case 4:
+				battle->enemyDecision(nextBattleState);
+				break;
+			//Move forward and attack animations
+			case 5:
+				battle->moveForwardAnimation(nextBattleState);
+				break;
+			//Calculate damage/buffs
+			case 6:
+				battle->handleEffect(nextBattleState, win);
+				break;
+			//Animate hp
+			case 7:
+				battle->hpAnimate(nextBattleState);
+				break;
+			//Move backward animation
+			case 8:
+				battle->moveBackwardAnimation(nextBattleState);
+				break;
+			//Check for game over. Go back to beginning if not game over. 
+			//If all enemies/allies have attacked, reset their flags.
+			case 9:
+				battle->checkEndBattle(nextBattleState, currentState, allyInParty, ally);
+				break;
+		}
+	}
+
+	battle->showCharacterInfo(win);
 }
 
 void StateManager::renderBattle(sf::RenderWindow& win, sf::View& view)

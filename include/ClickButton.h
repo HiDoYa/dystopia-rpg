@@ -27,6 +27,7 @@ class ClickButton
 		ClickButton();
 		ClickButton(int);
 		
+		//0 = rect, 1 = circ
 		void setType(int);
 		void setHoverText(bool);
 
@@ -39,12 +40,14 @@ class ClickButton
 
 		//Text inside button
 		void centerText();
+		void centerHoverHorizontal();
 
 		//TODO Greyed out if inactive option?
 		//TODO Toggle (keep in a certain color if clicked and take away the color if some other condition is met)
 
 		//Col1 is for selected, col2 is for deselected colors
 		//Texture1 and texture2 is for image names
+		bool mouseInButton(sf::RenderWindow&);
 		bool mouseInButton(sf::Color, sf::Color, sf::RenderWindow&);
 		bool mouseInButton(std::string, std::string, sf::RenderWindow&);
 		bool mouseClickedInButton(sf::Color, sf::Color, sf::RenderWindow&);

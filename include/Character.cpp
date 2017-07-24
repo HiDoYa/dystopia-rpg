@@ -32,9 +32,15 @@ Character::Character()
 	hp.getCurrentRect()->setFillColor(sf::Color::Red);
 	mana.getCurrentRect()->setFillColor(sf::Color::Yellow);
 
-	hp.getLabel()->setCharacterSize(7);
-	mana.getLabel()->setCharacterSize(7);
+	hp.getLabel()->setCharacterSize(6);
+	mana.getLabel()->setCharacterSize(6);
+	
+	hp.getLabel()->setColor(sf::Color::Black);
+	mana.getLabel()->setColor(sf::Color::Black);
 
+	hp.setLabelPos(2);
+	mana.setLabelPos(2);
+	
 	//Everybody starts off with these 3 basic skills
 	possibleSkillNum = {0, 1, 2};
 	skillNum = {0, 1, 2};
@@ -288,8 +294,8 @@ void Character::statBarUpdate()
 	hp.setStats(currentHp, maxHp, "Health");
 	mana.setStats(currentMana, maxMana, "Mana");
 
-	hp.setPosition(sf::Vector2f(getPosition().x - 50, getPosition().y - 70));
-	mana.setPosition(sf::Vector2f(getPosition().x - 50, getPosition().y - 30));
+	hp.setPosition(sf::Vector2f(getPosition().x - 50, getPosition().y - 65));
+	mana.setPosition(sf::Vector2f(getPosition().x - 50, getPosition().y - 35));
 }
 
 void Character::drawBars(sf::RenderWindow& win)

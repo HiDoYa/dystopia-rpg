@@ -31,7 +31,7 @@ class Map
 		void drawBitmap(sf::RenderWindow&);
 		void drawCollision(sf::RenderWindow&, MapPlayer&);
 		bool newMap(MapPlayer&, int&, int&);
-		void newMapCheck(MapPlayer&, int&, int&, int&, int&, bool&, int&);
+		void newMapCheck(MapPlayer&, int&, int&, bool&);
 
 		//Accessors for new map
 		std::vector<sf::Vector2i> getNewMapCords();

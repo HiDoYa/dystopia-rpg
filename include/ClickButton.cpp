@@ -100,6 +100,68 @@ void ClickButton::centerText()
 	}
 }
 
+void ClickButton::centerHoverHorizontal()
+{
+	int wrapperLeft, wrapperTop, wrapperWidth, wrapperHeight, textWidth, textHeight, xDisp;
+	
+	if(type == 0)
+	{
+		wrapperLeft = rect.getGlobalBounds().left;
+		wrapperTop = rect.getGlobalBounds().top;
+		wrapperWidth = rect.getGlobalBounds().width;
+		wrapperHeight = rect.getGlobalBounds().height;
+	}
+	else if(type == 1)
+	{
+		wrapperLeft = circ.getGlobalBounds().left;
+		wrapperTop = circ.getGlobalBounds().top;
+		wrapperWidth = circ.getGlobalBounds().width;
+		wrapperHeight = circ.getGlobalBounds().height;
+	}
+
+	textWidth = hoverText.getGlobalBounds().width;
+	textHeight = text.getGlobalBounds().height;
+	
+	xDisp = ((wrapperWidth - textWidth) / 2) + wrapperLeft;
+
+	hoverText.setPosition(xDisp, hoverText.getPosition().y);
+}
+
+bool ClickButton::mouseInButton(sf::RenderWindow& win)
+{
+	sf::Vector2i mouseCoords = sf::Mouse::getPosition(win);
+
+	if(type == 0)
+	{
+		int startX = rect.getPosition().x;
+		int endX = rect.getPosition().x + rect.getSize().x;
+		int startY = rect.getPosition().y;
+		int endY = rect.getPosition().y + rect.getSize().y;
+
+		if(mouseCoords.x + viewX >= startX && mouseCoords.x + viewX <= endX &&
+		   mouseCoords.y + viewY >= startY && mouseCoords.y + viewY <= endY)
+		{
+			return true;
+		}
+	}
+	else if(type == 1)
+	{
+		float rad = circ.getRadius();
+		float posX = circ.getPosition().x + rad;
+		float posY = circ.getPosition().y + rad;
+
+		float diffX = posX - mouseCoords.x - viewX;
+		float diffY = posY - mouseCoords.y - viewY;
+
+		if(sqrt(diffX * diffX + diffY * diffY) < rad)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
 bool ClickButton::mouseInButton(sf::Color col1, sf::Color col2, sf::RenderWindow& win)
 {
 	sf::Vector2i mouseCoords = sf::Mouse::getPosition(win);

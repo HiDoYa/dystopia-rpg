@@ -57,6 +57,8 @@ class StateManager
 		std::vector<std::shared_ptr<Skill>> skillList;
 		std::vector<int> unlockedSkills;
 		bool battleLoaded;
+		int nextBattleState;
+		int milliDelay;
 		std::unique_ptr<Battle> battle;
 
 		//Map Menu (state 3)

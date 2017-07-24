@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <fstream>
 #include <iostream>
+#include <cmath>
 
 #include "Battle.h"
 
@@ -11,10 +12,11 @@ Battle::Battle()
 	currentOptionAlly = 0;
 	currentOptionEnemy = 0;
 	currentSkillCheck = 0;
+	oldBattlePos = -1;
+	lastTimeSet = false;
 
 	currentTime = lastTime = 0;
 	goalPlace = 0;
-	currentTarget = 0;
 	singularAllyFocus = false;
 	singularEnemyFocus = false;
 	
@@ -22,33 +24,34 @@ Battle::Battle()
 	attackXDisp = 150;
 
 	//TODO Set colors
+	gridDefault = sf::Color(sf::Color::White);
 	allyOptionSelect = sf::Color(sf::Color::Blue);
 	allyOptionDeselect = sf::Color(150, 196, 255);
 
 	//Ally positions
-	allyPos = {sf::Vector2f(650, 200),
-		   sf::Vector2f(650, 400),
-		   sf::Vector2f(650, 600),
-		   sf::Vector2f(850, 200),
-		   sf::Vector2f(850, 400),
-		   sf::Vector2f(850, 600)};
+	allyPos = {sf::Vector2f(674, 200),
+		   sf::Vector2f(674, 350),
+		   sf::Vector2f(674, 500),
+		   sf::Vector2f(874, 200),
+		   sf::Vector2f(874, 350),
+		   sf::Vector2f(874, 500)};
 
 	//Enemy Positions
-	enemyPos = {sf::Vector2f(150, 200),
-		    sf::Vector2f(150, 400),
-		    sf::Vector2f(150, 600),
-		    sf::Vector2f(350, 200),
-		    sf::Vector2f(350, 400),
-		    sf::Vector2f(350, 600)};
+	enemyPos = {sf::Vector2f(100, 200),
+		    sf::Vector2f(100, 350),
+		    sf::Vector2f(100, 500),
+		    sf::Vector2f(300, 200),
+		    sf::Vector2f(300, 350),
+		    sf::Vector2f(300, 500)};
 
 	//Options positions
 	std::vector<sf::Vector2f> optionsPos;
-	optionsPos = {sf::Vector2f(100, 20),
-		      sf::Vector2f(200, 20),
-		      sf::Vector2f(300, 20),
-		      sf::Vector2f(400, 20),
-		      sf::Vector2f(500, 20),
-		      sf::Vector2f(600, 20)};
+	optionsPos = {sf::Vector2f(50, 20),
+		      sf::Vector2f(150, 20),
+		      sf::Vector2f(250, 20),
+		      sf::Vector2f(350, 20),
+		      sf::Vector2f(450, 20),
+		      sf::Vector2f(550, 20)};
 
 	//Creates 6 circles for skills
 	for(int i = 0; i < 6; i++)
@@ -60,7 +63,9 @@ Battle::Battle()
 		tempPtr->getHoverText()->setCharacterSize(10);
 		tempPtr->getHoverText()->setColor(sf::Color::Black);
 		tempPtr->getCirc()->setPosition(optionsPos[i]);
-		tempPtr->getHoverText()->setPosition(optionsPos[i].x - 10, optionsPos[i].y + 70);
+
+		//X pos doesn't matter because it'll be set up later
+		tempPtr->getHoverText()->setPosition(0, optionsPos[i].y + 70);
 
 		allyOptions.push_back(tempPtr);
 	}
@@ -74,8 +79,9 @@ Battle::Battle()
 		std::shared_ptr<ClickButton> tempPtr (new ClickButton);
 		tempPtr->getRect()->setOutlineColor(sf::Color::Black);
 		tempPtr->getRect()->setOutlineThickness(2);
+		tempPtr->getRect()->setFillColor(gridDefault);
+		tempPtr->getRect()->setSize(sf::Vector2f(150, 150));
 		chooseAlly.push_back(tempPtr);
-		chooseAlly[i]->getRect()->setSize(sf::Vector2f(150, 150));
 	}
 
 	chooseAlly[0]->getRect()->setPosition(sf::Vector2f(624, 120));
@@ -90,8 +96,9 @@ Battle::Battle()
 		std::shared_ptr<ClickButton> tempPtr (new ClickButton);
 		tempPtr->getRect()->setOutlineColor(sf::Color::Black);
 		tempPtr->getRect()->setOutlineThickness(2);
+		tempPtr->getRect()->setFillColor(gridDefault);
+		tempPtr->getRect()->setSize(sf::Vector2f(150, 150));
 		chooseEnemy.push_back(tempPtr);
-		chooseEnemy[i]->getRect()->setSize(sf::Vector2f(150, 150));
 	}
 
 	chooseEnemy[0]->getRect()->setPosition(sf::Vector2f(50, 120));
@@ -182,7 +189,7 @@ void Battle::setupBattle(std::vector<std::shared_ptr<Character>> enemyList,
 
 //*********** BATTLE STATE 0 *********************
 //Finds fastest character and stores in nextCharType and nextCharCounter
-void Battle::findFastestChar(int& currentBattleState)
+void Battle::findFastestChar(int& nextBattleState)
 {
 	std::cout << "findFastestChar\n";
 	int highestAgil = -1;
@@ -239,14 +246,14 @@ void Battle::findFastestChar(int& currentBattleState)
 		setSkillNames();
 
 		//Current state is done
-		currentBattleState = 1;
+		nextBattleState = 1;
 	}
 	else if(nextCharType == 1)
 	{
 		enemy[nextCharCounter]->setCanAtk(false);
 
 		//Current state is done
-		currentBattleState = 1;
+		nextBattleState = 1;
 	}
 }
 
@@ -260,7 +267,7 @@ void Battle::setSkillNames()
 }
 
 //********** BATTLE STATE 1 ****************
-void Battle::statusHandle(int& currentBattleState)
+void Battle::statusHandle(int& nextBattleState)
 {
 	std::cout << "statusHandle\n";
 	checkForStatus();
@@ -269,11 +276,11 @@ void Battle::statusHandle(int& currentBattleState)
 	{
 		case 0:
 			//Ally attack
-			currentBattleState = 2;
+			nextBattleState = 2;
 			break;
 		case 1:
 			//Enemy attack
-			currentBattleState = 4;
+			nextBattleState = 4;
 			break;
 	}
 }
@@ -416,30 +423,31 @@ void Battle::enemyStatusEffect()
 	}
 }
 //********** BATTLE STATE 2 ****************
-void Battle::allySkillChoiceHandler(int& currentBattleState, sf::RenderWindow& win)
+void Battle::allySkillChoiceHandler(int& nextBattleState, sf::RenderWindow& win)
 {
 	std::cout << "allySkillChoiceHandler\n";
 
 	for(int i = 0; i < allyOptions.size(); i++)
 	{
+		allyOptions[i]->centerHoverHorizontal();
 		if(allyOptions[i]->mouseClickedInButton(allyOptionSelect, allyOptionDeselect, win)) {
 			currentOptionAlly = i;
 			if(i < 3)
 			{
 				//Skills
-				currentBattleState = 3;
+				nextBattleState = 3;
 			}
 			else
 			{
 				//Not skills
-				currentBattleState = 6;
+				nextBattleState = 6;
 			}
 		}
 	}
 }
 
 //*********** BATTLE STATE 3 *********************
-void Battle::allyChooseFocus(int& currentBattleState, sf::RenderWindow& win)
+void Battle::allyChooseFocus(int& nextBattleState, sf::RenderWindow& win)
 {
 	std::cout << "allyChooseFocus\n";
 
@@ -454,19 +462,22 @@ void Battle::allyChooseFocus(int& currentBattleState, sf::RenderWindow& win)
 	{
 		if(changeAllyFocus(win))
 		{
-			currentBattleState = 5;
+			resetGrid();
+			nextBattleState = 5;
 		}
 	}
 	else if(singularEnemyFocus)
 	{
 		if(changeEnemyFocus(win))
 		{
-			currentBattleState = 5;
+			resetGrid();
+			nextBattleState = 5;
 		}
 	}
 	else
 	{
-		currentBattleState = 5;
+		resetGrid();
+		nextBattleState = 5;
 	}
 }
 
@@ -514,7 +525,7 @@ bool Battle::changeAllyFocus(sf::RenderWindow& win)
 				if(chooseAlly[i]->mouseClickedInButton(allyOptionSelect, allyOptionDeselect, win))
 				{
 					pressed = true;
-					currentTarget = j;
+					currentAllySelected = j;
 					break;
 				}
 			}
@@ -538,7 +549,7 @@ bool Battle::changeEnemyFocus(sf::RenderWindow& win)
 				if(chooseEnemy[i]->mouseClickedInButton(allyOptionSelect, allyOptionDeselect, win))
 				{
 					pressed = true;
-					currentTarget = i;
+					currentEnemySelected = j;
 					break;
 				}
 			}
@@ -548,8 +559,17 @@ bool Battle::changeEnemyFocus(sf::RenderWindow& win)
 	return pressed;
 }
 
+void Battle::resetGrid()
+{
+	for(int i = 0; i < 6; i++)
+	{
+		chooseAlly[i]->getRect()->setFillColor(gridDefault);
+		chooseEnemy[i]->getRect()->setFillColor(gridDefault);
+	}
+}
+
 //*********** BATTLE STATE 4 *********************
-void Battle::enemyDecision(int& currentBattleState)
+void Battle::enemyDecision(int& nextBattleState)
 {
 	std::cout << "enemyDecision\n";
 	enemyChooseSkill();
@@ -567,7 +587,7 @@ void Battle::enemyDecision(int& currentBattleState)
 			}
 		}
 	}
-	currentBattleState = 5;
+	nextBattleState = 5;
 }
 
 void Battle::enemyChooseSkill()
@@ -660,20 +680,20 @@ void Battle::enemyChooseEnemy()
 }
 
 //*********** BATTLE STATE 5 *********************
-void Battle::moveForwardAnimation(int& currentBattleState)
+void Battle::moveForwardAnimation(int& nextBattleState)
 {
 	std::cout << "moveForwardAnimation\n";
 	switch (nextCharType)
 	{
 		case 0:
-			allyAttackAnimation(currentBattleState);
+			allyAttackAnimation(nextBattleState);
 			break;
 		case 1:
-			enemyAttackAnimation(currentBattleState);
+			enemyAttackAnimation(nextBattleState);
 			break;
 	}
 }
-void Battle::allyAttackAnimation(int& currentBattleState)
+void Battle::allyAttackAnimation(int& nextBattleState)
 {
 	std::cout << "allyAttackAnimation\n";
 	sf::Vector2f current = ally[nextCharCounter]->getPosition();
@@ -688,12 +708,12 @@ void Battle::allyAttackAnimation(int& currentBattleState)
 	}
 	else
 	{ 
-		currentBattleState = 6;
+		nextBattleState = 6;
 	}
 }
 
 //Enemy simply moves forward
-void Battle::enemyAttackAnimation(int& currentBattleState)
+void Battle::enemyAttackAnimation(int& nextBattleState)
 {
 	std::cout << "enemyAttackAnimation\n";
 	sf::Vector2f current = enemy[nextCharCounter]->getPosition();
@@ -708,13 +728,13 @@ void Battle::enemyAttackAnimation(int& currentBattleState)
 	}
 	else
 	{ 
-		currentBattleState = 6;
+		nextBattleState = 6;
 	}
 }
 
 //******** BATTLE STATE 6 **************
 //Calculates hp/mana change for enemy and ally
-void Battle::handleEffect(int& currentBattleState, sf::RenderWindow& win)
+void Battle::handleEffect(int& nextBattleState, sf::RenderWindow& win)
 {
 	std::cout << "handleEffect\n";
 
@@ -724,17 +744,17 @@ void Battle::handleEffect(int& currentBattleState, sf::RenderWindow& win)
 	switch(nextCharType)
 	{
 		case 0:
-			done = allyTurnHandle(currentBattleState, win);
+			done = allyTurnHandle(nextBattleState, win);
 			break;
 		case 1:
-			enemyTurnHandle(currentBattleState);
+			enemyTurnHandle(nextBattleState);
 			done = true;
 			break;
 	}
 	
 	if(done)
 	{
-		currentBattleState = 7;
+		nextBattleState = 7;
 	}
 }
 
@@ -831,7 +851,7 @@ int Battle::findHpChangeSign(int hpFinal, int hpInit)
 
 //TODO Apply effect for both enemy AND allies
 //TODO get mana change as well
-bool Battle::allyTurnHandle(int& currentBattleState, sf::RenderWindow& win)
+bool Battle::allyTurnHandle(int& nextBattleState, sf::RenderWindow& win)
 {
 	std::cout << "allyTurnHandle\n";
 	switch(currentOptionAlly)
@@ -849,7 +869,7 @@ bool Battle::allyTurnHandle(int& currentBattleState, sf::RenderWindow& win)
 			return allyChangePos(win);
 			break;
 		case 5:
-			allyAttemptFlee(currentBattleState);
+			allyAttemptFlee(nextBattleState);
 			return true;
 			break;
 	}
@@ -1075,21 +1095,60 @@ bool Battle::allyChangePos(sf::RenderWindow& win)
 	std::cout << "allyChangePos\n";
 	//TODO make the grid blink to display where to move to
 	//Use buttons with alpha
-	for(int i = 0; i < chooseAlly.size(); i++)
+	if(oldBattlePos == -1)
 	{
-		if(chooseAlly[i]->mouseClickedInButton(allyOptionSelect, allyOptionDeselect, win))
+		for(int i = 0; i < chooseAlly.size(); i++)
 		{
-			ally[nextCharCounter]->setBattlePos(i);
-			ally[nextCharCounter]->setPosition(allyPos[i].x, allyPos[i].y);
+			if(chooseAlly[i]->mouseClickedInButton(allyOptionSelect, allyOptionDeselect, win))
+			{
+				resetGrid();
+				oldBattlePos = ally[nextCharCounter]->getBattlePos();
+				ally[nextCharCounter]->setBattlePos(i);
+				return false;
+			}
+
+		}
+	}
+	else
+	{
+		if(changePosAnimation())
+		{
 			return true;
 		}
-
 	}
 	return false;
 }
 
+bool Battle::changePosAnimation()
+{
+	int newBattlePos = ally[nextCharCounter]->getBattlePos();
+
+	int xMove = (allyPos[newBattlePos].x - allyPos[oldBattlePos].x) / 20;
+	int yMove = (allyPos[newBattlePos].y - allyPos[oldBattlePos].y) / 20;
+
+	sf::Vector2f curPos = ally[nextCharCounter]->getPosition();
+
+	bool withinX = allyPos[newBattlePos].x + abs(xMove) >= curPos.x && 
+			allyPos[newBattlePos].x - abs(xMove) <= curPos.x;
+	bool withinY = allyPos[newBattlePos].y + abs(yMove) >= curPos.y && 
+			allyPos[newBattlePos].y - abs(yMove) <= curPos.y;
+
+	if(withinX && withinY)
+	{
+		oldBattlePos = -1;
+		ally[nextCharCounter]->setPosition(allyPos[newBattlePos].x, allyPos[newBattlePos].y);
+		return true;
+	}
+	else
+	{
+		ally[nextCharCounter]->setPosition(curPos.x + xMove, curPos.y + yMove);
+	}
+	return false;
+
+}
+
 //Calculate using the level difference between average of allies and the enemy
-void Battle::allyAttemptFlee(int& currentBattleState)
+void Battle::allyAttemptFlee(int& nextBattleState)
 {
 	std::cout << "allyAttemptFlee\n";
 	int avgAlly = 0;
@@ -1110,11 +1169,11 @@ void Battle::allyAttemptFlee(int& currentBattleState)
 	if(avgAlly * randChance > avgEnemy)
 	{
 		//TODO end the game properly
-		currentBattleState = 10;
+		nextBattleState = 10;
 	}
 }
 
-void Battle::enemyTurnHandle(int& currentBattleState)
+void Battle::enemyTurnHandle(int& nextBattleState)
 {
 	std::cout << "enemyTurnHandle\n";
 	enemySkillCalc();
@@ -1217,6 +1276,8 @@ void Battle::enemySkillCalcStat()
 			int targetDef = enemy[currentAllySelected]->getDefense();
 			int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
 			enemy[currentAllySelected]->setStrength(targetStatFinal);
+
+			overlay.buffedLog(enemy[nextCharCounter]->getName(), enemy[currentAllySelected], "strength", targetStatFinal - targetStat);
 		}
 		else if(statType == 1)
 		{
@@ -1225,6 +1286,8 @@ void Battle::enemySkillCalcStat()
 			int targetDef = enemy[currentAllySelected]->getDefense();
 			int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
 			enemy[currentAllySelected]->setDefense(targetStatFinal);
+
+			overlay.buffedLog(enemy[nextCharCounter]->getName(), enemy[currentAllySelected], "defense", targetStatFinal - targetStat);
 		}
 		else if(statType == 2)
 		{
@@ -1233,6 +1296,8 @@ void Battle::enemySkillCalcStat()
 			int targetDef = enemy[currentAllySelected]->getDefense();
 			int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
 			enemy[currentAllySelected]->setAgility(targetStatFinal);
+
+			overlay.buffedLog(enemy[nextCharCounter]->getName(), enemy[currentAllySelected], "agility", targetStatFinal - targetStat);
 		}
 	}
 	else if(singularEnemyFocus)
@@ -1244,6 +1309,8 @@ void Battle::enemySkillCalcStat()
 			int targetDef = ally[currentEnemySelected]->getDefense();
 			int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
 			ally[currentEnemySelected]->setStrength(targetStatFinal);
+
+			overlay.debuffedLog(enemy[nextCharCounter]->getName(), ally[currentEnemySelected], "strength", targetStatFinal - targetStat);
 		}
 		else if(statType == 1)
 		{
@@ -1252,6 +1319,8 @@ void Battle::enemySkillCalcStat()
 			int targetDef = ally[currentEnemySelected]->getDefense();
 			int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
 			ally[currentEnemySelected]->setDefense(targetStatFinal);
+
+			overlay.debuffedLog(enemy[nextCharCounter]->getName(), ally[currentEnemySelected], "strength", targetStatFinal - targetStat);
 		}
 		else if(statType == 2)
 		{
@@ -1260,6 +1329,8 @@ void Battle::enemySkillCalcStat()
 			int targetDef = ally[currentEnemySelected]->getDefense();
 			int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
 			ally[currentEnemySelected]->setAgility(targetStatFinal);
+
+			overlay.debuffedLog(enemy[nextCharCounter]->getName(), ally[currentEnemySelected], "strength", targetStatFinal - targetStat);
 		}
 	}
 	else if(multAllyFocus)
@@ -1331,11 +1402,11 @@ void Battle::enemySkillCalcStat()
 }
 
 //*************** BATTLE STATE 7 *********************
-void Battle::hpAnimate(int& currentBattleState)
+void Battle::hpAnimate(int& nextBattleState)
 {
 	allyHpChange();
 	enemyHpChange();
-	checkForCompletion(currentBattleState);
+	checkForCompletion(nextBattleState);
 }
 
 void Battle::allyHpChange()
@@ -1348,9 +1419,9 @@ void Battle::allyHpChange()
 			int hpFinal = ally[i]->getHpFinal();
 			//Replace hpFinal with hpFinal of specific character
 			int sign = findHpChangeSign(hpFinal, ally[i]->getCurrentHp());
-			if(ally[i]->getCurrentHp() > hpFinal + 3 || ally[i]->getCurrentHp() < hpFinal - 3)
+			if(ally[i]->getCurrentHp() > hpFinal + 2 || ally[i]->getCurrentHp() < hpFinal - 2)
 			{
-				ally[i]->setCurrentHp(ally[i]->getCurrentHp() + (3 * sign));
+				ally[i]->setCurrentHp(ally[i]->getCurrentHp() + (2 * sign));
 			}
 			else if (ally[i]->getCurrentHp() != hpFinal)
 			{
@@ -1372,9 +1443,9 @@ void Battle::enemyHpChange()
 			if(hpFinal != currentEnemyHp)
 			{
 				int sign = findHpChangeSign(hpFinal, currentEnemyHp);
-				if(currentEnemyHp > hpFinal + 3 || currentEnemyHp < hpFinal - 3)
+				if(currentEnemyHp > hpFinal + 2 || currentEnemyHp < hpFinal - 2)
 				{
-					enemy[i]->setCurrentHp(currentEnemyHp + (3 * sign));
+					enemy[i]->setCurrentHp(currentEnemyHp + (2 * sign));
 				}
 				else if (currentEnemyHp != hpFinal)
 				{
@@ -1385,7 +1456,15 @@ void Battle::enemyHpChange()
 	}
 }
 
-void Battle::checkForCompletion(int& currentBattleState)
+void Battle::allySkillAnimate()
+{
+}
+
+void Battle::enemySkillAnimate()
+{
+}
+
+void Battle::checkForCompletion(int& nextBattleState)
 {
 	std::cout << "checkForCompletion\n";
 	bool allDone = true;
@@ -1418,26 +1497,26 @@ void Battle::checkForCompletion(int& currentBattleState)
 
 	if(allDone)
 	{
-		currentBattleState = 8;
+		nextBattleState = 8;
 	}
 }
 
 //*************** BATTLE STATE 8 *********************
-void Battle::moveBackwardAnimation(int& currentBattleState)
+void Battle::moveBackwardAnimation(int& nextBattleState)
 {
 	std::cout << "moveBackwardAnimation\n" << nextCharCounter;
 	switch(nextCharType)
 	{
 		case 0:
-			allyPostAttackAnimation(currentBattleState);
+			allyPostAttackAnimation(nextBattleState);
 			break;
 		case 1:
-			enemyPostAttackAnimation(currentBattleState);
+			enemyPostAttackAnimation(nextBattleState);
 			break;
 	}
 }
 
-void Battle::allyPostAttackAnimation(int& currentBattleState)
+void Battle::allyPostAttackAnimation(int& nextBattleState)
 {
 	std::cout << "allyPostAttackAnimation\n";
 	goalPlace = allyPos[ally[nextCharCounter]->getBattlePos()].x;
@@ -1447,11 +1526,11 @@ void Battle::allyPostAttackAnimation(int& currentBattleState)
 	}
 	else
 	{
-		currentBattleState = 9;
+		nextBattleState = 9;
 	}
 }
 
-void Battle::enemyPostAttackAnimation(int& currentBattleState)
+void Battle::enemyPostAttackAnimation(int& nextBattleState)
 {
 	std::cout << "enemyPostAttackAnimation\n";
 	sf::Vector2f current = enemy[nextCharCounter]->getPosition();
@@ -1466,7 +1545,7 @@ void Battle::enemyPostAttackAnimation(int& currentBattleState)
 	}
 	else
 	{
-		currentBattleState = 9;
+		nextBattleState = 9;
 	}
 }
 
@@ -1511,7 +1590,7 @@ bool Battle::checkEnemyDeaths()
 	return allDead;
 }
 
-void Battle::checkEndBattle(int& currentBattleState, int& currentState, std::vector<int> allyInParty, std::vector<std::shared_ptr<Character>> allyOrig)
+void Battle::checkEndBattle(int& nextBattleState, int& currentState, std::vector<int> allyInParty, std::vector<std::shared_ptr<Character>> allyOrig)
 {
 	std::cout << "checkEndBattle\n";
 	//TODO Loses the battle
@@ -1535,7 +1614,7 @@ void Battle::checkEndBattle(int& currentBattleState, int& currentState, std::vec
 	else
 	{
 		newTurn();
-		currentBattleState = 0;
+		nextBattleState = 0;
 	}
 }
 
@@ -1549,7 +1628,7 @@ void Battle::newTurn()
 
 //************ DRAWING ***************
 
-void Battle::drawAll(sf::RenderWindow& win, int currentBattleState)
+void Battle::drawAll(sf::RenderWindow& win, int nextBattleState)
 {
 	std::cout << "drawAll\n";
 
@@ -1583,7 +1662,7 @@ void Battle::drawAll(sf::RenderWindow& win, int currentBattleState)
 
 	battleOverlay.drawAll(win);
 
-	if(currentBattleState == 2)
+	if(nextBattleState == 2)
 	{
 		for(int i = 0; i < allyOptions.size(); i++)
 		{
@@ -1618,12 +1697,68 @@ int Battle::getMaxNum(int numOne, int numTwo)
 	}
 }
 
-bool Battle::mouseNotClicked()
+void Battle::showCharacterInfo(sf::RenderWindow& win)
 {
-	if (!sf::Mouse::isButtonPressed(sf::Mouse::Left))
+	for(int i = 0; i < 6; i++)
 	{
-		mouseNotClicked = true;
-		return true;
+		for(int j = 0; j < ally.size(); j++)
+		{
+			bool allyCond = ally[j]->getAlive() && ally[j]->getBattlePos() == i;
+			if(chooseAlly[i]->mouseInButton(win) && allyCond)
+			{
+				battleOverlay.showCurrentCharDesc(*ally[j]);
+				return;
+			}
+		}
+		for(int j = 0; j < enemy.size(); j++)
+		{
+			bool enemCond = enemy[j]->getAlive() && enemy[j]->getBattlePos() == i;
+			if(chooseEnemy[i]->mouseInButton(win) && enemCond)
+			{
+				battleOverlay.showCurrentCharDesc(*enemy[j]);
+				return;
+			}
+		}
 	}
-	return false;
+
+	battleOverlay.showCurrentCharDesc();
+}
+
+void Battle::delayState(int& currentBattleState, int nextBattleState)
+{
+	int milliDelay = 0;
+
+	switch(nextBattleState)
+	{
+		case 0:
+			milliDelay = 100;
+			break;
+		case 2:
+			milliDelay = 50;
+			break;
+		case 3:
+			milliDelay = 50;
+			break;
+		case 6:
+			milliDelay = 100;
+			break;
+		case 8:
+			milliDelay = 100;
+			break;
+	}
+	tme = clk.getElapsedTime();
+
+	if(!lastTimeSet)
+	{
+		lastTimeSet = true;
+		lastTime = tme.asMilliseconds();
+	}
+
+	currentTime = tme.asMilliseconds();
+
+	if(lastTime + milliDelay < currentTime)
+	{
+		currentBattleState = nextBattleState;
+		lastTimeSet = false;
+	}
 }

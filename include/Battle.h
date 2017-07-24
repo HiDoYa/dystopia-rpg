@@ -19,6 +19,7 @@ class Battle
 		//TODO Update battle log
 
 		//Ally options
+		sf::Color gridDefault;
 		sf::Color allyOptionSelect;
 		sf::Color allyOptionDeselect;
 		std::vector<std::shared_ptr<ClickButton>> allyOptions; //Stores actual option shapes
@@ -35,10 +36,12 @@ class Battle
 		sf::Time tme;
 		float currentTime;
 		float lastTime;
+		bool lastTimeSet;
 
 		//For animation
 		int attackXDisp;
 		int goalPlace;
+		int oldBattlePos;
 
 		//Flags
 		bool animComplete;
@@ -46,12 +49,11 @@ class Battle
 		bool singularEnemyFocus;
 		bool multAllyFocus;
 		bool multEnemyFocus;
-		bool mouseNotClicked;
 
 		int currentSkillCheck; //To iterate through skills to check for effects
-		int currentTarget;
 		
 		//Only stores singular targets
+		//TODO These can be stored in a single variable
 		int currentEnemySelected;
 		int currentAllySelected;
 		
@@ -90,6 +92,7 @@ class Battle
 		void findSingularFocus();
 		bool changeAllyFocus(sf::RenderWindow&);
 		bool changeEnemyFocus(sf::RenderWindow&);
+		void resetGrid();
 
 		//Battle state 4
 		void enemyDecision(int&);
@@ -117,6 +120,7 @@ class Battle
 
 		void allyItem();
 		bool allyChangePos(sf::RenderWindow& win);
+		bool changePosAnimation();
 		void allyAttemptFlee(int&);
 
 		void enemyTurnHandle(int&);
@@ -128,6 +132,10 @@ class Battle
 		void hpAnimate(int&);
 		void allyHpChange();
 		void enemyHpChange();
+		//TODO Generic buff, debuff, attack, heal animations
+		//TODO For enemies, simply filp the textures
+		void allySkillAnimate();
+		void enemySkillAnimate();
 		void checkForCompletion(int&);
 
 		//Battle state 8
@@ -147,7 +155,8 @@ class Battle
 
 		//Utility
 		int getMaxNum(int, int);
-		bool mouseNotClicked();
+		void showCharacterInfo(sf::RenderWindow&);
+		void delayState(int&, int);
 };
 
 #endif

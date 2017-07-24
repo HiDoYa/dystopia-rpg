@@ -187,16 +187,11 @@ bool Map::newMap(MapPlayer& player, int& zone, int& map)
 	return false;
 }
 
-void Map::newMapCheck(MapPlayer& player, int& startPosX, int& startPosY, int& currentZone, int& currentMap, bool& mapLoaded, int& encounterRate)
+void Map::newMapCheck(MapPlayer& player, int& currentZone, int& currentMap, bool& mapLoaded)
 {
 	if(newMap(player, currentZone, currentMap))
 	{
 		mapLoaded = false;
-
-		//TODO Get correct numbers via fstream
-		encounterRate = 5;
-		startPosX = 256;
-		startPosY = 256;
 	}
 }
 

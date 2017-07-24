@@ -1,10 +1,10 @@
-EncRate 10
+EncRate 5
 EnemList enemyList0
 
 PrevZM 0 1
 NewPos 5 10
 
-Npc 0
+Npc CondFalse 0
 	Image images/npc/test3.png
 	ImagePos 0 0 64
 	Pos 3 2
@@ -12,7 +12,7 @@ Npc 0
 
 	Start CondTrue 1
 	Text Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-	SetCondFalse 1
+	Give Ally 1
 
 	Start CondFalse 0
 	Text This is different text get scammed
@@ -21,7 +21,7 @@ Npc 0
 	Start CondTrue 1
 	Text Lorem ipusm harhar
 
-Npc 1
+Npc CondFalse 0
 	Image images/npc/test4.png
 	ImagePos 0 0 64
 	Pos 3 8
@@ -31,12 +31,12 @@ Npc 1
 	Text Is this possible?
 	Choice This is some choice question
 	ChoiceOne Check
-	*SetCondTrue 4
-	*Text You picked choice one.
+		*SetCondTrue 4
+		*Text You picked choice one.
 	ChoiceTwo Don't Check
-	*Text You picked choice two.
+		*Text You picked choice two.
 
-Npc 2
+Npc CondTrue 0
 	Image images/npc/test4.png
 	ImagePos 0 0 64
 	Pos 3 4

@@ -13,17 +13,26 @@ BattleOverlay::BattleOverlay()
 	currentCharDesc.setFont(font);
 	damageNumbers.setFont(font);
 
-	battleLog.setCharacterSize(15);
 	currentCharDesc.setCharacterSize(15);
 	damageNumbers.setCharacterSize(15);
 
+	//Current char
+
+	//Battle log
+	battleLog.setCharacterSize(15);
 	battleLog.setPosition(sf::Vector2f(100, 600));
 	currentCharDesc.setPosition(sf::Vector2f(100, 200));
 
 	battleLog.setColor(sf::Color::Black);
 }
 
+//Clear the current char description
 void BattleOverlay::showCurrentCharDesc()
+{
+}
+
+//Show the character's description
+void BattleOverlay::showCurrentCharDesc(Character chr)
 {
 }
 

@@ -11,6 +11,8 @@ class StatBar
 
 		//0 is above, 1 is below, 2 is inside
 		int labelPos;
+
+		bool labelBool;
 		
 		sf::Font font;
 		sf::Text label;
@@ -19,6 +21,7 @@ class StatBar
 		sf::RectangleShape maxRect;
 	public:
 		StatBar();
+		void setLabelBool(bool);
 		void setLabelPos(int);
 		void setLabelSize(int);
 		sf::RectangleShape* getCurrentRect();
