@@ -1617,3 +1617,13 @@ int Battle::getMaxNum(int numOne, int numTwo)
 		}
 	}
 }
+
+bool Battle::mouseNotClicked()
+{
+	if (!sf::Mouse::isButtonPressed(sf::Mouse::Left))
+	{
+		mouseNotClicked = true;
+		return true;
+	}
+	return false;
+}

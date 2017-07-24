@@ -15,6 +15,8 @@ class Battle
 	private:
 		BattleOverlay battleOverlay;
 		//TODO Keep "skills" in file for enemy, file for ally. When accessing skill, only use the number (id number associated with skill)
+		//TODO Wait for click before continuing in certain areas
+		//TODO Update battle log
 
 		//Ally options
 		sf::Color allyOptionSelect;
@@ -44,6 +46,7 @@ class Battle
 		bool singularEnemyFocus;
 		bool multAllyFocus;
 		bool multEnemyFocus;
+		bool mouseNotClicked;
 
 		int currentSkillCheck; //To iterate through skills to check for effects
 		int currentTarget;
@@ -144,6 +147,7 @@ class Battle
 
 		//Utility
 		int getMaxNum(int, int);
+		bool mouseNotClicked();
 };
 
 #endif
