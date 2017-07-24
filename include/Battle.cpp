@@ -30,7 +30,6 @@ Battle::Battle()
 		   sf::Vector2f(650, 400),
 		   sf::Vector2f(650, 600),
 		   sf::Vector2f(850, 200),
-		   sf::Vector2f(850, 200),
 		   sf::Vector2f(850, 400),
 		   sf::Vector2f(850, 600)};
 
@@ -43,48 +42,64 @@ Battle::Battle()
 		    sf::Vector2f(350, 600)};
 
 	//Options positions
-	optionsPos = {sf::Vector2f(-100, -100),
-		      sf::Vector2f(-100, 0),
-		      sf::Vector2f(-100, 100),
-		      sf::Vector2f(100, -100),
-		      sf::Vector2f(100, 0),
-		      sf::Vector2f(100, 100)};
+	std::vector<sf::Vector2f> optionsPos;
+	optionsPos = {sf::Vector2f(100, 20),
+		      sf::Vector2f(200, 20),
+		      sf::Vector2f(300, 20),
+		      sf::Vector2f(400, 20),
+		      sf::Vector2f(500, 20),
+		      sf::Vector2f(600, 20)};
 
 	//Creates 6 circles for skills
 	for(int i = 0; i < 6; i++)
 	{
 		std::shared_ptr<ClickButton> tempPtr (new ClickButton(1));
+
 		tempPtr->getCirc()->setRadius(30);
+		tempPtr->setHoverText(true);
+		tempPtr->getHoverText()->setCharacterSize(10);
+		tempPtr->getHoverText()->setColor(sf::Color::Black);
+		tempPtr->getCirc()->setPosition(optionsPos[i]);
+		tempPtr->getHoverText()->setPosition(optionsPos[i].x - 10, optionsPos[i].y + 70);
+
 		allyOptions.push_back(tempPtr);
 	}
 
+	allyOptions[3]->getHoverText()->setString("Items");
+	allyOptions[4]->getHoverText()->setString("Move");
+	allyOptions[5]->getHoverText()->setString("Run");
+
 	for(int i = 0; i < 6; i++)
 	{
 		std::shared_ptr<ClickButton> tempPtr (new ClickButton);
+		tempPtr->getRect()->setOutlineColor(sf::Color::Black);
+		tempPtr->getRect()->setOutlineThickness(2);
 		chooseAlly.push_back(tempPtr);
-		chooseAlly[i]->getRect()->setSize(sf::Vector2f(100, 100));
+		chooseAlly[i]->getRect()->setSize(sf::Vector2f(150, 150));
 	}
 
-	chooseAlly[0]->getRect()->setPosition(sf::Vector2f(550, 100));
-	chooseAlly[1]->getRect()->setPosition(sf::Vector2f(550, 300));
-	chooseAlly[2]->getRect()->setPosition(sf::Vector2f(550, 500));
-	chooseAlly[3]->getRect()->setPosition(sf::Vector2f(750, 100));
-	chooseAlly[4]->getRect()->setPosition(sf::Vector2f(750, 300));
-	chooseAlly[5]->getRect()->setPosition(sf::Vector2f(750, 500));
+	chooseAlly[0]->getRect()->setPosition(sf::Vector2f(624, 120));
+	chooseAlly[1]->getRect()->setPosition(sf::Vector2f(624, 270));
+	chooseAlly[2]->getRect()->setPosition(sf::Vector2f(624, 420));
+	chooseAlly[3]->getRect()->setPosition(sf::Vector2f(824, 120));
+	chooseAlly[4]->getRect()->setPosition(sf::Vector2f(824, 270));
+	chooseAlly[5]->getRect()->setPosition(sf::Vector2f(824, 420));
 
 	for(int i = 0; i < 6; i++)
 	{
 		std::shared_ptr<ClickButton> tempPtr (new ClickButton);
+		tempPtr->getRect()->setOutlineColor(sf::Color::Black);
+		tempPtr->getRect()->setOutlineThickness(2);
 		chooseEnemy.push_back(tempPtr);
-		chooseEnemy[i]->getRect()->setSize(sf::Vector2f(100, 100));
+		chooseEnemy[i]->getRect()->setSize(sf::Vector2f(150, 150));
 	}
 
-	chooseEnemy[0]->getRect()->setPosition(sf::Vector2f(50, 100));
-	chooseEnemy[1]->getRect()->setPosition(sf::Vector2f(50, 300));
-	chooseEnemy[2]->getRect()->setPosition(sf::Vector2f(50, 500));
-	chooseEnemy[3]->getRect()->setPosition(sf::Vector2f(250, 100));
-	chooseEnemy[4]->getRect()->setPosition(sf::Vector2f(250, 300));
-	chooseEnemy[5]->getRect()->setPosition(sf::Vector2f(250, 500));
+	chooseEnemy[0]->getRect()->setPosition(sf::Vector2f(50, 120));
+	chooseEnemy[1]->getRect()->setPosition(sf::Vector2f(50, 270));
+	chooseEnemy[2]->getRect()->setPosition(sf::Vector2f(50, 420));
+	chooseEnemy[3]->getRect()->setPosition(sf::Vector2f(250, 120));
+	chooseEnemy[4]->getRect()->setPosition(sf::Vector2f(250, 270));
+	chooseEnemy[5]->getRect()->setPosition(sf::Vector2f(250, 420));
 
 	//Seeding
 	srand(time(NULL));
@@ -221,6 +236,8 @@ void Battle::findFastestChar(int& currentBattleState)
 	{
 		ally[nextCharCounter]->setCanAtk(false);
 
+		setSkillNames();
+
 		//Current state is done
 		currentBattleState = 1;
 	}
@@ -237,7 +254,7 @@ void Battle::setSkillNames()
 {
 	for(int i = 0; i < 3; i++)
 	{
-		std::string skillName = skillList[ally[nextCharCounter]->getSkillNum()[i]];
+		std::string skillName = skillList[ally[nextCharCounter]->getSkillNum()[i]]->getName();
 		allyOptions[i]->getHoverText()->setString(skillName);
 	}
 }
@@ -402,7 +419,6 @@ void Battle::enemyStatusEffect()
 void Battle::allySkillChoiceHandler(int& currentBattleState, sf::RenderWindow& win)
 {
 	std::cout << "allySkillChoiceHandler\n";
-	setCirclePos();
 
 	for(int i = 0; i < allyOptions.size(); i++)
 	{
@@ -419,15 +435,6 @@ void Battle::allySkillChoiceHandler(int& currentBattleState, sf::RenderWindow& w
 				currentBattleState = 6;
 			}
 		}
-	}
-}
-
-void Battle::setCirclePos()
-{
-	std::cout << "setCirclePos\n";
-	for(int i = 0; i < allyOptions.size(); i++)
-	{
-		allyOptions[i]->getCirc()->setPosition(optionsPos[i] + allyPos[nextCharCounter]);
 	}
 }
 
@@ -626,9 +633,12 @@ void Battle::enemyChooseEnemy()
 			}
 		}
 	}
+
 	//If there are allies in the front row, there is a 2/3 chance of the ally being selected from the front and 1/3 chance of the ally being selected from the back
 	if(allyInFront.size() > 0 && allyInBack.size() > 0)
 	{
+	std::cout << allyInFront[0] << '\n';
+	std::cout << allyInBack[0] << '\n';
 		if((rand() % 3) <= 1)
 		{
 			currentEnemySelected = allyInFront[rand() % allyInFront.size()];
@@ -761,7 +771,7 @@ int Battle::processSkillTargetting()
 	}
 	else if(nextCharType == 1)
 	{
-		skillNum = enemy[nextCharCounter]->getSkillNum()[currentOptionAlly];
+		skillNum = enemy[nextCharCounter]->getSkillNum()[currentOptionEnemy];
 	}
 	
 	targetType = findNextTarget(skillNum);
@@ -1571,6 +1581,8 @@ void Battle::drawAll(sf::RenderWindow& win, int currentBattleState)
 		}
 	}
 
+	battleOverlay.drawAll(win);
+
 	if(currentBattleState == 2)
 	{
 		for(int i = 0; i < allyOptions.size(); i++)
@@ -1578,8 +1590,6 @@ void Battle::drawAll(sf::RenderWindow& win, int currentBattleState)
 			allyOptions[i]->drawAll(win);
 		}
 	}
-
-	battleOverlay.drawAll(win);
 }
 
 //*************** UTILITY *******************

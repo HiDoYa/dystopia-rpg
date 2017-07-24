@@ -62,7 +62,6 @@ class Battle
 		//Grid battle
 		std::vector<sf::Vector2f> allyPos;
 		std::vector<sf::Vector2f> enemyPos;
-		std::vector<sf::Vector2f> optionsPos;
 	public:
 		Battle();
 
@@ -72,6 +71,7 @@ class Battle
 
 		//Battle state 0
 		void findFastestChar(int&);
+		void setSkillNames();
 
 		//Battle state 1
 		void statusHandle(int&);
@@ -81,7 +81,6 @@ class Battle
 		
 		//Battle state 2
 		void allySkillChoiceHandler(int&, sf::RenderWindow&);
-		void setCirclePos();
 
 		//Battle state 3
 		void allyChooseFocus(int&, sf::RenderWindow&);
