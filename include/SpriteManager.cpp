@@ -39,6 +39,11 @@ sf::Sprite* SpriteManager::getSprite()
 	return &sprite;
 }
 
+sf::Texture* SpriteManager::getTexture()
+{
+	return &texture;
+}
+
 sf::Vector2f SpriteManager::getPosition()
 {
 	return sprite.getPosition();

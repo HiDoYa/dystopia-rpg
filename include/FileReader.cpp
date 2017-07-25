@@ -368,6 +368,7 @@ void FileReader::loadMapEnemies(std::vector<std::shared_ptr<Character>>& enemyLi
 			std::shared_ptr<Character> tempPtr (new Character);
 			enemyListStore.push_back(tempPtr);
 			enemyListStore[tempCounter]->setAlive(true);
+			enemyListStore[tempCounter]->setCanAtk(true);
 			//Get rid of the extra number
 			enemyFile >> strInp;
 		}

@@ -22,6 +22,7 @@ class SpriteManager
 
 		//Accessors
 		sf::Sprite* getSprite();
+		sf::Texture* getTexture();
 		sf::Vector2f getPosition();
 
 		//Etc

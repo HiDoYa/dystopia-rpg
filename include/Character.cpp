@@ -151,6 +151,16 @@ void Character::setChance(int inp)
 	chance = inp;
 }
 
+void Character::setDropItemId(std::vector<int> inp)
+{
+	dropItemId = inp;
+}
+
+void Character::setDropItemChance(std::vector<int> inp)
+{
+	dropItemChance = inp;
+}
+
 void Character::pushDropItemId(int inp)
 {
 	dropItemId.push_back(inp);
@@ -163,11 +173,19 @@ void Character::pushDropItemChance(int inp)
 
 void Character::setHpFinal(int inp)
 {
+	if(inp < 0)
+	{
+		inp = 0;
+	}
 	hpFinal = inp;
 }
 
 void Character::setManaFinal(int inp)
 {
+	if(inp < 0)
+	{
+		inp = 0;
+	}
 	manaFinal = inp;
 }
 //********* ACCESSORS ***********
@@ -314,4 +332,37 @@ void Character::levelUp()
 		currentExp -= requiredExp;
 		setRequiredExp();
 	}
+}
+
+void Character::copy(std::shared_ptr<Character> other)
+{
+	other->setLevel(getLevel());
+	other->setName(getName());
+	other->setCurrentHp(getCurrentHp());
+	other->setMaxHp(getMaxHp());
+	other->setCurrentMana(getCurrentMana());
+	other->setMaxMana(getMaxMana());
+	other->setStrength(getStrength());
+	other->setDefense(getDefense());
+	other->setAgility(getAgility());
+	other->setSkillNum(getSkillNum());
+	other->setPossibleSkillNum(getPossibleSkillNum());
+	other->setPersistentSkillNum(getPersistentSkillNum());
+	other->setNumTurnsSkill(getNumTurnsSkill());
+	other->setAlive(getAlive());
+	other->setCanAtk(getCanAtk());
+	other->setBattlePos(getBattlePos());
+	other->setCurrentExp(getCurrentExp());
+	other->setRequiredExp();
+	other->setChance(getChance());
+	other->setDropItemId(getDropItemId());
+	other->setDropItemChance(getDropItemChance());
+	other->setHpFinal(getHpFinal());
+	other->setManaFinal(getManaFinal());
+
+	*other->getTexture() = *getTexture();
+	other->getSprite()->setTexture(*getTexture());
+	other->getSprite()->setTextureRect(getSprite()->getTextureRect());
+	other->getSprite()->setScale(getSprite()->getScale());
+	other->getSprite()->setPosition(getSprite()->getPosition());
 }

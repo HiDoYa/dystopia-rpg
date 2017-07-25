@@ -132,7 +132,9 @@ void Battle::setupBattle(std::vector<std::shared_ptr<Character>> enemyList,
 
 	for(int i = 0; i < allyInParty.size(); i++)
 	{
-		ally.push_back(allyList[allyInParty[i]]);
+		std::shared_ptr<Character> tempPtr (new Character);
+		allyList[allyInParty[i]]->copy(tempPtr);
+		ally.push_back(tempPtr);
 	}
 
 	//BATTLEPOS MUST BE SET DIFFERENTLY AT DEFAULT WHEN ALLIES ARE ADDED TO PARTY
@@ -162,7 +164,9 @@ void Battle::setupBattle(std::vector<std::shared_ptr<Character>> enemyList,
 		}
 
 		//Adds enemy
-		enemy.push_back(enemyList[index]);
+		std::shared_ptr<Character> tempPtr (new Character);
+		enemyList[index]->copy(tempPtr);
+		enemy.push_back(tempPtr);
 
 		//TODO random set position
 		bool foundRand;
@@ -906,6 +910,8 @@ void Battle::allySkillCalcHealth()
 
 		int targetHpFinal = skillList[skillNum]->healthChangeHandle(allyStrength, 0, targetHp, currentSkillCheck);
 		ally[currentAllySelected]->setHpFinal(targetHpFinal);
+
+		battleOverlay.healedLog(ally[nextCharCounter]->getName(), ally[currentAllySelected]->getName(), targetHpFinal - targetHp);
 	}
 	else if(singularEnemyFocus)
 	{
@@ -915,9 +921,13 @@ void Battle::allySkillCalcHealth()
 
 		int targetHpFinal = skillList[skillNum]->healthChangeHandle(allyStrength, targetDef, targetHp, currentSkillCheck);
 		enemy[currentEnemySelected]->setHpFinal(targetHpFinal);
+
+		battleOverlay.attackedLog(ally[nextCharCounter]->getName(), enemy[currentEnemySelected]->getName(), targetHp - targetHpFinal);
 	}
 	else if(multAllyFocus)
 	{
+		battleOverlay.healedLog(ally[nextCharCounter]->getName(), "all allies");
+
 		for(int i = 0; i < ally.size(); i++)
 		{
 			if(ally[i]->getAlive())
@@ -932,6 +942,8 @@ void Battle::allySkillCalcHealth()
 	}
 	else if(multEnemyFocus)
 	{
+		battleOverlay.attackedLog(ally[nextCharCounter]->getName(), "all enemies");
+
 		for(int i = 0; i < enemy.size(); i++)
 		{
 			if(enemy[i]->getAlive())
@@ -971,6 +983,8 @@ void Battle::allySkillCalcStat()
 			int targetDef = ally[currentAllySelected]->getDefense();
 			int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
 			ally[currentAllySelected]->setStrength(targetStatFinal);
+
+			battleOverlay.buffedLog(ally[nextCharCounter]->getName(), ally[currentAllySelected]->getName(), "strength", targetStatFinal - targetStat);
 		}
 		else if(statType == 1)
 		{
@@ -979,6 +993,8 @@ void Battle::allySkillCalcStat()
 			int targetDef = ally[currentAllySelected]->getDefense();
 			int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
 			ally[currentAllySelected]->setDefense(targetStatFinal);
+
+			battleOverlay.buffedLog(ally[nextCharCounter]->getName(), ally[currentAllySelected]->getName(), "defense", targetStatFinal - targetStat);
 		}
 		else if(statType == 2)
 		{
@@ -987,6 +1003,8 @@ void Battle::allySkillCalcStat()
 			int targetDef = ally[currentAllySelected]->getDefense();
 			int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
 			ally[currentAllySelected]->setAgility(targetStatFinal);
+
+			battleOverlay.buffedLog(ally[nextCharCounter]->getName(), ally[currentAllySelected]->getName(), "agility", targetStatFinal - targetStat);
 		}
 	}
 	else if(singularEnemyFocus)
@@ -998,6 +1016,8 @@ void Battle::allySkillCalcStat()
 			int targetDef = enemy[currentEnemySelected]->getDefense();
 			int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
 			enemy[currentEnemySelected]->setStrength(targetStatFinal);
+
+			battleOverlay.debuffedLog(ally[nextCharCounter]->getName(), enemy[currentEnemySelected]->getName(), "strength", targetStat - targetStatFinal);
 		}
 		else if(statType == 1)
 		{
@@ -1006,6 +1026,8 @@ void Battle::allySkillCalcStat()
 			int targetDef = enemy[currentEnemySelected]->getDefense();
 			int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
 			enemy[currentEnemySelected]->setDefense(targetStatFinal);
+
+			battleOverlay.debuffedLog(ally[nextCharCounter]->getName(), enemy[currentEnemySelected]->getName(), "defense", targetStat - targetStatFinal);
 		}
 		else if(statType == 2)
 		{
@@ -1014,6 +1036,8 @@ void Battle::allySkillCalcStat()
 			int targetDef = enemy[currentEnemySelected]->getDefense();
 			int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
 			enemy[currentEnemySelected]->setAgility(targetStatFinal);
+
+			battleOverlay.debuffedLog(ally[nextCharCounter]->getName(), enemy[currentEnemySelected]->getName(), "agility", targetStat - targetStatFinal);
 		}
 	}
 	else if(multAllyFocus)
@@ -1029,6 +1053,8 @@ void Battle::allySkillCalcStat()
 					int targetDef = ally[i]->getDefense();
 					int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
 					ally[i]->setStrength(targetStatFinal);
+
+					battleOverlay.buffedLog(ally[nextCharCounter]->getName(), "all allies", "strength");
 				}
 				else if(statType == 1)
 				{
@@ -1037,6 +1063,8 @@ void Battle::allySkillCalcStat()
 					int targetDef = ally[i]->getDefense();
 					int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
 					ally[i]->setDefense(targetStatFinal);
+
+					battleOverlay.buffedLog(ally[nextCharCounter]->getName(), "all allies", "defense");
 				}
 				else if(statType == 2)
 				{
@@ -1045,6 +1073,8 @@ void Battle::allySkillCalcStat()
 					int targetDef = ally[i]->getDefense();
 					int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
 					ally[i]->setAgility(targetStatFinal);
+
+					battleOverlay.buffedLog(ally[nextCharCounter]->getName(), "all allies", "agility");
 				}
 			}
 		}
@@ -1062,6 +1092,8 @@ void Battle::allySkillCalcStat()
 					int targetDef = enemy[i]->getDefense();
 					int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
 					enemy[i]->setStrength(targetStatFinal);
+
+					battleOverlay.debuffedLog(ally[nextCharCounter]->getName(), "all enemies", "strength");
 				}
 				else if(statType == 1)
 				{
@@ -1070,6 +1102,8 @@ void Battle::allySkillCalcStat()
 					int targetDef = enemy[i]->getDefense();
 					int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
 					enemy[i]->setDefense(targetStatFinal);
+
+					battleOverlay.debuffedLog(ally[nextCharCounter]->getName(), "all enemies", "defense");
 				}
 				else if(statType == 2)
 				{
@@ -1078,6 +1112,8 @@ void Battle::allySkillCalcStat()
 					int targetDef = enemy[i]->getDefense();
 					int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
 					enemy[i]->setAgility(targetStatFinal);
+
+					battleOverlay.debuffedLog(ally[nextCharCounter]->getName(), "all enemies", "agility");
 				}
 			}
 		}
@@ -1211,6 +1247,8 @@ void Battle::enemySkillCalcHealth()
 
 		int targetHpFinal = skillList[skillNum]->healthChangeHandle(allyStrength, 0, targetHp, currentSkillCheck);
 		enemy[currentAllySelected]->setHpFinal(targetHpFinal);
+
+		battleOverlay.healedLog(enemy[nextCharCounter]->getName(), enemy[currentAllySelected]->getName(), targetHpFinal - targetHp);
 	}
 	else if(singularEnemyFocus)
 	{
@@ -1220,9 +1258,13 @@ void Battle::enemySkillCalcHealth()
 
 		int targetHpFinal = skillList[skillNum]->healthChangeHandle(allyStrength, targetDef, targetHp, currentSkillCheck);
 		ally[currentEnemySelected]->setHpFinal(targetHpFinal);
+
+		battleOverlay.attackedLog(enemy[nextCharCounter]->getName(), ally[currentEnemySelected]->getName(), targetHp - targetHpFinal);
 	}
 	else if(multAllyFocus)
 	{
+		battleOverlay.healedLog(enemy[nextCharCounter]->getName(), "all enemies");
+
 		for(int i = 0; i < enemy.size(); i++)
 		{
 			if(enemy[i]->getAlive())
@@ -1237,6 +1279,8 @@ void Battle::enemySkillCalcHealth()
 	}
 	else if(multEnemyFocus)
 	{
+		battleOverlay.attackedLog(enemy[nextCharCounter]->getName(), "all allies");
+
 		for(int i = 0; i < ally.size(); i++)
 		{
 			if(ally[i]->getAlive())
@@ -1310,7 +1354,7 @@ void Battle::enemySkillCalcStat()
 			int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
 			ally[currentEnemySelected]->setStrength(targetStatFinal);
 
-			battleOverlay.debuffedLog(enemy[nextCharCounter]->getName(), ally[currentEnemySelected]->getName(), "strength", targetStatFinal - targetStat);
+			battleOverlay.debuffedLog(enemy[nextCharCounter]->getName(), ally[currentEnemySelected]->getName(), "strength", targetStat - targetStatFinal);
 		}
 		else if(statType == 1)
 		{
@@ -1320,7 +1364,7 @@ void Battle::enemySkillCalcStat()
 			int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
 			ally[currentEnemySelected]->setDefense(targetStatFinal);
 
-			battleOverlay.debuffedLog(enemy[nextCharCounter]->getName(), ally[currentEnemySelected]->getName(), "strength", targetStatFinal - targetStat);
+			battleOverlay.debuffedLog(enemy[nextCharCounter]->getName(), ally[currentEnemySelected]->getName(), "defense", targetStat - targetStatFinal);
 		}
 		else if(statType == 2)
 		{
@@ -1330,7 +1374,7 @@ void Battle::enemySkillCalcStat()
 			int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
 			ally[currentEnemySelected]->setAgility(targetStatFinal);
 
-			battleOverlay.debuffedLog(enemy[nextCharCounter]->getName(), ally[currentEnemySelected]->getName(), "strength", targetStatFinal - targetStat);
+			battleOverlay.debuffedLog(enemy[nextCharCounter]->getName(), ally[currentEnemySelected]->getName(), "agility", targetStat - targetStatFinal);
 		}
 	}
 	else if(multAllyFocus)
@@ -1346,6 +1390,8 @@ void Battle::enemySkillCalcStat()
 					int targetDef = enemy[i]->getDefense();
 					int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
 					enemy[i]->setStrength(targetStatFinal);
+
+					battleOverlay.buffedLog(enemy[nextCharCounter]->getName(), "all enemies", "strength");
 				}
 				else if(statType == 1)
 				{
@@ -1354,6 +1400,8 @@ void Battle::enemySkillCalcStat()
 					int targetDef = enemy[i]->getDefense();
 					int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
 					enemy[i]->setDefense(targetStatFinal);
+
+					battleOverlay.buffedLog(enemy[nextCharCounter]->getName(), "all enemies", "defense");
 				}
 				else if(statType == 2)
 				{
@@ -1362,6 +1410,8 @@ void Battle::enemySkillCalcStat()
 					int targetDef = enemy[i]->getDefense();
 					int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
 					enemy[i]->setAgility(targetStatFinal);
+
+					battleOverlay.buffedLog(enemy[nextCharCounter]->getName(), "all enemies", "agility");
 				}
 			}
 		}
@@ -1379,6 +1429,8 @@ void Battle::enemySkillCalcStat()
 					int targetDef = ally[i]->getDefense();
 					int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
 					ally[i]->setStrength(targetStatFinal);
+
+					battleOverlay.debuffedLog(enemy[nextCharCounter]->getName(), "all allies", "strength");
 				}
 				else if(statType == 1)
 				{
@@ -1387,6 +1439,8 @@ void Battle::enemySkillCalcStat()
 					int targetDef = ally[i]->getDefense();
 					int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
 					ally[i]->setDefense(targetStatFinal);
+
+					battleOverlay.debuffedLog(enemy[nextCharCounter]->getName(), "all allies", "defense");
 				}
 				else if(statType == 2)
 				{
@@ -1395,6 +1449,8 @@ void Battle::enemySkillCalcStat()
 					int targetDef = ally[i]->getDefense();
 					int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
 					ally[i]->setAgility(targetStatFinal);
+
+					battleOverlay.debuffedLog(enemy[nextCharCounter]->getName(), "all allies", "agility");
 				}
 			}
 		}
@@ -1440,6 +1496,7 @@ void Battle::enemyHpChange()
 		{
 			int hpFinal = enemy[i]->getHpFinal();
 			int currentEnemyHp = enemy[i]->getCurrentHp();
+
 			if(hpFinal != currentEnemyHp)
 			{
 				int sign = findHpChangeSign(hpFinal, currentEnemyHp);

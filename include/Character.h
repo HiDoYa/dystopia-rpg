@@ -1,5 +1,6 @@
 #include "SpriteManager.h"
 #include "StatBar.h"
+#include <memory>
 
 #ifndef CHARACTER_H
 #define CHARACTER_H
@@ -41,6 +42,7 @@ class Character: public SpriteManager
 		//For allies
 		float currentExp;
 		float requiredExp;
+		//TODO Number determining the exp curve? (seed?)
 		
 		//For enemies
 		int chance;
@@ -75,6 +77,10 @@ class Character: public SpriteManager
 		void setRequiredExp();
 
 		void setChance(int);
+
+		void setDropItemId(std::vector<int>);
+		void setDropItemChance(std::vector<int>);
+
 		void pushDropItemId(int);
 		void pushDropItemChance(int);
 
@@ -90,11 +96,8 @@ class Character: public SpriteManager
 		int getMaxMana();
 
 		int getStrength();
-		int getCurrentStrength();
 		int getDefense();
-		int getCurrentDefense();
 		int getAgility();
-		int getCurrentAgility();
 
 		std::vector<int> getSkillNum();
 		std::vector<int> getPossibleSkillNum();
@@ -103,7 +106,6 @@ class Character: public SpriteManager
 
 		bool getAlive();
 		bool getCanAtk();
-		int getFinalHp();
 		int getBattlePos();
 
 		float getCurrentExp();
@@ -121,6 +123,7 @@ class Character: public SpriteManager
 		void statBarUpdate();
 		void drawBars(sf::RenderWindow&);
 		void levelUp();
+		void copy(std::shared_ptr<Character>);
 };
 
 #endif

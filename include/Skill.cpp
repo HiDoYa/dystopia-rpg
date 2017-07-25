@@ -328,7 +328,9 @@ int Skill::statChangeHandle(int posMult, int negMult, int percentMax, int type)
 int Skill::normCalc(int posMult, int negMult, int type)
 {
 	int val = 0;
-	int att = posMult + mult[type];
+	//Generates random number between 0.95 - 1.05 and uses it to multiple att
+	float randNum = (rand() % 10 + 95.0) / 100;
+	int att = (posMult + mult[type]) * randNum;
 	val = (att * att) / (negMult + att);
 
 	checkForMaxMin(val, type);
@@ -345,7 +347,8 @@ int Skill::normCalc(int posMult, int negMult, int type)
 int Skill::percentCalc(int posMult, int negMult, int percentMax, int type)
 {	
 	int val = 0;
-	int att = posMult + mult[type];
+	float randNum = (rand() % 10 + 95.0) / 100;
+	int att = (posMult + mult[type]) * randNum;
 	val = (att * att) / (100 * percentMax + att);
 
 	checkForMaxMin(val, type);

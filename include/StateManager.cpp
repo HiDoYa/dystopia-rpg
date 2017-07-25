@@ -212,6 +212,7 @@ void StateManager::loadBattle(sf::RenderWindow& win, sf::View& view)
 
 		battle->setupBattle(enemyListStore, ally, skillList, allyInParty);
 		nextBattleState = 0;
+		currentBattleState = 0;
 
 		//Set view
 		view.setCenter(sf::Vector2f(512, 384));
