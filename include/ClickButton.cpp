@@ -51,6 +51,11 @@ sf::Text* ClickButton::getText()
 	return &text;
 }
 
+sf::Texture* ClickButton::getTexture()
+{
+	return &texture;
+}
+
 sf::RectangleShape* ClickButton::getRect()
 {
 	return &rect;

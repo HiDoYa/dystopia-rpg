@@ -98,12 +98,12 @@ void CharacterCards::setupCard(Character chr, int indexInAlly, std::vector<int> 
 
 	//TODO Description for each character (fileReader)
 
-	str.setString("Strength:  " + std::to_string(chr.getStrength()));
-	def.setString("Defense:  " + std::to_string(chr.getDefense()));
+	str.setString("Technology:  " + std::to_string(chr.getStrength()));
+	def.setString("Durability:  " + std::to_string(chr.getDefense()));
 	agi.setString("Agility:  " + std::to_string(chr.getAgility()));
 	
 	hp.setStats(chr.getCurrentHp(), chr.getMaxHp(), "Health");
-	mana.setStats(chr.getCurrentMana(), chr.getMaxMana(), "Mana");
+	mana.setStats(chr.getCurrentMana(), chr.getMaxMana(), "Energy");
 
 	//Checks whether the ally is already in the party
 	existInParty = false;

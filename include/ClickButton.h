@@ -35,6 +35,7 @@ class ClickButton
 		//TODO Create gradient overlay over texture (if hovered, skill button is greyed out a bit?)
 		sf::Text* getHoverText();
 		sf::Text* getText();
+		sf::Texture* getTexture();
 		sf::RectangleShape* getRect();
 		sf::CircleShape* getCirc();
 

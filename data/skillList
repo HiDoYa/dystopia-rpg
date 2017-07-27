@@ -7,12 +7,12 @@ Accuracy 95
 EnemyPrio 10
 Crit 15
 Ally 0 1 2
+PrimaryType Damage
 Type Damage
 	Target SingleEnemy
 	Percent false
 	Reapply 0
 	Mult 1.5
-	Max 150
 	Min 15
 
 Skill 1
@@ -22,13 +22,13 @@ Accuracy 95
 EnemyPrio 30
 Crit 0
 Ally 0 1 2
+PrimaryType Buff
 Type Buff
 	Target Self
 	BuffType Strength
 	Percent true
 	Reapply 3
 	Mult 2
-	Max 150
 	Min 15
 
 Skill 2
@@ -38,12 +38,12 @@ Accuracy 95
 EnemyPrio 10
 Crit 15
 Ally 0 1 2
+PrimaryType Damage
 Type Damage
 	Target SingleEnemy
 	Percent false
 	Reapply 0
 	Mult 2
-	Max 150
 	Min 15
 
 Skill 3
@@ -53,10 +53,10 @@ Accuracy 95
 EnemyPrio 10
 Crit 15
 Ally 0 1 2
+PrimaryType Damage
 Type Damage
 	Target SingleEnemy
 	Percent false
 	Reapply 0
 	Mult 2
-	Max 150
 	Min 15

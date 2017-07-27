@@ -127,6 +127,26 @@ void FileReader::loadSkill(std::vector<std::shared_ptr<Skill>>& skillList)
 			skillFile >> intInp;
 			skillList[skillCounter]->setPowerRating(intInp);
 		}
+		else if(strInp == "PrimaryType")
+		{
+			skillFile >> strInp;
+			if(strInp == "Damage")
+			{
+				skillList[skillCounter]->setPrimaryType(0);
+			}
+			else if(strInp == "Heal")
+			{
+				skillList[skillCounter]->setPrimaryType(1);
+			}
+			else if(strInp == "Debuff")
+			{
+				skillList[skillCounter]->setPrimaryType(2);
+			}
+			else if(strInp == "Buff")
+			{
+				skillList[skillCounter]->setPrimaryType(3);
+			}
+		}
 		else if(strInp == "Type")
 		{
 			skillFile >> strInp;

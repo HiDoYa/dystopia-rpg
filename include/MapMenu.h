@@ -32,7 +32,13 @@ class MapMenu
 		std::vector<int> charNumberGrid;
 		//The index number in ALLY (not allyinparty, not battlepos)
 		int currentToggle;
+
+		//To disallow click from instantly registering again
 		bool hasNotClicked;
+		sf::Clock clk;
+		sf::Time tme;
+		int lastTime;
+
 
 		//Save
 		//TODO Save in another "currentState"

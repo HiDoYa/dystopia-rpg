@@ -14,13 +14,14 @@ Skill::Skill()
 	missed = false;
 	buffType = -1;
 	debuffType = -1;
+	primaryType = -1;
 
 	for(int i = 0; i < 4; i++)
 	{
 		reapplyTurn.push_back(0);
 		oldVal.push_back(0);
 		mult.push_back(0);
-		max.push_back(0);
+		max.push_back(999999);
 		min.push_back(0);
 		percent.push_back(false);
 		target.push_back(-1);
@@ -99,6 +100,11 @@ void Skill::setBuffType(int inp)
 void Skill::setDebuffType(int inp)
 {
 	debuffType = inp;
+}
+
+void Skill::setPrimaryType(int inp)
+{
+	primaryType = inp;
 }
 
 void Skill::setPercent(int type, bool inp)
@@ -190,6 +196,11 @@ int Skill::getBuffType()
 int Skill::getDebuffType()
 {
 	return debuffType;
+}
+
+int Skill::getPrimaryType()
+{
+	return primaryType;
 }
 
 std::vector<bool> Skill::getPercent()

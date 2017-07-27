@@ -14,9 +14,6 @@ class Battle
 {
 	private:
 		BattleOverlay battleOverlay;
-		//TODO Keep "skills" in file for enemy, file for ally. When accessing skill, only use the number (id number associated with skill)
-		//TODO Wait for click before continuing in certain areas
-		//TODO Update battle log
 
 		//Ally options
 		sf::Color gridDefault;
@@ -24,10 +21,8 @@ class Battle
 		sf::Color allyOptionDeselect;
 		std::vector<std::shared_ptr<ClickButton>> allyOptions; //Stores actual option shapes
 
-		//TODO Draw grid (when there aren't buttons). Make it transparent
 		std::vector<std::shared_ptr<ClickButton>> chooseAlly;  //Grid for allies
 		std::vector<std::shared_ptr<ClickButton>> chooseEnemy; //Grid for enemies
-		int currentPlayerForOption;                //Stores which character to show the options around
 		int currentOption;                     //Stores the option chosen by ally
 
 		//Time management
@@ -46,15 +41,15 @@ class Battle
 		bool animComplete;
 		bool singularAllyFocus;
 		bool singularEnemyFocus;
+		bool selfFocus;
 		bool multAllyFocus;
 		bool multEnemyFocus;
 
-		int currentSkillCheck; //To iterate through skills to check for effects
+		//To iterate through skills to check for effects
+		int currentSkillCheck;
 		
 		//Only stores singular targets
-		//TODO These can be stored in a single variable
-		int currentEnemySelected;
-		int currentAllySelected;
+		int currentSelected;
 		
 		//Characters and skills
 		std::vector<std::shared_ptr<Character>> ally;
@@ -76,6 +71,7 @@ class Battle
 		//Battle state 0
 		void findFastestChar(int&);
 		void setSkillNames();
+		void setSkillIcons();
 
 		//Battle state 1
 		void statusHandle(int&);
@@ -111,21 +107,19 @@ class Battle
 		int findNextTarget(int);
 		int processSkillTargetting();
 
+		void skillCalc();
+		void skillCalcHealth(std::vector<std::shared_ptr<Character>>&, 
+				std::vector<std::shared_ptr<Character>>&);
+		void skillCalcStat(std::vector<std::shared_ptr<Character>>&, 
+				std::vector<std::shared_ptr<Character>>&);
+
 		bool allyTurnHandle(int&, sf::RenderWindow&);
-
-		void allySkillCalc();
-		void allySkillCalcHealth();
-		void allySkillCalcStat();
-
 		void allyItem();
 		bool allyChangePos(sf::RenderWindow& win);
 		bool changePosAnimation();
 		void allyAttemptFlee(int&);
 
 		void enemyTurnHandle(int&);
-		void enemySkillCalc();
-		void enemySkillCalcHealth();
-		void enemySkillCalcStat();
 
 		//Battle state 7
 		void hpAnimate(int&);

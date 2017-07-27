@@ -34,9 +34,12 @@ class Skill
 		//Accuracy, pierce, crit are percent based (out of 100)
 		
 		//Type is 0 for strength, 1 for defense, 2 for agility
-		//TODO CHange to vector (for multiple stat changes)
+		//TODO Change to vector (for multiple stat changes)
 		int buffType;
 		int debuffType;
+
+		//For graphical skill icon
+		int primaryType;
 
 		//Crit increases the magnitude of effect. Only applies for attacks
 		int crit;
@@ -70,6 +73,7 @@ class Skill
 		void setMin(int, int);
 		void setBuffType(int);
 		void setDebuffType(int);
+		void setPrimaryType(int);
 		void setPercent(int, bool);
 		void setCrit(int);
 		void setAccuracy(int);
@@ -91,6 +95,7 @@ class Skill
 		std::vector<int> getMin();
 		int getBuffType();
 		int getDebuffType();
+		int getPrimaryType();
 		std::vector<bool> getPercent();
 		int getCrit();
 		int getAccuracy();

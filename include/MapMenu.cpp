@@ -41,6 +41,7 @@ MapMenu::MapMenu()
 	}
 
 	currentToggle = -1;
+	lastTime = 0;
 	charNumberGrid = {-1, -1, -1, -1, -1, -1};
 }
 
@@ -181,8 +182,12 @@ void MapMenu::setupBattle(std::vector<std::shared_ptr<Character>>& ally, std::ve
 
 void MapMenu::checkForClicked()
 {
-	if(!sf::Mouse::isButtonPressed(sf::Mouse::Left))
+	tme = clk.getElapsedTime();
+	int currentTime = tme.asMilliseconds();
+
+	if(!sf::Mouse::isButtonPressed(sf::Mouse::Left) && currentTime > lastTime + 200)
 	{
+		lastTime = currentTime;
 		hasNotClicked = true;
 	}
 }
