@@ -5,7 +5,7 @@ PrevZM 0 1
 NewPos 5 10
 
 Npc CondFalse 0
-	Image images/npc/test3.png
+	Image images/npc/npcs.png
 	ImagePos 0 0 64
 	Pos 3 2
 	Name TestNpc
@@ -22,7 +22,7 @@ Npc CondFalse 0
 	Text Lorem ipusm harhar
 
 Npc CondFalse 0
-	Image images/npc/test4.png
+	Image images/npc/npcs.png
 	ImagePos 0 0 64
 	Pos 3 8
 	Name this is a test
@@ -36,8 +36,8 @@ Npc CondFalse 0
 	ChoiceTwo Don't Check
 		*Text You picked choice two.
 
-Npc CondTrue 0
-	Image images/npc/test4.png
+Npc CondFalse 0
+	Image images/npc/npcs.png
 	ImagePos 0 0 64
 	Pos 3 4
 	Name TestNpc

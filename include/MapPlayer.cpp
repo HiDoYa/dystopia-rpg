@@ -242,7 +242,7 @@ bool MapPlayer::collisionZones(int i, int j)
 			if(currentPlayerX - 1 == i)
 			{
 				canMoveLeft = false;
-				if(lastDirection == 3)
+				if(lastDirection == 2)
 				{
 					colliding = true;
 				}

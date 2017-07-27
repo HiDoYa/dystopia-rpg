@@ -52,8 +52,10 @@ class CharacterCards
 		void updatePosition(std::vector<std::shared_ptr<Character>>, sf::View);
 
 		//Setup
-		void setupCard(Character, int, std::vector<int>, std::vector<std::shared_ptr<Skill>>, std::vector<int>);
-		void checkForButton(std::vector<int>&, int&, bool&, sf::RenderWindow&);
+		void setupCard(Character, int, std::vector<int>, 
+				std::vector<std::shared_ptr<Skill>>, std::vector<int>);
+		void checkForButton(std::vector<int>&, std::vector<std::shared_ptr<Character>>&, 
+				int&, bool&, sf::RenderWindow&);
 		void checkForSkill(sf::RenderWindow&);
 
 		void drawAll(std::vector<std::shared_ptr<Character>>, sf::RenderWindow&);

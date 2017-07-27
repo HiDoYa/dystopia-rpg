@@ -142,6 +142,8 @@ void Battle::setupBattle(std::vector<std::shared_ptr<Character>> enemyList,
 	//TODO set battle position for allies in files
 	for(int i = 0; i < ally.size(); i++)
 	{
+		//Make sure scale is set to 1-1
+		ally[i]->setScale(1, 1);
 		int allyBattlePos = ally[i]->getBattlePos();
 		ally[i]->setPosition(allyPos[allyBattlePos].x, allyPos[allyBattlePos].y);
 	}

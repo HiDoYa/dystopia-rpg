@@ -22,7 +22,8 @@ class Npc: public SpriteManager, public Dialogue
 		Npc();
 		void npcExistCondition(int, bool);
 		bool npcExists(std::vector<bool>);
-		void speak(std::vector<bool>&, std::vector<int>&, std::vector<int>&, Textbox&, MapPlayer&, sf::RenderWindow&);
+		void speak(std::vector<bool>&, std::vector<int>&, std::vector<int>&, 
+				Textbox&, MapPlayer&, sf::RenderWindow&);
 		void giveToPlayer(std::vector<int>&, std::vector<int>&, int, int);
 		void ascendSort(std::vector<int>&);
 		void removeDup(std::vector<int>&);

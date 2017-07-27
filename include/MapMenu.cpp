@@ -19,6 +19,29 @@ MapMenu::MapMenu()
 	title.setFont(font);
 	title.setCharacterSize(25);
 	title.setColor(sf::Color::Black);
+
+	//Battle
+	selectedCol = sf::Color::Red;
+	deselectedCol = sf::Color::Black;
+	deselectedColW = sf::Color::White;
+
+	instructions.setFont(font);
+	instructions.setCharacterSize(10);
+	instructions.setColor(sf::Color::Black);
+	instructions.setString("Click a player and click on an empty grid to change the character's default starting position.");
+
+	for(int i = 0; i < 6; i++)
+	{
+		std::shared_ptr<ClickButton> tempPtr (new ClickButton);
+		tempPtr->getRect()->setSize(sf::Vector2f(200, 100));
+		tempPtr->getRect()->setFillColor(sf::Color::White);
+		tempPtr->getRect()->setOutlineColor(sf::Color::Black);
+		tempPtr->getRect()->setOutlineThickness(2);
+		grid.push_back(tempPtr);
+	}
+
+	currentToggle = -1;
+	charNumberGrid = {-1, -1, -1, -1, -1, -1};
 }
 
 void MapMenu::setTitle(int menuOption)
@@ -42,7 +65,7 @@ void MapMenu::setTitle(int menuOption)
 
 void MapMenu::checkForBackButton(int& currentState, sf::RenderWindow& win)
 {
-	if(backButton.mouseClickedInButton(sf::Color::Red, sf::Color::Black, win))
+	if(backButton.mouseClickedInButton(selectedCol, deselectedCol, win))
 	{
 		charSelected = false;
 		currentState = 1;
@@ -113,9 +136,9 @@ void MapMenu::checkForCharacterButton(std::vector<std::shared_ptr<Character>>& a
 	}
 }
 
-void MapMenu::checkForPartyButton(std::vector<int>& allyInParty, int& currentState, bool& mapMenuLoaded, sf::RenderWindow& win)
+void MapMenu::checkForPartyButton(std::vector<int>& allyInParty, std::vector<std::shared_ptr<Character>>& ally, int& currentState, bool& mapMenuLoaded, sf::RenderWindow& win)
 {
-	characterCard.checkForButton(allyInParty, currentState, mapMenuLoaded, win);
+	characterCard.checkForButton(allyInParty, ally, currentState, mapMenuLoaded, win);
 }
 
 void MapMenu::updateCharPosition(std::vector<std::shared_ptr<Character>> ally, sf::View view)
@@ -145,9 +168,113 @@ void MapMenu::drawAllChar(std::vector<std::shared_ptr<Character>> ally, sf::Rend
 }
 
 //******** BATTLE *********
-void MapMenu::drawAllBattle(sf::RenderWindow& win)
+void MapMenu::setupBattle(std::vector<std::shared_ptr<Character>>& ally, std::vector<int> allyInParty)
+{
+	currentToggle = -1;
+	hasNotClicked = false;
+	for(int i = 0; i < allyInParty.size(); i++)
+	{
+		int indexNum = ally[allyInParty[i]]->getBattlePos();
+		charNumberGrid[indexNum] = allyInParty[i];
+	}
+}
+
+void MapMenu::checkForClicked()
+{
+	if(!sf::Mouse::isButtonPressed(sf::Mouse::Left))
+	{
+		hasNotClicked = true;
+	}
+}
+
+void MapMenu::checkForBattleButton(std::vector<std::shared_ptr<Character>>& ally, std::vector<int> allyInParty, sf::RenderWindow& win)
+{
+	checkForClicked();
+
+	if(currentToggle == -1)
+	{
+		for(int i = 0 ; i < 6; i++)
+		{
+			if(charNumberGrid[i] != -1 && 
+			   grid[i]->mouseClickedInButton(selectedCol, deselectedColW, win))
+			{
+				hasNotClicked = false;
+				currentToggle = i;
+				break;
+			}
+		}
+	}
+	else
+	{
+		for(int i = 0 ; i < 6; i++)
+		{
+			if(charNumberGrid[i] == -1 && 
+			   grid[i]->mouseClickedInButton(selectedCol, deselectedColW, win))
+			{
+				hasNotClicked = false;
+				charNumberGrid[i] = charNumberGrid[currentToggle];
+				//The old location is now empty
+				charNumberGrid[currentToggle] = -1;
+
+				ally[charNumberGrid[i]]->setBattlePos(i);
+				currentToggle = -1;
+
+				//Reset all colors
+				for(int j = 0; j < 6; j++)
+				{
+					grid[j]->getRect()->setFillColor(deselectedColW);
+				}
+				break;
+			}
+		}
+	}
+}
+
+void MapMenu::updateBattlePos(std::vector<std::shared_ptr<Character>>& ally, std::vector<int> allyInParty, sf::View view)
+{
+	int viewX = view.getCenter().x - (view.getSize().x / 2);
+	int viewY = view.getCenter().y - (view.getSize().y / 2);
+
+	instructions.setPosition(sf::Vector2f(150 + viewX, 150 + viewY));
+
+	std::vector<sf::Vector2f> gridPos = 
+	{
+		sf::Vector2f(330, 200),
+		sf::Vector2f(330, 350),
+		sf::Vector2f(330, 500),
+		sf::Vector2f(600, 200),
+		sf::Vector2f(600, 350),
+		sf::Vector2f(600, 500),
+	};
+
+	for(int i = 0; i < 6; i++)
+	{
+		grid[i]->updatePositionMap(gridPos[i].x, gridPos[i].y, view);
+	}
+
+	for(int i = 0; i < allyInParty.size(); i++)
+	{
+		int bPos = ally[allyInParty[i]]->getBattlePos();
+		ally[allyInParty[i]]->setPosition(gridPos[bPos].x + 68 + viewX, gridPos[bPos].y + 18 + viewY);
+	}
+}
+
+void MapMenu::drawAllBattle(std::vector<std::shared_ptr<Character>>& ally, std::vector<int> allyInParty, sf::RenderWindow& win)
 {
 	menuBackground.drawSprite(win);
+
+	win.draw(instructions);
+
+	for(int i = 0; i < 6; i++)
+	{
+		grid[i]->drawAll(win);
+	}
+
+	for(int i = 0; i < allyInParty.size(); i++)
+	{
+		ally[allyInParty[i]]->setScale(1, 1);
+		ally[allyInParty[i]]->drawSprite(win);
+	}
 }
 
 //******** ITEMS *********

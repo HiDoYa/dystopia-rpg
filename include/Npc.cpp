@@ -34,7 +34,8 @@ bool Npc::npcExists(std::vector<bool> stateFlag)
 }
 
 //Gets the converted vector, deals with animation/textbox calls, and deals with multiple textboxes
-void Npc::speak(std::vector<bool>& stateFlag, std::vector<int>& allyFound, std::vector<int>& unlockedSkills, Textbox& box, MapPlayer& player, sf::RenderWindow& win)
+void Npc::speak(std::vector<bool>& stateFlag, std::vector<int>& allyFound, 
+		std::vector<int>& unlockedSkills, Textbox& box, MapPlayer& player, sf::RenderWindow& win)
 {
 	bool cond = !player.getMoving() && sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
 

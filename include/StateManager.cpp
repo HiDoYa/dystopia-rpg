@@ -134,7 +134,6 @@ void StateManager::updateMap(sf::RenderWindow& win, sf::View& view)
 		}
 	}
 
-
 	for(int i = 0; i < npc.size(); i++)
 	{
 		if(npc[i]->npcExists(stateFlag))
@@ -305,6 +304,7 @@ void StateManager::loadMapMenu(sf::RenderWindow& win, sf::View view)
 				mapMenu.setupChar(ally, allyFound);
 				break;
 			case 1:
+				mapMenu.setupBattle(ally, allyInParty);
 				break;
 			case 2:
 				break;
@@ -335,9 +335,11 @@ void StateManager::updateMapMenu(sf::RenderWindow& win, sf::View view)
 			mapMenu.checkForCharacterButton(ally, allyInParty, skillList, unlockedSkills, win);
 			//This needs to be run here because text height is determined one frame late
 			mapMenu.updateCharPosition(ally, view);
-			mapMenu.checkForPartyButton(allyInParty, currentState, mapMenuLoaded, win);
+			mapMenu.checkForPartyButton(allyInParty, ally, currentState, mapMenuLoaded, win);
 			break;
 		case 1:
+			mapMenu.checkForBattleButton(ally, allyInParty, win);
+			mapMenu.updateBattlePos(ally, allyInParty, view);
 			break;
 		case 2:
 			break;
@@ -354,7 +356,7 @@ void StateManager::renderMapMenu(sf::RenderWindow& win)
 			mapMenu.drawAllChar(ally, win);
 			break;
 		case 1:
-			mapMenu.drawAllBattle(win);
+			mapMenu.drawAllBattle(ally, allyInParty, win);
 			break;
 		case 2:
 			mapMenu.drawAllItem(win);

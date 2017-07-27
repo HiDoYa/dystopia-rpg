@@ -149,7 +149,7 @@ void CharacterCards::setupCard(Character chr, int indexInAlly, std::vector<int> 
 	}
 }
 
-void CharacterCards::checkForButton(std::vector<int>& allyInParty, int& currentState, bool& mapMenuLoaded, sf::RenderWindow& win)
+void CharacterCards::checkForButton(std::vector<int>& allyInParty, std::vector<std::shared_ptr<Character>>& ally, int& currentState, bool& mapMenuLoaded, sf::RenderWindow& win)
 {
 	//TODO BattlePos set (make sure they are unique)
 	//Party add or remove
@@ -158,18 +158,19 @@ void CharacterCards::checkForButton(std::vector<int>& allyInParty, int& currentS
 	{
 		if(existInParty)
 		{
-			for(int i = 0; i < allyInParty.size(); i++)
-			{
-				if(allyInParty[i] == allyIndex)
-				{
-					allyInParty.erase(allyInParty.begin() + i);
-					break;
-				}
-			}
+			allyInParty.erase(std::remove(allyInParty.begin(), allyInParty.end(), allyIndex), allyInParty.end());
 		}
 		else
 		{
+			//Makes sure that allies have their own unique battle position
+			std::vector<int> possiblePos = {0, 1, 2, 3, 4, 5};
+			for(int i = 0; i < allyInParty.size(); i++)
+			{
+				possiblePos.erase(std::remove(possiblePos.begin(), possiblePos.end(), ally[i]->getBattlePos()), possiblePos.end());
+			}
+
 			allyInParty.push_back(allyIndex);
+			ally[allyIndex]->setBattlePos(rand() % possiblePos.size());
 		}
 		//Goes back to the map
 		currentState = 1;
