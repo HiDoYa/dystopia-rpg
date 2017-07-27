@@ -7,7 +7,7 @@ Ally 1
 	Defense 20
 	Agility 20
 	Skill 0 1 2
-	Image images/ally/test4.png 0
+	Image images/ally/characters.png 0
 
 Ally 2
 	Name James Ollivera
@@ -18,7 +18,7 @@ Ally 2
 	Defense 20
 	Agility 25
 	Skill 0 1 2
-	Image images/ally/test4.png 0
+	Image images/ally/characters.png 64
 
 
 Ally 3
@@ -30,7 +30,7 @@ Ally 3
 	Defense 20
 	Agility 25
 	Skill 0 1 2
-	Image images/ally/test4.png 0
+	Image images/ally/characters.png 128
 
 Ally 4
 	Name Slowbot
@@ -41,7 +41,7 @@ Ally 4
 	Defense 10
 	Agility 15
 	Skill 0 1 2
-	Image images/ally/test4.png 0
+	Image images/ally/characters.png 192
 
 Ally 5
 	Name Arac
@@ -52,4 +52,4 @@ Ally 5
 	Defense 10
 	Agility 15
 	Skill 0 1 2
-	Image images/ally/test4.png 0
+	Image images/ally/characters.png 256

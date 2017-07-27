@@ -74,7 +74,7 @@ void FileReader::loadAlly(std::vector<std::shared_ptr<Character>>& ally)
 			ally[allyCounter]->setTextureSprite(inp);
 
 			allyFile >> inp;
-			ally[allyCounter]->setTextureRect(0, atoi(inp.c_str()));
+			ally[allyCounter]->setTextureRect(atoi(inp.c_str()), 0);
 		}
 		else if(inp == "Skill")
 		{
