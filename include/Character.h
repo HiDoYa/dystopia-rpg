@@ -45,6 +45,7 @@ class Character: public SpriteManager
 		//TODO Number determining the exp curve? (seed?)
 		
 		//For enemies
+		//Chance of showing (out of 100)
 		int chance;
 		std::vector<int> dropItemId;
 		std::vector<int> dropItemChance;

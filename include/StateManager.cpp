@@ -23,6 +23,7 @@ StateManager::StateManager()
 	startPosX = startPosY = 64;
 	encounterRate = 0;
 	currentZone = currentMap = 0;
+	currency = 0;
 
 	//Defaults
 	currentState = 0;

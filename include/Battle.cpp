@@ -9,8 +9,7 @@ Battle::Battle()
 {
 	//Default initializations
 	currentPlayerForOption = 0;
-	currentOptionAlly = 0;
-	currentOptionEnemy = 0;
+	currentOption = 0;
 	currentSkillCheck = 0;
 	oldBattlePos = -1;
 	lastTimeSet = false;
@@ -125,7 +124,7 @@ void Battle::setupBattle(std::vector<std::shared_ptr<Character>> enemyList,
 	enemy.clear();
 
 	//Initialize for req default data
-	currentOptionAlly = 0;
+	currentOption = 0;
 
 	//Store skill sets
 	skillList = skillTemp;
@@ -437,7 +436,7 @@ void Battle::allySkillChoiceHandler(int& nextBattleState, sf::RenderWindow& win)
 	{
 		allyOptions[i]->centerHoverHorizontal();
 		if(allyOptions[i]->mouseClickedInButton(allyOptionSelect, allyOptionDeselect, win)) {
-			currentOptionAlly = i;
+			currentOption = i;
 			if(i < 3)
 			{
 				//Skills
@@ -495,11 +494,11 @@ void Battle::findSingularFocus()
 
 	if(nextCharType == 0)
 	{
-		skillNum = ally[nextCharCounter]->getSkillNum()[currentOptionAlly];
+		skillNum = ally[nextCharCounter]->getSkillNum()[currentOption];
 	}
 	else if(nextCharType == 1)
 	{
-		skillNum = enemy[nextCharCounter]->getSkillNum()[currentOptionAlly];
+		skillNum = enemy[nextCharCounter]->getSkillNum()[currentOption];
 	}
 
 	for(int i = 0; i < 4; i++)
@@ -581,13 +580,13 @@ void Battle::enemyDecision(int& nextBattleState)
 	enemyChooseSkill();
 	for(int i = 0; i < 4; i++)
 	{
-		if(skillList[currentOptionEnemy]->getMult()[i] > 0)
+		if(skillList[currentOption]->getMult()[i] > 0)
 		{
-			if(skillList[currentOptionEnemy]->getTarget()[i] == 0)
+			if(skillList[currentOption]->getTarget()[i] == 0)
 			{
 				enemyChooseAlly();
 			}
-			else if(skillList[currentOptionEnemy]->getTarget()[i] == 1)
+			else if(skillList[currentOption]->getTarget()[i] == 1)
 			{
 				enemyChooseEnemy();
 			}
@@ -618,7 +617,7 @@ void Battle::enemyChooseSkill()
 		pastSkills += currentChance;
 		if(pastSkills < chanceRoll)
 		{
-			currentOptionEnemy = i;
+			currentOption = i;
 			break;
 		}
 	}
@@ -793,11 +792,11 @@ int Battle::processSkillTargetting()
 
 	if(nextCharType == 0)
 	{
-		skillNum = ally[nextCharCounter]->getSkillNum()[currentOptionAlly];
+		skillNum = ally[nextCharCounter]->getSkillNum()[currentOption];
 	}
 	else if(nextCharType == 1)
 	{
-		skillNum = enemy[nextCharCounter]->getSkillNum()[currentOptionEnemy];
+		skillNum = enemy[nextCharCounter]->getSkillNum()[currentOption];
 	}
 	
 	targetType = findNextTarget(skillNum);
@@ -860,7 +859,7 @@ int Battle::findHpChangeSign(int hpFinal, int hpInit)
 bool Battle::allyTurnHandle(int& nextBattleState, sf::RenderWindow& win)
 {
 	std::cout << "allyTurnHandle\n";
-	switch(currentOptionAlly)
+	switch(currentOption)
 	{
 		case 0:
 		case 1:
@@ -904,7 +903,7 @@ void Battle::allySkillCalc()
 void Battle::allySkillCalcHealth()
 {
 	std::cout << "allySkillCalcHealth\n";
-	int skillNum = ally[nextCharCounter]->getSkillNum()[currentOptionAlly];
+	int skillNum = ally[nextCharCounter]->getSkillNum()[currentOption];
 	if(singularAllyFocus)
 	{
 		int allyStrength = ally[nextCharCounter]->getStrength();
@@ -965,7 +964,7 @@ void Battle::allySkillCalcStat()
 {
 	std::cout << "allySkillCalcStat\n";
 	//If buff or debuff type is str, set to str, etc.
-	int skillNum = ally[nextCharCounter]->getSkillNum()[currentOptionAlly];
+	int skillNum = ally[nextCharCounter]->getSkillNum()[currentOption];
 	int statType;
 	if(currentSkillCheck == 2)
 	{
@@ -1241,7 +1240,7 @@ void Battle::enemySkillCalcHealth()
 {
 	std::cout << "enemySkillCalc\n";
 
-	int skillNum = enemy[nextCharCounter]->getSkillNum()[currentOptionEnemy];
+	int skillNum = enemy[nextCharCounter]->getSkillNum()[currentOption];
 	if(singularAllyFocus)
 	{
 		int allyStrength = enemy[nextCharCounter]->getStrength();
@@ -1302,7 +1301,7 @@ void Battle::enemySkillCalcStat()
 {
 	std::cout << "enemySkillCalcStat\n";
 	//If buff or debuff type is str, set to str, etc.
-	int skillNum = enemy[nextCharCounter]->getSkillNum()[currentOptionEnemy];
+	int skillNum = enemy[nextCharCounter]->getSkillNum()[currentOption];
 	int statType;
 	if(currentSkillCheck == 2)
 	{

@@ -31,6 +31,7 @@ class StateManager
 		std::vector<std::shared_ptr<Npc>> npc;
 		bool speaking;
 
+		int currency;
 		std::vector<std::shared_ptr<Item>> itemList;
 		//Each integer indicates how many of each item is held
 		std::vector<int> itemHeld;

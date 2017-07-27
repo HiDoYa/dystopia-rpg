@@ -28,8 +28,7 @@ class Battle
 		std::vector<std::shared_ptr<ClickButton>> chooseAlly;  //Grid for allies
 		std::vector<std::shared_ptr<ClickButton>> chooseEnemy; //Grid for enemies
 		int currentPlayerForOption;                //Stores which character to show the options around
-		int currentOptionAlly;                     //Stores the option chosen by ally
-		int currentOptionEnemy;                    //Stores the skill the enemy chooses
+		int currentOption;                     //Stores the option chosen by ally
 
 		//Time management
 		sf::Clock clk;
