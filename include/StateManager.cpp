@@ -59,6 +59,7 @@ void StateManager::loadMenu()
 
 		fileReader.loadAlly(ally);
 		fileReader.loadSkill(skillList);
+		fileReader.loadItem(itemList);
 	}
 }
 

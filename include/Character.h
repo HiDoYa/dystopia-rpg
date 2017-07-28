@@ -24,6 +24,11 @@ class Character: public SpriteManager
 		int defense;
 		int agility;
 
+		//For use in battle
+		int buffStr;
+		int buffDef;
+		int buffAgi;
+
 		//Stores ID for each skill
 		std::vector<int> skillNum;         //For use in battle
 		std::vector<int> possibleSkillNum; //For all possible equippable skills (for allies)
@@ -64,6 +69,10 @@ class Character: public SpriteManager
 		void setDefense(int);
 		void setAgility(int);
 
+		void setBuffStr(int);
+		void setBuffDef(int);
+		void setBuffAgi(int);
+
 		void setSkillNum(std::vector<int>);
 		void setPossibleSkillNum(std::vector<int>);
 		void setPersistentSkillNum(std::vector<int>);
@@ -100,6 +109,10 @@ class Character: public SpriteManager
 		int getDefense();
 		int getAgility();
 
+		int getBuffStr();
+		int getBuffDef();
+		int getBuffAgi();
+
 		std::vector<int> getSkillNum();
 		std::vector<int> getPossibleSkillNum();
 		std::vector<int> getPersistentSkillNum();
@@ -118,6 +131,11 @@ class Character: public SpriteManager
 
 		int getHpFinal();
 		int getManaFinal();
+
+		//STAT IN BATTLE
+		int getTotalStrength();
+		int getTotalDefense();
+		int getTotalAgility();
 
 		//TODO Calculate requiredExp based on level and slight randomization
 		//********* ETC ***********

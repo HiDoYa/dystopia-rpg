@@ -11,9 +11,6 @@ class Skill
 		int powerRating;
 		int manaCost;
 
-		//Shows multiple damage nums for one attack (think trip strike)
-		int numAtksPerHit;
-
 		//If attack misses
 		bool missed;
 
@@ -65,7 +62,6 @@ class Skill
 		void setChance(int);
 		void setManaCost(int);
 		void setNumTurns(int);
-		void setNumAtksPerHit(int);
 		void setReapplyTurn(int, int);
 		void setOldVal(int, int);
 		void setMult(int, float);
@@ -87,7 +83,6 @@ class Skill
 		int getChance();
 		int getManaCost();
 		int getNumTurns();
-		int getNumAtksPerHit();
 		std::vector<int> getReapplyTurn();
 		std::vector<int> getOldVal();
 		std::vector<float> getMult();

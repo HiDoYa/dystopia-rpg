@@ -12,6 +12,7 @@ Character::Character()
 	maxMana = currentMana = 100;
 
 	strength = defense = agility = 10;
+	buffStr = buffDef = buffAgi = 0;
 
 	alive = true;
 	canAtk = true;
@@ -90,6 +91,21 @@ void Character::setDefense(int inp)
 void Character::setAgility(int inp)
 {
 	agility = inp;
+}
+
+void Character::setBuffStr(int inp)
+{
+	buffStr = inp;
+}
+
+void Character::setBuffDef(int inp)
+{
+	buffDef = inp;
+}
+
+void Character::setBuffAgi(int inp)
+{
+	buffAgi = inp;
 }
 
 void Character::setSkillNum(std::vector<int> inp)
@@ -234,6 +250,21 @@ int Character::getAgility()
 	return agility;
 }
 
+int Character::getBuffStr()
+{
+	return buffStr;
+}
+
+int Character::getBuffDef()
+{
+	return buffDef;
+}
+
+int Character::getBuffAgi()
+{
+	return buffAgi;
+}
+
 std::vector<int> Character::getSkillNum()
 {
 	return skillNum;
@@ -305,6 +336,21 @@ int Character::getManaFinal()
 	return manaFinal;
 }
 
+int Character::getTotalStrength()
+{
+	return strength + buffStr;
+}
+
+int Character::getTotalDefense()
+{
+	return defense + buffDef;
+}
+
+int Character::getTotalAgility()
+{
+	return agility + buffAgi;
+}
+
 //ETC
 
 void Character::statBarUpdate()
@@ -359,6 +405,9 @@ void Character::copy(std::shared_ptr<Character> other)
 	other->setDropItemChance(getDropItemChance());
 	other->setHpFinal(getHpFinal());
 	other->setManaFinal(getManaFinal());
+	other->setBuffStr(getBuffStr());
+	other->setBuffDef(getBuffDef());
+	other->setBuffAgi(getBuffAgi());
 
 	*other->getTexture() = *getTexture();
 	other->getSprite()->setTexture(*getTexture());

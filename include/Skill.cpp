@@ -10,7 +10,6 @@ Skill::Skill()
 	//Default
 	powerRating = 1;
 	manaCost = 0;
-	numAtksPerHit = 1;
 	missed = false;
 	buffType = -1;
 	debuffType = -1;
@@ -60,11 +59,6 @@ void Skill::setChance(int inp)
 void Skill::setManaCost(int inp)
 {
 	manaCost = inp;
-}
-
-void Skill::setNumAtksPerHit(int inp)
-{
-	numAtksPerHit = inp;
 }
 
 void Skill::setReapplyTurn(int type, int inp)
@@ -156,11 +150,6 @@ int Skill::getChance()
 int Skill::getManaCost()
 {
 	return manaCost;
-}
-
-int Skill::getNumAtksPerHit()
-{
-	return numAtksPerHit;
 }
 
 std::vector<int> Skill::getReapplyTurn()

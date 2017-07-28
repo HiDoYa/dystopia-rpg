@@ -42,7 +42,7 @@ PrimaryType Damage
 Type Damage
 	Target SingleEnemy
 	Percent false
-	Reapply 0
+	Reapply 2
 	Mult 2
 	Min 15
 

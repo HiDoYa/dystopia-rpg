@@ -892,7 +892,7 @@ void Battle::skillCalcHealth(std::vector<std::shared_ptr<Character>>& caster, st
 
 	if(selfFocus)
 	{
-		int allyStrength = caster[nextCharCounter]->getStrength();
+		int allyStrength = caster[nextCharCounter]->getTotalStrength();
 		int targetHp = caster[nextCharCounter]->getCurrentHp();
 
 		int targetHpFinal = skillList[skillNum]->healthChangeHandle(allyStrength, 0, targetHp, currentSkillCheck);
@@ -902,7 +902,7 @@ void Battle::skillCalcHealth(std::vector<std::shared_ptr<Character>>& caster, st
 	}
 	else if(singularAllyFocus)
 	{
-		int allyStrength = caster[nextCharCounter]->getStrength();
+		int allyStrength = caster[nextCharCounter]->getTotalStrength();
 		int targetHp = caster[currentSelected]->getCurrentHp();
 
 		int targetHpFinal = skillList[skillNum]->healthChangeHandle(allyStrength, 0, targetHp, currentSkillCheck);
@@ -912,9 +912,9 @@ void Battle::skillCalcHealth(std::vector<std::shared_ptr<Character>>& caster, st
 	}
 	else if(singularEnemyFocus)
 	{
-		int allyStrength = caster[nextCharCounter]->getStrength();
+		int allyStrength = caster[nextCharCounter]->getTotalStrength();
 		int targetHp = target[currentSelected]->getCurrentHp();
-		int targetDef = target[currentSelected]->getDefense();
+		int targetDef = target[currentSelected]->getTotalDefense();
 
 		int targetHpFinal = skillList[skillNum]->healthChangeHandle(allyStrength, targetDef, targetHp, currentSkillCheck);
 		target[currentSelected]->setHpFinal(targetHpFinal);
@@ -934,7 +934,7 @@ void Battle::skillCalcHealth(std::vector<std::shared_ptr<Character>>& caster, st
 		{
 			if(caster[i]->getAlive())
 			{
-				int allyStrength = caster[nextCharCounter]->getStrength();
+				int allyStrength = caster[nextCharCounter]->getTotalStrength();
 				int targetHp = caster[i]->getCurrentHp();
 
 				int targetHpFinal = skillList[skillNum]->healthChangeHandle(allyStrength, 0, targetHp, currentSkillCheck);
@@ -955,9 +955,9 @@ void Battle::skillCalcHealth(std::vector<std::shared_ptr<Character>>& caster, st
 		{
 			if(target[i]->getAlive())
 			{
-				int allyStrength = caster[nextCharCounter]->getStrength();
+				int allyStrength = caster[nextCharCounter]->getTotalStrength();
 				int targetHp = target[i]->getCurrentHp();
-				int targetDef = target[i]->getDefense();
+				int targetDef = target[i]->getTotalDefense();
 
 				int targetHpFinal = skillList[skillNum]->healthChangeHandle(allyStrength, targetDef, targetHp, currentSkillCheck);
 				target[i]->setHpFinal(targetHpFinal);
@@ -989,7 +989,7 @@ void Battle::skillCalcStat(std::vector<std::shared_ptr<Character>>& caster, std:
 			int targetStat = caster[nextCharCounter]->getStrength();
 			int targetDef = caster[nextCharCounter]->getDefense();
 			int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
-			caster[nextCharCounter]->setStrength(targetStatFinal);
+			caster[nextCharCounter]->setBuffStr(targetStatFinal);
 
 			battleOverlay.buffedLog(caster[nextCharCounter]->getName(), caster[nextCharCounter]->getName(), "technology", targetStatFinal - targetStat);
 		}
@@ -999,7 +999,7 @@ void Battle::skillCalcStat(std::vector<std::shared_ptr<Character>>& caster, std:
 			int targetStat = caster[nextCharCounter]->getDefense();
 			int targetDef = caster[nextCharCounter]->getDefense();
 			int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
-			caster[nextCharCounter]->setDefense(targetStatFinal);
+			caster[nextCharCounter]->setBuffDef(targetStatFinal);
 
 			battleOverlay.buffedLog(caster[nextCharCounter]->getName(), caster[nextCharCounter]->getName(), "durability", targetStatFinal - targetStat);
 		}
@@ -1009,7 +1009,7 @@ void Battle::skillCalcStat(std::vector<std::shared_ptr<Character>>& caster, std:
 			int targetStat = caster[nextCharCounter]->getAgility();
 			int targetDef = caster[nextCharCounter]->getDefense();
 			int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
-			caster[nextCharCounter]->setAgility(targetStatFinal);
+			caster[nextCharCounter]->setBuffAgi(targetStatFinal);
 
 			battleOverlay.buffedLog(caster[nextCharCounter]->getName(), caster[nextCharCounter]->getName(), "agility", targetStatFinal - targetStat);
 		}
@@ -1022,7 +1022,7 @@ void Battle::skillCalcStat(std::vector<std::shared_ptr<Character>>& caster, std:
 			int targetStat = caster[currentSelected]->getStrength();
 			int targetDef = caster[currentSelected]->getDefense();
 			int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
-			caster[currentSelected]->setStrength(targetStatFinal);
+			caster[currentSelected]->setBuffStr(targetStatFinal);
 
 			battleOverlay.buffedLog(caster[nextCharCounter]->getName(), caster[currentSelected]->getName(), "technology", targetStatFinal - targetStat);
 		}
@@ -1032,7 +1032,7 @@ void Battle::skillCalcStat(std::vector<std::shared_ptr<Character>>& caster, std:
 			int targetStat = caster[currentSelected]->getDefense();
 			int targetDef = caster[currentSelected]->getDefense();
 			int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
-			caster[currentSelected]->setDefense(targetStatFinal);
+			caster[currentSelected]->setBuffDef(targetStatFinal);
 
 			battleOverlay.buffedLog(caster[nextCharCounter]->getName(), caster[currentSelected]->getName(), "durability", targetStatFinal - targetStat);
 		}
@@ -1042,7 +1042,7 @@ void Battle::skillCalcStat(std::vector<std::shared_ptr<Character>>& caster, std:
 			int targetStat = caster[currentSelected]->getAgility();
 			int targetDef = caster[currentSelected]->getDefense();
 			int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
-			caster[currentSelected]->setAgility(targetStatFinal);
+			caster[currentSelected]->setBuffAgi(targetStatFinal);
 
 			battleOverlay.buffedLog(caster[nextCharCounter]->getName(), caster[currentSelected]->getName(), "agility", targetStatFinal - targetStat);
 		}
@@ -1055,7 +1055,7 @@ void Battle::skillCalcStat(std::vector<std::shared_ptr<Character>>& caster, std:
 			int targetStat = target[currentSelected]->getStrength();
 			int targetDef = target[currentSelected]->getDefense();
 			int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
-			target[currentSelected]->setStrength(targetStatFinal);
+			target[currentSelected]->setBuffStr(targetStatFinal);
 
 			battleOverlay.debuffedLog(caster[nextCharCounter]->getName(), target[currentSelected]->getName(), "technology", targetStat - targetStatFinal);
 		}
@@ -1065,7 +1065,7 @@ void Battle::skillCalcStat(std::vector<std::shared_ptr<Character>>& caster, std:
 			int targetStat = target[currentSelected]->getDefense();
 			int targetDef = target[currentSelected]->getDefense();
 			int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
-			target[currentSelected]->setDefense(targetStatFinal);
+			target[currentSelected]->setBuffDef(targetStatFinal);
 
 			battleOverlay.debuffedLog(caster[nextCharCounter]->getName(), target[currentSelected]->getName(), "durability", targetStat - targetStatFinal);
 		}
@@ -1075,7 +1075,7 @@ void Battle::skillCalcStat(std::vector<std::shared_ptr<Character>>& caster, std:
 			int targetStat = target[currentSelected]->getAgility();
 			int targetDef = target[currentSelected]->getDefense();
 			int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
-			target[currentSelected]->setAgility(targetStatFinal);
+			target[currentSelected]->setBuffAgi(targetStatFinal);
 
 			battleOverlay.debuffedLog(caster[nextCharCounter]->getName(), target[currentSelected]->getName(), "agility", targetStat - targetStatFinal);
 		}
@@ -1098,7 +1098,7 @@ void Battle::skillCalcStat(std::vector<std::shared_ptr<Character>>& caster, std:
 					int targetStat = caster[i]->getStrength();
 					int targetDef = caster[i]->getDefense();
 					int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
-					caster[i]->setStrength(targetStatFinal);
+					caster[i]->setBuffStr(targetStatFinal);
 
 					battleOverlay.buffedLog(caster[nextCharCounter]->getName(), targetName, "technology");
 				}
@@ -1108,7 +1108,7 @@ void Battle::skillCalcStat(std::vector<std::shared_ptr<Character>>& caster, std:
 					int targetStat = caster[i]->getDefense();
 					int targetDef = caster[i]->getDefense();
 					int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
-					caster[i]->setDefense(targetStatFinal);
+					caster[i]->setBuffDef(targetStatFinal);
 
 					battleOverlay.buffedLog(caster[nextCharCounter]->getName(), targetName, "durability");
 				}
@@ -1118,7 +1118,7 @@ void Battle::skillCalcStat(std::vector<std::shared_ptr<Character>>& caster, std:
 					int targetStat = caster[i]->getAgility();
 					int targetDef = caster[i]->getDefense();
 					int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
-					caster[i]->setAgility(targetStatFinal);
+					caster[i]->setBuffAgi(targetStatFinal);
 
 					battleOverlay.buffedLog(caster[nextCharCounter]->getName(), targetName, "agility");
 				}
@@ -1143,7 +1143,7 @@ void Battle::skillCalcStat(std::vector<std::shared_ptr<Character>>& caster, std:
 					int targetStat = target[i]->getStrength();
 					int targetDef = target[i]->getDefense();
 					int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
-					target[i]->setStrength(targetStatFinal);
+					target[i]->setBuffStr(targetStatFinal);
 
 					battleOverlay.debuffedLog(caster[nextCharCounter]->getName(), targetName, "technology");
 				}
@@ -1153,7 +1153,7 @@ void Battle::skillCalcStat(std::vector<std::shared_ptr<Character>>& caster, std:
 					int targetStat = target[i]->getDefense();
 					int targetDef = target[i]->getDefense();
 					int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
-					target[i]->setDefense(targetStatFinal);
+					target[i]->setBuffDef(targetStatFinal);
 
 					battleOverlay.debuffedLog(caster[nextCharCounter]->getName(), targetName, "durability");
 				}
@@ -1163,7 +1163,7 @@ void Battle::skillCalcStat(std::vector<std::shared_ptr<Character>>& caster, std:
 					int targetStat = target[i]->getAgility();
 					int targetDef = target[i]->getDefense();
 					int targetStatFinal = skillList[skillNum]->statChangeHandle(allyStrength, targetDef, targetStat, currentSkillCheck);
-					target[i]->setAgility(targetStatFinal);
+					target[i]->setBuffAgi(targetStatFinal);
 
 					battleOverlay.debuffedLog(caster[nextCharCounter]->getName(), targetName, "agility");
 				}
