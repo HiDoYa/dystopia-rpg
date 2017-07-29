@@ -40,6 +40,9 @@ CharacterCards::CharacterCards()
 	{
 		skillButton.push_back(std::shared_ptr<ClickButton>(new ClickButton));
 		skillButton[i]->setType(1);
+		skillButton[i]->setHoverText(true);
+		skillButton[i]->getHoverText()->setCharacterSize(15);
+		skillButton[i]->getHoverText()->setColor(sf::Color::White);
 		skillButton[i]->getCirc()->setRadius(50);
 	}
 	displaySkills = false;
@@ -88,6 +91,11 @@ void CharacterCards::updatePosition(std::vector<std::shared_ptr<Character>> ally
 	{
 		skillCards[i]->setPosition(sf::Vector2f((i % 3) * 300 + 150, (i / 3) * 200 + 100), view);
 	}
+
+	for(int i = 0; i < 3; i++)
+	{
+		skillButton[i]->centerHoverHorizontal();
+	}
 }
 
 void CharacterCards::setupCard(Character chr, int indexInAlly, std::vector<int> allyInParty, 
@@ -117,6 +125,8 @@ void CharacterCards::setupCard(Character chr, int indexInAlly, std::vector<int> 
 		}
 	}
 
+	skillCards.clear();
+
 	for(int i = 0; i < unlockedSkills.size(); i++)
 	{
 		int currentNum = unlockedSkills[i];
@@ -129,6 +139,26 @@ void CharacterCards::setupCard(Character chr, int indexInAlly, std::vector<int> 
 				skillCards[skillCards.size() - 1]->setupCard(*skillList[currentNum], currentNum);
 			}
 		}
+	}
+
+	for(int i = 0; i < 3; i++)
+	{
+		switch(skillList[chr.getSkillNum()[i]]->getPrimaryType())
+		{
+			case 0:
+				skillButton[i]->getCirc()->setTextureRect(sf::IntRect(0, 0, 64, 64));
+				break;
+			case 1:
+				skillButton[i]->getCirc()->setTextureRect(sf::IntRect(64, 0, 64, 64));
+				break;
+			case 2:
+				skillButton[i]->getCirc()->setTextureRect(sf::IntRect(128, 0, 64, 64));
+				break;
+			case 3:
+				skillButton[i]->getCirc()->setTextureRect(sf::IntRect(192, 0, 64, 64));
+				break;
+		}
+		skillButton[i]->getHoverText()->setString(skillList[chr.getSkillNum()[i]]->getName());
 	}
 
 	if(allyIndex == 0)
@@ -149,7 +179,9 @@ void CharacterCards::setupCard(Character chr, int indexInAlly, std::vector<int> 
 	}
 }
 
-void CharacterCards::checkForButton(std::vector<int>& allyInParty, std::vector<std::shared_ptr<Character>>& ally, int& currentState, bool& mapMenuLoaded, sf::RenderWindow& win)
+void CharacterCards::checkForButton(std::vector<int>& allyInParty, 
+		std::vector<std::shared_ptr<Character>>& ally, int& currentState,
+		bool& mapMenuLoaded, sf::RenderWindow& win)
 {
 	//TODO BattlePos set (make sure they are unique)
 	//Party add or remove
@@ -182,7 +214,7 @@ void CharacterCards::checkForButton(std::vector<int>& allyInParty, std::vector<s
 
 	for(int i = 0; i < skillButton.size(); i++)
 	{
-		if(skillButton[i]->mouseClickedInButton(sf::Color::Red, sf::Color::White, win))
+		if(skillButton[i]->mouseClickedInButton("images/ally/skillIcons.png", "images/ally/skillIconsSelected.png", win))
 		{
 			skillPressed = true;
 			skillToChange = i;
@@ -199,8 +231,28 @@ void CharacterCards::checkForButton(std::vector<int>& allyInParty, std::vector<s
 	{
 		if(skillCards[i]->selectSkill(win))
 		{
-			//DO SOMETHING IF SELECTED
-			//Add the selected skill (i) to the skill UNLESS IT ALREADY IS EQUIPPED
+			std::vector<int> skillNum = ally[allyIndex]->getSkillNum();
+			skillNum[skillToChange] = skillCards[i]->getSkillId();
+
+			bool skillExists = false;
+
+			for(int j = 0; j < 3; j++)
+			{
+				if(skillCards[i]->getSkillId() == skillNum[j])
+				{
+					skillExists = true;
+				}
+			}
+
+			if(!skillExists)
+			{
+				ally[allyIndex]->setSkillNum(skillNum);
+				displaySkills = false;
+			}
+			else
+			{
+				//TODO Display warning?
+			}
 		}
 	}
 }

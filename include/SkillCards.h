@@ -10,6 +10,7 @@ class SkillCards
 	private:
 		sf::Texture iconTexture;
 		sf::CircleShape icon;
+		int skillId;
 		ClickButton equip;
 		sf::RectangleShape cardBackground;
 		//TODO Maybe a star system to indicate weaker/stronger skills?
@@ -17,6 +18,7 @@ class SkillCards
 		SkillCards();
 		void setupCard(Skill, int);
 		void setPosition(sf::Vector2f, sf::View);
+		int getSkillId();
 		bool selectSkill(sf::RenderWindow&);
 
 		void drawAll(sf::RenderWindow&);

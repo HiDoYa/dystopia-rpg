@@ -31,6 +31,8 @@ class BattleOverlay
 		void buffedLog(std::string, std::string, std::string, int = -1);
 		void debuffedLog(std::string, std::string, std::string, int = -1);
 
+		void chargedLog(std::string, int = -1);
+
 		void genericSkillLog(std::string, std::string);
 
 		std::string targetNameExceptions(std::string);

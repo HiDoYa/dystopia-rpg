@@ -108,13 +108,14 @@ class Battle
 		int processSkillTargetting();
 
 		void skillCalc();
+		void manaChange();
+		void chargeCalc(std::vector<std::shared_ptr<Character>>&);
 		void skillCalcHealth(std::vector<std::shared_ptr<Character>>&, 
 				std::vector<std::shared_ptr<Character>>&);
 		void skillCalcStat(std::vector<std::shared_ptr<Character>>&, 
 				std::vector<std::shared_ptr<Character>>&);
 
 		bool allyTurnHandle(int&, sf::RenderWindow&);
-		void allyItem();
 		bool allyChangePos(sf::RenderWindow& win);
 		bool changePosAnimation();
 		void allyAttemptFlee(int&);
@@ -123,8 +124,7 @@ class Battle
 
 		//Battle state 7
 		void hpAnimate(int&);
-		void allyHpChange();
-		void enemyHpChange();
+		void barChangeCalc(std::vector<std::shared_ptr<Character>>&);
 		//TODO Generic buff, debuff, attack, heal animations
 		//TODO For enemies, simply filp the textures
 		void allySkillAnimate();

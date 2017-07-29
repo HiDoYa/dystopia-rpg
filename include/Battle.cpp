@@ -69,9 +69,13 @@ Battle::Battle()
 		allyOptions.push_back(tempPtr);
 	}
 
-	allyOptions[3]->getHoverText()->setString("Items");
+	allyOptions[3]->getHoverText()->setString("Charge");
 	allyOptions[4]->getHoverText()->setString("Move");
 	allyOptions[5]->getHoverText()->setString("Run");
+
+	allyOptions[3]->getCirc()->setTextureRect(sf::IntRect(256, 0, 64, 64));
+	allyOptions[4]->getCirc()->setTextureRect(sf::IntRect(320, 0, 64, 64));
+	allyOptions[5]->getCirc()->setTextureRect(sf::IntRect(384, 0, 64, 64));
 
 	for(int i = 0; i < 6; i++)
 	{
@@ -458,7 +462,14 @@ void Battle::allySkillChoiceHandler(int& nextBattleState, sf::RenderWindow& win)
 		allyOptions[i]->centerHoverHorizontal();
 		if(allyOptions[i]->mouseClickedInButton("images/ally/skillIcons.png", "images/ally/skillIconsSelected.png", win)) {
 			currentOption = i;
-			if(i < 3)
+			int manaCost = skillList[ally[nextCharCounter]->getSkillNum()[currentOption]]->getManaCost();
+			int allyMana = ally[nextCharCounter]->getCurrentMana();
+			if(allyMana < manaCost)
+			{
+				//TODO Display warning (not enough mana)
+				//Do nothing (must choose another skill)
+			}
+			else if(i < 3)
 			{
 				//Skills
 				nextBattleState = 3;
@@ -599,17 +610,20 @@ void Battle::enemyDecision(int& nextBattleState)
 {
 	std::cout << "enemyDecision\n";
 	enemyChooseSkill();
-	for(int i = 0; i < 4; i++)
+	if(currentOption != -1)
 	{
-		if(skillList[currentOption]->getMult()[i] > 0)
+		for(int i = 0; i < 4; i++)
 		{
-			if(skillList[currentOption]->getTarget()[i] == 0)
+			if(skillList[currentOption]->getMult()[i] > 0)
 			{
-				enemyChooseAlly();
-			}
-			else if(skillList[currentOption]->getTarget()[i] == 1)
-			{
-				enemyChooseEnemy();
+				if(skillList[currentOption]->getTarget()[i] == 0)
+				{
+					enemyChooseAlly();
+				}
+				else if(skillList[currentOption]->getTarget()[i] == 1)
+				{
+					enemyChooseEnemy();
+				}
 			}
 		}
 	}
@@ -641,6 +655,14 @@ void Battle::enemyChooseSkill()
 			currentOption = i;
 			break;
 		}
+	}
+
+	//If enemy does not have enough mana for the skill, it charges
+	int manaCost = skillList[enemy[nextCharCounter]->getSkillNum()[currentOption]]->getManaCost();
+	int allyMana = enemy[nextCharCounter]->getCurrentMana();
+	if(allyMana < manaCost)
+	{
+		currentOption = -1;
 	}
 }
 
@@ -855,6 +877,8 @@ void Battle::skillCalc()
 {
 	std::cout << "skillCalc\n";
 
+	manaChange();
+
 	while(processSkillTargetting() != -1)
 	{
 		switch(currentSkillCheck)
@@ -883,6 +907,43 @@ void Battle::skillCalc()
 				break;
 		}
 	}
+}
+
+void Battle::manaChange()
+{
+	if(nextCharType == 0)
+	{
+		int skillNum = ally[nextCharCounter]->getSkillNum()[currentOption];
+		int manaCost = skillList[skillNum]->getManaCost();
+		int currentMana = ally[nextCharCounter]->getCurrentMana();
+		ally[nextCharCounter]->setManaFinal(currentMana - manaCost);
+	}
+	else if(nextCharType == 1)
+	{
+		int skillNum = enemy[nextCharCounter]->getSkillNum()[currentOption];
+		int manaCost = skillList[skillNum]->getManaCost();
+		int currentMana = enemy[nextCharCounter]->getCurrentMana();
+		enemy[nextCharCounter]->setManaFinal(currentMana - manaCost);
+	}
+}
+
+void Battle::chargeCalc(std::vector<std::shared_ptr<Character>>& caster)
+{
+	std::cout << "chargeCalc\n";
+
+	float randNum = rand() % 10 / 10;
+	int maxAmount = caster[nextCharCounter]->getMaxMana();
+	int chargeAmount = maxAmount / (3.0 + randNum);
+	int chargeFinal = caster[nextCharCounter]->getCurrentMana() + chargeAmount;
+
+	if(chargeFinal > maxAmount)
+	{
+		chargeFinal = maxAmount;
+	}
+
+	caster[nextCharCounter]->setManaFinal(chargeFinal);
+
+	battleOverlay.chargedLog(caster[nextCharCounter]->getName(), chargeFinal - caster[nextCharCounter]->getCurrentMana());
 }
 
 void Battle::skillCalcHealth(std::vector<std::shared_ptr<Character>>& caster, std::vector<std::shared_ptr<Character>>& target)
@@ -1204,7 +1265,7 @@ bool Battle::allyTurnHandle(int& nextBattleState, sf::RenderWindow& win)
 			skillCalc();
 			return true;
 		case 3:
-			allyItem();
+			chargeCalc(ally);
 			return true;
 		case 4:
 			return allyChangePos(win);
@@ -1212,12 +1273,6 @@ bool Battle::allyTurnHandle(int& nextBattleState, sf::RenderWindow& win)
 			allyAttemptFlee(nextBattleState);
 			return true;
 	}
-}
-
-void Battle::allyItem()
-{
-	std::cout << "allyItem\n";
-	//TODO Access item vector to find effect
 }
 
 bool Battle::allyChangePos(sf::RenderWindow& win)
@@ -1305,59 +1360,60 @@ void Battle::allyAttemptFlee(int& nextBattleState)
 void Battle::enemyTurnHandle(int& nextBattleState)
 {
 	std::cout << "enemyTurnHandle\n";
-	skillCalc();
+	if(currentOption == -1)
+	{
+		chargeCalc(enemy);
+	}
+	else
+	{
+		skillCalc();
+	}
 }
 
 //*************** BATTLE STATE 7 *********************
 void Battle::hpAnimate(int& nextBattleState)
 {
-	allyHpChange();
-	enemyHpChange();
+	barChangeCalc(ally);
+	barChangeCalc(enemy);
 	checkForCompletion(nextBattleState);
 }
 
-void Battle::allyHpChange()
+void Battle::barChangeCalc(std::vector<std::shared_ptr<Character>>& check)
 {
-	std::cout << "allyHpChange\n";
-	for(int i = 0; i < ally.size(); i++)
+	std::cout << "barChangeCalc\n";
+	for(int i = 0; i < check.size(); i++)
 	{
-		if(ally[i]->getAlive())
+		if(check[i]->getAlive())
 		{
-			int hpFinal = ally[i]->getHpFinal();
-			//Replace hpFinal with hpFinal of specific character
-			int sign = findHpChangeSign(hpFinal, ally[i]->getCurrentHp());
-			if(ally[i]->getCurrentHp() > hpFinal + 2 || ally[i]->getCurrentHp() < hpFinal - 2)
-			{
-				ally[i]->setCurrentHp(ally[i]->getCurrentHp() + (2 * sign));
-			}
-			else if (ally[i]->getCurrentHp() != hpFinal)
-			{
-				ally[i]->setCurrentHp(hpFinal);
-			}
-		}
-	}
-}
+			int hpFinal = check[i]->getHpFinal();
+			int currentHp = check[i]->getCurrentHp();
 
-void Battle::enemyHpChange()
-{
-	std::cout << "enemyHpChange\n";
-	for(int i = 0; i < enemy.size(); i++)
-	{
-		if(enemy[i]->getAlive())
-		{
-			int hpFinal = enemy[i]->getHpFinal();
-			int currentEnemyHp = enemy[i]->getCurrentHp();
-
-			if(hpFinal != currentEnemyHp)
+			if(hpFinal != currentHp)
 			{
-				int sign = findHpChangeSign(hpFinal, currentEnemyHp);
-				if(currentEnemyHp > hpFinal + 2 || currentEnemyHp < hpFinal - 2)
+				int sign = findHpChangeSign(hpFinal, currentHp);
+				if(currentHp > hpFinal + 2 || currentHp < hpFinal - 2)
 				{
-					enemy[i]->setCurrentHp(currentEnemyHp + (2 * sign));
+					check[i]->setCurrentHp(currentHp + (2 * sign));
 				}
-				else if (currentEnemyHp != hpFinal)
+				else if (currentHp != hpFinal)
 				{
-					enemy[i]->setCurrentHp(hpFinal);
+					check[i]->setCurrentHp(hpFinal);
+				}
+			}
+
+			int manaFinal = check[i]->getManaFinal();
+			int currentMana = check[i]->getCurrentMana();
+
+			if(manaFinal != currentMana)
+			{
+				int sign = findHpChangeSign(manaFinal, currentMana);
+				if(currentMana > manaFinal + 2 || currentMana < manaFinal - 2)
+				{
+					check[i]->setCurrentMana(currentMana + (2 * sign));
+				}
+				else if (currentMana != manaFinal)
+				{
+					check[i]->setCurrentMana(manaFinal);
 				}
 			}
 		}
@@ -1383,7 +1439,10 @@ void Battle::checkForCompletion(int& nextBattleState)
 		{
 			int currentHp = ally[i]->getCurrentHp();
 			int targetHp = ally[i]->getHpFinal();
-			if(currentHp != targetHp)
+
+			int currentMana = ally[i]->getCurrentMana();
+			int targetMana = ally[i]->getManaFinal();
+			if(currentHp != targetHp || currentMana != targetMana)
 			{
 				allDone = false;
 			}
@@ -1396,7 +1455,10 @@ void Battle::checkForCompletion(int& nextBattleState)
 		{
 			int currentHp = enemy[i]->getCurrentHp();
 			int targetHp = enemy[i]->getHpFinal();
-			if(currentHp != targetHp)
+
+			int currentMana = enemy[i]->getCurrentMana();
+			int targetMana = enemy[i]->getManaFinal();
+			if(currentHp != targetHp || currentMana != targetMana)
 			{
 				allDone = false;
 			}

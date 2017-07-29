@@ -98,6 +98,13 @@ void BattleOverlay::debuffedLog(std::string user, std::string target, std::strin
 	updateBattleLog(tempStr, false);
 }
 
+void BattleOverlay::chargedLog(std::string user, int amount)
+{
+	std::string tempStr;
+	tempStr = user + " charged for " + std::to_string(amount) + "!";
+	updateBattleLog(tempStr, false);
+}
+
 void BattleOverlay::genericSkillLog(std::string user, std::string skillName)
 {
 	updateBattleLog(user + " used " + skillName + ".");

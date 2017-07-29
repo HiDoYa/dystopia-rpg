@@ -20,16 +20,31 @@ SkillCards::SkillCards()
 	equip.getRect()->setSize(sf::Vector2f(75, 40));
 
 	//Icon
-	iconTexture.loadFromFile("images/skillIcons.png");
+	iconTexture.loadFromFile("images/ally/skillIcons.png");
 	icon.setTexture(&iconTexture);
 }
 
 void SkillCards::setupCard(Skill skill, int id)
 {
+	skillId = id;
 	std::string textHover = skill.getName() + '\n' + skill.getDescription();
 	equip.getHoverText()->setString(textHover);
 
-	icon.setTextureRect(sf::IntRect(id % 10, id / 10, 64, 64));
+	switch(skill.getPrimaryType())
+	{
+		case 0:
+			icon.setTextureRect(sf::IntRect(0, 0, 64, 64));
+			break;
+		case 1:
+			icon.setTextureRect(sf::IntRect(64, 0, 64, 64));
+			break;
+		case 2:
+			icon.setTextureRect(sf::IntRect(128, 0, 64, 64));
+			break;
+		case 3:
+			icon.setTextureRect(sf::IntRect(192, 0, 64, 64));
+			break;
+	}
 
 }
 
@@ -42,6 +57,11 @@ void SkillCards::setPosition(sf::Vector2f pos, sf::View view)
 	icon.setPosition(sf::Vector2f(pos.x + 30 + viewX, pos.y + 10 + viewY));
 	equip.updatePositionMap(pos.x, pos.y + 80, view);
 	equip.setPositionHover(pos.x + 30, pos.y + 30, view);
+}
+
+int SkillCards::getSkillId()
+{
+	return skillId;
 }
 
 bool SkillCards::selectSkill(sf::RenderWindow& win)
