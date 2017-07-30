@@ -25,6 +25,8 @@ Character::Character()
 	currentExp = 0;
 	requiredExp = 1;
 
+	itemEquipped = {-1, -1, -1};
+
 	chance = 5;
 
 	hp.setMaxSize(sf::Vector2f(150, 18));

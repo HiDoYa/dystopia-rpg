@@ -103,6 +103,7 @@ class Skill
 		//***** DAMAGE UTILITY ************
 		int checkForMaxMin(int, int);
 		int checkForCrit(int);
+		//TODO Text output if target misses or crits
 		void checkForMiss();
 
 		//****** DAMAGE CALC *********
@@ -111,9 +112,6 @@ class Skill
 
 		int normCalc(int, int, int);
 		int percentCalc(int, int, int, int);
-
-		//****** TEXT *********
-		std::string dispText(std::string, std::string, int);
 };
 
 #endif

@@ -72,11 +72,11 @@ void BattleOverlay::buffedLog(std::string user, std::string target, std::string 
 
 	if(amount != -1)
 	{
-		tempStr = user + " buffed " + target + stat + " for " + std::to_string(amount) + "!";
+		tempStr = user + " increased " + target + stat + " for " + std::to_string(amount) + "!";
 	}
 	else
 	{
-		tempStr = user + " buffed " + target + stat + "!";
+		tempStr = user + " increased " + target + stat + "!";
 	}
 	updateBattleLog(tempStr, false);
 }
@@ -89,11 +89,11 @@ void BattleOverlay::debuffedLog(std::string user, std::string target, std::strin
 
 	if(amount != -1)
 	{
-		tempStr = user + " debuffed " + target + stat + " for " + std::to_string(amount) + "!";
+		tempStr = user + " decreased " + target + stat + " for " + std::to_string(amount) + "!";
 	}
 	else
 	{
-		tempStr = user + " debuffed " + target + stat + "!";
+		tempStr = user + " decreased " + target + stat + "!";
 	}
 	updateBattleLog(tempStr, false);
 }

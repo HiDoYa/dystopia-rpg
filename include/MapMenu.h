@@ -54,9 +54,11 @@ class MapMenu
 		//Characters
 		void setupChar(std::vector<std::shared_ptr<Character>>&, std::vector<int>);
 		void showCharacterCard(std::shared_ptr<Character>&, int, std::vector<int>, 
-				std::vector<std::shared_ptr<Skill>>, std::vector<int>);
+				std::vector<std::shared_ptr<Skill>>, std::vector<int>,
+				std::vector<std::shared_ptr<Item>>, std::vector<int>);
 		void checkForCharacterButton(std::vector<std::shared_ptr<Character>>&,
 					     std::vector<int>, std::vector<std::shared_ptr<Skill>>, 
+					     std::vector<int>, std::vector<std::shared_ptr<Item>>,
 					     std::vector<int>, sf::RenderWindow&);
 		void checkForPartyButton(std::vector<int>&, 
 				std::vector<std::shared_ptr<Character>>&, int&, bool&, 
@@ -71,8 +73,8 @@ class MapMenu
 		void updateBattlePos(std::vector<std::shared_ptr<Character>>&, std::vector<int>, sf::View);
 		void drawAllBattle(std::vector<std::shared_ptr<Character>>&, std::vector<int>, sf::RenderWindow&);
 		
-		//Items
-		void drawAllItem(sf::RenderWindow&);
+		//Quests
+		void drawAllQuest(sf::RenderWindow&);
 		
 		//Save
 		void drawAllSave(sf::RenderWindow&);

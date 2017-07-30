@@ -56,7 +56,7 @@ void MapMenu::setTitle(int menuOption)
 			title.setString("Battle");
 			break;
 		case 2:
-			title.setString("Items");
+			title.setString("Quests");
 			break;
 		case 3:
 			title.setString("Save");
@@ -113,15 +113,20 @@ void MapMenu::setupChar(std::vector<std::shared_ptr<Character>>& ally, std::vect
 void MapMenu::showCharacterCard(std::shared_ptr<Character>& allySingular, int indexInAlly,
 				std::vector<int> allyInParty, 
 				std::vector<std::shared_ptr<Skill>> skillList, 
-				std::vector<int> unlockedSkills)
+				std::vector<int> unlockedSkills,
+				std::vector<std::shared_ptr<Item>> itemList,
+				std::vector<int> itemHeld)
 {
-	characterCard.setupCard(*allySingular, indexInAlly, allyInParty, skillList, unlockedSkills);
+	characterCard.setupCard(*allySingular, indexInAlly, allyInParty, skillList, unlockedSkills, itemList, itemHeld);
 }
 
 void MapMenu::checkForCharacterButton(std::vector<std::shared_ptr<Character>>& ally,
 				      std::vector<int> allyInParty, 
 				      std::vector<std::shared_ptr<Skill>> skillList,
-				      std::vector<int> unlockedSkills, sf::RenderWindow& win)
+				      std::vector<int> unlockedSkills, 
+				      std::vector<std::shared_ptr<Item>> itemList,
+				      std::vector<int> itemHeld,
+				      sf::RenderWindow& win)
 {
 	if(!charSelected)
 	{
@@ -130,7 +135,7 @@ void MapMenu::checkForCharacterButton(std::vector<std::shared_ptr<Character>>& a
 			if(characterButtons[i]->mouseClickedInButton(sf::Color::Red, sf::Color::White, win))
 			{
 				charSelected = true;
-				showCharacterCard(ally[i], i, allyInParty, skillList, unlockedSkills);
+				showCharacterCard(ally[i], i, allyInParty, skillList, unlockedSkills, itemList, itemHeld);
 				break;
 			}
 		}
@@ -283,7 +288,7 @@ void MapMenu::drawAllBattle(std::vector<std::shared_ptr<Character>>& ally, std::
 }
 
 //******** ITEMS *********
-void MapMenu::drawAllItem(sf::RenderWindow& win)
+void MapMenu::drawAllQuest(sf::RenderWindow& win)
 {
 	menuBackground.drawSprite(win);
 }

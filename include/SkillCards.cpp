@@ -45,7 +45,14 @@ void SkillCards::setupCard(Skill skill, int id)
 			icon.setTextureRect(sf::IntRect(192, 0, 64, 64));
 			break;
 	}
+}
 
+void SkillCards::setupCard(Item item, int id)
+{
+	skillId = id;
+	std::string textHover = item.getName();
+	equip.getHoverText()->setString(textHover);
+	//TODO FINISH
 }
 
 void SkillCards::setPosition(sf::Vector2f pos, sf::View view)

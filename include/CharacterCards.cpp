@@ -18,7 +18,7 @@ CharacterCards::CharacterCards()
 	setupText(def, font, 20);
 	setupText(agi, font, 20);
 	setupText(skillText, font, 20);
-	skillText.setString("Equipped Skills");
+	skillText.setString("Skills & Items");
 
 	hp.setLabelPos(0);
 	hp.setLabelSize(13);
@@ -44,6 +44,13 @@ CharacterCards::CharacterCards()
 		skillButton[i]->getHoverText()->setCharacterSize(15);
 		skillButton[i]->getHoverText()->setColor(sf::Color::White);
 		skillButton[i]->getCirc()->setRadius(50);
+
+		itemButton.push_back(std::shared_ptr<ClickButton>(new ClickButton));
+		itemButton[i]->setType(1);
+		itemButton[i]->setHoverText(true);
+		itemButton[i]->getHoverText()->setCharacterSize(15);
+		itemButton[i]->getHoverText()->setColor(sf::Color::White);
+		itemButton[i]->getCirc()->setRadius(50);
 	}
 	displaySkills = false;
 }
@@ -85,6 +92,10 @@ void CharacterCards::updatePosition(std::vector<std::shared_ptr<Character>> ally
 	skillButton[1]->updatePositionMap(790, 260, view);
 	skillButton[2]->updatePositionMap(890, 330, view);
 
+	itemButton[0]->updatePositionMap(690, 450, view);
+	itemButton[1]->updatePositionMap(790, 530, view);
+	itemButton[2]->updatePositionMap(890, 450, view);
+
 	partyButton.updatePositionMap(700, 100, view);
 
 	for(int i = 0; i < skillCards.size(); i++)
@@ -95,12 +106,15 @@ void CharacterCards::updatePosition(std::vector<std::shared_ptr<Character>> ally
 	for(int i = 0; i < 3; i++)
 	{
 		skillButton[i]->centerHoverHorizontal();
+		itemButton[i]->centerHoverHorizontal();
 	}
 }
 
 void CharacterCards::setupCard(Character chr, int indexInAlly, std::vector<int> allyInParty, 
 			    std::vector<std::shared_ptr<Skill>> skillList, 
-			    std::vector<int> unlockedSkills)
+			    std::vector<int> unlockedSkills,
+			    std::vector<std::shared_ptr<Item>> itemList,
+			    std::vector<int> itemHeld)
 {
 	name.setString(chr.getName());
 
@@ -139,6 +153,14 @@ void CharacterCards::setupCard(Character chr, int indexInAlly, std::vector<int> 
 				skillCards[skillCards.size() - 1]->setupCard(*skillList[currentNum], currentNum);
 			}
 		}
+	}
+
+	itemCards.clear();
+
+	for(int i = 0; i < itemHeld.size(); i++)
+	{
+		itemCards.push_back(std::shared_ptr<SkillCards>(new SkillCards));
+		itemCards[itemCards.size() - 1]->setupCard(*itemList[itemHeld[i]], itemHeld[i]);
 	}
 
 	for(int i = 0; i < 3; i++)
@@ -281,6 +303,7 @@ void CharacterCards::drawAll(std::vector<std::shared_ptr<Character>> ally, sf::R
 		for(int i = 0; i < skillButton.size(); i++)
 		{
 			skillButton[i]->drawAll(win);
+			itemButton[i]->drawAll(win);
 		}
 
 		win.draw(skillText);

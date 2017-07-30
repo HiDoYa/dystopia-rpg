@@ -30,9 +30,9 @@ UIOverlay::UIOverlay()
 	battleButton.getText()->setString("Battle");
 	battleButton.getText()->setCharacterSize(15);
 
-	itemButton.getRect()->setSize(sf::Vector2f(175, 50));
-	itemButton.getText()->setString("Items");
-	itemButton.getText()->setCharacterSize(15);
+	questButton.getRect()->setSize(sf::Vector2f(175, 50));
+	questButton.getText()->setString("Quests");
+	questButton.getText()->setCharacterSize(15);
 
 	saveButton.getRect()->setSize(sf::Vector2f(175, 50));
 	saveButton.getText()->setString("Save");
@@ -79,7 +79,7 @@ void UIOverlay::setPosition(sf::View view)
 
 	charButton.updatePositionMap(25, 700, view);
 	battleButton.updatePositionMap(225, 700, view);
-	itemButton.updatePositionMap(425, 700, view);
+	questButton.updatePositionMap(425, 700, view);
 	saveButton.updatePositionMap(625, 700, view);
 }
 
@@ -99,7 +99,7 @@ bool UIOverlay::checkForMapMenu(int& menuOption, sf::RenderWindow& win)
 {
 	bool charBool = charButton.mouseClickedInButton(menuSelected, menuDeselected, win);
 	bool battleBool = battleButton.mouseClickedInButton(menuSelected, menuDeselected, win);
-	bool itemBool = itemButton.mouseClickedInButton(menuSelected, menuDeselected, win);
+	bool questBool = questButton.mouseClickedInButton(menuSelected, menuDeselected, win);
 	bool saveBool = saveButton.mouseClickedInButton(menuSelected, menuDeselected, win);
 	if(charBool)
 	{
@@ -111,7 +111,7 @@ bool UIOverlay::checkForMapMenu(int& menuOption, sf::RenderWindow& win)
 		menuOption = 1;
 		return true;
 	}
-	else if(itemBool)
+	else if(questBool)
 	{
 		menuOption = 2;
 		return true;
@@ -141,6 +141,6 @@ void UIOverlay::drawAll(sf::RenderWindow& win)
 
 	charButton.drawAll(win);
 	battleButton.drawAll(win);
-	itemButton.drawAll(win);
+	questButton.drawAll(win);
 	saveButton.drawAll(win);
 }

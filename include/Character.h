@@ -29,10 +29,14 @@ class Character: public SpriteManager
 		int buffDef;
 		int buffAgi;
 
+		//Shows the items equipped (index 0 -> weapon, 1 -> armor, 2 -> OS)
+		std::vector<int> itemEquipped;
+
 		//Stores ID for each skill
 		std::vector<int> skillNum;         //For use in battle
 		std::vector<int> possibleSkillNum; //For all possible equippable skills (for allies)
 
+		//TODO Rework persistent skills
 		//For continuous/status effects. Can be damaging/debuff
 		std::vector<int> persistentSkillNum;
 		std::vector<int> numTurnsSkill;

@@ -356,21 +356,3 @@ int Skill::percentCalc(int posMult, int negMult, int percentMax, int type)
 	return val;
 }
 
-//******** TEXT *************
-std::string Skill::dispText(std::string chrName, std::string target, int tempDmg)
-{
-	std::string returnText = "";
-
-	if(missed)
-	{
-		returnText = chrName + " missed the attack";
-	}
-	//TODO
-	else if(true)
-	{
-		returnText = chrName + " hit " + target + " for " + std::to_string(tempDmg);
-	}
-
-	returnText += '!';
-	return returnText;
-}

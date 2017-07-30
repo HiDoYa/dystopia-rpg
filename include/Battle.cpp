@@ -300,7 +300,11 @@ void Battle::setSkillIcons()
 void Battle::statusHandle(int& nextBattleState)
 {
 	std::cout << "statusHandle\n";
-	checkForStatus();
+	//TODO
+	//**************************
+	// This is broooken. Make PersistHandle to checkForStatus and work with statuses instead.
+	//**************************
+	//checkForStatus();
 
 	switch (nextCharType)
 	{

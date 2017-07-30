@@ -28,7 +28,7 @@ class UIOverlay
 		//Button
 		ClickButton charButton;
 		ClickButton battleButton;
-		ClickButton itemButton;
+		ClickButton questButton;
 		ClickButton saveButton;
 		sf::Color menuSelected;
 		sf::Color menuDeselected;

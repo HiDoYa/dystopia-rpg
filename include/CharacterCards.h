@@ -1,3 +1,4 @@
+#include "Item.h"
 #include "SpriteManager.h"
 #include "StatBar.h"
 #include "SkillCards.h"
@@ -32,14 +33,15 @@ class CharacterCards
 		bool existInParty;
 		int allyIndex;
 
-		//TODO finish skill buttons
 		sf::Text skillText;
 		std::vector<std::shared_ptr<ClickButton>> skillButton;
+		std::vector<std::shared_ptr<ClickButton>> itemButton;
 
 		//Selecting new skills
 		bool displaySkills;
 		int skillToChange;
 		std::vector<std::shared_ptr<SkillCards>> skillCards;
+		std::vector<std::shared_ptr<SkillCards>> itemCards;
 		ClickButton prevPage;
 		ClickButton nextPage;
 		int curPage;
@@ -53,7 +55,8 @@ class CharacterCards
 
 		//Setup
 		void setupCard(Character, int, std::vector<int>, 
-				std::vector<std::shared_ptr<Skill>>, std::vector<int>);
+				std::vector<std::shared_ptr<Skill>>, std::vector<int>,
+				std::vector<std::shared_ptr<Item>>, std::vector<int>);
 		void checkForButton(std::vector<int>&, std::vector<std::shared_ptr<Character>>&, 
 				int&, bool&, sf::RenderWindow&);
 		void checkForSkill(sf::RenderWindow&);
