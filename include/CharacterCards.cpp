@@ -84,7 +84,7 @@ void CharacterCards::updatePosition(std::vector<std::shared_ptr<Character>> ally
 
 	if(allyIndex != -1)
 	{
-		ally[allyIndex]->setPosition(570 + viewX, 450 + viewY);
+		ally[allyIndex]->setPosition(470 + viewX, 200 + viewY);
 		ally[allyIndex]->setScale(2.5, 2.5);
 	}
 
@@ -96,6 +96,10 @@ void CharacterCards::updatePosition(std::vector<std::shared_ptr<Character>> ally
 	itemButton[0]->updatePositionMap(690, 450, view);
 	itemButton[1]->updatePositionMap(790, 530, view);
 	itemButton[2]->updatePositionMap(890, 450, view);
+
+	itemButton[0]->getCirc()->setTextureRect(sf::IntRect(0, 0, 64, 64));
+	itemButton[1]->getCirc()->setTextureRect(sf::IntRect(64, 0, 64, 64));
+	itemButton[2]->getCirc()->setTextureRect(sf::IntRect(128, 0, 64, 64));
 
 	partyButton.updatePositionMap(700, 100, view);
 

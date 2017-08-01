@@ -40,7 +40,7 @@ Textbox::Textbox()
 	name.setCharacterSize(13);
 	nextPrompt.setCharacterSize(0);
 
-	choiceInstruct.setCharacterSize(15);
+	choiceInstruct.setCharacterSize(25);
 	choiceOne.getText()->setCharacterSize(15);
 	choiceTwo.getText()->setCharacterSize(15);
 
