@@ -16,35 +16,30 @@ UIOverlay::UIOverlay()
 	//Currency Text
 	currencyText.setFont(font);
 	
-	//level Text
-	levelText.setFont(font);
-	levelText.setColor(sf::Color::Black);
-	levelText.setCharacterSize(25);
-
 	//Button
 	charButton.getRect()->setSize(sf::Vector2f(175, 50));
 	charButton.getText()->setString("Characters");
-	charButton.getText()->setCharacterSize(15);
+	charButton.getText()->setCharacterSize(20);
 
 	battleButton.getRect()->setSize(sf::Vector2f(175, 50));
 	battleButton.getText()->setString("Battle");
-	battleButton.getText()->setCharacterSize(15);
+	battleButton.getText()->setCharacterSize(20);
 
 	questButton.getRect()->setSize(sf::Vector2f(175, 50));
 	questButton.getText()->setString("Quests");
-	questButton.getText()->setCharacterSize(15);
+	questButton.getText()->setCharacterSize(20);
 
 	saveButton.getRect()->setSize(sf::Vector2f(175, 50));
 	saveButton.getText()->setString("Save");
-	saveButton.getText()->setCharacterSize(15);
+	saveButton.getText()->setCharacterSize(20);
 
 	menuSelected = sf::Color::Red;
 	menuDeselected = sf::Color::Black;
 
 	inParty.setFont(font);
-	inParty.setCharacterSize(10);
+	inParty.setCharacterSize(20);
 	inParty.setColor(sf::Color::Black);
-	inParty.setString("Party Members");
+	inParty.setString("Allies");
 }
 
 void UIOverlay::setPartyMember(std::vector<int> partyMembers,
@@ -69,8 +64,6 @@ void UIOverlay::setPosition(sf::View view)
 
 	currencyText.setPosition(sf::Vector2f(x + 900, y + 30));
 
-	levelText.setPosition(sf::Vector2f(x + 33, y + 40));
-
 	inParty.setPosition(sf::Vector2f(x + 10, y + 20));
 	for(int i = 0; i < partyCards.size(); i++)
 	{
@@ -86,11 +79,6 @@ void UIOverlay::setPosition(sf::View view)
 void UIOverlay::setCurrency(int cur)
 {
 	currencyText.setString("Gold: " + std::to_string(cur));
-}
-
-void UIOverlay::setLevel(int lvl)
-{
-	levelText.setString(std::to_string(lvl));
 }
 
 //********* ETC ***********
@@ -127,8 +115,6 @@ bool UIOverlay::checkForMapMenu(int& menuOption, sf::RenderWindow& win)
 void UIOverlay::drawAll(sf::RenderWindow& win)
 {
 	win.draw(mainWrapperSprite);
-
-	win.draw(levelText);
 
 	win.draw(currencyText);
 

@@ -35,8 +35,8 @@ Character::Character()
 	hp.getCurrentRect()->setFillColor(sf::Color::Red);
 	mana.getCurrentRect()->setFillColor(sf::Color::Yellow);
 
-	hp.getLabel()->setCharacterSize(6);
-	mana.getLabel()->setCharacterSize(6);
+	hp.getLabel()->setCharacterSize(13);
+	mana.getLabel()->setCharacterSize(13);
 	
 	hp.getLabel()->setColor(sf::Color::Black);
 	mana.getLabel()->setColor(sf::Color::Black);

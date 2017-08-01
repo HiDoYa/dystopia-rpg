@@ -12,7 +12,7 @@ MapMenu::MapMenu()
 	//Setup back button
 	backButton.getRect()->setSize(sf::Vector2f(175, 50));
 	backButton.getText()->setString("Back");
-	backButton.getText()->setCharacterSize(15);
+	backButton.getText()->setCharacterSize(20);
 
 	//Title
 	font.loadFromFile("font/Ubuntu.ttf");
@@ -26,7 +26,7 @@ MapMenu::MapMenu()
 	deselectedColW = sf::Color::White;
 
 	instructions.setFont(font);
-	instructions.setCharacterSize(10);
+	instructions.setCharacterSize(15);
 	instructions.setColor(sf::Color::Black);
 	instructions.setString("Click a player and click on an empty grid to change the character's default starting position.");
 
@@ -105,7 +105,7 @@ void MapMenu::setupChar(std::vector<std::shared_ptr<Character>>& ally, std::vect
 		characterButtons.push_back(tempPtr);
 		characterButtons[i]->getRect()->setSize(sf::Vector2f(300, 120));
 		characterButtons[i]->getText()->setString(ally[allyFound[i]]->getName());
-		characterButtons[i]->getText()->setCharacterSize(20);
+		characterButtons[i]->getText()->setCharacterSize(25);
 		characterButtons[i]->getText()->setColor(sf::Color::Black);
 	}
 }

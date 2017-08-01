@@ -19,9 +19,6 @@ class UIOverlay
 		sf::Text inParty;
 		std::vector<std::shared_ptr<OverlayCharDisplay>> partyCards;
 
-		//Level indicator
-		sf::Text levelText;
-
 		//Currency and other data
 		sf::Text currencyText;
 
@@ -42,7 +39,6 @@ class UIOverlay
 		//Mutators
 		void setPosition(sf::View);
 		void setCurrency(int);
-		void setLevel(int);
 
 		//Etc
 		bool checkForMapMenu(int&, sf::RenderWindow&);

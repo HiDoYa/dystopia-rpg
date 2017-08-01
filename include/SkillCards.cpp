@@ -11,11 +11,11 @@ SkillCards::SkillCards()
 	//Set button
 	equip.setType(0);
 	equip.setHoverText(true);
-	equip.getHoverText()->setCharacterSize(9);
+	equip.getHoverText()->setCharacterSize(13);
 	equip.getHoverText()->setColor(sf::Color::White);
 
 	equip.getText()->setString("Equip");
-	equip.getText()->setCharacterSize(10);
+	equip.getText()->setCharacterSize(15);
 	equip.getText()->setColor(sf::Color::Black);
 	equip.getRect()->setSize(sf::Vector2f(75, 40));
 }

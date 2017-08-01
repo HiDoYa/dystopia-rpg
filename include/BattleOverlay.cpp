@@ -19,7 +19,7 @@ BattleOverlay::BattleOverlay()
 	//Current char
 
 	//Battle log
-	battleLog.setCharacterSize(15);
+	battleLog.setCharacterSize(25);
 	battleLog.setPosition(sf::Vector2f(100, 670));
 	currentCharDesc.setPosition(sf::Vector2f(100, 200));
 

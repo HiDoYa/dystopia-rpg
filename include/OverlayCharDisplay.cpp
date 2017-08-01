@@ -9,10 +9,10 @@ OverlayCharDisplay::OverlayCharDisplay()
 	name.setFont(font);
 	level.setFont(font);
 
-	name.setCharacterSize(8);
-	level.setCharacterSize(9);
-	hp.getLabel()->setCharacterSize(4);
-	mana.getLabel()->setCharacterSize(4);
+	name.setCharacterSize(13);
+	level.setCharacterSize(13);
+	hp.getLabel()->setCharacterSize(9);
+	mana.getLabel()->setCharacterSize(9);
 
 	hp.setMaxSize(sf::Vector2f(80, 14));
 	mana.setMaxSize(sf::Vector2f(80, 14));
@@ -20,8 +20,8 @@ OverlayCharDisplay::OverlayCharDisplay()
 	hp.getCurrentRect()->setFillColor(sf::Color::Red);
 	mana.getCurrentRect()->setFillColor(sf::Color::Yellow);
 
-	hp.setLabelPos(2);
-	mana.setLabelPos(2);
+	hp.setLabelPos(0);
+	mana.setLabelPos(0);
 
 	name.setColor(sf::Color::Black);
 	level.setColor(sf::Color::Black);

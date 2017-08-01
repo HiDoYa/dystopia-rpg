@@ -35,7 +35,7 @@ CharacterCards::CharacterCards()
 	mana.getLabel()->setColor(sf::Color::Black);
 
 	partyButton.getRect()->setSize(sf::Vector2f(300, 80));
-	partyButton.getText()->setCharacterSize(15);
+	partyButton.getText()->setCharacterSize(20);
 	partyButton.getText()->setColor(sf::Color::Black);
 
 	for(int i = 0; i < 3; i++)
@@ -244,7 +244,7 @@ void CharacterCards::checkForButton(std::vector<int>& allyInParty,
 	}
 
 	//Item select
-	for(int i = 0; i < iteMbutton.size(); i++)
+	for(int i = 0; i < itemButton.size(); i++)
 	{
 		if(itemButton[i]->mouseClickedInButton("images/ally/itemIcons.png", "images/ally/itemIconsSelected.png", win))
 		{
