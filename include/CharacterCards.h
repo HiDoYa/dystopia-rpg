@@ -33,7 +33,7 @@ class CharacterCards
 		bool existInParty;
 		int allyIndex;
 
-		sf::Text skillText;
+		sf::Text skillItemText;
 		std::vector<std::shared_ptr<ClickButton>> skillButton;
 		std::vector<std::shared_ptr<ClickButton>> itemButton;
 
@@ -41,11 +41,15 @@ class CharacterCards
 		bool displaySkills;
 		int skillToChange;
 		std::vector<std::shared_ptr<SkillCards>> skillCards;
-		std::vector<std::shared_ptr<SkillCards>> itemCards;
 		ClickButton prevPage;
 		ClickButton nextPage;
 		int curPage;
 		int maxPage;
+
+		//Selecting new items
+		bool displayItems;
+		int itemToChange;
+		std::vector<std::shared_ptr<SkillCards>> itemCards;
 	public:
 		CharacterCards();
 		//Utility

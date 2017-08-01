@@ -19,7 +19,6 @@ Textbox::Textbox()
 
 	currentChoice = 0;
 	choiceBoxOpen = false;
-	oldTextSize = 0;
 	displayChoiceBoxes= false;
 	open = false;
 	currentCompleted = false;
@@ -162,7 +161,7 @@ void Textbox::drawAll(sf::RenderWindow& win)
 void Textbox::convertText(std::string str, std::vector<std::string>& sVec)
 {
 	//Length of text for each line
-	int textLen = 40;
+	int textLen = 70;
 	float fullTextLen = textLen * 2;
 
 	//Resets old content
@@ -206,9 +205,6 @@ void Textbox::convertText(std::string str, std::vector<std::string>& sVec)
 				{
 					sVec[i].push_back(str[currentText]);
 				}
-
-				//Adds a null terminator
-				sVec[i].push_back('\0');
 
 				//Sets lastNdx to the current index plus one
 				lastNdx = text + 1;
@@ -327,7 +323,7 @@ bool Textbox::textHandler(sf::String nm, sf::String str, bool condition, bool& c
 				}
 				else
 				{
-					textNum = i + 2;
+					textNum++;
 				}
 			}
 		}
@@ -359,9 +355,10 @@ int Textbox::choiceBoxDisp(std::string nm, std::string textStr, std::string regI
 		choiceBoxOpen = true;
 		openBox();
 		textNum = 1;
+		currentChoice = 0;
 		currentlyTalking = true;
 		convertText(textStr, sVec);
-		oldTextSize = sVec.size();
+		newZero = sVec.size() + 1;
 	}
 
 	for(int i = 0; i < sVec.size(); i++)
@@ -379,13 +376,13 @@ int Textbox::choiceBoxDisp(std::string nm, std::string textStr, std::string regI
 				}
 				else
 				{
-					textNum = i + 2;
+					textNum++;
 				}
 			}
 		}
 	}
 
-	if(textNum == sVec.size() + 1)
+	if(textNum == newZero)
 	{
 		animateText(regInp);
 		bool choiceComp = false;
@@ -399,27 +396,24 @@ int Textbox::choiceBoxDisp(std::string nm, std::string textStr, std::string regI
 		if(choiceComp)
 		{
 			displayChoiceBoxes = false;
-			textNum = sVec.size() + 2;
-			if(currentChoice == 0)
+			textNum++;
+			if(currentChoice == 1)
 			{
 				convertText(choiceOneDisp, sVec);
 			}
-			else if(currentChoice == 1)
+			else if(currentChoice == 2)
 			{
 				convertText(choiceTwoDisp, sVec);
 			}
 		}
 	}
 
-	//New zero keeps track of what number "textNum" is at 
-	int newZero = oldTextSize + 1;
-
-	for(int i = newZero; i < sVec.size() + newZero; i++)
+	for(int i = 0; i < sVec.size(); i++)
 	{
-		if(textNum == i + 1)
+		if(textNum == i + 1 + newZero)
 		{
 			setName(nm);
-			animateText(sVec[i - newZero]);
+			animateText(sVec[i]);
 
 			if(nextText())
 			{
@@ -429,7 +423,7 @@ int Textbox::choiceBoxDisp(std::string nm, std::string textStr, std::string regI
 				}
 				else
 				{
-					textNum = i + 2;
+					textNum++;
 				}
 			}
 		}
@@ -438,7 +432,6 @@ int Textbox::choiceBoxDisp(std::string nm, std::string textStr, std::string regI
 	if(textNum == -1)
 	{
 		closeBox();
-		currentChoice = 0;
 		choiceBoxOpen = false;
 		currentlyTalking = false;
 		textNum = 0;
@@ -454,12 +447,12 @@ bool Textbox::makeChoice(sf::RenderWindow& win)
 
 	if(firstOption)
 	{
-		currentChoice = 0;
+		currentChoice = 1;
 		return true;
 	}
 	else if(secondOption)
 	{
-		currentChoice = 1;
+		currentChoice = 2;
 		return true;
 	}
 	return false;

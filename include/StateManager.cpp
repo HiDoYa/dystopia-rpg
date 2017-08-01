@@ -45,8 +45,9 @@ StateManager::StateManager()
 	unlockedSkills = {0, 1, 2};
 
 	//Event has false and true by default
-	stateFlag.push_back(false);
-	stateFlag.push_back(true);
+	std::vector<bool> tempFlag (256, false);
+	tempFlag[1] = true;
+	stateFlag = tempFlag;
 }
 
 //********* MENU *************

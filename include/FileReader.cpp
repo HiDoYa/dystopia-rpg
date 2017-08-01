@@ -488,9 +488,9 @@ void FileReader::loadMainMapFile(std::string fileNm,
 	npc.clear();
 
 	std::ifstream mainMapFile(fileNm);
+	mainMapFile >> strInp;
 	do
 	{
-		mainMapFile >> strInp;
 		if(strInp == "EncRate")
 		{
 			mainMapFile >> strInp;
@@ -667,7 +667,7 @@ void FileReader::loadMainMapFile(std::string fileNm,
 			int idNum;
 			mainMapFile >> strInp;
 
-			if(curChoice == 0)
+			if(curChoice == 1)
 			{
 				if(strInp == "Ally")
 				{
@@ -680,7 +680,7 @@ void FileReader::loadMainMapFile(std::string fileNm,
 				mainMapFile >> idNum;
 				npc[npcCounter]->pushGiveOneId(idNum);
 			}
-			else if(curChoice == 1)
+			else if(curChoice == 2)
 			{
 				if(strInp == "Ally")
 				{
@@ -719,6 +719,8 @@ void FileReader::loadMainMapFile(std::string fileNm,
 				npc[npcCounter]->pushChoiceTwoDisp(getWholeText(mainMapFile));
 			}
 		}
+
+		mainMapFile >> strInp;
 	} while(!mainMapFile.eof());
 	mainMapFile.close();
 }

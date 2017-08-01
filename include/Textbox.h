@@ -22,7 +22,7 @@ class Textbox
 		bool choiceBoxOpen;
 		bool displayChoiceBoxes;
 		int currentChoice;
-		int oldTextSize;
+		int newZero;
 
 		//Stores text split up
 		std::vector<std::string> sVec;

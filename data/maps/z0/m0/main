@@ -1,4 +1,4 @@
-EncRate 5
+EncRate 0
 EnemList enemyList0
 
 PrevZM 0 1
@@ -8,24 +8,16 @@ Npc CondFalse 0
 	Image images/npc/npcs.png
 	ImagePos 0 0 64
 	Pos 3 2
-	Name TestNpc
-
-	Start CondTrue 1
-	Text Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-	Give Ally 1
+	Name Stranger
 
 	Start CondFalse 0
-	Text This is different text get scammed
-	SetCondTrue 0
-
-	Start CondTrue 1
-	Text Lorem ipusm harhar
+	Text Long live the Bots!
 
 Npc CondFalse 0
 	Image images/npc/npcs.png
 	ImagePos 0 0 64
 	Pos 3 8
-	Name this is a test
+	Name Stranger
 
 	Start CondTru 1
 	Text Is this possible?
@@ -40,4 +32,17 @@ Npc CondFalse 0
 	Image images/npc/npcs.png
 	ImagePos 0 0 64
 	Pos 3 4
-	Name TestNpc
+	Name Stranger
+
+	Start CondTrue 2
+	Text So, how's the old James Ollivera coming along?
+
+	Start CondFalse 0
+	Text Hey, do you need a robot by any chance? It's not very useful but you might be able to harvest its parts...
+	Choice So... you want it?
+	ChoiceOne Yes
+		*SetCondTrue 2
+		*Text Thank god! This thing was such an annoyance for me. Oh and by the way it's named James Ollivera... Don't ask me why, I don't know. It used to be my parent's robot. Anyway, have fun with it!
+		*Give Ally 1
+	ChoiceTwo No
+		*Text Ugh... Oh well, I'll ask somebody else.

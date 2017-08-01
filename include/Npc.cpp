@@ -46,7 +46,7 @@ void Npc::speak(std::vector<bool>& stateFlag, std::vector<int>& allyFound,
 			bool allowText = true;
 			for(int j = 0; j < getCondition()[i].size(); j++)
 			{
-				if(stateFlag[getCondition()[j][i]] != getConditionCheck()[j][i])
+				if(stateFlag[getCondition()[i][j]] != getConditionCheck()[i][j])
 				{
 					allowText = false;
 				}

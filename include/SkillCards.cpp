@@ -18,18 +18,16 @@ SkillCards::SkillCards()
 	equip.getText()->setCharacterSize(10);
 	equip.getText()->setColor(sf::Color::Black);
 	equip.getRect()->setSize(sf::Vector2f(75, 40));
-
-	//Icon
-	iconTexture.loadFromFile("images/ally/skillIcons.png");
-	icon.setTexture(&iconTexture);
 }
 
-void SkillCards::setupCard(Skill skill, int id)
+void SkillCards::setupCard(Skill skill, int idInp)
 {
-	skillId = id;
+	id = idInp;
 	std::string textHover = skill.getName() + '\n' + skill.getDescription();
 	equip.getHoverText()->setString(textHover);
 
+	iconTexture.loadFromFile("images/ally/skillIcons.png");
+	icon.setTexture(&iconTexture);
 	switch(skill.getPrimaryType())
 	{
 		case 0:
@@ -47,12 +45,26 @@ void SkillCards::setupCard(Skill skill, int id)
 	}
 }
 
-void SkillCards::setupCard(Item item, int id)
+void SkillCards::setupCard(Item item, int idInp)
 {
-	skillId = id;
+	id = idInp;
 	std::string textHover = item.getName();
 	equip.getHoverText()->setString(textHover);
-	//TODO FINISH
+
+	iconTexture.loadFromFile("images/ally/itemIcons.png");
+	icon.setTexture(&iconTexture);
+	switch(item.getItemType())
+	{
+		case 0:
+			icon.setTextureRect(sf::IntRect(0, 0, 64, 64));
+			break;
+		case 1:
+			icon.setTextureRect(sf::IntRect(64, 0, 64, 64));
+			break;
+		case 2:
+			icon.setTextureRect(sf::IntRect(128, 0, 64, 64));
+			break;
+	}
 }
 
 void SkillCards::setPosition(sf::Vector2f pos, sf::View view)
@@ -66,9 +78,9 @@ void SkillCards::setPosition(sf::Vector2f pos, sf::View view)
 	equip.setPositionHover(pos.x + 30, pos.y + 30, view);
 }
 
-int SkillCards::getSkillId()
+int SkillCards::getId()
 {
-	return skillId;
+	return id;
 }
 
 bool SkillCards::selectSkill(sf::RenderWindow& win)
