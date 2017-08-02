@@ -15,9 +15,9 @@ MainMenu::MainMenu()
 	loadButton.getRect()->setSize(sf::Vector2f(400, 100));
 	exitButton.getRect()->setSize(sf::Vector2f(400, 100));
 
-	startButton.getRect()->setPosition(sf::Vector2f(330, 175));
-	loadButton.getRect()->setPosition(sf::Vector2f(330, 375));
-	exitButton.getRect()->setPosition(sf::Vector2f(330, 575));
+	startButton.getRect()->setPosition(sf::Vector2f(330, 230));
+	loadButton.getRect()->setPosition(sf::Vector2f(330, 410));
+	exitButton.getRect()->setPosition(sf::Vector2f(330, 590));
 
 	//Set text
 	startButton.getText()->setCharacterSize(30);

@@ -36,8 +36,8 @@ Textbox::Textbox()
 	choiceTwo.getText()->setFont(font);
 
 	//Sets character sizes
-	text.setCharacterSize(17);
-	name.setCharacterSize(13);
+	text.setCharacterSize(20);
+	name.setCharacterSize(19);
 	nextPrompt.setCharacterSize(0);
 
 	choiceInstruct.setCharacterSize(25);
@@ -56,7 +56,7 @@ Textbox::Textbox()
 	text.setColor(txtColor);
 	name.setColor(txtColor);
 
-	choiceInstruct.setColor(txtColor);
+	choiceInstruct.setColor(sf::Color::White);
 	choiceOne.getText()->setColor(txtColor);
 	choiceTwo.getText()->setColor(txtColor);
 

@@ -1,6 +1,6 @@
 Enemy 1
-	Name Testing
-	Level 3
+	Name Hostile Tera
+	Level 2
 	Hp 100
 	Mana 80
 	Strength 10
@@ -14,7 +14,7 @@ Enemy 1
 	Drops 1 10
 
 Enemy 2
-	Name Test two
+	Name Hostile Zhayn
 	Level 4
 	Hp 250
 	Mana 50

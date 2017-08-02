@@ -84,7 +84,7 @@ void Map::setupBitmap(std::string currentFile, sf::RenderWindow& win)
 				newMapNum.push_back(((str[3] - '0') * 10) + (str[4] - '0'));
 				changeMapCords.push_back(sf::Vector2i(loadCounter.x * 64, loadCounter.y * 64));
 				newMapCounter++;
-				map.at(loadCounter.y).push_back(sf::Vector2i(-1, -1));
+				map.at(loadCounter.y).push_back(sf::Vector2i(0, 18));
 			}
 			else if(!isdigit(str[0]) || !isdigit(str[3]))
 			{

@@ -38,8 +38,8 @@ Character::Character()
 	hp.getLabel()->setCharacterSize(13);
 	mana.getLabel()->setCharacterSize(13);
 	
-	hp.getLabel()->setColor(sf::Color::Black);
-	mana.getLabel()->setColor(sf::Color::Black);
+	hp.getLabel()->setColor(sf::Color(106, 106, 106));
+	mana.getLabel()->setColor(sf::Color(106, 106, 106));
 
 	hp.setLabelPos(2);
 	mana.setLabelPos(2);
@@ -358,7 +358,7 @@ int Character::getTotalAgility()
 void Character::statBarUpdate()
 {
 	hp.setStats(currentHp, maxHp, "Health");
-	mana.setStats(currentMana, maxMana, "Mana");
+	mana.setStats(currentMana, maxMana, "Energy");
 
 	hp.setPosition(sf::Vector2f(getPosition().x - 50, getPosition().y - 65));
 	mana.setPosition(sf::Vector2f(getPosition().x - 50, getPosition().y - 35));

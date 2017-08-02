@@ -56,11 +56,12 @@ CharacterCards::CharacterCards()
 	}
 }
 
-void CharacterCards::setDisplaySkills(bool inp)
+
+void CharacterCards::setDisplay(bool inp)
 {
 	displaySkills = inp;
+	displayItems = inp;
 }
-
 void CharacterCards::setupText(sf::Text& txt, sf::Font& font, int charSize)
 {
 	txt.setCharacterSize(charSize);
@@ -73,6 +74,9 @@ void CharacterCards::updatePosition(std::vector<std::shared_ptr<Character>> ally
 	int viewX = view.getCenter().x - (view.getSize().x / 2);
 	int viewY = view.getCenter().y - (view.getSize().y / 2);
 
+	skillDispBackground.setPosition(viewX, viewY);
+	background.setPosition(viewX, viewY);
+
 	hp.setPosition(sf::Vector2f(180 + viewX, 450 + viewY));
 	mana.setPosition(sf::Vector2f(180 + viewX, 580 + viewY));
 
@@ -84,7 +88,7 @@ void CharacterCards::updatePosition(std::vector<std::shared_ptr<Character>> ally
 
 	if(allyIndex != -1)
 	{
-		ally[allyIndex]->setPosition(470 + viewX, 200 + viewY);
+		ally[allyIndex]->setPosition(470 + viewX, 220 + viewY);
 		ally[allyIndex]->setScale(2.5, 2.5);
 	}
 

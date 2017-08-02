@@ -53,7 +53,7 @@ class CharacterCards
 	public:
 		CharacterCards();
 		//Utility
-		void setDisplaySkills(bool);
+		void setDisplay(bool);
 		void setupText(sf::Text&, sf::Font&, int = 30);
 		void updatePosition(std::vector<std::shared_ptr<Character>>, sf::View);
 

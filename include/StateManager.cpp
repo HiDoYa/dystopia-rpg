@@ -20,7 +20,7 @@
 StateManager::StateManager()
 {
 	//Placeholder defaults
-	startPosX = startPosY = 64;
+	startPosX = startPosY = 1024;
 	encounterRate = 0;
 	currentZone = currentMap = 0;
 	currency = 0;

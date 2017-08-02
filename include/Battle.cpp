@@ -59,7 +59,7 @@ Battle::Battle()
 
 		tempPtr->getCirc()->setRadius(30);
 		tempPtr->setHoverText(true);
-		tempPtr->getHoverText()->setCharacterSize(10);
+		tempPtr->getHoverText()->setCharacterSize(15);
 		tempPtr->getHoverText()->setColor(sf::Color::Black);
 		tempPtr->getCirc()->setPosition(optionsPos[i]);
 
@@ -121,6 +121,7 @@ void Battle::setupBattle(std::vector<std::shared_ptr<Character>> enemyList,
 {
 	std::cout << "setupBattle\n";
 
+	escaped = false;
 	selfFocus = singularAllyFocus = singularEnemyFocus = false;
 	
 	//Initialize for clearing all previous battle data
@@ -466,17 +467,20 @@ void Battle::allySkillChoiceHandler(int& nextBattleState, sf::RenderWindow& win)
 		allyOptions[i]->centerHoverHorizontal();
 		if(allyOptions[i]->mouseClickedInButton("images/ally/skillIcons.png", "images/ally/skillIconsSelected.png", win)) {
 			currentOption = i;
-			int manaCost = skillList[ally[nextCharCounter]->getSkillNum()[currentOption]]->getManaCost();
-			int allyMana = ally[nextCharCounter]->getCurrentMana();
-			if(allyMana < manaCost)
+			if(i < 3)
 			{
-				//TODO Display warning (not enough mana)
-				//Do nothing (must choose another skill)
-			}
-			else if(i < 3)
-			{
-				//Skills
-				nextBattleState = 3;
+				int manaCost = skillList[ally[nextCharCounter]->getSkillNum()[currentOption]]->getManaCost();
+				int allyMana = ally[nextCharCounter]->getCurrentMana();
+				if(allyMana < manaCost)
+				{
+					battleOverlay.updateBattleLog("You don't have enough mana for that skill!");
+					//Do nothing (must choose another skill)
+				}
+				else
+				{
+					//Skills
+					nextBattleState = 3;
+				}
 			}
 			else
 			{
@@ -1357,7 +1361,8 @@ void Battle::allyAttemptFlee(int& nextBattleState)
 	if(avgAlly * randChance > avgEnemy)
 	{
 		//TODO end the game properly
-		nextBattleState = 10;
+		battleOverlay.updateBattleLog("You successfully escaped!");
+		escaped = true;
 	}
 }
 
@@ -1567,14 +1572,21 @@ bool Battle::checkEnemyDeaths()
 void Battle::checkEndBattle(int& nextBattleState, int& currentState, std::vector<int> allyInParty, std::vector<std::shared_ptr<Character>> allyOrig)
 {
 	std::cout << "checkEndBattle\n";
-	//TODO Loses the battle
-	if(checkAllyDeath())
+	//Escaped the battle
+	if(escaped)
 	{
+		currentState = 1;
+	}
+	//TODO Loses the battle
+	else if(checkAllyDeath())
+	{
+		battleOverlay.updateBattleLog("You lost the battle!");
 		currentState = 0;
 	}
 	//TODO Wins the battle
 	else if(checkEnemyDeaths())
 	{
+		battleOverlay.updateBattleLog("You won the battle!");
 		//Transfer effects on ally over to the actual ally in map storage
 		for(int i = 0; i < allyInParty.size(); i++)
 		{

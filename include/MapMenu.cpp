@@ -98,7 +98,7 @@ void MapMenu::drawBackground(sf::RenderWindow& win)
 void MapMenu::setupChar(std::vector<std::shared_ptr<Character>>& ally, std::vector<int> allyFound)
 {
 	charSelected = false;
-	characterCard.setDisplaySkills(false);
+	characterCard.setDisplay(false);
 	for(int i = 0; i < allyFound.size(); i++)
 	{
 		std::shared_ptr<ClickButton> tempPtr (new ClickButton);

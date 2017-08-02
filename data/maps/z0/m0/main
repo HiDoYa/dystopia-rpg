@@ -7,7 +7,7 @@ NewPos 5 10
 Npc CondFalse 0
 	Image images/npc/npcs.png
 	ImagePos 0 0 64
-	Pos 3 2
+	Pos 9 10
 	Name Stranger
 
 	Start CondFalse 0
@@ -16,17 +16,11 @@ Npc CondFalse 0
 Npc CondFalse 0
 	Image images/npc/npcs.png
 	ImagePos 0 0 64
-	Pos 3 8
+	Pos 7 8
 	Name Stranger
 
 	Start CondTru 1
-	Text Is this possible?
-	Choice This is some choice question
-	ChoiceOne Check
-		*SetCondTrue 4
-		*Text You picked choice one.
-	ChoiceTwo Don't Check
-		*Text You picked choice two.
+	Text Are you a cyborg? Screw off, you filthy degenerate.
 
 Npc CondFalse 0
 	Image images/npc/npcs.png
@@ -35,14 +29,41 @@ Npc CondFalse 0
 	Name Stranger
 
 	Start CondTrue 2
-	Text So, how's the old James Ollivera coming along?
+	Text So, how's the old Robot doing?
 
 	Start CondFalse 0
 	Text Hey, do you need a robot by any chance? It's not very useful but you might be able to harvest its parts...
-	Choice So... you want it?
+	Choice Do you want it?
 	ChoiceOne Yes
 		*SetCondTrue 2
-		*Text Thank god! This thing was such an annoyance for me. Oh and by the way it's named James Ollivera... Don't ask me why, I don't know. It used to be my parent's robot. Anyway, have fun with it!
+		*Text Thank god! This thing was such an annoyance for me. Oh and by the way it's named James Ollivera... Don't ask me why, I don't know. It used to be my parents' robot. Anyways, have fun with it!
 		*Give Ally 1
 	ChoiceTwo No
 		*Text Ugh... Oh well, I'll ask somebody else.
+
+Npc CondFalse 0
+	Image images/npc/npcs.png
+	ImagePos 0 0 64
+	Pos 15 10
+	Name Stranger
+	
+	Start CondFalse 0
+	Text I can't even get a job with all these robots taking our jobs. No wonder there are so many people rebelling...
+
+Npc CondFalse 0
+	Image images/npc/npcs.png
+	ImagePos 0 0 64
+	Pos 17 5
+	Name Stranger
+
+	Start CondFalse 0
+	Text Who are you? Look, if you don't want to be in trouble, don't talk to me.
+
+Npc CondFlase 0
+	Image images/npc/npcs.png
+	ImagePos 0 0 64
+	Pos 5 17
+	Name Stranger
+
+	Start CondFlase 0
+	Text What horrible times... My sister passed away yesterday after being caught up in a violent rebel group.

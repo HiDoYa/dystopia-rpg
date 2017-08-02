@@ -44,6 +44,7 @@ class Battle
 		bool selfFocus;
 		bool multAllyFocus;
 		bool multEnemyFocus;
+		bool escaped;
 
 		//To iterate through skills to check for effects
 		int currentSkillCheck;
