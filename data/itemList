@@ -1,11 +1,26 @@
 Item 0
-	Name TO_REPLACE
-	Description THIS IS COOL
+	Name Weak Potion
+	Description Heals one ally.
 	SellPrice 15
-	ItemType Weapon
-		StrIncrease 10
-		DefIncrease 10
-		StrIncrease 10
-		HpIncrease 10
-		ManaIncrease 0
+	ItemType Consumable
+		HpIncrease 50
 
+Item 1
+	Name Medium Potion
+	Description Heals one ally.
+	SellPrice 50
+	ItemType Consumable
+		HpIncrease 200
+
+Item 2
+	Name Strong Potion
+	Description Heals one ally.
+	SellPrice 500
+	ItemType Consumable
+		HpIncrease 500
+
+Item 3
+	Name Weak Spear
+	Description Weak weapon.
+	SellPrice 15
+		StrIncrease 10

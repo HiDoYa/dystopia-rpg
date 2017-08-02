@@ -1,43 +1,46 @@
-EncRate 95
+EncRate 5
 EnemList enemyList0
 
 PrevZM 0 0
-NewPos 22 6
+NewPos 21 6
 
 Npc CondFalse 0
 	Image images/npc/npcs.png
 	ImagePos 0 0 64
 	Pos 3 2
-	Name TestNpc
-
-	Start CondTrue 1
-	Text Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-	Give Ally 1
+	Name Kahyn Member
 
 	Start CondFalse 0
-	Text This is different text get scammed
-	SetCondTrue 0
-
-	Start CondTrue 1
-	Text Lorem ipusm harhar
+	Text We're part of the Kahyn rebel group. We believe in the decentralization of government and the rule of the humans. We regularly target and kill robots in the government.
 
 Npc CondFalse 0
 	Image images/npc/npcs.png
 	ImagePos 0 0 64
 	Pos 3 8
-	Name this is a test
+	Name Kahyn Member
 
-	Start CondTru 1
-	Text Is this possible?
-	Choice This is some choice question
-	ChoiceOne Check
-		*SetCondTrue 4
-		*Text You picked choice one.
-	ChoiceTwo Don't Check
-		*Text You picked choice two.
+	Start CondFalse 0
+	Text What are you? A machine? A human?
+	Choice What are you?
+	ChoiceOne Machine
+		*Text I can still let you live but if any of the other guys catch you, I don't know what they're going to do to you. I'd be careful if I were you.
+	ChoiceTwo Human
+		*Text Whew, I thought you were a cyborg or something. So, screw those robots, am I right?
 
-Npc CondTrue 0
+Npc CondFalse 0
 	Image images/npc/npcs.png
-	ImagePos 0 0 64
-	Pos 3 4
-	Name TestNpc
+	ImagePos 64 0 64
+	Pos 14 15
+	Name Kahyn Member
+
+	Start CondFalse 0
+	Text Those robots are ruining our livelihood. Everybody here has suffered due to their cold heartedness.
+
+Npc CondFalse 0
+	Image images/npc/npcs.png
+	ImagePos 64 0 64
+	Pos 14 5
+	Name Kahyn Member
+
+	Start CondFalse 0
+	Text I don't feel any remorse for destroying robots. They're just... things. Unlike humans, they don't have emotions or true thought. I'm just reducing matter to rubble.

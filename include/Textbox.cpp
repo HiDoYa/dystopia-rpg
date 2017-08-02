@@ -31,8 +31,6 @@ Textbox::Textbox()
 	name.setStyle(sf::Text::Underlined);
 	nextPrompt.setFont(font);
 
-	choiceInstruct.setFont(font);
-	choiceInstruct.setStyle(sf::Text::Underlined);
 	choiceOne.getText()->setFont(font);
 	choiceTwo.getText()->setFont(font);
 
@@ -41,7 +39,6 @@ Textbox::Textbox()
 	name.setCharacterSize(19);
 	nextPrompt.setCharacterSize(0);
 
-	choiceInstruct.setCharacterSize(25);
 	choiceOne.getText()->setCharacterSize(15);
 	choiceTwo.getText()->setCharacterSize(15);
 
@@ -57,7 +54,6 @@ Textbox::Textbox()
 	text.setColor(txtColor);
 	name.setColor(txtColor);
 
-	choiceInstruct.setColor(sf::Color::White);
 	choiceOne.getText()->setColor(txtColor);
 	choiceTwo.getText()->setColor(txtColor);
 
@@ -79,7 +75,6 @@ Textbox::Textbox()
 	lastTimeLetter = 0;
 
 	//Choice Instruction is always the same
-	choiceInstruct.setString("Choose an option.");
 	nextPrompt.setString("Press spacebar to continue...");
 }
 
@@ -147,7 +142,6 @@ void Textbox::drawAll(sf::RenderWindow& win)
 	win.draw(rec);
 	if(displayChoiceBoxes)
 	{
-		win.draw(choiceInstruct);
 		choiceOne.drawAll(win);
 		choiceTwo.drawAll(win);
 	}
@@ -354,6 +348,7 @@ int Textbox::choiceBoxDisp(std::string nm, std::string textStr, std::string regI
 	if(condition && textNum == 0 && lastTimeBox + 350 < currentTime)
 	{
 		choiceBoxOpen = true;
+		tempBool = true;
 		openBox();
 		textNum = 1;
 		currentChoice = 0;
@@ -383,7 +378,7 @@ int Textbox::choiceBoxDisp(std::string nm, std::string textStr, std::string regI
 		}
 	}
 
-	if(textNum == newZero)
+	if(textNum == newZero && tempBool)
 	{
 		animateText(regInp);
 		bool choiceComp = false;
@@ -396,6 +391,7 @@ int Textbox::choiceBoxDisp(std::string nm, std::string textStr, std::string regI
 		}
 		if(choiceComp)
 		{
+			tempBool = false;
 			displayChoiceBoxes = false;
 			textNum++;
 			if(currentChoice == 1)

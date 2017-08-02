@@ -87,7 +87,7 @@ class Character: public SpriteManager
 		void setCanAtk(bool);
 		void setBattlePos(int);
 
-		void setCurrentExp(float);
+		void setCurrentExp(int);
 		void setRequiredExp();
 
 		void setChance(int);
@@ -126,8 +126,8 @@ class Character: public SpriteManager
 		bool getCanAtk();
 		int getBattlePos();
 
-		float getCurrentExp();
-		float getRequiredExp();
+		int getCurrentExp();
+		int getRequiredExp();
 
 		int getChance();
 		std::vector<int> getDropItemId();
@@ -145,7 +145,7 @@ class Character: public SpriteManager
 		//********* ETC ***********
 		void statBarUpdate();
 		void drawBars(sf::RenderWindow&);
-		void levelUp();
+		bool levelUp();
 		void copy(std::shared_ptr<Character>);
 };
 

@@ -153,7 +153,7 @@ void Character::setBattlePos(int inp)
 	battlePos = inp;
 }
 
-void Character::setCurrentExp(float inp)
+void Character::setCurrentExp(int inp)
 {
 	currentExp = inp;
 }
@@ -303,12 +303,12 @@ int Character::getBattlePos()
 	return battlePos;
 }
 
-float Character::getCurrentExp()
+int Character::getCurrentExp()
 {
 	return currentExp;
 }
 
-float Character::getRequiredExp()
+int Character::getRequiredExp()
 {
 	return requiredExp;
 }
@@ -372,14 +372,19 @@ void Character::drawBars(sf::RenderWindow& win)
 
 //Recalculates required exp and increments level
 //TODO Need indication of level up
-void Character::levelUp()
+bool Character::levelUp()
 {
 	if(currentExp > requiredExp)
 	{
 		level++;
+		strength += strength / 5;
+		defense += defense / 5;
+		agility += agility / 5;
 		currentExp -= requiredExp;
 		setRequiredExp();
+		return true;
 	}
+	return false;
 }
 
 void Character::copy(std::shared_ptr<Character> other)

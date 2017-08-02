@@ -8,7 +8,9 @@ CharacterCards::CharacterCards()
 	skillToChange = -1;
 	itemToChange = -1;
 	displaySkills = false;
-	displayItems = false;
+	displayWeapons = false;
+	displayArmor = false;
+	displayOs = false;
 	existInParty = false;
 	allyIndex = -1;
 
@@ -60,7 +62,9 @@ CharacterCards::CharacterCards()
 void CharacterCards::setDisplay(bool inp)
 {
 	displaySkills = inp;
-	displayItems = inp;
+	displayWeapons = inp;
+	displayArmor = inp;
+	displayOs = inp;
 }
 void CharacterCards::setupText(sf::Text& txt, sf::Font& font, int charSize)
 {
@@ -164,12 +168,27 @@ void CharacterCards::setupCard(Character chr, int indexInAlly, std::vector<int> 
 		}
 	}
 
-	itemCards.clear();
+	weaponCards.clear();
+	armorCards.clear();
+	osCards.clear();
 
 	for(int i = 0; i < itemHeld.size(); i++)
 	{
-		itemCards.push_back(std::shared_ptr<SkillCards>(new SkillCards));
-		itemCards[itemCards.size() - 1]->setupCard(*itemList[itemHeld[i]], itemHeld[i]);
+		switch(itemList[itemHeld[i]]->getItemType())
+		{
+			case 0:
+				weaponCards.push_back(std::shared_ptr<SkillCards>(new SkillCards));
+				weaponCards[weaponCards.size() - 1]->setupCard(*itemList[itemHeld[i]], itemHeld[i]);
+				break;
+			case 1:
+				armorCards.push_back(std::shared_ptr<SkillCards>(new SkillCards));
+				armorCards[armorCards.size() - 1]->setupCard(*itemList[itemHeld[i]], itemHeld[i]);
+				break;
+			case 2:
+				osCards.push_back(std::shared_ptr<SkillCards>(new SkillCards));
+				osCards[osCards.size() - 1]->setupCard(*itemList[itemHeld[i]], itemHeld[i]);
+				break;
+		}
 	}
 
 	for(int i = 0; i < 3; i++)
@@ -256,8 +275,20 @@ void CharacterCards::checkForButton(std::vector<int>& allyInParty,
 	{
 		if(itemButton[i]->mouseClickedInButton("images/ally/itemIcons.png", "images/ally/itemIconsSelected.png", win))
 		{
-			displayItems = true;
 			itemToChange = i;
+			switch(i)
+			{
+				case 0:
+					//TODO
+					//displayWeapons = true;
+					break;
+				case 1:
+					//displayArmor = true;
+					break;
+				case 2:
+					//displayOs = true;
+					break;
+			}
 		}
 	}
 
@@ -267,7 +298,6 @@ void CharacterCards::checkForButton(std::vector<int>& allyInParty,
 		if(skillCards[i]->selectSkill(win))
 		{
 			std::vector<int> skillNum = ally[allyIndex]->getSkillNum();
-			skillNum[skillToChange] = skillCards[i]->getId();
 
 			bool skillExists = false;
 
@@ -281,6 +311,7 @@ void CharacterCards::checkForButton(std::vector<int>& allyInParty,
 
 			if(!skillExists)
 			{
+				skillNum[skillToChange] = skillCards[i]->getId();
 				ally[allyIndex]->setSkillNum(skillNum);
 				displaySkills = false;
 			}
@@ -294,7 +325,7 @@ void CharacterCards::checkForButton(std::vector<int>& allyInParty,
 
 void CharacterCards::drawAll(std::vector<std::shared_ptr<Character>> ally, sf::RenderWindow& win)
 {
-	if(!displaySkills && !displayItems)
+	if(!displaySkills && !displayWeapons && !displayArmor && !displayOs)
 	{
 		background.drawSprite(win);
 
@@ -329,7 +360,28 @@ void CharacterCards::drawAll(std::vector<std::shared_ptr<Character>> ally, sf::R
 			skillCards[i]->drawAll(win);
 		}
 	}
-	else if(displayItems)
+	else if(displayWeapons)
 	{
+		skillDispBackground.drawSprite(win);
+		for(int i = 0; i < weaponCards.size(); i++)
+		{
+			weaponCards[i]->drawAll(win);
+		}
+	}
+	else if(displayArmor)
+	{
+		skillDispBackground.drawSprite(win);
+		for(int i = 0; i < armorCards.size(); i++)
+		{
+			armorCards[i]->drawAll(win);
+		}
+	}
+	else if(displayOs)
+	{
+		skillDispBackground.drawSprite(win);
+		for(int i = 0; i < osCards.size(); i++)
+		{
+			osCards[i]->drawAll(win);
+		}
 	}
 }

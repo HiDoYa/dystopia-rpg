@@ -26,7 +26,7 @@ UIOverlay::UIOverlay()
 	battleButton.getText()->setCharacterSize(20);
 
 	questButton.getRect()->setSize(sf::Vector2f(175, 50));
-	questButton.getText()->setString("Quests");
+	questButton.getText()->setString("Objectives");
 	questButton.getText()->setCharacterSize(20);
 
 	saveButton.getRect()->setSize(sf::Vector2f(175, 50));

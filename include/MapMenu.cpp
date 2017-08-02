@@ -56,10 +56,12 @@ void MapMenu::setTitle(int menuOption)
 			title.setString("Battle");
 			break;
 		case 2:
-			title.setString("Quests");
+			//TODO Quests
+			title.setString("IN DEVELOPMENT");
 			break;
 		case 3:
-			title.setString("Save");
+			//TODO Save
+			title.setString("IN DEVELOPMENT");
 			break;
 	}
 }
@@ -287,7 +289,15 @@ void MapMenu::drawAllBattle(std::vector<std::shared_ptr<Character>>& ally, std::
 	}
 }
 
-//******** ITEMS *********
+//******** OBJECTIVES *********
+void MapMenu::updateQuest(sf::View view)
+{
+	int viewX = view.getCenter().x - (view.getSize().x / 2);
+	int viewY = view.getCenter().y - (view.getSize().y / 2);
+
+	currentObjective.setPosition(sf::Vector2f(150 + viewX, 150 + viewY));
+}
+
 void MapMenu::drawAllQuest(sf::RenderWindow& win)
 {
 	menuBackground.drawSprite(win);

@@ -39,6 +39,8 @@ class MapMenu
 		sf::Time tme;
 		int lastTime;
 
+		//Objectives
+		sf::Text currentObjective;
 
 		//Save
 		//TODO Save in another "currentState"
@@ -74,6 +76,7 @@ class MapMenu
 		void drawAllBattle(std::vector<std::shared_ptr<Character>>&, std::vector<int>, sf::RenderWindow&);
 		
 		//Quests
+		void updateQuest(sf::View);
 		void drawAllQuest(sf::RenderWindow&);
 		
 		//Save

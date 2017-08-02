@@ -16,13 +16,13 @@ class Textbox
 		bool currentCompleted;
 
 		//Choices
-		sf::Text choiceInstruct;
 		ClickButton choiceOne;
 		ClickButton choiceTwo;
 		bool choiceBoxOpen;
 		bool displayChoiceBoxes;
 		int currentChoice;
 		int newZero;
+		bool tempBool;
 
 		//Stores text split up
 		std::vector<std::string> sVec;

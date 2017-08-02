@@ -18,12 +18,14 @@ class Npc: public SpriteManager, public Dialogue
 
 		int npcExistNum;
 		bool npcExistCond;
+		bool instHeal;
 	public:
 		Npc();
 		void npcExistCondition(int, bool);
 		bool npcExists(std::vector<bool>);
 		void speak(std::vector<bool>&, std::vector<int>&, std::vector<int>&, 
-				Textbox&, MapPlayer&, sf::RenderWindow&);
+				Textbox&, MapPlayer&, std::vector<std::shared_ptr<Character>>,
+				sf::RenderWindow&);
 		void giveToPlayer(std::vector<int>&, std::vector<int>&, int, int);
 		void ascendSort(std::vector<int>&);
 		void removeDup(std::vector<int>&);
@@ -32,6 +34,7 @@ class Npc: public SpriteManager, public Dialogue
 
 		//****** MUTATORS **********
 		void setName(std::string);
+		void setInstHeal(bool);
 
 		//***** ACCESSORS ********
 		bool getSpeaking();

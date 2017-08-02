@@ -125,6 +125,7 @@ void Battle::setupBattle(std::vector<std::shared_ptr<Character>> enemyList,
 	selfFocus = singularAllyFocus = singularEnemyFocus = false;
 	
 	//Initialize for clearing all previous battle data
+	ally.clear();
 	enemy.clear();
 
 	//Initialize for req default data
@@ -150,7 +151,7 @@ void Battle::setupBattle(std::vector<std::shared_ptr<Character>> enemyList,
 	}
 
 	//Initialize enemy
-	int numEnemies = rand() % 5 + 1;
+	int numEnemies = rand() % 3 + 1;
 	for(int i = 0; i < numEnemies; i++)
 	{
 		//Chooses enemy from list
@@ -887,6 +888,17 @@ void Battle::skillCalc()
 
 	manaChange();
 
+	if(nextCharType == 0)
+	{
+		int skillNum = ally[nextCharType]->getSkillNum()[currentOption];
+		battleOverlay.genericSkillLog(ally[nextCharType]->getName(), skillList[skillNum]->getName());
+	}
+	else if(nextCharType == 1)
+	{
+		int skillNum = enemy[nextCharType]->getSkillNum()[currentOption];
+		battleOverlay.genericSkillLog(enemy[nextCharType]->getName(), skillList[skillNum]->getName());
+	}
+
 	while(processSkillTargetting() != -1)
 	{
 		switch(currentSkillCheck)
@@ -1357,7 +1369,7 @@ void Battle::allyAttemptFlee(int& nextBattleState)
 	}
 	avgEnemy  /= (enemy.size() + 1);
 
-	int randChance = rand() % 15 + 85;
+	int randChance = rand() % 15 + 100;
 	if(avgAlly * randChance > avgEnemy)
 	{
 		//TODO end the game properly
@@ -1569,7 +1581,7 @@ bool Battle::checkEnemyDeaths()
 	return allDead;
 }
 
-void Battle::checkEndBattle(int& nextBattleState, int& currentState, std::vector<int> allyInParty, std::vector<std::shared_ptr<Character>> allyOrig)
+void Battle::checkEndBattle(int& nextBattleState, int& currentState, std::vector<int> allyInParty, std::vector<std::shared_ptr<Character>> allyOrig, std::vector<int>& itemHeld)
 {
 	std::cout << "checkEndBattle\n";
 	//Escaped the battle
@@ -1595,21 +1607,54 @@ void Battle::checkEndBattle(int& nextBattleState, int& currentState, std::vector
 			allyOrig[allyInParty[i]]->setAlive(ally[i]->getAlive());
 		}
 
-		currentState = 1;
+		std::vector<int> droppedId;
+
+		for(int i = 0; i < enemy.size(); i++)
+		{
+			std::vector<int> itemChance = enemy[i]->getDropItemChance();
+			std::vector<int> itemId = enemy[i]->getDropItemId();
+			for(int j = 0; j < itemChance.size(); j++)
+			{
+				if(itemChance[j] > rand() % 100 + 1)
+				{
+					droppedId.push_back(itemId[j]);
+				}
+			}
+		}
+		
+		if(droppedId.size() > 0)
+		{
+			battleOverlay.updateBattleLog("The enemies dropped items!", false);
+		}
+
+		for(int i = 0; i < droppedId.size(); i++)
+		{
+			itemHeld[droppedId[i]]++;
+		}
+
+		int exp = 0;
+		for(int i = 0; i < enemy.size(); i++)
+		{
+			exp += enemy[i]->getLevel() * 50;
+		}
+
+		for(int i = 0; i < ally.size(); i++)
+		{
+			ally[i]->setRequiredExp();
+			ally[i]->setCurrentExp(ally[i]->getCurrentExp() + exp);
+			if(ally[i]->levelUp())
+			{
+				battleOverlay.updateBattleLog("An ally leveled up!", false);
+			}
+		}
+
+		nextBattleState = 10;
 	}
 	else
 	{
-		newTurn();
+		selfFocus = singularAllyFocus = singularEnemyFocus = false;
 		nextBattleState = 0;
 	}
-}
-
-//Sets up for new turn by resetting all canAtk flags for those who are still alive
-//Also resets flag for finishing enemy focus
-void Battle::newTurn()
-{
-	std::cout << "newTurn\n";
-	selfFocus = singularAllyFocus = singularEnemyFocus = false;
 }
 
 //************ DRAWING ***************
@@ -1710,7 +1755,7 @@ void Battle::showCharacterInfo(sf::RenderWindow& win)
 	battleOverlay.showCurrentCharDesc();
 }
 
-void Battle::delayState(int& currentBattleState, int nextBattleState)
+void Battle::delayState(int& currentBattleState, int nextBattleState, int& currentState)
 {
 	int milliDelay = 0;
 
@@ -1731,6 +1776,9 @@ void Battle::delayState(int& currentBattleState, int nextBattleState)
 		case 8:
 			milliDelay = 100;
 			break;
+		case 10:
+			milliDelay = 3000;
+			break;
 	}
 	tme = clk.getElapsedTime();
 
@@ -1745,6 +1793,10 @@ void Battle::delayState(int& currentBattleState, int nextBattleState)
 	if(lastTime + milliDelay < currentTime)
 	{
 		currentBattleState = nextBattleState;
+		if(currentBattleState == 10)
+		{
+			currentState = 1;
+		}
 		lastTimeSet = false;
 	}
 }

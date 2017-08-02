@@ -132,7 +132,11 @@ void BattleOverlay::updateBattleLog(std::string strInp, bool replace)
 		tempStr = battleLog.getString();
 		tempStr += '\n' + strInp;
 	}
-	battleLog.setString(strInp);
+	else
+	{
+		tempStr = strInp;
+	}
+	battleLog.setString(tempStr);
 }
 
 void BattleOverlay::drawAll(sf::RenderWindow& win)

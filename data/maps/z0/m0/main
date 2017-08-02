@@ -6,9 +6,9 @@ NewPos 5 10
 
 Npc CondFalse 0
 	Image images/npc/npcs.png
-	ImagePos 0 0 64
+	ImagePos 0 320 64
 	Pos 9 10
-	Name Stranger
+	Name Robot
 
 	Start CondFalse 0
 	Text Long live the Bots!
@@ -17,16 +17,16 @@ Npc CondFalse 0
 	Image images/npc/npcs.png
 	ImagePos 0 0 64
 	Pos 7 8
-	Name Stranger
+	Name Khayn Member
 
 	Start CondTru 1
-	Text Are you a cyborg? Screw off, you filthy degenerate.
+	Text Are you a cyborg? Damn, I haven't seen one in a while. I had hoped your kind would go extinct.
 
 Npc CondFalse 0
 	Image images/npc/npcs.png
-	ImagePos 0 0 64
-	Pos 3 4
-	Name Stranger
+	ImagePos 0 192 64
+	Pos 2 4
+	Name Eric Ollivera
 
 	Start CondTrue 2
 	Text So, how's the old Robot doing?
@@ -36,14 +36,14 @@ Npc CondFalse 0
 	Choice Do you want it?
 	ChoiceOne Yes
 		*SetCondTrue 2
-		*Text Thank god! This thing was such an annoyance for me. Oh and by the way it's named James Ollivera... Don't ask me why, I don't know. It used to be my parents' robot. Anyways, have fun with it!
+		*Text Thank god! This thing was such an annoyance for me. It's named James Ollivera... Don't ask me why, I don't know. It guess my parents named it. Anyways, have fun with it! (You acquired an ally. Open the ally menu to add them to the party.)
 		*Give Ally 1
 	ChoiceTwo No
 		*Text Ugh... Oh well, I'll ask somebody else.
 
 Npc CondFalse 0
 	Image images/npc/npcs.png
-	ImagePos 0 0 64
+	ImagePos 0 128 64
 	Pos 15 10
 	Name Stranger
 	
@@ -52,18 +52,37 @@ Npc CondFalse 0
 
 Npc CondFalse 0
 	Image images/npc/npcs.png
-	ImagePos 0 0 64
+	ImagePos 64 0 64
 	Pos 17 5
-	Name Stranger
+	Name Khayn Member
 
 	Start CondFalse 0
 	Text Who are you? Look, if you don't want to be in trouble, don't talk to me.
 
-Npc CondFlase 0
+Npc CondFalse 0
 	Image images/npc/npcs.png
-	ImagePos 0 0 64
+	ImagePos 64 128 64
 	Pos 5 17
 	Name Stranger
 
-	Start CondFlase 0
-	Text What horrible times... My sister passed away yesterday after being caught up in a violent rebel group.
+	Start CondFalse 0
+	Text What a horrible time to be alive... My sister passed away yesterday after being caught up in a violent rebel group.
+
+Npc CondFalse 0
+	Image images/npc/npcs.png
+	ImagePos 128 576 64
+	Pos 15 12
+	Name Healing Station
+	InstHeal
+
+	Start CondFalse 0
+	Text You healed to full health.
+
+Npc CondFalse 0
+	Image images/npc/npcs.png
+	ImagePos 64 128 64
+	Pos 20 20
+	Name Stranger
+
+	Start CondFalse 0
+	Text You should be careful when you're around this town. There is a rebel group's hideout nearby and their members are all over the place.

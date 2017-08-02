@@ -1,6 +1,10 @@
 images/maps/wallTextures.png
 xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx
-xx,xx 07,01 02,00 02,00 02,00 02,00 02,00 02,00 02,00 03,00 xx,xx xx,xx 01,00 02,00 02,00 02,00 02,00 02,00 02,00 02,00 02,00 02,00 02,00 02,00 03,02
+xx,xx 04,01 02,00 02,00 02,00 02,00 02,00 02,00 02,00 03,00 xx,xx xx,xx 01,00 02,00 02,00 02,00 02,00 02,00 02,00 02,00 02,00 02,00 02,00 02,00 03,02
+xx,xx 00,01 xx,xx 00,03 01,03 01,03 01,03 03,03 xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx 00,01
+xx,xx 00,01 xx,xx 00,04 01,04 01,04 01,04 03,04 xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx 00,01
+xx,xx 00,01 xx,xx 04,03 05,03 05,03 05,03 07,03 xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx 00,01
+xx,xx 00,01 xx,xx 04,03 05,03 05,03 05,03 07,03 xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx 00,01
 xx,xx 00,01 xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx 00,01
 xx,xx 00,01 xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx 00,01
 xx,xx 00,01 xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx 00,01
@@ -8,10 +12,6 @@ xx,xx 00,01 xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx
 xx,xx 00,01 xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx 00,01
 xx,xx 00,01 xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx 00,01
 xx,xx 00,01 xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx 00,01
-xx,xx 00,01 xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx 00,02
-xx,xx 00,01 xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx
-xx,xx 00,01 xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx
-xx,xx 00,01 xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx 00,00
 xx,xx 00,01 xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx 00,01
 xx,xx 00,02 xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx 00,01
 xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx 00,01
@@ -28,5 +28,5 @@ xx,xx 00,01 xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx
 xx,xx 00,01 xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx 00,01
 xx,xx 00,01 xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx 00,01
 xx,xx 00,01 xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx 00,01
-xx,xx 04,02 02,00 02,00 02,00 02,00 02,00 02,00 02,00 03,00 xx,xx xx,xx 01,00 02,00 02,00 02,00 02,00 02,00 02,00 02,00 02,00 02,00 02,00 02,00 04,00
+xx,xx 04,02 02,00 02,00 02,00 02,00 02,00 02,00 02,00 02,00 02,00 02,00 02,00 02,00 02,00 02,00 02,00 02,00 02,00 02,00 02,00 02,00 02,00 02,00 04,00
 xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx xx,xx

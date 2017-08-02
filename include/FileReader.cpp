@@ -432,12 +432,13 @@ void FileReader::loadMapEnemies(std::vector<std::shared_ptr<Character>>& enemyLi
 		}
 		else if(strInp == "Image")
 		{
+			int inp1, inp2;
 			enemyFile >> strInp;
 			enemyListStore[tempCounter]->setTextureSprite(strInp);
 
-			//Where the enemy is located in the file (y location)
-			enemyFile >> intInp;
-			enemyListStore[tempCounter]->setTextureRect(0, intInp);
+			enemyFile >> inp1;
+			enemyFile >> inp2;
+			enemyListStore[tempCounter]->setTextureRect(inp1, inp2);
 		}
 		else if(strInp == "Skill")
 		{
@@ -545,6 +546,10 @@ void FileReader::loadMainMapFile(std::string fileNm,
 		{
 			mainMapFile >> strInp;
 			npc[npcCounter]->setTextureSprite(strInp);
+		}
+		else if(strInp == "InstHeal")
+		{
+			npc[npcCounter]->setInstHeal(true);
 		}
 		else if(strInp == "ImagePos")
 		{
@@ -723,13 +728,13 @@ void FileReader::loadMainMapFile(std::string fileNm,
 //Utility
 std::string FileReader::getWholeText(std::ifstream& fileObject)
 {
-	char readText[256];
+	char readText[1024];
 
 	//Skip spcae
 	fileObject.ignore();
 
 	//Gets the entire text
-	fileObject.getline(readText, 256);
+	fileObject.getline(readText, 1024);
 
 	std::string stringStore = readText;
 

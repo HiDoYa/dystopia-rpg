@@ -47,9 +47,13 @@ class CharacterCards
 		int maxPage;
 
 		//Selecting new items
-		bool displayItems;
+		bool displayWeapons;
+		bool displayArmor;
+		bool displayOs;
 		int itemToChange;
-		std::vector<std::shared_ptr<SkillCards>> itemCards;
+		std::vector<std::shared_ptr<SkillCards>> weaponCards;
+		std::vector<std::shared_ptr<SkillCards>> armorCards;
+		std::vector<std::shared_ptr<SkillCards>> osCards;
 	public:
 		CharacterCards();
 		//Utility

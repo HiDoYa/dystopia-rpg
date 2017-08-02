@@ -16,6 +16,7 @@ Npc::Npc()
 	//Initializes speaking bool
 	speaking = false;
 	colliding = false;
+	instHeal = false;
 }
 
 void Npc::npcExistCondition(int flagNum, bool flagBool)
@@ -35,7 +36,8 @@ bool Npc::npcExists(std::vector<bool> stateFlag)
 
 //Gets the converted vector, deals with animation/textbox calls, and deals with multiple textboxes
 void Npc::speak(std::vector<bool>& stateFlag, std::vector<int>& allyFound, 
-		std::vector<int>& unlockedSkills, Textbox& box, MapPlayer& player, sf::RenderWindow& win)
+		std::vector<int>& unlockedSkills, Textbox& box, MapPlayer& player,
+		std::vector<std::shared_ptr<Character>> ally, sf::RenderWindow& win)
 {
 	bool cond = !player.getMoving() && sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
 
@@ -54,6 +56,14 @@ void Npc::speak(std::vector<bool>& stateFlag, std::vector<int>& allyFound,
 
 			if(allowText)
 			{
+				if(instHeal)
+				{
+					for(int allyItr = 0; allyItr < ally.size(); allyItr++)
+					{
+						ally[allyItr]->setCurrentHp(ally[allyItr]->getMaxHp());
+					}
+				}
+
 				if(getChoiceFlag()[i])
 				{
 					switch(box.choiceBoxDisp(name, getText()[i], getChoiceDisp()[i], getChoiceOne()[i], getChoiceTwo()[i], getChoiceOneDisp()[i], getChoiceTwoDisp()[i], cond, speaking, win))
@@ -214,6 +224,11 @@ void Npc::collision(MapPlayer& player)
 void Npc::setName(std::string inp)
 {
 	name = inp;
+}
+
+void Npc::setInstHeal(bool inp)
+{
+	instHeal = inp;
 }
 
 //********* ACCESSORS *********

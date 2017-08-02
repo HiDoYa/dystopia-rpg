@@ -1,62 +1,276 @@
 Skill 0
-Name Electrocute
+Name Slash
 Description Damages one enemy.
 PowerRating 3
 ManaCost 10
 Accuracy 95
 EnemyPrio 10
 Crit 15
-Ally 0 1 2
+Ally 0 1 2 3 4 5
 PrimaryType Damage
 Type Damage
 	Target SingleEnemy
 	Percent false
-	Reapply 0
-	Mult 1.5
+	Mult 2
 	Min 15
 
 Skill 1
-Name Charge Up
+Name Power Up
+Description Powers up the caster.
 ManaCost 15
 Accuracy 95
-EnemyPrio 30
+EnemyPrio 10
 Crit 0
-Ally 0 1 2
+Ally 0 1 2 3 4 5
 PrimaryType Buff
 Type Buff
 	Target Self
 	BuffType Strength
-	Percent true
-	Reapply 3
+	Percent false
 	Mult 2
 	Min 15
 
 Skill 2
-Name TO_REPLACE
+Name Power Down
+Description Powers down one enemy.
 ManaCost 10
 Accuracy 95
 EnemyPrio 10
-Crit 15
-Ally 0 1 2
-PrimaryType Damage
-Type Damage
+Crit 0
+Ally 0 1 2 3 4 5
+PrimaryType Debuff
+Type Debuff
 	Target SingleEnemy
+	BuffType Strength
 	Percent false
-	Reapply 2
 	Mult 2
 	Min 15
 
 Skill 3
-Name TO_REPLACE
+Name Weak Pierce
+Description Damages one enemy.
 ManaCost 10
 Accuracy 95
 EnemyPrio 10
 Crit 15
-Ally 0 1 2
+Ally 0 1 2 3 4 5
 PrimaryType Damage
 Type Damage
 	Target SingleEnemy
 	Percent false
-	Reapply 0
+	Mult 4
+	Min 15
+
+Skill 4
+Name Medium Pierce
+Description Damages one enemy.
+ManaCost 10
+Accuracy 95
+EnemyPrio 10
+Crit 15
+Ally 0 1 2 3 4 5
+PrimaryType Damage
+Type Damage
+	Target SingleEnemy
+	Percent false
+	Mult 7
+	Min 15
+
+Skill 5
+Name Strong Pierce
+Description Damages one enemy.
+ManaCost 10
+Accuracy 95
+EnemyPrio 10
+Crit 15
+Ally 0 1 2 3 4 5
+PrimaryType Damage
+Type Damage
+	Target SingleEnemy
+	Percent false
+	Mult 10 
+	Min 15
+
+Skill 6
+Name Weak Smash
+Description Damages all enemies.
+ManaCost 10
+Accuracy 95
+EnemyPrio 10
+Crit 15
+Ally 0 1 2 3 4 5
+PrimaryType Damage
+Type Damage
+	Target MultEnemy
+	Percent false
 	Mult 2
 	Min 15
+
+Skill 7
+Name Medium Smash
+Description Damages all enemies.
+ManaCost 10
+Accuracy 95
+EnemyPrio 10
+Crit 15
+Ally 0 1 2 3 4 5
+PrimaryType Damage
+Type Damage
+	Target MultEnemy
+	Percent false
+	Mult 4
+	Min 15
+
+Skill 8
+Name Strong Smash
+Description Damages all enemies.
+ManaCost 10
+Accuracy 95
+EnemyPrio 10
+Crit 15
+Ally 0 1 2 3 4 5
+PrimaryType Damage
+Type Damage
+	Target MultEnemy
+	Percent false
+	Mult 7
+	Min 15
+
+Skill 9
+Name Weak Shoot
+Description Damages one enemy.
+ManaCost 10
+Accuracy 95
+EnemyPrio 10
+Crit 15
+Ally 0 1 2 3 4 5
+PrimaryType Damage
+Type Damage
+	Target SingleEnemy
+	Percent true
+	Mult 4
+	Min 15
+
+Skill 10
+Name Medium Shoot
+Description Damages one enemy.
+ManaCost 10
+Accuracy 95
+EnemyPrio 10
+Crit 15
+Ally 0 1 2 3 4 5
+PrimaryType Damage
+Type Damage
+	Target SingleEnemy
+	Percent true
+	Mult 6
+	Min 15
+
+Skill 11
+Name Strong Shoot
+Description Damages one enemy.
+ManaCost 10
+Accuracy 95
+EnemyPrio 10
+Crit 15
+Ally 0 1 2 3 4 5
+PrimaryType Damage
+Type Damage
+	Target SingleEnemy
+	Percent true
+	Mult 8
+	Min 15
+
+Skill 12
+Name Weak Protect
+Description Boosts the caster's defense.
+ManaCost 10
+Accuracy 95
+EnemyPrio 10
+Crit 15
+Ally 0 1 2 3 4 5
+PrimaryType Buff
+Type Buff
+	Target Self
+	BuffType Defense
+	Percent true
+	Mult 4
+	Min 15
+
+Skill 13
+Name Medium Protect
+Description Boosts the caster's defense.
+ManaCost 10
+Accuracy 95
+EnemyPrio 10
+Crit 15
+Ally 0 1 2 3 4 5
+PrimaryType Buff
+Type Buff
+	Target Self
+	BuffType Defense
+	Percent true
+	Mult 6
+	Min 15
+
+Skill 14
+Name Strong Protect
+Description Boosts the caster's defense.
+ManaCost 10
+Accuracy 95
+EnemyPrio 10
+Crit 15
+Ally 0 1 2 3 4 5
+PrimaryType Buff
+Type Buff
+	Target Self
+	BuffType Defense
+	Percent true
+	Mult 8
+	Min 15
+
+Skill 15
+Name Weak Repair
+Description Heals one ally.
+ManaCost 10
+Accuracy 95
+EnemyPrio 10
+Crit 15
+Ally 0 1 2 3 4 5
+PrimaryType Heal
+Type Heal
+	Target SingleEnemy
+	Percent false
+	Mult 4
+	Min 15
+
+Skill 16
+Name Medium Repair
+Description Heals one ally.
+ManaCost 10
+Accuracy 95
+EnemyPrio 10
+Crit 15
+Ally 0 1 2 3 4 5
+PrimaryType Heal
+Type Heal
+	Target SingleAlly
+	Percent false
+	Mult 6
+	Min 15
+
+Skill 17
+Name Strong Repair
+Description Heals one ally.
+ManaCost 10
+Accuracy 95
+EnemyPrio 10
+Crit 15
+Ally 0 1 2 3 4 5
+PrimaryType Heal
+Type Heal
+	Target SingleAlly
+	Percent false
+	Mult 8
+	Min 15
+

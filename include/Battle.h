@@ -141,8 +141,7 @@ class Battle
 		bool checkAllyDeath();
 		bool checkEnemyDeaths();
 		void checkEndBattle(int&, int&, std::vector<int>, 
-				std::vector<std::shared_ptr<Character>>);
-		void newTurn();
+				std::vector<std::shared_ptr<Character>>, std::vector<int>&);
 		
 		//Drawing
 		void drawAll(sf::RenderWindow&, int);
@@ -150,7 +149,7 @@ class Battle
 		//Utility
 		int getMaxNum(int, int);
 		void showCharacterInfo(sf::RenderWindow&);
-		void delayState(int&, int);
+		void delayState(int&, int, int&);
 };
 
 #endif

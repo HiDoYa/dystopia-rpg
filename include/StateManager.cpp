@@ -133,7 +133,7 @@ void StateManager::updateMap(sf::RenderWindow& win, sf::View& view)
 	{
 		if(npc[i]->npcExists(stateFlag))
 		{
-			npc[i]->speak(stateFlag, allyFound, unlockedSkills, textbox, player, win);
+			npc[i]->speak(stateFlag, allyFound, unlockedSkills, textbox, player, ally, win);
 		}
 	}
 
@@ -232,7 +232,7 @@ void StateManager::updateBattle(sf::RenderWindow& win, sf::View& view)
 
 	if(nextBattleState != currentBattleState)
 	{
-		battle->delayState(currentBattleState, nextBattleState);
+		battle->delayState(currentBattleState, nextBattleState, currentState);
 	}
 	else 
 	{
@@ -277,7 +277,7 @@ void StateManager::updateBattle(sf::RenderWindow& win, sf::View& view)
 			//Check for game over. Go back to beginning if not game over. 
 			//If all enemies/allies have attacked, reset their flags.
 			case 9:
-				battle->checkEndBattle(nextBattleState, currentState, allyInParty, ally);
+				battle->checkEndBattle(nextBattleState, currentState, allyInParty, ally, itemHeld);
 				break;
 		}
 	}

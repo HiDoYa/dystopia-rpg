@@ -2,42 +2,29 @@ EncRate 5
 EnemList enemyList0
 
 PrevZM 0 0
-NewPos 22 6
+NewPos 4 23
 
 Npc CondFalse 0
-	Image images/npc/test3.png
-	ImagePos 0 0 64
+	Image images/npc/npcs.png
+	ImagePos 64 0 64
 	Pos 3 2
-	Name TestNpc
+	Name Khayn Member
 
 	Start CondTrue 1
-	Text Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-	Give Ally 1
+	Text Are you a cyborg? Disgusting.
+
+Npc CondFalse 0
+	Image images/npc/npcs.png
+	ImagePos 0 256 64
+	Pos 15 8
+	Name Researcher
 
 	Start CondFalse 0
-	Text This is different text get scammed
-	SetCondTrue 0
-
-	Start CondTrue 1
-	Text Lorem ipusm harhar
-
-Npc CondFalse 0
-	Image images/npc/test4.png
-	ImagePos 0 0 64
-	Pos 3 8
-	Name this is a test
-
-	Start CondTru 1
-	Text Is this possible?
-	Choice This is some choice question
-	ChoiceOne Check
-		*SetCondTrue 4
-		*Text You picked choice one.
-	ChoiceTwo Don't Check
-		*Text You picked choice two.
+	Text Hmm, a cyborg... That's the first time I've seen one for quite a few years. This is perfect, why don't you go equip this skill and tell me how powerful it is? (You received a skill.)
+	Give Skill 4
 
 Npc CondTrue 0
-	Image images/npc/test4.png
+	Image images/npc/npcs.png
 	ImagePos 0 0 64
 	Pos 3 4
-	Name TestNpc
+	Name Khayn Member
