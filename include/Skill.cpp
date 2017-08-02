@@ -334,6 +334,7 @@ int Skill::normCalc(int posMult, int negMult, int type)
 	val = (att * att) / (negMult + att);
 
 	checkForMaxMin(val, type);
+	//checkForMiss();
 
 	if((rand() % 100 + 1) < crit)
 	{
@@ -352,7 +353,13 @@ int Skill::percentCalc(int posMult, int negMult, int percentMax, int type)
 	val = (att * att) / (100 * percentMax + att);
 
 	checkForMaxMin(val, type);
-	checkForMiss();
+	//checkForMiss();
+	
+	if((rand() % 100 + 1) < crit)
+	{
+		val *= 1.5;
+	}
+
 	return val;
 }
 

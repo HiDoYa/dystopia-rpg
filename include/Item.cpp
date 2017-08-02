@@ -6,6 +6,7 @@
 Item::Item()
 {
 	strIncrease = defIncrease = agiIncrease = hpIncrease = manaIncrease = 0;
+	image.setTextureSprite("images/ally/itemIcons.png");
 }
 
 //Mutators
@@ -22,11 +23,6 @@ void Item::setDescription(std::string inp)
 void Item::setSellPrice(int inp)
 {
 	sellPrice = inp;
-}
-
-void Item::setImage(std::string inp)
-{
-	image.setTextureSprite(inp);
 }
 
 void Item::setItemType(int inp)

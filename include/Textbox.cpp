@@ -8,6 +8,7 @@ Textbox::Textbox()
 {
 	//Default initialization
 	posX = posY = 0;
+	newZero = -2;
 	
 	//Gets box parameters
 	height = 150;
@@ -435,6 +436,7 @@ int Textbox::choiceBoxDisp(std::string nm, std::string textStr, std::string regI
 		choiceBoxOpen = false;
 		currentlyTalking = false;
 		textNum = 0;
+		newZero = -2;
 		return currentChoice;
 	}
 	return 0;

@@ -30,7 +30,6 @@ class Item
 		void setName(std::string);
 		void setDescription(std::string);
 		void setSellPrice(int);
-		void setImage(std::string);
 		void setItemType(int);
 		void setEquipmentType(int);
 		void setStrIncrease(int);

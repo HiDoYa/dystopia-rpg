@@ -297,11 +297,6 @@ void FileReader::loadItem(std::vector<std::shared_ptr<Item>>& itemList)
 			itemFile >> strInp;
 			itemList.push_back(std::shared_ptr<Item>(new Item));
 		}
-		else if(strInp == "Image")
-		{
-			itemFile >> strInp;
-			itemList[itemList.size() - 1]->setImage(strInp);
-		}
 		else if(strInp == "Name")
 		{
 			itemFile >> strInp;
