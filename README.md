@@ -1,7 +1,7 @@
 # dystopia-rpg
 A story based RPG game of a dystopian and futuristic world. 
 
-## Post-Mortem
+## Overview
 This game was made in C++ and the SFML library. A more indepth write up can be found in the SunsetMedia Wave blog site [here](http://www.sunsetmediawave.org/category/column/from-zero-to-a-game/).  
 I wanted to make a turn-based RPG with branching story lines.
 
