@@ -5,6 +5,11 @@ A story based RPG game of a dystopian and futuristic world.
 This game was made in C++ and the SFML library. A more indepth write up can be found in the SunsetMedia Wave blog site [here](http://www.sunsetmediawave.org/category/column/from-zero-to-a-game/).  
 I wanted to make a turn-based RPG with branching story lines.
 
+### Screenshots
+![alt text](screenshots/1.png)
+![alt text](screenshots/2.png)
+![alt text](screenshots/3.png)
+
 #### Time Spent
 This project took about a year.  
 I'd estimate that I spent 70% of the time writing code, 20% of the time drawing art, and 10% of the time brainstorming about the game. When writing code, I spent a majority of the time getting the battle system to work while less time was allocated to rendering the maps or programming the interactions between NPCs and the player.
