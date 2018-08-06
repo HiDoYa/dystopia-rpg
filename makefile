@@ -2,8 +2,8 @@ OBJ = main.o Textbox.o SpriteManager.o Map.o Npc.o MapPlayer.o Battle.o UIOverla
 all: game
 
 game: $(OBJ)
-	g++ $(OBJ) -o sfml-app -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
-	./sfml-app -g
+	g++ $(OBJ) -o dys.out -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+	./dys.out -g
 
 main.o: main.cpp
 	g++ -std=c++11 -c $<
